@@ -1,0 +1,16 @@
+{
+  "name": "diffe2e",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Diff-driven targeted E2E regression testing - minimal RQ1 closed loop",
+  "scripts": {
+    "serve": "node demo-app/server.mjs",
+    "cov:old": "COV_OUT=cov/vold playwright test",
+    "cov:new": "COV_OUT=cov/vnew playwright test",
+    "select": "node tools/select.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.49.0"
+  }
+}
