@@ -3,102 +3,150 @@
     "tag": "c00",
     "type": "base",
     "desc": "initial app",
-    "commit": "8fc11a0"
+    "commit": "896c592"
   },
   {
     "tag": "c01",
     "type": "ui_text",
     "desc": "home desc copy change",
-    "commit": "b75cb76"
+    "commit": "7354b24"
   },
   {
     "tag": "c02",
     "type": "logic",
     "desc": "search adds an item",
-    "commit": "0e6cc45"
+    "commit": "57d7953"
   },
   {
     "tag": "c03",
     "type": "new_feature_gap",
     "desc": "add /coupon route, no test",
-    "commit": "5557dce"
+    "commit": "f1157b0"
   },
   {
     "tag": "c04",
     "type": "multi_file",
     "desc": "util adds discount helper (non-breaking)",
-    "commit": "3df9e59"
+    "commit": "c3942b7"
   },
   {
     "tag": "c05",
     "type": "ui_text",
     "desc": "profile title copy (not asserted)",
-    "commit": "09eacee"
+    "commit": "9a97a1b"
   },
   {
     "tag": "c06",
     "type": "logic",
     "desc": "login trims username (non-breaking)",
-    "commit": "72170d0"
+    "commit": "c7da60b"
   },
   {
     "tag": "c07",
     "type": "logic",
     "desc": "orders appends an order (non-breaking)",
-    "commit": "7fa77de"
+    "commit": "a44381d"
   },
   {
     "tag": "c08",
     "type": "locator_break",
     "desc": "cart-add testid renamed -> cart-add breaks cart.spec",
-    "commit": "123b031"
+    "commit": "788bb4a"
   },
   {
     "tag": "c09",
     "type": "ui_text",
     "desc": "search input placeholder change",
-    "commit": "ec2235f"
+    "commit": "04aedf4"
   },
   {
     "tag": "c10",
     "type": "refactor_noise",
     "desc": "home.js comment-only refactor",
-    "commit": "ea72429"
+    "commit": "466f5d8"
   },
   {
     "tag": "c11",
     "type": "multi_file",
     "desc": "cart + login edited together (non-breaking)",
-    "commit": "8cc173f"
+    "commit": "02056df"
   },
   {
     "tag": "c12",
     "type": "route",
     "desc": "main.js add /home alias (router broad change)",
-    "commit": "dfd9087"
+    "commit": "ffc294b"
   },
   {
     "tag": "c13",
     "type": "new_feature_gap",
     "desc": "add /wishlist route, no test",
-    "commit": "9bc6c2e"
+    "commit": "713f6e1"
   },
   {
     "tag": "c14",
     "type": "logic",
     "desc": "orders.js sort orders (non-breaking)",
-    "commit": "53569e7"
+    "commit": "f56d0dc"
   },
   {
     "tag": "c15",
     "type": "assertion_break",
     "desc": "login message Welcome->Hi breaks login.spec",
-    "commit": "a7e1a5f"
+    "commit": "8d3b65c"
   },
   {
     "tag": "c16",
     "type": "ui_text",
     "desc": "profile edited name Alice->Alice Lee (not asserted equal)",
-    "commit": "a71e6e3"
+    "commit": "5c74ec2"
+  },
+  {
+    "tag": "c17",
+    "type": "logic",
+    "desc": "util adds taxCents helper (shared, non-breaking)",
+    "commit": "0bb444d"
+  },
+  {
+    "tag": "c18",
+    "type": "ui_text",
+    "desc": "profile edit button copy (not asserted)",
+    "commit": "b903ac6"
+  },
+  {
+    "tag": "c19",
+    "type": "new_feature_gap",
+    "desc": "add /faq route, no test",
+    "commit": "d1d0d4f"
+  },
+  {
+    "tag": "c20",
+    "type": "locator_break",
+    "desc": "search-go testid renamed -> breaks search.spec",
+    "commit": "5a53fb6"
+  },
+  {
+    "tag": "c21",
+    "type": "assertion_break",
+    "desc": "orders A1 price 1500->1800 breaks orders.spec",
+    "commit": "fbf7087"
+  },
+  {
+    "tag": "c22",
+    "type": "multi_file",
+    "desc": "home + profile add data-page attr (non-breaking)",
+    "commit": "c475e33"
+  },
+  {
+    "tag": "c23",
+    "type": "route",
+    "desc": "main.js add /basket alias to cart (router change)",
+    "commit": "c24a150"
+  },
+  {
+    "tag": "c24",
+    "type": "refactor_noise",
+    "desc": "util.js header comment only",
+    "commit": "4efc43a"
   }
 ]

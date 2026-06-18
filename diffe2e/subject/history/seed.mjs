@@ -89,6 +89,41 @@ const edits = [
 
   { id: 'c16', type: 'ui_text', desc: 'profile edited name Alice->Alice Lee (not asserted equal)',
     apply: () => editSrc('profile.js', (s) => s.replace("'Alice';", "'Alice';  // display name")) },
+
+  { id: 'c17', type: 'logic', desc: 'util adds taxCents helper (shared, non-breaking)',
+    apply: () => editSrc('util.js', (s) => s + "\nexport function taxCents(cents, pct) {\n  return Math.round((cents * pct) / 100);\n}\n") },
+
+  { id: 'c18', type: 'ui_text', desc: 'profile edit button copy (not asserted)',
+    apply: () => editSrc('profile.js', (s) => s.replace('Edit name</button>', 'Edit your name</button>')) },
+
+  { id: 'c19', type: 'new_feature_gap', desc: 'add /faq route, no test',
+    apply: () => {
+      write(path.join(SRC(), 'faq.js'),
+        "export function render(root){root.innerHTML=`<section><h1 data-testid=\"faq-title\">FAQ</h1>" +
+        "<button data-testid=\"faq-toggle\">Show answer</button><p data-testid=\"faq-body\" hidden>Use the demo.</p></section>`;" +
+        "const b=root.querySelector('[data-testid=\"faq-toggle\"]');" +
+        "const p=root.querySelector('[data-testid=\"faq-body\"]');" +
+        "b.addEventListener('click',()=>{p.hidden=!p.hidden;});}\n");
+      editSrc('main.js', (s) => s.replace("'/wishlist': () => import('./wishlist.js'),",
+        "'/wishlist': () => import('./wishlist.js'),\n  '/faq': () => import('./faq.js'),"));
+    } },
+
+  { id: 'c20', type: 'locator_break', desc: 'search-go testid renamed -> breaks search.spec',
+    apply: () => editSrc('search.js', (s) => s.replace(/data-testid="search-go"/g, 'data-testid="search-find"')) },
+
+  { id: 'c21', type: 'assertion_break', desc: 'orders A1 price 1500->1800 breaks orders.spec',
+    apply: () => editSrc('orders.js', (s) => s.replace("{ id: 'A1', cents: 1500 },", "{ id: 'A1', cents: 1800 },")) },
+
+  { id: 'c22', type: 'multi_file', desc: 'home + profile add data-page attr (non-breaking)',
+    apply: () => { editSrc('home.js', (s) => s.replace('<section>', '<section data-page="home">'));
+                   editSrc('profile.js', (s) => s.replace('<section>', '<section data-page="profile">')); } },
+
+  { id: 'c23', type: 'route', desc: 'main.js add /basket alias to cart (router change)',
+    apply: () => editSrc('main.js', (s) => s.replace("'/cart': () => import('./cart.js'),",
+      "'/cart': () => import('./cart.js'),\n  '/basket': () => import('./cart.js'),")) },
+
+  { id: 'c24', type: 'refactor_noise', desc: 'util.js header comment only',
+    apply: () => editSrc('util.js', (s) => "// pure money + math helpers\n" + s) },
 ];
 
 function sh(cmd) { execSync(cmd, { cwd: WORK, stdio: 'pipe' }); }
