@@ -5,7 +5,7 @@ import { parseUnifiedDiff, changedFiles } from '../src/diff.mjs';
 import { selectByCoverage, selectByUiLocator, select } from '../src/selector.mjs';
 import { buildAffected } from '../src/oracle.mjs';
 import { coverageGap } from '../src/gap.mjs';
-import { mcnemar, cliffsDelta, wilcoxonSigned, bootstrapCI, mean } from '../src/stats.mjs';
+import { mcnemar, cliffsDelta, wilcoxonSigned, bootstrapCI, mean, normalCdf, wilcoxonP } from '../src/stats.mjs';
 import { toMarkdown } from '../src/reporter.mjs';
 
 test('coverageMap: fileLevelFromCDP keeps only executed /src/*.js', () => {
@@ -89,6 +89,18 @@ test('stats: bootstrapCI brackets the mean deterministically', () => {
   const s = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const ci = bootstrapCI(s, mean, 500, 7);
   assert.ok(ci.lo <= ci.point && ci.point <= ci.hi);
+});
+
+test('stats: normalCdf(0)=0.5 and symmetric', () => {
+  assert.ok(Math.abs(normalCdf(0) - 0.5) < 1e-6);
+  assert.ok(Math.abs(normalCdf(1.96) - 0.975) < 0.01);
+});
+
+test('stats: wilcoxonP small all-positive sample is significant', () => {
+  const pairs = [[5, 1], [6, 1], [7, 1], [8, 1], [9, 1], [10, 1]];
+  const r = wilcoxonP(pairs);
+  assert.equal(r.n, 6);
+  assert.ok(r.p < 0.05);
 });
 
 test('reporter: toMarkdown renders table', () => {

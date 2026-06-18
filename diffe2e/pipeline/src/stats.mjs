@@ -64,3 +64,24 @@ export function bootstrapCI(samples, statFn = mean, n = 2000, seed = 42, alpha =
 }
 
 export function mean(a) { return a.reduce((s, x) => s + x, 0) / a.length; }
+
+// Standard normal CDF via Abramowitz-Stegun erf approximation.
+export function normalCdf(z) {
+  const t = 1 / (1 + 0.2316419 * Math.abs(z));
+  const d = 0.3989423 * Math.exp(-z * z / 2);
+  let p = d * t * (0.3193815 + t * (-0.3565638 + t * (1.781478 + t * (-1.821256 + t * 1.330274))));
+  if (z > 0) p = 1 - p;
+  return p;
+}
+
+// Two-sided Wilcoxon signed-rank p-value (normal approximation w/ continuity).
+export function wilcoxonP(pairs) {
+  const { wPlus, n } = wilcoxonSigned(pairs);
+  if (n === 0) return { wPlus, n, z: 0, p: 1 };
+  const mu = (n * (n + 1)) / 4;
+  const sigma = Math.sqrt((n * (n + 1) * (2 * n + 1)) / 24);
+  if (sigma === 0) return { wPlus, n, z: 0, p: 1 };
+  const z = (wPlus - mu - Math.sign(wPlus - mu) * 0.5) / sigma;
+  const p = 2 * (1 - normalCdf(Math.abs(z)));
+  return { wPlus, n, z: +z.toFixed(4), p: +Math.min(1, p).toFixed(4) };
+}
