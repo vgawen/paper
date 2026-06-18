@@ -9,3 +9,4 @@ experiments/out/*.zip
 **/.nyc_output/
 subject/work/
 **/pw-report.json
+experiments/out/_c1dyn/

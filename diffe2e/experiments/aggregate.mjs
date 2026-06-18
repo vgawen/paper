@@ -89,6 +89,18 @@ function main() {
     L.push('- 详见 out/c1_loop.md。这是 C1 核心（JSX 语义差分驱动整条链）的端到端集成，与 RQ1–3 动态数字互补。', '');
   }
 
+  const c1dPath = path.join(OUT, 'c1_dynamic.json');
+  if (fs.existsSync(c1dPath)) {
+    const d = readJ(c1dPath);
+    L.push('## 1.6 C1 动态实测：真实 React 项目 (cand_coverage)');
+    L.push(`- 变更：Red→Crimson（同 handler/颜色）+ 新增 Green；实跑 e2e，affected oracle（结果翻转）= ${d.affected.join(', ')}。`);
+    L.push(`- 选择对比（同一 oracle）：coverage-only Precision ${d.mCov.Precision} (选 ${d.covSel.length}/${d.mCov.full_suite})；**uidiff Precision ${d.mUi.Precision}**（选 ${d.uiSel.length}，Reduction ${d.mUi.Reduction}，Safety ${d.mUi.Safety}）。`);
+    L.push(`- 修复：${JSON.stringify(d.repair.edits)} → "use Red" 重跑 ${d.repair.red_after_pass ? 'PASS' : 'FAIL'}。`);
+    L.push(`- 生成：新增 ${d.generation.add} 按钮 → 可执行=${d.generation.executable}，覆盖App=${d.generation.covers_app}。`);
+    L.push('- 这是 C1 在真实 React 工程上的**动态**证据：语义 UI Diff 把选择精度从覆盖级的 ' +
+      `${d.mCov.Precision} 提升到 ${d.mUi.Precision}，并实跑完成修复与生成。详见 out/c1_dynamic.md。`, '');
+  }
+
   L.push('## 2. RQ2 生成：覆盖缺口补齐');
   L.push(`- provider=${rq2.provider}，缺口数 n=${rq2.n}：可执行率=${rq2.execRate}，变更相关率=${rq2.relRate}。`);
   L.push('- 语义有效率=NA（需人工/LLM 评判；候选见 out/rq2_to_annotate.jsonl）。', '');
@@ -130,6 +142,8 @@ function main() {
     'node experiments/analyze.mjs         # RQ1 统计 + SVG 图',
     'node experiments/run_rq2.mjs         # RQ2 缺口生成',
     'node experiments/run_rq3.mjs         # RQ3 修复',
+    'node experiments/uidiff_loop.mjs     # C1 闭环(静态,真实JSX): 语义UI Diff 驱动 选/生/修',
+    'node experiments/run_c1_dynamic.mjs  # C1 动态(真实React项目): 实跑 选/生/修(自动还原)',
     'node realproj/gate.mjs               # 真实项目可插桩闸门',
     'node experiments/aggregate.mjs       # 汇总 -> EXPERIMENT_REPORT.md',
     '```', '',

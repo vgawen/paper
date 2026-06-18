@@ -1,0 +1,106 @@
+{
+  "uidiff": {
+    "ADD": [
+      {
+        "key": "button:text:Green",
+        "node": {
+          "tag": "button",
+          "text": "Green",
+          "onClick": "handleMakeGreen",
+          "onSubmit": null,
+          "testId": null,
+          "ariaLabel": null,
+          "role": null,
+          "href": null,
+          "name": null,
+          "line": 39
+        }
+      }
+    ],
+    "REMOVE": [],
+    "MODIFY": [
+      {
+        "key": "button:text:Crimson",
+        "matchedOld": "button:text:Red",
+        "line": 37,
+        "changes": {
+          "text": {
+            "from": "Red",
+            "to": "Crimson"
+          }
+        }
+      }
+    ]
+  },
+  "oldRes": {
+    "App.test.ts::default-turquoise": {
+      "pass": true,
+      "coversApp": true
+    },
+    "App.test.ts::red": {
+      "pass": true,
+      "coversApp": true
+    },
+    "App2.test.ts::turquoise": {
+      "pass": true,
+      "coversApp": true
+    }
+  },
+  "newRes": {
+    "App.test.ts::default-turquoise": {
+      "pass": true,
+      "coversApp": true
+    },
+    "App.test.ts::red": {
+      "pass": false,
+      "coversApp": true
+    },
+    "App2.test.ts::turquoise": {
+      "pass": true,
+      "coversApp": true
+    }
+  },
+  "affected": [
+    "App.test.ts::red"
+  ],
+  "covSel": [
+    "App.test.ts::default-turquoise",
+    "App.test.ts::red",
+    "App2.test.ts::turquoise"
+  ],
+  "uiSel": [
+    "App.test.ts::red"
+  ],
+  "mCov": {
+    "Reduction": 0,
+    "Safety": 1,
+    "Precision": 0.3333,
+    "selected_count": 3,
+    "affected_count": 1,
+    "full_suite": 3
+  },
+  "mUi": {
+    "Reduction": 0.6667,
+    "Safety": 1,
+    "Precision": 1,
+    "selected_count": 1,
+    "affected_count": 1,
+    "full_suite": 3
+  },
+  "repair": {
+    "edits": [
+      {
+        "kind": "locator",
+        "field": "text",
+        "from": "Red",
+        "to": "Crimson"
+      }
+    ],
+    "red_after_pass": true
+  },
+  "generation": {
+    "add": "Green",
+    "executable": true,
+    "covers_app": true
+  }
+}

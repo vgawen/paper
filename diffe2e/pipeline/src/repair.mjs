@@ -74,7 +74,16 @@ export function repairAssertions(specText, segMap) {
 }
 
 const textFromKey = (s) => { const m = (s || '').match(/:text:(.+)$/); return m ? m[1] : null; };
-const swap = (text, from, to) => text.split(`'${from}'`).join(`'${to}'`).split(`"${from}"`).join(`"${to}"`);
+
+// Replace a UI text value across the locator forms a Playwright test may use:
+// 'X' / "X" / text=X / getByText('X') / { name: 'X' }.
+function replaceUiText(text, from, to) {
+  let t = text;
+  const pats = [`'${from}'`, `"${from}"`, `text=${from}`, `getByText('${from}')`, `getByText("${from}")`, `name: '${from}'`, `name: "${from}"`];
+  for (const p of pats) if (t.includes(p)) t = t.split(p).join(p.split(from).join(to));
+  return t;
+}
+const swap = (text, from, to) => replaceUiText(text, from, to);
 
 // Repair a spec using the semantic UI diff directly (C1-driven):
 //  - REMOVE'd node referenced -> retarget to a same-tag ADD'd node
@@ -89,17 +98,20 @@ export function repairFromUiDiff(specText, uidiff) {
   for (const r of uidiff.REMOVE || []) {
     const old = r.node.text;
     const cand = (addByTag[r.node.tag] || [])[0];
-    if (old && cand && cand.text && (text.includes(`'${old}'`) || text.includes(`"${old}"`))) {
-      text = swap(text, old, cand.text);
-      edits.push({ kind: 'locator', from: old, to: cand.text });
+    if (old && cand && cand.text) {
+      const next = swap(text, old, cand.text);
+      if (next !== text) { text = next; edits.push({ kind: 'locator', from: old, to: cand.text }); }
     }
   }
   for (const mod of uidiff.MODIFY || []) {
     const ch = mod.changes || {};
     for (const field of ['href', 'text', 'name', 'ariaLabel']) {
-      if (ch[field] && ch[field].from && (text.includes(`'${ch[field].from}'`) || text.includes(`"${ch[field].from}"`))) {
-        text = swap(text, ch[field].from, ch[field].to);
-        edits.push({ kind: 'assertion', field, from: ch[field].from, to: ch[field].to });
+      if (ch[field] && ch[field].from) {
+        const next = swap(text, ch[field].from, ch[field].to);
+        if (next !== text) {
+          text = next;
+          edits.push({ kind: field === 'text' ? 'locator' : 'assertion', field, from: ch[field].from, to: ch[field].to });
+        }
       }
     }
     if (ch.testId && !ch.testId.from && ch.testId.to) {

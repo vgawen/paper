@@ -39,6 +39,13 @@
 - 修复: paint.spec.ts[locator]；link.spec.ts[assertion]；turquoise.spec.ts[locator-harden]（locator 重定向 / 断言更新 / locator 加固）。
 - 详见 out/c1_loop.md。这是 C1 核心（JSX 语义差分驱动整条链）的端到端集成，与 RQ1–3 动态数字互补。
 
+## 1.6 C1 动态实测：真实 React 项目 (cand_coverage)
+- 变更：Red→Crimson（同 handler/颜色）+ 新增 Green；实跑 e2e，affected oracle（结果翻转）= App.test.ts::red。
+- 选择对比（同一 oracle）：coverage-only Precision 0.3333 (选 3/3)；**uidiff Precision 1**（选 1，Reduction 0.6667，Safety 1）。
+- 修复：[{"kind":"locator","field":"text","from":"Red","to":"Crimson"}] → "use Red" 重跑 PASS。
+- 生成：新增 Green 按钮 → 可执行=true，覆盖App=true。
+- 这是 C1 在真实 React 工程上的**动态**证据：语义 UI Diff 把选择精度从覆盖级的 0.3333 提升到 1，并实跑完成修复与生成。详见 out/c1_dynamic.md。
+
 ## 2. RQ2 生成：覆盖缺口补齐
 - provider=stub，缺口数 n=2：可执行率=1，变更相关率=1。
 - 语义有效率=NA（需人工/LLM 评判；候选见 out/rq2_to_annotate.jsonl）。
