@@ -130,13 +130,15 @@ AutoE2E（ICSE 2025，特性驱动 + E2EBench）、*Screen Transition Graphs*（
    M9 输出：targeted E2E 测试集 + 执行/覆盖/成本报告
 ```
 
+> 上述流水线 M0–M9 已在原型 **DiffE2E** 中实现为一组可一键运行、零外部依赖、确定性可复现的模块，并在受控多文件主体与真实开源 React 项目上端到端跑通（见 7.6）；故下文按"已落地的具体技术"而非"拟采用的技术"陈述。
+
 ### 5.2 关键技术方案
 
-- **E2E→源码覆盖映射（M0）**：对被测应用做覆盖插桩，离线记录每个 E2E 用例触达的源码文件/函数/路由，建映射表；增量更新（iJaCoCo 思想）。**实验主范围限定为前端 Web 项目、Playwright + Chromium、可插桩的 JS/TS 应用**；后端/API diff 作为扩展或用路由/API 启发式兜底，不承诺同等效果。
-- **选择（M2）**：`diff 变更文件/符号 ∩ 覆盖映射 → 相关用例`；无覆盖数据时用路由/组件静态启发式兜底。
-- **Semantic UI Diff（C1，选择/修复/生成的共用桥）**：用 JSX/模板 AST 抽取语义 UI 节点（tag/text/handler/testId/role/aria/href），对 base/head 两版做 `ADD/MODIFY/REMOVE` 差异，并与 base/head 运行时 DOM snapshot 互补消歧。该差异**同时驱动三件事**：选择（变更 UI 节点 ↔ 测试 locator 匹配，一条免 sourcemap、对 E2E 更自然的关联信号）、修复（失效 locator → 结构邻居候选）、生成（新增 UI 无测试触达 → 覆盖缺口）。**已在真实 React+JSX 项目上验证可计算**（见 7.6）。
+- **E2E→源码覆盖映射（M0）**：以 Playwright `page.coverage`/CDP 与 istanbul（`vite-plugin-istanbul`/nyc）采集逐用例运行期覆盖，离线记录每个 E2E 用例触达的源码文件/函数/路由并建映射表，支持按 commit 增量更新（iJaCoCo 思想）。**实验主范围限定为前端 Web 项目、Playwright + Chromium、可插桩的 JS/TS 应用**；后端/API diff 作为扩展或用路由/API 启发式兜底，不承诺同等效果。已验证：**文件级（L1）归属无需任何映射即稳定可用**，子文件级须经 sourcemap 反映射（见 7.6）。
+- **选择（M2，双信号 + 消融）**：以 `diff 变更文件/符号 ∩ 覆盖映射 → 相关用例` 为安全主干，并叠加 Semantic UI Diff 的"变更 UI ↔ 测试 locator"信号，取二者并集（coverage ∪ uidiff）；实现中对 **coverage-only / uidiff-only / dual** 三路做消融以厘清各信号的贡献边界；无覆盖数据时退化为路由/组件静态启发式兜底。
+- **Semantic UI Diff（C1，选择/修复/生成的共用桥）**：用 TypeScript 编译器 API 从 JSX/TSX AST 抽取语义 UI 节点（tag/text/handler/testId/role/aria/href），对 base/head 两版做 `ADD/MODIFY/REMOVE` 差异；对非 JSX 的模板字符串以等价的 DOM 信号差分（同构实现）兜底；并与 base/head 运行时 DOM snapshot 互补消歧。该差异**同时驱动三件事**：选择（变更 UI 节点 ↔ 测试 locator 匹配，一条免 sourcemap、对 E2E 更自然的关联信号）、修复（失效 locator → 结构邻居候选）、生成（新增 UI 无测试触达 → 覆盖缺口）。**已在真实 React+JSX 项目上验证可计算并端到端驱动三个环节**（见 7.6）。
 - **DiffSlice 因果关联（分层降级）**：L1 文件级（兜底）/ L2 组件路由级 / L3 元素属性·文本·role 级（最有用但在 React/Vue/构建产物/动态 DOM 下可能失败）；取能达到的最细层，并把"diff→失效关联成功率"作为实验统计项。
-- **生成（M7）/修复（M5）/验证迭代（M8）**：见研究内容；所有修复补丁与生成用例经 Playwright 真实执行验证，失败反馈迭代（上限 N_iter）。
+- **生成（M7）/修复（M5）/验证迭代（M8）**：经**可插拔 LLM 客户端**完成——配置 API key 时调用真实大模型（OpenAI/DeepSeek/Anthropic 等），无 key 时退化为确定性模板/规则回退以保证离线可复现；规划"规则基线 vs LLM"两档以评估增量。所有修复补丁与生成用例经 Playwright 真实执行验证，失败反馈迭代（上限 N_iter）。
 
 ### 5.3 评测要点（详见配套《实验方案与系统设计_DiffE2E》）
 
@@ -178,7 +180,7 @@ Playwright 提供执行、trace、截图、语义定位与覆盖采集 API；覆
 - ⚠️ **最大数据风险**：主线"选择/生成"**无开箱基准**，需**自建针对性 E2E 数据集**——从 E2EGit 的 Playwright 项目挖掘 commit 历史，构造"commit → 变更文件 → 受影响/失效/新增 E2E"样本并采集覆盖映射。应对：① 先在 2–3 个结构清晰、commit 历史规范的可插桩 Playwright 项目上构建小而可靠数据集；② 覆盖映射自动插桩采集；③ 不可得时退化为路由/组件静态启发式并如实报告局限。
 
 ### 7.4 工作量与条件可行性
-按深度分配（选择/生成深做、修复中等、判定轻做）控制范围；修复子实验有现成基准，主线数据自建但规模可控；单个研究生约 1 年内可完成原型与实验。已完成系统性文献调研（66 篇，全文已下载 61 篇）。
+按深度分配（选择/生成深做、修复中等、判定轻做）控制范围；修复子实验有现成基准，主线数据自建但规模可控；单个研究生约 1 年内可完成原型与实验。已完成系统性文献调研（66 篇，全文已下载 61 篇），并已搭出端到端可运行的原型 DiffE2E（M0–M9 全链路，见 7.6），核心实现风险基本出清，后续工作主要落在真实数据集规模化、真实 LLM 接入与系统评测。
 
 ### 7.5 风险与应对
 - **主线数据集自建成本高** → 小而可靠 + 自动插桩 + 静态兜底。
@@ -190,14 +192,18 @@ Playwright 提供执行、trace、截图、语义定位与覆盖采集 API；覆
 - **范围偏大** → 裁剪优先级：保住"选择 + diff 约束生成"两个主结论（RQ1/RQ2）。
 
 
-### 7.6 可行性预验证（已完成最小闭环）
-已在受控 demo 与**真实开源项目**（`mxschmitt/playwright-test-coverage`：React 19 + Vite + Playwright + vite-plugin-istanbul）上验证两条核心机制：
+### 7.6 可行性预验证（已完成最小闭环并搭出可运行原型）
+为降低开题后的实现风险，已在受控 demo 与**真实开源项目**（`mxschmitt/playwright-test-coverage`：React 19 + Vite + Playwright + vite-plugin-istanbul）上完成关键机制验证，并进一步搭出端到端可运行的原型 **DiffE2E**：
 
 - **闸门①（覆盖插桩）通过**：逐用例 istanbul 覆盖可稳定采集，并以**原始源码文件为键**归属，statement/function 级在不同用例间可区分。**已知约束**：插桩行号位于 JSX 转译后空间（文件 42 行、覆盖行号达 134）——**文件级（L1）归属无需任何映射；子文件级（L2/L3）须经 sourcemap 反映射**（被测项目已开 `build.sourcemap`，具备条件）。
 - **闸门②（Semantic UI Diff）通过**：用 TypeScript 编译器 API 从真实 JSX 抽取语义 UI 节点并算出 `ADD/MODIFY/REMOVE`（含 href 变更、testId 新增的结构匹配）。**已知约束**：当某节点的**文本与 handler 同时改变**时，静态匹配退化为"删+增"而非"改"，需运行时 DOM 位置/邻域匹配消歧（即 C1 中静态+运行时互补的动因）。
-- **RQ1 真实代码闭环**：以"UI 签名 ↔ 测试 locator"信号跑通——正确选中引用该 locator 的测试、给出修复候选、并把新增 UI 标为生成缺口。
+- **端到端闭环原型已跑通（不止两个闸门）**：在原型中实现了 M0–M9 全链路并验证可运行——
+  - 在**受控多文件主体**（多路由 + 共享工具 + 脚本化 git 历史，覆盖文本/逻辑/新增特性/多文件/locator 断裂/断言失配/重构噪声/路由等变更类型）上完成 commit-replay：覆盖映射 + diff 选择、无泄漏 oracle 构造、与全量/随机/静态启发式基线对比，并产出统计检验（Wilcoxon/McNemar/Cliff's δ/bootstrap CI）与图表。
+  - **C1 闭环已端到端验证**：Semantic UI Diff 在真实 JSX 上同时驱动选择、生成、修复；并在真实 React 项目上做了**动态实测**与 coverage/UI 信号的消融，确认两类信号互补、UI 信号在覆盖粒度过粗时提供额外的"变更 UI ↔ 测试"关联。
+  - **生成/修复**经可插拔 LLM 客户端实现，确定性回退保证全流程离线一键复现。
+  - *（注：开题阶段仅说明机制可行与原型可运行，量化结果留待论文实验章节给出。）*
 - **不适配样本（已实测）**：`debs-obrien/playwright-movies-app`（Next.js+Redux）因应用源码为 submodule 未随浅克隆拉取、硬性依赖 auth 凭据与外部 API、且无覆盖接线，归入"需大量改造"类——印证 7.3 的数据可得性风险与筛选闸门。
-- 复现与详情见《可行性验证报告》（`diffe2e/real/可行性验证报告.md`）。
+- 复现与详情见《可行性验证报告》（`diffe2e/real/可行性验证报告.md`）与原型仓库 `diffe2e/`。
 
 ---
 
