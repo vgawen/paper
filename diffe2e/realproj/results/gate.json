@@ -1,0 +1,30 @@
+[
+  {
+    "name": "cand_coverage",
+    "present": true,
+    "hasPW": true,
+    "hasVite": true,
+    "hasIstanbulPlugin": true,
+    "e2eCount": 3,
+    "hasPerTestCov": true,
+    "commits": 1,
+    "isShallow": true,
+    "covMethod": "istanbul (vite-plugin-istanbul)",
+    "gate": "PASS (per-test coverage produced)",
+    "replayReady": false
+  },
+  {
+    "name": "cand_movies",
+    "present": true,
+    "hasPW": true,
+    "hasVite": false,
+    "hasIstanbulPlugin": false,
+    "e2eCount": 71,
+    "hasPerTestCov": false,
+    "commits": 1,
+    "isShallow": true,
+    "covMethod": "CDP page.coverage",
+    "gate": "PASS (method available)",
+    "replayReady": false
+  }
+]
