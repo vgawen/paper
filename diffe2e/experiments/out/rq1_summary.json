@@ -1,0 +1,25 @@
+{
+  "n": 16,
+  "summary": {
+    "ours": {
+      "Reduction": 0.6562,
+      "Safety": 1,
+      "Precision": 1
+    },
+    "retest_all": {
+      "Reduction": 0,
+      "Safety": 1,
+      "Precision": 0.3438
+    },
+    "random_k": {
+      "Reduction": 0.6562,
+      "Safety": 0.375,
+      "Precision": 0.375
+    },
+    "static_heuristic": {
+      "Reduction": 0.8646,
+      "Safety": 0.75,
+      "Precision": 1
+    }
+  }
+}
