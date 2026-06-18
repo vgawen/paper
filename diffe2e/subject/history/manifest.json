@@ -1,0 +1,104 @@
+[
+  {
+    "tag": "c00",
+    "type": "base",
+    "desc": "initial app",
+    "commit": "ef6ccaf"
+  },
+  {
+    "tag": "c01",
+    "type": "ui_text",
+    "desc": "home desc copy change",
+    "commit": "60137d1"
+  },
+  {
+    "tag": "c02",
+    "type": "logic",
+    "desc": "search adds an item",
+    "commit": "98e91f6"
+  },
+  {
+    "tag": "c03",
+    "type": "new_feature_gap",
+    "desc": "add /coupon route, no test",
+    "commit": "4c3b98a"
+  },
+  {
+    "tag": "c04",
+    "type": "multi_file",
+    "desc": "util adds discount helper (non-breaking)",
+    "commit": "1932492"
+  },
+  {
+    "tag": "c05",
+    "type": "ui_text",
+    "desc": "profile title copy (not asserted)",
+    "commit": "708b05b"
+  },
+  {
+    "tag": "c06",
+    "type": "logic",
+    "desc": "login trims username (non-breaking)",
+    "commit": "9202f49"
+  },
+  {
+    "tag": "c07",
+    "type": "logic",
+    "desc": "orders appends an order (non-breaking)",
+    "commit": "ae86228"
+  },
+  {
+    "tag": "c08",
+    "type": "locator_break",
+    "desc": "cart-add testid renamed -> cart-add breaks cart.spec",
+    "commit": "ac1e087"
+  },
+  {
+    "tag": "c09",
+    "type": "ui_text",
+    "desc": "search input placeholder change",
+    "commit": "2da3567"
+  },
+  {
+    "tag": "c10",
+    "type": "refactor_noise",
+    "desc": "home.js comment-only refactor",
+    "commit": "e9cbf4f"
+  },
+  {
+    "tag": "c11",
+    "type": "multi_file",
+    "desc": "cart + login edited together (non-breaking)",
+    "commit": "ccd6827"
+  },
+  {
+    "tag": "c12",
+    "type": "route",
+    "desc": "main.js add /home alias (router broad change)",
+    "commit": "a987be2"
+  },
+  {
+    "tag": "c13",
+    "type": "new_feature_gap",
+    "desc": "add /wishlist route, no test",
+    "commit": "19d1f3c"
+  },
+  {
+    "tag": "c14",
+    "type": "logic",
+    "desc": "orders.js sort orders (non-breaking)",
+    "commit": "a1baf56"
+  },
+  {
+    "tag": "c15",
+    "type": "assertion_break",
+    "desc": "login message Welcome->Hi breaks login.spec",
+    "commit": "7cb81fd"
+  },
+  {
+    "tag": "c16",
+    "type": "ui_text",
+    "desc": "profile edited name Alice->Alice Lee (not asserted equal)",
+    "commit": "df2d749"
+  }
+]

@@ -7,3 +7,5 @@ real/cand_movies/
 realproj/clones/
 experiments/out/*.zip
 **/.nyc_output/
+subject/work/
+**/pw-report.json
