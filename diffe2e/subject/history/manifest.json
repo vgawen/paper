@@ -3,102 +3,102 @@
     "tag": "c00",
     "type": "base",
     "desc": "initial app",
-    "commit": "ef6ccaf"
+    "commit": "8fc11a0"
   },
   {
     "tag": "c01",
     "type": "ui_text",
     "desc": "home desc copy change",
-    "commit": "60137d1"
+    "commit": "b75cb76"
   },
   {
     "tag": "c02",
     "type": "logic",
     "desc": "search adds an item",
-    "commit": "98e91f6"
+    "commit": "0e6cc45"
   },
   {
     "tag": "c03",
     "type": "new_feature_gap",
     "desc": "add /coupon route, no test",
-    "commit": "4c3b98a"
+    "commit": "5557dce"
   },
   {
     "tag": "c04",
     "type": "multi_file",
     "desc": "util adds discount helper (non-breaking)",
-    "commit": "1932492"
+    "commit": "3df9e59"
   },
   {
     "tag": "c05",
     "type": "ui_text",
     "desc": "profile title copy (not asserted)",
-    "commit": "708b05b"
+    "commit": "09eacee"
   },
   {
     "tag": "c06",
     "type": "logic",
     "desc": "login trims username (non-breaking)",
-    "commit": "9202f49"
+    "commit": "72170d0"
   },
   {
     "tag": "c07",
     "type": "logic",
     "desc": "orders appends an order (non-breaking)",
-    "commit": "ae86228"
+    "commit": "7fa77de"
   },
   {
     "tag": "c08",
     "type": "locator_break",
     "desc": "cart-add testid renamed -> cart-add breaks cart.spec",
-    "commit": "ac1e087"
+    "commit": "123b031"
   },
   {
     "tag": "c09",
     "type": "ui_text",
     "desc": "search input placeholder change",
-    "commit": "2da3567"
+    "commit": "ec2235f"
   },
   {
     "tag": "c10",
     "type": "refactor_noise",
     "desc": "home.js comment-only refactor",
-    "commit": "e9cbf4f"
+    "commit": "ea72429"
   },
   {
     "tag": "c11",
     "type": "multi_file",
     "desc": "cart + login edited together (non-breaking)",
-    "commit": "ccd6827"
+    "commit": "8cc173f"
   },
   {
     "tag": "c12",
     "type": "route",
     "desc": "main.js add /home alias (router broad change)",
-    "commit": "a987be2"
+    "commit": "dfd9087"
   },
   {
     "tag": "c13",
     "type": "new_feature_gap",
     "desc": "add /wishlist route, no test",
-    "commit": "19d1f3c"
+    "commit": "9bc6c2e"
   },
   {
     "tag": "c14",
     "type": "logic",
     "desc": "orders.js sort orders (non-breaking)",
-    "commit": "a1baf56"
+    "commit": "53569e7"
   },
   {
     "tag": "c15",
     "type": "assertion_break",
     "desc": "login message Welcome->Hi breaks login.spec",
-    "commit": "7cb81fd"
+    "commit": "a7e1a5f"
   },
   {
     "tag": "c16",
     "type": "ui_text",
     "desc": "profile edited name Alice->Alice Lee (not asserted equal)",
-    "commit": "df2d749"
+    "commit": "a71e6e3"
   }
 ]
