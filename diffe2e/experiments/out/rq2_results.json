@@ -1,0 +1,24 @@
+{
+  "provider": "stub",
+  "n": 2,
+  "execRate": 1,
+  "relRate": 1,
+  "rows": [
+    {
+      "tag": "c03",
+      "route": "/coupon",
+      "gap_file": "src/coupon.js",
+      "signals": 4,
+      "executable": true,
+      "change_relevant": true
+    },
+    {
+      "tag": "c13",
+      "route": "/wishlist",
+      "gap_file": "src/wishlist.js",
+      "signals": 3,
+      "executable": true,
+      "change_relevant": true
+    }
+  ]
+}
