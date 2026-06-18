@@ -1,0 +1,40 @@
+{
+  "n": 2,
+  "repaired": 2,
+  "rows": [
+    {
+      "tag": "c08",
+      "type": "locator_break",
+      "target": "cart.spec.ts",
+      "staleness": "STRUCTURAL_ONLY",
+      "edits": [
+        {
+          "kind": "locator",
+          "from": "cart-add",
+          "to": "cart-add-btn"
+        }
+      ],
+      "before_pass": false,
+      "after_pass": true,
+      "usability_before": 0,
+      "usability_after": 1
+    },
+    {
+      "tag": "c15",
+      "type": "assertion_break",
+      "target": "login.spec.ts",
+      "staleness": "EXPECTATION_CHANGE",
+      "edits": [
+        {
+          "kind": "assertion",
+          "from": "Welcome,",
+          "to": "Hi,"
+        }
+      ],
+      "before_pass": false,
+      "after_pass": true,
+      "usability_before": 0,
+      "usability_after": 1
+    }
+  ]
+}

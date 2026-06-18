@@ -30,13 +30,14 @@ export function changedAppFiles(oldTag, newTag) {
     .map((f) => 'src/' + f.split('app/public/src/')[1]);
 }
 
-// run full Playwright suite, writing per-test coverage into WORK/<covRel>
-export function runSuite(covRel) {
+// run Playwright (full suite, or a single spec via `spec`), writing per-test
+// coverage into WORK/<covRel>.
+export function runSuite(covRel, spec = '') {
   const abs = path.join(WORK, covRel);
   fs.rmSync(abs, { recursive: true, force: true });
   let ok = true;
   try {
-    execSync(`COV_OUT=${covRel} PW_JSON=pw-report.json npx playwright test`, { cwd: WORK, stdio: 'pipe' });
+    execSync(`COV_OUT=${covRel} PW_JSON=pw-report.json npx playwright test ${spec}`, { cwd: WORK, stdio: 'pipe' });
   } catch (e) { ok = false; } // non-zero exit when some tests fail (expected for breaks)
   return { ok, covDir: abs, report: path.join(WORK, 'pw-report.json') };
 }
