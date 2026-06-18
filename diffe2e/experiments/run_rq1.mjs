@@ -2,8 +2,9 @@
 // ours + baselines against the V_new oracle, write dataset + summary.
 import fs from 'node:fs';
 import path from 'node:path';
-import { WORK, OUT, checkout, readManifest, changedAppFiles, runSuite, loadCov, parseFailed, ensureOut } from './lib.mjs';
+import { WORK, OUT, checkout, readManifest, changedAppFiles, runSuite, loadCov, parseFailed, ensureOut, showFile, readTestSource } from './lib.mjs';
 import { computeOne } from './compute.mjs';
+import { changedUiSignals, selectByDomDiff } from '../pipeline/src/domdiff.mjs';
 
 function mean(a) { return a.length ? +(a.reduce((s, x) => s + x, 0) / a.length).toFixed(4) : 0; }
 
@@ -22,12 +23,24 @@ function main() {
 
     const changedFiles = changedAppFiles(oldT, newT);
 
+    // UI-signal: aggregate DOM-signal diff across changed files (old vs new)
+    const oldAll = changedFiles.map((f) => showFile(oldT, `app/public/${f}`)).join('\n');
+    const newAll = changedFiles.map((f) => showFile(newT, `app/public/${f}`)).join('\n');
+    const signals = changedUiSignals(oldAll, newAll);
+
     checkout(newT);
     const vnew = runSuite(`cov/vnew/${newT}`);
     const covVnew = loadCov(vnew.covDir);
     const failed = parseFailed(vnew.report);
 
-    const r = computeOne({ covVold, covVnew, changedFiles });
+    // map each test id -> its spec source (1 test per spec file in this subject)
+    const testSources = {};
+    for (const id of new Set([...Object.keys(covVold), ...Object.keys(covVnew)])) {
+      testSources[id] = readTestSource(id.split(' > ')[0]);
+    }
+    const uiSelected = selectByDomDiff(signals, testSources);
+
+    const r = computeOne({ covVold, covVnew, changedFiles, uiSelected });
     const failedSelected = r.selected.filter((t) => failed.has(t));
 
     const row = {
@@ -39,8 +52,13 @@ function main() {
       affected: r.affected,
       selected: r.selected,
       failed_selected: failedSelected,
+      ui_signals: signals,
+      ui_selected: uiSelected,
       metrics: {
         ours: r.metrics.ours,
+        coverage_only: r.metrics.coverage_only,
+        uidiff_only: r.metrics.uidiff_only,
+        dual: r.metrics.dual,
         retest_all: r.metrics.retest_all,
         random_k: r.metrics.random_k,
         static_heuristic: r.metrics.static_heuristic,
@@ -48,8 +66,8 @@ function main() {
     };
     rows.push(row);
     console.log(`${newT} [${meta.type}] changed=${JSON.stringify(changedFiles)} ` +
-      `sel=${row.selected_count}/${row.full_suite} Red=${r.metrics.ours.Reduction} ` +
-      `Safe=${r.metrics.ours.Safety} Prec=${r.metrics.ours.Precision} failSel=${failedSelected.length}`);
+      `cov=${r.metrics.coverage_only.selected_count} ui=${r.metrics.uidiff_only.selected_count} ` +
+      `dual=${row.selected_count}/${row.full_suite} Safe=${r.metrics.ours.Safety} Prec=${r.metrics.ours.Precision} failSel=${failedSelected.length}`);
   }
 
   // restore work to latest
@@ -58,7 +76,7 @@ function main() {
   fs.writeFileSync(path.join(OUT, 'rq1_dataset.jsonl'), rows.map((r) => JSON.stringify(r)).join('\n') + '\n');
 
   // summary: mean metrics per method
-  const methods = ['ours', 'retest_all', 'random_k', 'static_heuristic'];
+  const methods = ['ours', 'coverage_only', 'uidiff_only', 'dual', 'retest_all', 'random_k', 'static_heuristic'];
   const summary = {};
   for (const m of methods) {
     summary[m] = {

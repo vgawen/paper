@@ -71,4 +71,15 @@ export function parseFailed(reportPath) {
   return failed;
 }
 
+// `git show <tag>:<path>` returning '' for absent files (e.g. newly added).
+export function showFile(tag, relpath) {
+  try { return git(`show ${tag}:${relpath}`); } catch { return ''; }
+}
+
+// read a test spec source from the work tree (current checkout) by basename.
+export function readTestSource(file) {
+  const p = path.join(WORK, 'tests', file);
+  return fs.existsSync(p) ? fs.readFileSync(p, 'utf8') : '';
+}
+
 export function ensureOut() { fs.mkdirSync(OUT, { recursive: true }); }

@@ -69,6 +69,21 @@ function main() {
     L.push(`  - vs ${b}: Reduction Wilcoxon p=${s.red_p} (Cliff δ=${s.red_delta}); Safety p=${s.saf_p} (δ=${s.saf_delta}); McNemar(安全) b=${s.mcnemar.b},c=${s.mcnemar.c},χ²=${s.mcnemar.chi2}。`);
   }
   L.push('- 结论：ours 是唯一同时做到 Safety=1.0 且高 Reduction 的方法；random 同规模但不安全（漏选），static 启发式在共享 util/router 变更上漏选。', '');
+
+  // signal ablation (coverage-only / uidiff-only / dual)
+  if (rq1.summary.coverage_only && rq1.summary.uidiff_only && rq1.summary.dual) {
+    const uiHit = dataset.filter((r) => r.ui_selected && r.ui_selected.length).length;
+    L.push('### 信号消融：coverage-only / uidiff-only / dual');
+    L.push('| 变体 | Reduction | Safety | Precision |', '|---|---|---|---|');
+    for (const v of ['coverage_only', 'uidiff_only', 'dual']) {
+      const s = rq1.summary[v];
+      L.push(`| ${v} | ${s.Reduction} | ${s.Safety} | ${s.Precision} |`);
+    }
+    L.push('', `- UI 信号（Semantic UI Diff 的 vanilla-JS 同构版）在 ${uiHit}/${rq1.n} 个过渡上触发选择，均为 locator 改名类变更，精确但单用 Safety 仅 ${rq1.summary.uidiff_only.Safety}（漏选逻辑/路由/断言类变更）。`);
+    L.push('- dual = coverage ∪ uidiff，在该文件粒度主体上与 coverage-only 等价：覆盖映射已是安全主干，UI 信号此处冗余但无害。');
+    L.push('- UI 信号的真正增益体现在覆盖粒度过粗的单组件应用——见 1.6 C1 动态实测（uidiff 选择精确率 1.0 vs 纯覆盖 0.33）。两者互补。', '');
+  }
+
   L.push('### 按变更类型（ours）');
   L.push('| 类型 | n | Reduction | Safety | Precision |', '|---|---|---|---|---|');
   for (const [t, rs] of Object.entries(byType)) {

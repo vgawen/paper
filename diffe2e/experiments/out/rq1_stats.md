@@ -22,6 +22,17 @@
 | ours vs random_k | 17 | 0 | 15.0588 |
 | ours vs static_heuristic | 8 | 0 | 6.125 |
 
+## Signal ablation (coverage-only / uidiff-only / dual)
+| variant | mean Reduction | mean Safety | mean Precision | safe commits |
+|---|---|---|---|---|
+| coverage_only | 0.625 | 1.000 | 1.000 | 24/24 |
+| uidiff_only | 0.986 | 0.083 | 1.000 | 2/24 |
+| dual | 0.625 | 1.000 | 1.000 | 24/24 |
+
+UI 信号在 2/24 个过渡上触发选择（其余无 UI-locator 变更）。
+结论：在文件粒度主体上覆盖映射已是安全主干，UI 信号精确但单用会漏选逻辑/路由变更；
+UI 信号的增益主要体现在覆盖粒度过粗的单组件应用（见 C1 动态实测 1.6）。
+
 ## By change type (ours)
 | type | n | mean Reduction | mean Safety | mean Precision |
 |---|---|---|---|---|

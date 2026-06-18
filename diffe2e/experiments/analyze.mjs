@@ -53,6 +53,19 @@ function main() {
     lines.push(`| ours vs ${b} | ${bb} | ${cc} | ${mcnemar(bb, cc).chi2} |`);
   }
 
+  // signal ablation: coverage-only vs uidiff-only vs dual
+  lines.push('', '## Signal ablation (coverage-only / uidiff-only / dual)');
+  lines.push('| variant | mean Reduction | mean Safety | mean Precision | safe commits |', '|---|---|---|---|---|');
+  for (const v of ['coverage_only', 'uidiff_only', 'dual']) {
+    const safe = rows.filter((r) => r.metrics[v].Safety === 1).length;
+    lines.push(`| ${v} | ${mean(get(v, 'Reduction')).toFixed(3)} | ${mean(get(v, 'Safety')).toFixed(3)} | ` +
+      `${mean(get(v, 'Precision')).toFixed(3)} | ${safe}/${rows.length} |`);
+  }
+  const uiHit = rows.filter((r) => r.ui_selected && r.ui_selected.length).length;
+  lines.push('', `UI 信号在 ${uiHit}/${rows.length} 个过渡上触发选择（其余无 UI-locator 变更）。`,
+    '结论：在文件粒度主体上覆盖映射已是安全主干，UI 信号精确但单用会漏选逻辑/路由变更；',
+    'UI 信号的增益主要体现在覆盖粒度过粗的单组件应用（见 C1 动态实测 1.6）。');
+
   // by change type
   lines.push('', '## By change type (ours)');
   lines.push('| type | n | mean Reduction | mean Safety | mean Precision |', '|---|---|---|---|---|');
@@ -66,7 +79,7 @@ function main() {
   fs.writeFileSync(path.join(OUT, 'rq1_stats.md'), lines.join('\n') + '\n');
 
   // SVG grouped bar chart: mean Reduction/Safety/Precision per method
-  const methods = ['ours', ...BASES];
+  const methods = ['coverage_only', 'uidiff_only', 'dual', ...BASES];
   const metricsK = ['Reduction', 'Safety', 'Precision'];
   const data = methods.map((m) => ({ m, vals: metricsK.map((k) => mean(get(m, k))) }));
   fs.writeFileSync(path.join(FIGS, 'rq1_metrics.svg'), svgBars(data, metricsK));

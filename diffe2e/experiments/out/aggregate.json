@@ -1,31 +1,46 @@
 {
   "rq1": {
     "ours": {
-      "Reduction": 0.6562,
+      "Reduction": 0.625,
+      "Safety": 1,
+      "Precision": 1
+    },
+    "coverage_only": {
+      "Reduction": 0.625,
+      "Safety": 1,
+      "Precision": 1
+    },
+    "uidiff_only": {
+      "Reduction": 0.9861,
+      "Safety": 0.0833,
+      "Precision": 1
+    },
+    "dual": {
+      "Reduction": 0.625,
       "Safety": 1,
       "Precision": 1
     },
     "retest_all": {
       "Reduction": 0,
       "Safety": 1,
-      "Precision": 0.3438
-    },
-    "random_k": {
-      "Reduction": 0.6562,
-      "Safety": 0.375,
       "Precision": 0.375
     },
+    "random_k": {
+      "Reduction": 0.625,
+      "Safety": 0.3958,
+      "Precision": 0.3958
+    },
     "static_heuristic": {
-      "Reduction": 0.8646,
-      "Safety": 0.75,
+      "Reduction": 0.875,
+      "Safety": 0.6667,
       "Precision": 1
     }
   },
-  "rq1_n": 16,
+  "rq1_n": 24,
   "sig": {
     "retest_all": {
-      "red_p": 0.0017,
-      "red_delta": 0.8125,
+      "red_p": 0.0001,
+      "red_delta": 0.7917,
       "saf_p": 1,
       "saf_delta": 0,
       "mcnemar": {
@@ -37,31 +52,31 @@
     "random_k": {
       "red_p": 1,
       "red_delta": 0,
-      "saf_p": 0.0039,
-      "saf_delta": 0.6875,
+      "saf_p": 0.0003,
+      "saf_delta": 0.7083,
       "mcnemar": {
-        "b": 11,
+        "b": 17,
         "c": 0,
-        "chi2": 9.0909
+        "chi2": 15.0588
       }
     },
     "static_heuristic": {
-      "red_p": 0.1003,
-      "red_delta": -0.4336,
-      "saf_p": 0.1003,
-      "saf_delta": 0.25,
+      "red_p": 0.0143,
+      "red_delta": -0.5451,
+      "saf_p": 0.0143,
+      "saf_delta": 0.3333,
       "mcnemar": {
-        "b": 4,
+        "b": 8,
         "c": 0,
-        "chi2": 2.25
+        "chi2": 6.125
       }
     }
   },
   "ci": {
     "Reduction": {
-      "lo": 0.5,
-      "hi": 0.8021,
-      "point": 0.6562
+      "lo": 0.493,
+      "hi": 0.75,
+      "point": 0.625
     },
     "Safety": {
       "lo": 1,
@@ -103,9 +118,9 @@
     "repaired": 2
   },
   "rq4": {
-    "totalFull": 96,
-    "totalSel": 33,
-    "execSaving": 0.6563
+    "totalFull": 144,
+    "totalSel": 54,
+    "execSaving": 0.625
   },
   "gate": [
     {

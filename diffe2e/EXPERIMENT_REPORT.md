@@ -1,36 +1,47 @@
 # DiffE2E 实验报告（面向代码变更的 Playwright E2E 针对性回归测试）
 
 ## 0. 概览
-- 主体：受控多文件应用（6+ 路由、共享 util），真实 git 历史 17 个 commit、16 个变更过渡。
+- 主体：受控多文件应用（6+ 路由、共享 util），真实 git 历史 25 个 commit、24 个变更过渡。
 - 全流程零外部依赖、可一键复现；生成/修复使用可插拔 LLM 客户端（无 key 时走确定性 stub）。
 - 无信息泄漏：选择只用 V_old 覆盖 + diff；V_new 全量覆盖仅用于构造 affected oracle。
 
 ## 1. RQ1 选择：最小且安全的针对性测试集
 | 方法 | Reduction | Safety | Precision |
 |---|---|---|---|
-| ours | 0.6562 | 1 | 1 |
-| retest_all | 0 | 1 | 0.3438 |
-| random_k | 0.6562 | 0.375 | 0.375 |
-| static_heuristic | 0.8646 | 0.75 | 1 |
+| ours | 0.625 | 1 | 1 |
+| retest_all | 0 | 1 | 0.375 |
+| random_k | 0.625 | 0.3958 | 0.3958 |
+| static_heuristic | 0.875 | 0.6667 | 1 |
 
-- ours bootstrap 95% CI：Reduction 0.6562 (0.5–0.8021)、Safety 1 (1–1)、Precision 1。
+- ours bootstrap 95% CI：Reduction 0.625 (0.493–0.75)、Safety 1 (1–1)、Precision 1。
 - 显著性（ours vs 基线）：
-  - vs retest_all: Reduction Wilcoxon p=0.0017 (Cliff δ=0.8125); Safety p=1 (δ=0); McNemar(安全) b=0,c=0,χ²=0。
-  - vs random_k: Reduction Wilcoxon p=1 (Cliff δ=0); Safety p=0.0039 (δ=0.6875); McNemar(安全) b=11,c=0,χ²=9.0909。
-  - vs static_heuristic: Reduction Wilcoxon p=0.1003 (Cliff δ=-0.4336); Safety p=0.1003 (δ=0.25); McNemar(安全) b=4,c=0,χ²=2.25。
+  - vs retest_all: Reduction Wilcoxon p=0.0001 (Cliff δ=0.7917); Safety p=1 (δ=0); McNemar(安全) b=0,c=0,χ²=0。
+  - vs random_k: Reduction Wilcoxon p=1 (Cliff δ=0); Safety p=0.0003 (δ=0.7083); McNemar(安全) b=17,c=0,χ²=15.0588。
+  - vs static_heuristic: Reduction Wilcoxon p=0.0143 (Cliff δ=-0.5451); Safety p=0.0143 (δ=0.3333); McNemar(安全) b=8,c=0,χ²=6.125。
 - 结论：ours 是唯一同时做到 Safety=1.0 且高 Reduction 的方法；random 同规模但不安全（漏选），static 启发式在共享 util/router 变更上漏选。
+
+### 信号消融：coverage-only / uidiff-only / dual
+| 变体 | Reduction | Safety | Precision |
+|---|---|---|---|
+| coverage_only | 0.625 | 1 | 1 |
+| uidiff_only | 0.9861 | 0.0833 | 1 |
+| dual | 0.625 | 1 | 1 |
+
+- UI 信号（Semantic UI Diff 的 vanilla-JS 同构版）在 2/24 个过渡上触发选择，均为 locator 改名类变更，精确但单用 Safety 仅 0.0833（漏选逻辑/路由/断言类变更）。
+- dual = coverage ∪ uidiff，在该文件粒度主体上与 coverage-only 等价：覆盖映射已是安全主干，UI 信号此处冗余但无害。
+- UI 信号的真正增益体现在覆盖粒度过粗的单组件应用——见 1.6 C1 动态实测（uidiff 选择精确率 1.0 vs 纯覆盖 0.33）。两者互补。
 
 ### 按变更类型（ours）
 | 类型 | n | Reduction | Safety | Precision |
 |---|---|---|---|---|
-| ui_text | 4 | 0.833 | 1.000 | 1.000 |
-| logic | 4 | 0.833 | 1.000 | 1.000 |
-| new_feature_gap | 2 | 0.000 | 1.000 | 1.000 |
-| multi_file | 2 | 0.667 | 1.000 | 1.000 |
-| locator_break | 1 | 0.833 | 1.000 | 1.000 |
-| refactor_noise | 1 | 0.833 | 1.000 | 1.000 |
-| route | 1 | 0.000 | 1.000 | 1.000 |
-| assertion_break | 1 | 0.833 | 1.000 | 1.000 |
+| ui_text | 5 | 0.833 | 1.000 | 1.000 |
+| logic | 5 | 0.800 | 1.000 | 1.000 |
+| new_feature_gap | 3 | 0.000 | 1.000 | 1.000 |
+| multi_file | 3 | 0.667 | 1.000 | 1.000 |
+| locator_break | 2 | 0.833 | 1.000 | 1.000 |
+| refactor_noise | 2 | 0.750 | 1.000 | 1.000 |
+| route | 2 | 0.000 | 1.000 | 1.000 |
+| assertion_break | 2 | 0.833 | 1.000 | 1.000 |
 
 ## 1.5 C1 闭环：Semantic UI Diff 驱动选择/生成/修复（真实 JSX）
 - 语义差分: ADD 2 / REMOVE 1 / MODIFY 2（真实 JSX App.old→App.new）。
@@ -55,7 +66,7 @@
 - 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）。
 
 ## 4. RQ4 成本/效率
-- 跨 16 个过渡：retest-all 共执行 96 次用例；ours 仅执行 33 次 → 测试执行量下降 65.6%（Safety 仍=1.0）。
+- 跨 24 个过渡：retest-all 共执行 144 次用例；ours 仅执行 54 次 → 测试执行量下降 62.5%（Safety 仍=1.0）。
 - 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。
 
 ## 5. 外部效度（真实项目，尽力而为）

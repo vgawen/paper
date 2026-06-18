@@ -6,6 +6,21 @@
       "Safety": 1,
       "Precision": 1
     },
+    "coverage_only": {
+      "Reduction": 0.625,
+      "Safety": 1,
+      "Precision": 1
+    },
+    "uidiff_only": {
+      "Reduction": 0.9861,
+      "Safety": 0.0833,
+      "Precision": 1
+    },
+    "dual": {
+      "Reduction": 0.625,
+      "Safety": 1,
+      "Precision": 1
+    },
     "retest_all": {
       "Reduction": 0,
       "Safety": 1,
