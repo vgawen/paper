@@ -2,3 +2,8 @@ node_modules/
 cov/
 test-results/
 playwright-report/
+real/cand_coverage/
+real/cand_movies/
+realproj/clones/
+experiments/out/*.zip
+**/.nyc_output/
