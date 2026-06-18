@@ -1,0 +1,53 @@
+{
+  "source": "clones/ReproBreak/locator_analysis.csv",
+  "n": 9604,
+  "framework": {
+    "cypress": 4737,
+    "playwright": 4867
+  },
+  "locator_type": {
+    "css-id": 1542,
+    "css-class": 1856,
+    "css-other": 3038,
+    "testid": 974,
+    "role": 1162,
+    "text": 991,
+    "attr-href": 40,
+    "xpath": 1
+  },
+  "category": {
+    "css-id-rename": 992,
+    "css-class-rename": 1276,
+    "strategy-switch": 2504,
+    "structural-reshuffle": 3660,
+    "option-only": 594,
+    "text-value": 150,
+    "testid-value": 416,
+    "role-name-value": 3,
+    "attr-value": 9
+  },
+  "addressable": {
+    "yes": 1172,
+    "no": 8432,
+    "ratio": 0.122,
+    "by_framework": {
+      "playwright": {
+        "yes": 846,
+        "no": 4021
+      },
+      "cypress": {
+        "yes": 326,
+        "no": 4411
+      },
+      "other": {
+        "yes": 0,
+        "no": 0
+      }
+    }
+  },
+  "repair_rewriter": {
+    "n": 578,
+    "exact_match": 574,
+    "rate": 0.9931
+  }
+}

@@ -65,6 +65,12 @@
 - 修复成功率=1.000 (2/2)；TargetedSetUsability：before 0.000 → after 1.000。
 - 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）。
 
+## 3.5 ReproBreak 真实数据子实验（离线 / CSV ground truth）
+- 数据：9604 条真实结构性 locator 断裂对（Playwright 4867/Cypress 4737，多个开源项目）。
+- **Semantic UI Diff 可达性**：1172/9604 = 12.2% 为 testId/text/role-name/href 语义锚值替换（本方法 UI 信号直接可定位）；其余为 CSS id/class 改名、结构重排、策略切换（需 DOM 拓扑或 LLM）。Playwright 语义定位的可达性显著高于 Cypress。
+- **确定性修复改写器**（已知 oracle 信号，上界）：在可达的 578 条上精确重建开发者修复 574/578 = 99.3%。
+- 诚实定位：该结果量化了「语义信号能覆盖多少真实断裂」与「改写机制在真实语法上的正确性」；端到端信号检测精度与执行验证（449 断裂 / Docker）为后续。详见 realproj/results/reprobreak.md。
+
 ## 4. RQ4 成本/效率
 - 跨 24 个过渡：retest-all 共执行 144 次用例；ours 仅执行 54 次 → 测试执行量下降 62.5%（Safety 仍=1.0）。
 - 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。
@@ -77,6 +83,7 @@
 ## 6. 有效性威胁与局限
 - 主体为受控工程，量化结论的外部效度有限；真实多 commit replay 为后续工作。
 - 生成/修复用确定性 stub（无 LLM key）：可执行率/相关性/修复率可测，语义有效率需人工或真实 LLM。
+- 修复在真实数据（ReproBreak, 见 3.5）上已量化可达性与改写器正确性；但执行验证版（449 断裂/Docker）与端到端信号检测精度尚待补。
 - 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。
 - Semantic UI Diff 在“文案与 handler 同时变更”时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。
 

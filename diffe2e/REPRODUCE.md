@@ -21,6 +21,8 @@ node experiments/run_rq3.mjs         # RQ3 修复
 node experiments/uidiff_loop.mjs     # C1 闭环(静态,真实JSX): 语义UI Diff 驱动 选/生/修
 node experiments/run_c1_dynamic.mjs  # C1 动态(真实React项目): 实跑 选/生/修(自动还原)
 node realproj/gate.mjs               # 真实项目可插桩闸门
+git clone --depth 1 https://github.com/rub-sq/ReproBreak realproj/clones/ReproBreak  # 真实 locator 断裂数据
+node realproj/reprobreak.mjs         # ReproBreak 真实数据子实验(可达性+改写器精确匹配)
 node experiments/aggregate.mjs       # 汇总 -> EXPERIMENT_REPORT.md
 ```
 

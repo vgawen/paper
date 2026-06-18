@@ -124,6 +124,19 @@ function main() {
   L.push(`- 修复成功率=${rq3.n ? (rq3.repaired / rq3.n).toFixed(3) : 0} (${rq3.repaired}/${rq3.n})；TargetedSetUsability：before ${mean(rq3.rows.map((r) => r.usability_before)).toFixed(3)} → after ${mean(rq3.rows.map((r) => r.usability_after)).toFixed(3)}。`);
   L.push('- 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）。', '');
 
+  // 3.5 ReproBreak real-data sub-experiment
+  const rbPath = path.join(DIFFE2E, 'realproj', 'results', 'reprobreak.json');
+  if (fs.existsSync(rbPath)) {
+    const rb = readJ(rbPath);
+    const rate = (x, d) => `${((100 * x) / d).toFixed(1)}%`;
+    L.push('## 3.5 ReproBreak 真实数据子实验（离线 / CSV ground truth）');
+    L.push(`- 数据：${rb.n} 条真实结构性 locator 断裂对（Playwright ${rb.framework.playwright}/Cypress ${rb.framework.cypress}，多个开源项目）。`);
+    L.push(`- **Semantic UI Diff 可达性**：${rb.addressable.yes}/${rb.n} = ${rate(rb.addressable.yes, rb.n)} 为 testId/text/role-name/href 语义锚值替换（本方法 UI 信号直接可定位）；` +
+      `其余为 CSS id/class 改名、结构重排、策略切换（需 DOM 拓扑或 LLM）。Playwright 语义定位的可达性显著高于 Cypress。`);
+    L.push(`- **确定性修复改写器**（已知 oracle 信号，上界）：在可达的 ${rb.repair_rewriter.n} 条上精确重建开发者修复 ${rb.repair_rewriter.exact_match}/${rb.repair_rewriter.n} = ${rate(rb.repair_rewriter.exact_match, rb.repair_rewriter.n)}。`);
+    L.push('- 诚实定位：该结果量化了「语义信号能覆盖多少真实断裂」与「改写机制在真实语法上的正确性」；端到端信号检测精度与执行验证（449 断裂 / Docker）为后续。详见 realproj/results/reprobreak.md。', '');
+  }
+
   L.push('## 4. RQ4 成本/效率');
   L.push(`- 跨 ${rq1.n} 个过渡：retest-all 共执行 ${totalFull} 次用例；ours 仅执行 ${totalSel} 次 → 测试执行量下降 ${(execSaving * 100).toFixed(1)}%（Safety 仍=1.0）。`);
   L.push('- 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。', '');
@@ -138,6 +151,7 @@ function main() {
   L.push('## 6. 有效性威胁与局限');
   L.push('- 主体为受控工程，量化结论的外部效度有限；真实多 commit replay 为后续工作。');
   L.push('- 生成/修复用确定性 stub（无 LLM key）：可执行率/相关性/修复率可测，语义有效率需人工或真实 LLM。');
+  L.push('- 修复在真实数据（ReproBreak, 见 3.5）上已量化可达性与改写器正确性；但执行验证版（449 断裂/Docker）与端到端信号检测精度尚待补。');
   L.push('- 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。');
   L.push('- Semantic UI Diff 在“文案与 handler 同时变更”时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。', '');
 
@@ -160,6 +174,8 @@ function main() {
     'node experiments/uidiff_loop.mjs     # C1 闭环(静态,真实JSX): 语义UI Diff 驱动 选/生/修',
     'node experiments/run_c1_dynamic.mjs  # C1 动态(真实React项目): 实跑 选/生/修(自动还原)',
     'node realproj/gate.mjs               # 真实项目可插桩闸门',
+    'git clone --depth 1 https://github.com/rub-sq/ReproBreak realproj/clones/ReproBreak  # 真实 locator 断裂数据',
+    'node realproj/reprobreak.mjs         # ReproBreak 真实数据子实验(可达性+改写器精确匹配)',
     'node experiments/aggregate.mjs       # 汇总 -> EXPERIMENT_REPORT.md',
     '```', '',
     '## 产物', '- experiments/out/rq1_dataset.jsonl, rq1_summary.md, rq1_stats.md, figs/rq1_metrics.svg',
