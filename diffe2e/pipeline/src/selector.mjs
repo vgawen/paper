@@ -11,11 +11,17 @@ function nodeSignals(node) {
   return [node.text, node.testId, node.ariaLabel, node.name].filter(Boolean);
 }
 
-// UI signal: tests whose source references a REMOVE'd / text-MODIFY'd UI node.
+const textFromKey = (s) => { const m = (s || '').match(/:text:(.+)$/); return m ? m[1] : null; };
+
+// UI signal: tests whose source references a node touched by the semantic diff
+// (REMOVE'd node, or a MODIFY'd node's old text / href / testId / aria).
 export function selectByUiLocator(uidiff, testSources) {
   const sigs = [];
   for (const r of uidiff.REMOVE || []) sigs.push(...nodeSignals(r.node));
-  for (const mod of uidiff.MODIFY || []) if (mod.changes && mod.changes.text) sigs.push(mod.changes.text.from);
+  for (const mod of uidiff.MODIFY || []) {
+    for (const k of [mod.key, mod.matchedOld]) { const t = textFromKey(k); if (t) sigs.push(t); }
+    for (const f of Object.values(mod.changes || {})) if (f && f.from) sigs.push(f.from);
+  }
   const selected = new Set();
   for (const [file, text] of Object.entries(testSources)) {
     if (sigs.some((s) => s && text.includes(s))) selected.add(file);

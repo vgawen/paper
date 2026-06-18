@@ -32,6 +32,13 @@
 | route | 1 | 0.000 | 1.000 | 1.000 |
 | assertion_break | 1 | 0.833 | 1.000 | 1.000 |
 
+## 1.5 C1 闭环：Semantic UI Diff 驱动选择/生成/修复（真实 JSX）
+- 语义差分: ADD 2 / REMOVE 1 / MODIFY 2（真实 JSX App.old→App.new）。
+- 选择: 选中 paint.spec.ts, link.spec.ts, turquoise.spec.ts；无关用例正确排除。
+- 生成: 对未覆盖的新增节点(Crimson, Green)合成可执行用例。
+- 修复: paint.spec.ts[locator]；link.spec.ts[assertion]；turquoise.spec.ts[locator-harden]（locator 重定向 / 断言更新 / locator 加固）。
+- 详见 out/c1_loop.md。这是 C1 核心（JSX 语义差分驱动整条链）的端到端集成，与 RQ1–3 动态数字互补。
+
 ## 2. RQ2 生成：覆盖缺口补齐
 - provider=stub，缺口数 n=2：可执行率=1，变更相关率=1。
 - 语义有效率=NA（需人工/LLM 评判；候选见 out/rq2_to_annotate.jsonl）。

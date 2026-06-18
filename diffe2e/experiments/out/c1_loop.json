@@ -1,0 +1,142 @@
+{
+  "provider": "stub",
+  "uidiff": {
+    "ADD": [
+      {
+        "key": "button:text:Crimson",
+        "node": {
+          "tag": "button",
+          "text": "Crimson",
+          "onClick": "handlePaintCrimson",
+          "onSubmit": null,
+          "testId": null,
+          "ariaLabel": null,
+          "role": null,
+          "href": null,
+          "name": null,
+          "line": 37
+        }
+      },
+      {
+        "key": "button:text:Green",
+        "node": {
+          "tag": "button",
+          "text": "Green",
+          "onClick": "handleMakeGreen",
+          "onSubmit": null,
+          "testId": null,
+          "ariaLabel": null,
+          "role": null,
+          "href": null,
+          "name": null,
+          "line": 39
+        }
+      }
+    ],
+    "REMOVE": [
+      {
+        "key": "button:text:Red",
+        "node": {
+          "tag": "button",
+          "text": "Red",
+          "onClick": "handleMakeRed",
+          "onSubmit": null,
+          "testId": null,
+          "ariaLabel": null,
+          "role": null,
+          "href": null,
+          "name": null,
+          "line": 34
+        }
+      }
+    ],
+    "MODIFY": [
+      {
+        "key": "a:text:Learn React",
+        "line": 26,
+        "changes": {
+          "href": {
+            "from": "https://reactjs.org",
+            "to": "https://react.dev"
+          }
+        }
+      },
+      {
+        "key": "testid:turquoise-btn",
+        "matchedOld": "button:text:Turquoise",
+        "line": 36,
+        "changes": {
+          "testId": {
+            "from": null,
+            "to": "turquoise-btn"
+          }
+        }
+      }
+    ]
+  },
+  "selected": [
+    "paint.spec.ts",
+    "link.spec.ts",
+    "turquoise.spec.ts"
+  ],
+  "uncoveredAdds": [
+    {
+      "tag": "button",
+      "text": "Crimson",
+      "onClick": "handlePaintCrimson",
+      "onSubmit": null,
+      "testId": null,
+      "ariaLabel": null,
+      "role": null,
+      "href": null,
+      "name": null,
+      "line": 37
+    },
+    {
+      "tag": "button",
+      "text": "Green",
+      "onClick": "handleMakeGreen",
+      "onSubmit": null,
+      "testId": null,
+      "ariaLabel": null,
+      "role": null,
+      "href": null,
+      "name": null,
+      "line": 39
+    }
+  ],
+  "generated": "import { test, expect } from './fixtures';\n\ntest('generated: new buttons', async ({ page }) => {\n  await page.getByRole('button', { name: 'Crimson' }).click();\n  await page.getByRole('button', { name: 'Green' }).click();\n  await expect(page.getByText('Crimson')).toBeVisible();\n});\n",
+  "repaired": {
+    "paint.spec.ts": {
+      "edits": [
+        {
+          "kind": "locator",
+          "from": "Red",
+          "to": "Crimson"
+        }
+      ],
+      "text": "import { test, expect } from './fixtures';\ntest('paint red', async ({ page }) => {\n  await page.getByRole('button', { name: 'Crimson' }).click();\n  await expect(page.locator('#bg')).toHaveCSS('background-color', 'rgb(231, 76, 60)');\n});"
+    },
+    "link.spec.ts": {
+      "edits": [
+        {
+          "kind": "assertion",
+          "field": "href",
+          "from": "https://reactjs.org",
+          "to": "https://react.dev"
+        }
+      ],
+      "text": "import { test, expect } from './fixtures';\ntest('react link', async ({ page }) => {\n  await expect(page.getByRole('link', { name: 'Learn React' }))\n    .toHaveAttribute('href', 'https://react.dev');\n});"
+    },
+    "turquoise.spec.ts": {
+      "edits": [
+        {
+          "kind": "locator-harden",
+          "from": "text:Turquoise",
+          "to": "testid:turquoise-btn"
+        }
+      ],
+      "text": "import { test, expect } from './fixtures';\ntest('paint turquoise', async ({ page }) => {\n  await page.getByTestId('turquoise-btn').click();\n});"
+    }
+  }
+}

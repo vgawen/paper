@@ -48,6 +48,36 @@ function buildPrompt({ route, code }) {
     `navigating to '/#${route}', exercising the main interaction, and asserting a visible outcome.`;
 }
 
+// Build a spec directly from semantic-UI-diff ADD nodes (newly added UI with
+// no covering test). This is the uidiff-driven generation path (C1).
+export function specFromUiNodes(addNodes, { title, route = null }) {
+  const lines = [`import { test, expect } from './fixtures';`, ''];
+  lines.push(`test('${title}', async ({ page }) => {`);
+  if (route) lines.push(`  await page.goto('/#${route}');`);
+  for (const n of addNodes) {
+    if (n.testId) lines.push(`  await page.getByTestId('${n.testId}').click();`);
+    else if (n.tag === 'button' && n.text) lines.push(`  await page.getByRole('button', { name: '${n.text}' }).click();`);
+    else if (n.tag === 'a' && n.text) lines.push(`  await page.getByRole('link', { name: '${n.text}' }).click();`);
+  }
+  const first = addNodes[0];
+  if (first && (first.text || first.testId)) {
+    const loc = first.testId ? `getByTestId('${first.testId}')` : `getByText('${first.text}')`;
+    lines.push(`  await expect(page.${loc}).toBeVisible();`);
+  } else {
+    lines.push(`  await expect(page.locator('body')).toBeVisible();`);
+  }
+  lines.push('});', '');
+  return lines.join('\n');
+}
+
+export async function generateFromUiNodes({ addNodes, title, route = null, client }) {
+  const fallback = specFromUiNodes(addNodes, { title, route });
+  const prompt = `New UI elements were added: ${JSON.stringify(addNodes.map((n) => ({ tag: n.tag, text: n.text, testId: n.testId })))}. ` +
+    `Write ONE Playwright test importing { test, expect } from './fixtures' that exercises them and asserts a visible outcome.`;
+  const out = await client.complete(prompt, { fallback });
+  return { spec: out || fallback };
+}
+
 export async function generateForGap({ route, code, title, client }) {
   const signals = extractDomSignals(code);
   const fallback = buildSpecTemplate({ route, signals, title });

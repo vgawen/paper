@@ -73,6 +73,46 @@ export function repairAssertions(specText, segMap) {
   return { text, edits };
 }
 
+const textFromKey = (s) => { const m = (s || '').match(/:text:(.+)$/); return m ? m[1] : null; };
+const swap = (text, from, to) => text.split(`'${from}'`).join(`'${to}'`).split(`"${from}"`).join(`"${to}"`);
+
+// Repair a spec using the semantic UI diff directly (C1-driven):
+//  - REMOVE'd node referenced -> retarget to a same-tag ADD'd node
+//  - MODIFY href/text from->to referenced -> update assertion
+//  - MODIFY that hardened a locator (text -> new testId) -> upgrade locator
+export function repairFromUiDiff(specText, uidiff) {
+  let text = specText;
+  const edits = [];
+  const addByTag = {};
+  for (const a of uidiff.ADD || []) (addByTag[a.node.tag] ||= []).push(a.node);
+
+  for (const r of uidiff.REMOVE || []) {
+    const old = r.node.text;
+    const cand = (addByTag[r.node.tag] || [])[0];
+    if (old && cand && cand.text && (text.includes(`'${old}'`) || text.includes(`"${old}"`))) {
+      text = swap(text, old, cand.text);
+      edits.push({ kind: 'locator', from: old, to: cand.text });
+    }
+  }
+  for (const mod of uidiff.MODIFY || []) {
+    const ch = mod.changes || {};
+    for (const field of ['href', 'text', 'name', 'ariaLabel']) {
+      if (ch[field] && ch[field].from && (text.includes(`'${ch[field].from}'`) || text.includes(`"${ch[field].from}"`))) {
+        text = swap(text, ch[field].from, ch[field].to);
+        edits.push({ kind: 'assertion', field, from: ch[field].from, to: ch[field].to });
+      }
+    }
+    if (ch.testId && !ch.testId.from && ch.testId.to) {
+      const t = textFromKey(mod.matchedOld) || textFromKey(mod.key);
+      if (t && text.includes(`getByText('${t}')`)) {
+        text = text.split(`getByText('${t}')`).join(`getByTestId('${ch.testId.to}')`);
+        edits.push({ kind: 'locator-harden', from: `text:${t}`, to: `testid:${ch.testId.to}` });
+      }
+    }
+  }
+  return { text, edits };
+}
+
 export function repair(specText, oldCode, newCode) {
   const loc = repairLocators(specText, signalMap(oldCode, newCode));
   const asr = repairAssertions(loc.text, textSegMap(oldCode, newCode));

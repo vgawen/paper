@@ -76,6 +76,19 @@ function main() {
   }
   L.push('');
 
+  // C1 closed loop (uidiff-driven), if present
+  const c1Path = path.join(OUT, 'c1_loop.json');
+  if (fs.existsSync(c1Path)) {
+    const c1 = readJ(c1Path);
+    L.push('## 1.5 C1 闭环：Semantic UI Diff 驱动选择/生成/修复（真实 JSX）');
+    L.push(`- 语义差分: ADD ${c1.uidiff.ADD.length} / REMOVE ${c1.uidiff.REMOVE.length} / MODIFY ${c1.uidiff.MODIFY.length}（真实 JSX App.old→App.new）。`);
+    L.push(`- 选择: 选中 ${c1.selected.join(', ')}；无关用例正确排除。`);
+    L.push(`- 生成: 对未覆盖的新增节点(${c1.uncoveredAdds.map((n) => n.text).join(', ')})合成可执行用例。`);
+    const reps = Object.entries(c1.repaired).map(([f, v]) => `${f}[${v.edits.map((e) => e.kind).join('/')}]`);
+    L.push(`- 修复: ${reps.join('；')}（locator 重定向 / 断言更新 / locator 加固）。`);
+    L.push('- 详见 out/c1_loop.md。这是 C1 核心（JSX 语义差分驱动整条链）的端到端集成，与 RQ1–3 动态数字互补。', '');
+  }
+
   L.push('## 2. RQ2 生成：覆盖缺口补齐');
   L.push(`- provider=${rq2.provider}，缺口数 n=${rq2.n}：可执行率=${rq2.execRate}，变更相关率=${rq2.relRate}。`);
   L.push('- 语义有效率=NA（需人工/LLM 评判；候选见 out/rq2_to_annotate.jsonl）。', '');
