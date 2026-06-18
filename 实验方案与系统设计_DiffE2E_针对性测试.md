@@ -63,9 +63,15 @@
 - `git diff V_old V_new` → 变更文件/行；tree-sitter AST → 变更符号、命中组件/路由/`data-testid`/选择器；区分前端 vs 后端/API。
 - 输出 `ChangeSet={files,symbols,routes,components,element-level changes}`，标注可达关联层级 L1/L2/L3。
 
+### M1.5　Semantic UI Diff（C1，选择/修复/生成共用桥）
+- 用 TS/JSX（及 Vue/模板）AST 抽取语义 UI 节点 `{tag,text,onClick/onSubmit,testId,role,aria,href}`，对 base/head 两版求 `ADD/MODIFY/REMOVE`（字段级变化）；与 base/head 运行时 DOM snapshot 互补消歧（位置/邻域/序位）。
+- 输出供三处复用：**选择**（变更 UI 节点 ↔ 测试 locator 文本/testId 匹配，免 sourcemap 的关联信号）、**修复**（REMOVE/文本变更 → 失效 locator + 结构邻居候选）、**生成**（ADD 且无测试触达 → 缺口）。
+- **已知约束（实测）**：当节点文本与 handler 同时改变时，纯静态匹配退化为"删+增"，须由运行时 DOM 位置/邻域匹配二次消歧。
+
 ### M2　已有 E2E 测试选择（深做核心，无泄漏）
 - `Sel = { t | cov_Vold[t].files ∩ ChangeSet.files ≠ ∅ }`；无覆盖数据用路由/组件静态启发式兜底。
 - **仅使用 `V_old` 覆盖映射与 diff**；安全性兜底可对不确定用例保守纳入并报告权衡。
+- **双信号选择**：除覆盖映射（`cov ∩ ChangeSet.files`）外叠加 **Semantic UI Diff ↔ 测试 locator** 匹配（M1.5）；后者对 E2E 更自然且不依赖覆盖 sourcemap。两信号取并集，冲突时以覆盖为主、UI 信号补召回。
 
 ### M3　运行与分诊（Runner & Triage）
 - 运行 `Sel`；通过→入 targeted set；失败→ M4，采集 trace/DOM/screenshot/堆栈。
@@ -121,6 +127,7 @@
 | 覆盖映射 | istanbul/nyc（前端 JS/TS）/ Playwright coverage；增量更新 |
 | 编排 | Python 核心 + 子进程调用 Playwright；可选 LangGraph |
 | Diff/AST | git + tree-sitter（JS/TS/HTML） |
+| Semantic UI Diff | TS 编译器 API / JSX·模板 AST + base/head DOM snapshot 对照 |
 | DOM 解析/匹配 | lxml / BeautifulSoup + 相似度 |
 | LLM | API 模型 + 1 个开源模型对照；结构化 JSON 输出；全程缓存 |
 
@@ -133,6 +140,7 @@
 diffe2e/
 ├── coverage/   # M0 E2E→源码覆盖映射采集与增量更新
 ├── impact/     # M1 变更影响分析
+├── uidiff/     # M1.5 Semantic UI Diff（JSX AST + DOM snapshot 对照）
 ├── selector/   # M2 已有 E2E 选择
 ├── oracle/     # 受影响测试 oracle 构造（V_new 全量覆盖）
 ├── runner/     # M3 运行与分诊
@@ -194,7 +202,7 @@ diffe2e/
 - **防泄漏**：提示工程/调参在 dev 项目，主结果在 held-out 项目报告。
 
 ## 3.4 基线
-- **选择（RQ1）**：retest-all（全量，上界对照）、随机选同规模子集、纯静态路由/组件启发式选择。
+- **选择（RQ1）**：retest-all（全量，上界对照）、随机选同规模子集、纯静态路由/组件启发式选择、**纯覆盖映射（无 Semantic UI Diff 信号）**（用于消融 C1 对选择召回的贡献）。
 - **生成（RQ2）**：无 diff 约束的页面/功能驱动生成（参考 AutoE2E 思路实现，不要求完整复现其系统）、随机/未定向生成。
 - **修复（RQ3）**：B0 纯属性 self-healing（无 LLM，兜底）、B1 无 diff 上下文纯 LLM 修复；条件性纳入可复现 Web UI 修复工作。
 
@@ -232,6 +240,7 @@ diffe2e/
 | 配置 | 去除 | 目的 |
 |------|------|------|
 | 选择 w/o coverage-map | 仅静态启发式 | 覆盖映射对选择精简度/安全性贡献 |
+| 选择 w/o UI-diff 信号 | 仅覆盖映射 | Semantic UI Diff 对选择召回（尤 locator 相关变更）贡献 |
 | 生成 w/o diff 约束 | 去掉 diff 约束 | diff 约束对相关性/可执行率贡献（=RQ2 对照） |
 | 修复 w/o diff 切片 | 不注入 Code Diff 切片 | diff 上下文对修复贡献 |
 | 修复 w/o 候选匹配 | 纯 LLM | 候选元素匹配贡献 |
@@ -246,6 +255,8 @@ LLM 温度 0.2、Top-k 候选 k=5、`N_iter≤5`、每环节 token/时间预算�
 
 ## 3.10 有效性威胁
 - **内部**：覆盖映射不全 / diff→失效关联（L1/L2/L3）不稳定 / oracle 受插桩准确性影响 → 报告关联成功率与 oracle 不确定度、退化兜底、人工抽检。
+- **内部（覆盖行号空间，实测）**：vite/babel-istanbul 报告行号位于 JSX 转译后空间——文件级归属无需映射，**子文件级（L2/L3）须经 sourcemap 反映射**，映射误差计入 oracle 不确定度。
+- **内部（UI diff 退化，实测）**：文本+handler 同时变更时 Semantic UI Diff 退化为"删+增"，可能多触发生成/漏精准修复 → 运行时 DOM 位置匹配消歧并报告退化率。
 - **外部**：自建数据集项目数有限、ReproBreak 集中 4 项目、限定 Chromium+JS/TS → 明确泛化局限并以 E2EGit 扩充。
 - **构造**：标注主观 → 双人 + κ + 仲裁；生成"语义有效率"依赖人工判断。
 - **可复现**：Practical Limits 不可得 → 以可复现基线为主，定性讨论。
@@ -267,4 +278,4 @@ LLM 温度 0.2、Top-k 候选 k=5、`N_iter≤5`、每环节 token/时间预算�
 
 ---
 
-> 备注：主线"选择/生成"无开箱基准、需自建小而可靠的针对性 E2E 数据集（最大工程风险），已在 MS1 与数据集构造重点安排；修复子实验依托现成 ReproBreak，确保该环节低风险、可量化。Oracle 采用 V_new 全量覆盖事后构造、选择器仅用 V_old 信息，杜绝信息泄漏。
+> 备注：主线"选择/生成"无开箱基准、需自建小而可靠的针对性 E2E 数据集（最大工程风险），已在 MS1 与数据集构造重点安排；修复子实验依托现成 ReproBreak，确保该环节低风险、可量化。Oracle 采用 V_new 全量覆盖事后构造、选择器仅用 V_old 信息，杜绝信息泄漏。 已完成最小可行性预验证（受控 demo + 真实 React+Vite+Playwright 项目）：逐用例覆盖插桩与 Semantic UI Diff 均验证可行，两个工程约束（转译行需 sourcemap、改名退化）已纳入有效性威胁；详见《可行性验证报告》（`diffe2e/real/可行性验证报告.md`）。

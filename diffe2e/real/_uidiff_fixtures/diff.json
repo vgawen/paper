@@ -1,0 +1,74 @@
+{
+  "ADD": [
+    {
+      "key": "button:text:Crimson",
+      "node": {
+        "tag": "button",
+        "text": "Crimson",
+        "onClick": "handlePaintCrimson",
+        "onSubmit": null,
+        "testId": null,
+        "ariaLabel": null,
+        "role": null,
+        "href": null,
+        "name": null,
+        "line": 37
+      }
+    },
+    {
+      "key": "button:text:Green",
+      "node": {
+        "tag": "button",
+        "text": "Green",
+        "onClick": "handleMakeGreen",
+        "onSubmit": null,
+        "testId": null,
+        "ariaLabel": null,
+        "role": null,
+        "href": null,
+        "name": null,
+        "line": 39
+      }
+    }
+  ],
+  "REMOVE": [
+    {
+      "key": "button:text:Red",
+      "node": {
+        "tag": "button",
+        "text": "Red",
+        "onClick": "handleMakeRed",
+        "onSubmit": null,
+        "testId": null,
+        "ariaLabel": null,
+        "role": null,
+        "href": null,
+        "name": null,
+        "line": 34
+      }
+    }
+  ],
+  "MODIFY": [
+    {
+      "key": "a:text:Learn React",
+      "line": 26,
+      "changes": {
+        "href": {
+          "from": "https://reactjs.org",
+          "to": "https://react.dev"
+        }
+      }
+    },
+    {
+      "key": "testid:turquoise-btn",
+      "matchedOld": "button:text:Turquoise",
+      "line": 36,
+      "changes": {
+        "testId": {
+          "from": null,
+          "to": "turquoise-btn"
+        }
+      }
+    }
+  ]
+}

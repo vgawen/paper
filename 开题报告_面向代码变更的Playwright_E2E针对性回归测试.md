@@ -134,6 +134,7 @@ AutoE2E（ICSE 2025，特性驱动 + E2EBench）、*Screen Transition Graphs*（
 
 - **E2E→源码覆盖映射（M0）**：对被测应用做覆盖插桩，离线记录每个 E2E 用例触达的源码文件/函数/路由，建映射表；增量更新（iJaCoCo 思想）。**实验主范围限定为前端 Web 项目、Playwright + Chromium、可插桩的 JS/TS 应用**；后端/API diff 作为扩展或用路由/API 启发式兜底，不承诺同等效果。
 - **选择（M2）**：`diff 变更文件/符号 ∩ 覆盖映射 → 相关用例`；无覆盖数据时用路由/组件静态启发式兜底。
+- **Semantic UI Diff（C1，选择/修复/生成的共用桥）**：用 JSX/模板 AST 抽取语义 UI 节点（tag/text/handler/testId/role/aria/href），对 base/head 两版做 `ADD/MODIFY/REMOVE` 差异，并与 base/head 运行时 DOM snapshot 互补消歧。该差异**同时驱动三件事**：选择（变更 UI 节点 ↔ 测试 locator 匹配，一条免 sourcemap、对 E2E 更自然的关联信号）、修复（失效 locator → 结构邻居候选）、生成（新增 UI 无测试触达 → 覆盖缺口）。**已在真实 React+JSX 项目上验证可计算**（见 7.6）。
 - **DiffSlice 因果关联（分层降级）**：L1 文件级（兜底）/ L2 组件路由级 / L3 元素属性·文本·role 级（最有用但在 React/Vue/构建产物/动态 DOM 下可能失败）；取能达到的最细层，并把"diff→失效关联成功率"作为实验统计项。
 - **生成（M7）/修复（M5）/验证迭代（M8）**：见研究内容；所有修复补丁与生成用例经 Playwright 真实执行验证，失败反馈迭代（上限 N_iter）。
 
@@ -156,6 +157,10 @@ AutoE2E（ICSE 2025，特性驱动 + E2EBench）、*Screen Transition Graphs*（
 2. **以 Code Diff 为约束的 E2E 缺口补充生成**：相比"从需求/页面"出发的全量生成，以变更为触发与约束定向覆盖新行为，提升变更相关性与可执行率。
 3. **面向变更的 E2E 测试维护闭环**：把修复从独立任务转化为"保障 targeted 回归测试集可复用"的支撑模块（以 TargetedSetUsability 量化），并将引发失效的 Code Diff 切片纳入修复上下文。
 4. **可嵌入 CI/CD 的低开销、可解释 targeted E2E 方案与配套评测协议**（含无泄漏 oracle、指标拆分；ReproBreak 修复子实验 + E2EGit 自建针对性测试数据集）。
+
+> **贯穿性机制（C1）**：以 **Semantic UI Diff** 作为"代码变更 → UI 语义变化"的中间表示，统一驱动选择、修复与生成。这使本方法**不止是把动态 RTS 套到 E2E**：覆盖映射回答"哪些已有测试碰了变更"，而 Semantic UI Diff 进一步提供覆盖之外、免 sourcemap 的"变更 UI ↔ 测试"关联，并把同一份差异复用到修复与生成，构成闭环的连接件。
+
+> **更大的系统蓝图（研究展望，非本论文实现范围）**：可将 diff 投影到"异构影响图"（component/route/API/state/feature flag/permission/async event/cache/capability 多类节点）再检索测试（暂名 Diff2E2E-TIA）。但开源项目普遍缺少后端可观测性、CI 历史、flag/权限运行时日志等数据源，且体量超出硕士工作量。**本论文遵循"框架画大、实现画准"：实现与评测聚焦可自产数据的核心切片（E2E→源码覆盖映射 + Semantic UI Diff + 选择/生成/修复闭环），其余层作为未来工作。**
 
 ---
 
@@ -183,6 +188,16 @@ Playwright 提供执行、trace、截图、语义定位与覆盖采集 API；覆
 - **意图/过时判定易被质疑** → 限定明确可判范围 + 双人标注 + κ + 仲裁。
 - **基线可复现性**（Practical Limits 预印本可能无代码）→ 修复侧以纯属性 self-healing、无 diff 纯 LLM 修复兜底。
 - **范围偏大** → 裁剪优先级：保住"选择 + diff 约束生成"两个主结论（RQ1/RQ2）。
+
+
+### 7.6 可行性预验证（已完成最小闭环）
+已在受控 demo 与**真实开源项目**（`mxschmitt/playwright-test-coverage`：React 19 + Vite + Playwright + vite-plugin-istanbul）上验证两条核心机制：
+
+- **闸门①（覆盖插桩）通过**：逐用例 istanbul 覆盖可稳定采集，并以**原始源码文件为键**归属，statement/function 级在不同用例间可区分。**已知约束**：插桩行号位于 JSX 转译后空间（文件 42 行、覆盖行号达 134）——**文件级（L1）归属无需任何映射；子文件级（L2/L3）须经 sourcemap 反映射**（被测项目已开 `build.sourcemap`，具备条件）。
+- **闸门②（Semantic UI Diff）通过**：用 TypeScript 编译器 API 从真实 JSX 抽取语义 UI 节点并算出 `ADD/MODIFY/REMOVE`（含 href 变更、testId 新增的结构匹配）。**已知约束**：当某节点的**文本与 handler 同时改变**时，静态匹配退化为"删+增"而非"改"，需运行时 DOM 位置/邻域匹配消歧（即 C1 中静态+运行时互补的动因）。
+- **RQ1 真实代码闭环**：以"UI 签名 ↔ 测试 locator"信号跑通——正确选中引用该 locator 的测试、给出修复候选、并把新增 UI 标为生成缺口。
+- **不适配样本（已实测）**：`debs-obrien/playwright-movies-app`（Next.js+Redux）因应用源码为 submodule 未随浅克隆拉取、硬性依赖 auth 凭据与外部 API、且无覆盖接线，归入"需大量改造"类——印证 7.3 的数据可得性风险与筛选闸门。
+- 复现与详情见《可行性验证报告》（`diffe2e/real/可行性验证报告.md`）。
 
 ---
 
