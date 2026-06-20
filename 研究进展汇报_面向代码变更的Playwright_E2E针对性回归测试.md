@@ -169,8 +169,16 @@ M1 变更影响分析 ──▶ M2 测试选择 ──▶ M3 运行与分诊
 
 ### 5.4 真实数据子实验：ReproBreak（9604 条真实断裂）
 
-- **Semantic UI Diff 可达性 12.2%**（testId/text/role/href 语义锚替换；Playwright 17.4% 明显高于 Cypress 6.9%）；
-- 确定性改写器在可达的 578 条上精确重建开发者修复 **574/578 = 99.3%**——**诚实界定了能力边界与 LLM 增益空间**。
+**数据与做法**：ReproBreak（arXiv:2605.12158）开源数据集提供 `locator_analysis.csv`——从开源 Cypress/Playwright 项目挖出的**真实定位器断裂对** `(old_locator, new_locator)`，即开发者真实做出的修复（ground truth）。本子实验对该 CSV 做**离线分析**（未跑执行验证版，那需 Docker 复现，列为后续），分三步：
+
+- **E1 数据刻画**：用正则判定每条记录的框架（Playwright 4867 / Cypress 4737）、locator 类型分布与 Top 项目。
+- **E2 可达性分析（核心）**：① `anchor()` 从 locator 抽取其锚定的语义值（仅 testId / 文本 / role-name / aria-label / href —— 这正是 Semantic UI Diff 跟踪的锚）；② `classify()` 用**"挖空锚值后比对外壳"**的技巧判定断裂类型——若 old/new 抹掉锚值后外壳完全一致，则是**纯语义锚值替换**（如 `getByText('Red')→getByText('Crimson')`），标记为**可达**并产出确定性修复线索 `sig={from,to,kind}`；否则归为 CSS 改名 / 结构重排 / 策略切换（不可达，需 DOM 拓扑或 LLM）。
+- **E3 改写器精确匹配**：把 E2 得到的 `from→to` 信号喂给 pipeline 真实修复函数 `repairLocators/repairAssertions` 去改 `old_locator`，与真实 `new_locator` 做归一化精确匹配。
+
+**结果**：
+- **Semantic UI Diff 可达性 1172/9604 = 12.2%**（语义锚值替换；Playwright 17.4% 明显高于 Cypress 6.9%，因其鼓励语义定位）；
+- 确定性改写器在可达的 578 条上精确重建开发者修复 **574/578 = 99.3%**（失败 4 条为 testid 内部结构重组，正是 LLM 增益空间）。
+- **诚实边界**：E3 为**上界**——它假定语义信号已知（直接用 CSV 的 ground-truth `from→to`）；真正端到端的难点是"信号检测"（从应用源码 diff 自动还原 `from→to`），需逐 commit 取源码 + 执行验证，列为后续。该子实验既证明"语义信号确能覆盖一部分真实断裂且改写机制正确"，又清晰划出"其余 88% 需 DOM 拓扑/LLM"的边界，避免夸大。
 
 ### 5.5 两个已暴露的工程约束（已纳入有效性威胁）
 
