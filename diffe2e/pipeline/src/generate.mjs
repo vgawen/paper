@@ -78,6 +78,16 @@ export async function generateFromUiNodes({ addNodes, title, route = null, clien
   return { spec: out || fallback };
 }
 
+// No-diff-constraint baseline (RQ2 ablation): only the app name, no diff, no
+// target route. Used to show that the diff constraint is what lifts relevance.
+export function buildPromptNoDiff({ appName = 'the app' } = {}) {
+  return [
+    `Write a single Playwright smoke test for ${appName}.`,
+    'You are given no specific change to target; pick any meaningful user flow.',
+    'Output only a TypeScript Playwright test using @playwright/test.',
+  ].join('\n');
+}
+
 export async function generateForGap({ route, code, title, client }) {
   const signals = extractDomSignals(code);
   const fallback = buildSpecTemplate({ route, signals, title });

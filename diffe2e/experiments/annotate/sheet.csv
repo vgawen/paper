@@ -1,0 +1,57 @@
+case_id,route,gap_file,spec,annotator1_yn,annotator2_yn,final
+c3,"/wishlist","src/wishlist.js","import { test, expect } from './fixtures';
+
+test('generated /wishlist smoke', async ({ page }) => {
+  await page.goto('/#/wishlist');
+  await expect(page.getByTestId('wishlist-title')).toBeVisible();
+  await page.getByTestId('wishlist-add').click();
+  await expect(page.getByTestId('wishlist-count')).toBeVisible();
+});
+",,,
+c2,"/wishlist","src/wishlist.js","import { test, expect } from './fixtures';
+
+test('generated /wishlist smoke', async ({ page }) => {
+  await page.goto('/#/wishlist');
+  await expect(page.getByTestId('wishlist-title')).toBeVisible();
+  await page.getByTestId('wishlist-add').click();
+  await expect(page.getByTestId('wishlist-count')).toBeVisible();
+});
+",,,
+c1,"/coupon","src/coupon.js","import { test, expect } from './fixtures';
+
+test('generated /coupon smoke', async ({ page }) => {
+  await page.goto('/#/coupon');
+  await expect(page.getByTestId('coupon-title')).toBeVisible();
+  await page.getByTestId('coupon-code').fill('test');
+  await page.getByTestId('coupon-apply').click();
+  await expect(page.getByTestId('coupon-msg')).toBeVisible();
+});
+",,,
+c4,"/faq","src/faq.js","import { test, expect } from './fixtures';
+
+test('generated /faq smoke', async ({ page }) => {
+  await page.goto('/#/faq');
+  await expect(page.getByTestId('faq-title')).toBeVisible();
+  await page.getByTestId('faq-toggle').click();
+  await expect(page.getByTestId('faq-body')).toBeVisible();
+});
+",,,
+c0,"/coupon","src/coupon.js","import { test, expect } from './fixtures';
+
+test('generated /coupon smoke', async ({ page }) => {
+  await page.goto('/#/coupon');
+  await expect(page.getByTestId('coupon-title')).toBeVisible();
+  await page.getByTestId('coupon-code').fill('test');
+  await page.getByTestId('coupon-apply').click();
+  await expect(page.getByTestId('coupon-msg')).toBeVisible();
+});
+",,,
+c5,"/faq","src/faq.js","import { test, expect } from './fixtures';
+
+test('generated /faq smoke', async ({ page }) => {
+  await page.goto('/#/faq');
+  await expect(page.getByTestId('faq-title')).toBeVisible();
+  await page.getByTestId('faq-toggle').click();
+  await expect(page.getByTestId('faq-body')).toBeVisible();
+});
+",,,

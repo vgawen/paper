@@ -1,10 +1,9 @@
-# RQ2: Gap Generation (provider=stub, n=2 gaps)
+# RQ2: Two-arm Gap Generation (provider=stub)
 
-- executable-rate: 1
-- change-relevant-rate: 1
-- semantic-validity: NA (needs human/LLM judge; candidates in rq2_to_annotate.jsonl)
+| arm | n | executable-rate | change-relevant-rate |
+|---|---|---|---|
+| diff | 3 | 1 | 1 |
+| nodiff | 3 | 1 | 1 |
 
-| tag | route | gap_file | executable | change_relevant |
-|---|---|---|---|---|
-| c03 | /coupon | src/coupon.js | true | true |
-| c13 | /wishlist | src/wishlist.js | true | true |
+- semantic-validity: NA (needs human/LLM judge; blinded candidates in rq2_to_annotate.jsonl, key in rq2_unblind.json)
+- core claim: the diff-constrained arm should reach a higher change-relevant-rate than the no-diff baseline.

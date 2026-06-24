@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { extractDomSignals, buildSpecTemplate, generateForGap } from '../src/generate.mjs';
+import { extractDomSignals, buildSpecTemplate, generateForGap, buildPromptNoDiff } from '../src/generate.mjs';
 import { createClient, detectProvider } from '../src/llm/client.mjs';
 
 const coupon = `export function render(root){root.innerHTML=\`<section><h1 data-testid="coupon-title">Coupon</h1><input data-testid="coupon-code"/><button data-testid="coupon-apply">Apply</button><span data-testid="coupon-msg"></span></section>\`;}`;
@@ -32,4 +32,10 @@ test('generateForGap with stub client returns template', async () => {
   const client = createClient({});
   const { spec } = await generateForGap({ route: '/coupon', code: coupon, title: 't', client });
   assert.match(spec, /coupon-apply/);
+});
+
+test('buildPromptNoDiff omits diff/route constraints', () => {
+  const p = buildPromptNoDiff({ appName: 'demo' });
+  assert.ok(!/diff|changed|route /i.test(p) || /no specific change/i.test(p));
+  assert.ok(p.length > 0);
 });
