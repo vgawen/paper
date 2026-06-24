@@ -116,9 +116,29 @@ function main() {
       `${d.mCov.Precision} 提升到 ${d.mUi.Precision}，并实跑完成修复与生成。详见 out/c1_dynamic.md。`, '');
   }
 
-  L.push('## 2. RQ2 生成：覆盖缺口补齐');
-  L.push(`- provider=${rq2.provider}，缺口数 n=${rq2.n}：可执行率=${rq2.execRate}，变更相关率=${rq2.relRate}。`);
-  L.push('- 语义有效率=NA（需人工/LLM 评判；候选见 out/rq2_to_annotate.jsonl）。', '');
+  L.push('## 2. RQ2 生成：覆盖缺口补齐（双臂：diff 约束 vs 无约束基线）');
+  if (rq2.summary && rq2.summary.diff) {
+    L.push(`- provider=${rq2.provider}。`);
+    L.push('| 臂 | n | 可执行率 | 变更相关率 |', '|---|---|---|---|');
+    for (const arm of ['diff', 'nodiff']) {
+      const s = rq2.summary[arm];
+      if (s) L.push(`| ${arm} | ${s.n} | ${s.execRate} | ${s.relRate} |`);
+    }
+    L.push('', '- 核心论点：diff 约束臂的变更相关率应高于无约束基线（stub 下两臂相同，差异在真实 LLM 下显现）。');
+  } else {
+    // backward-compat with the single-arm result shape
+    L.push(`- provider=${rq2.provider}，缺口数 n=${rq2.n}：可执行率=${rq2.execRate}，变更相关率=${rq2.relRate}。`);
+  }
+  // semantic-validity + kappa, if annotation has been scored
+  const annPath = path.join(OUT, 'rq2_annotation.json');
+  if (fs.existsSync(annPath)) {
+    const ann = readJ(annPath);
+    L.push(`- 语义有效率（人工双标注，n=${ann.n}）：总体 ${ann.semantic_validity}，Cohen's κ=${ann.kappa.kappa}` +
+      (ann.by_arm ? `；分臂 diff=${ann.by_arm.diff.semantic_validity} / nodiff=${ann.by_arm.nodiff.semantic_validity}。` : '。'));
+  } else {
+    L.push('- 语义有效率=NA（需人工/LLM 评判；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。');
+  }
+  L.push('');
 
   L.push('## 3. RQ3 修复：让选中的失效用例重新可用');
   L.push(`- 修复成功率=${rq3.n ? (rq3.repaired / rq3.n).toFixed(3) : 0} (${rq3.repaired}/${rq3.n})；TargetedSetUsability：before ${mean(rq3.rows.map((r) => r.usability_before)).toFixed(3)} → after ${mean(rq3.rows.map((r) => r.usability_after)).toFixed(3)}。`);
@@ -137,6 +157,21 @@ function main() {
     L.push('- 诚实定位：该结果量化了「语义信号能覆盖多少真实断裂」与「改写机制在真实语法上的正确性」；端到端信号检测精度与执行验证（449 断裂 / Docker）为后续。详见 realproj/results/reprobreak.md。', '');
   }
 
+  // 3.6 ReproBreak end-to-end (leakage-free, real per-commit source)
+  const rbePath = path.join(DIFFE2E, 'realproj', 'results', 'reprobreak_e2e.json');
+  if (fs.existsSync(rbePath)) {
+    const rbe = readJ(rbePath);
+    const pct = (x) => `${(100 * x).toFixed(2)}%`;
+    L.push('## 3.6 ReproBreak 端到端修复（无信息泄漏，真实逐 commit 源码）');
+    L.push(`- 数据：${rbe.n + rbe.skipped} 条执行验证断裂（导出自 SQLite），进入评估 n=${rbe.n}，泄漏护栏跳过 ${rbe.skipped} 条。`);
+    L.push('- **无泄漏设定**：修复输入仅「旧（断裂）测试 + 应用源码 old/new diff（已排除测试文件）」；`new_locator` 与新测试文件仅评估用。');
+    L.push(`- **规则臂端到端 exact-match**：${rbe.arms.rule.ok}/${rbe.arms.rule.n} = ${pct(rbe.rule_rate)}` +
+      `（有 app 信号子集 ${rbe.app_signal_subset.rule_ok}/${rbe.app_signal_subset.n} = ${pct(rbe.app_signal_subset.rule_rate)}）。`);
+    L.push(`- **LLM 臂**：${rbe.provider === 'stub' ? 'NA（无 API key，记 0）' : `${rbe.arms.llm.ok}/${rbe.arms.llm.n} = ${pct(rbe.llm_rate)}`}。`);
+    L.push('- 关键对比：3.5 离线「已知 oracle 信号」上界 99.3% vs 本节端到端「从 app diff 自行还原信号」规则臂 ' +
+      `${pct(rbe.rule_rate)}——巨大落差量化了信号检测的难度，正是以源码 diff 为上下文的 LLM 修复的增益空间。详见 realproj/results/reprobreak_e2e.md。`, '');
+  }
+
   L.push('## 4. RQ4 成本/效率');
   L.push(`- 跨 ${rq1.n} 个过渡：retest-all 共执行 ${totalFull} 次用例；ours 仅执行 ${totalSel} 次 → 测试执行量下降 ${(execSaving * 100).toFixed(1)}%（Safety 仍=1.0）。`);
   L.push('- 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。', '');
@@ -151,7 +186,7 @@ function main() {
   L.push('## 6. 有效性威胁与局限');
   L.push('- 主体为受控工程，量化结论的外部效度有限；真实多 commit replay 为后续工作。');
   L.push('- 生成/修复用确定性 stub（无 LLM key）：可执行率/相关性/修复率可测，语义有效率需人工或真实 LLM。');
-  L.push('- 修复在真实数据（ReproBreak, 见 3.5）上已量化可达性与改写器正确性；但执行验证版（449 断裂/Docker）与端到端信号检测精度尚待补。');
+  L.push('- 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂仅 3.4%）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续；LLM 臂需 API key 方能给出对照数。');
   L.push('- 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。');
   L.push('- Semantic UI Diff 在“文案与 handler 同时变更”时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。', '');
 
@@ -185,7 +220,8 @@ function main() {
   fs.writeFileSync(path.join(DIFFE2E, 'REPRODUCE.md'), R.join('\n') + '\n');
 
   console.log('wrote EXPERIMENT_REPORT.md + REPRODUCE.md + aggregate.json');
-  console.log(`RQ1 ours Red=${rq1.summary.ours.Reduction} Safe=${rq1.summary.ours.Safety} | RQ2 exec=${rq2.execRate} | RQ3 fix=${rq3.repaired}/${rq3.n} | RQ4 saving=${(execSaving * 100).toFixed(1)}%`);
+  const rq2Exec = rq2.summary && rq2.summary.diff ? rq2.summary.diff.execRate : rq2.execRate;
+  console.log(`RQ1 ours Red=${rq1.summary.ours.Reduction} Safe=${rq1.summary.ours.Safety} | RQ2 diff exec=${rq2Exec} | RQ3 fix=${rq3.repaired}/${rq3.n} | RQ4 saving=${(execSaving * 100).toFixed(1)}%`);
 }
 
 main();

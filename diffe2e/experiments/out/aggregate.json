@@ -91,15 +91,33 @@
   },
   "rq2": {
     "provider": "stub",
-    "n": 2,
-    "execRate": 1,
-    "relRate": 1,
+    "summary": {
+      "diff": {
+        "n": 3,
+        "execRate": 1,
+        "relRate": 1
+      },
+      "nodiff": {
+        "n": 3,
+        "execRate": 1,
+        "relRate": 1
+      }
+    },
     "rows": [
       {
         "tag": "c03",
         "route": "/coupon",
         "gap_file": "src/coupon.js",
+        "arm": "diff",
         "signals": 4,
+        "executable": true,
+        "change_relevant": true
+      },
+      {
+        "tag": "c03",
+        "route": "/coupon",
+        "gap_file": "src/coupon.js",
+        "arm": "nodiff",
         "executable": true,
         "change_relevant": true
       },
@@ -107,7 +125,33 @@
         "tag": "c13",
         "route": "/wishlist",
         "gap_file": "src/wishlist.js",
+        "arm": "diff",
         "signals": 3,
+        "executable": true,
+        "change_relevant": true
+      },
+      {
+        "tag": "c13",
+        "route": "/wishlist",
+        "gap_file": "src/wishlist.js",
+        "arm": "nodiff",
+        "executable": true,
+        "change_relevant": true
+      },
+      {
+        "tag": "c19",
+        "route": "/faq",
+        "gap_file": "src/faq.js",
+        "arm": "diff",
+        "signals": 3,
+        "executable": true,
+        "change_relevant": true
+      },
+      {
+        "tag": "c19",
+        "route": "/faq",
+        "gap_file": "src/faq.js",
+        "arm": "nodiff",
         "executable": true,
         "change_relevant": true
       }

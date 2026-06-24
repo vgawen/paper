@@ -57,9 +57,15 @@
 - 生成：新增 Green 按钮 → 可执行=true，覆盖App=true。
 - 这是 C1 在真实 React 工程上的**动态**证据：语义 UI Diff 把选择精度从覆盖级的 0.3333 提升到 1，并实跑完成修复与生成。详见 out/c1_dynamic.md。
 
-## 2. RQ2 生成：覆盖缺口补齐
-- provider=stub，缺口数 n=2：可执行率=1，变更相关率=1。
-- 语义有效率=NA（需人工/LLM 评判；候选见 out/rq2_to_annotate.jsonl）。
+## 2. RQ2 生成：覆盖缺口补齐（双臂：diff 约束 vs 无约束基线）
+- provider=stub。
+| 臂 | n | 可执行率 | 变更相关率 |
+|---|---|---|---|
+| diff | 3 | 1 | 1 |
+| nodiff | 3 | 1 | 1 |
+
+- 核心论点：diff 约束臂的变更相关率应高于无约束基线（stub 下两臂相同，差异在真实 LLM 下显现）。
+- 语义有效率=NA（需人工/LLM 评判；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。
 
 ## 3. RQ3 修复：让选中的失效用例重新可用
 - 修复成功率=1.000 (2/2)；TargetedSetUsability：before 0.000 → after 1.000。
@@ -70,6 +76,13 @@
 - **Semantic UI Diff 可达性**：1172/9604 = 12.2% 为 testId/text/role-name/href 语义锚值替换（本方法 UI 信号直接可定位）；其余为 CSS id/class 改名、结构重排、策略切换（需 DOM 拓扑或 LLM）。Playwright 语义定位的可达性显著高于 Cypress。
 - **确定性修复改写器**（已知 oracle 信号，上界）：在可达的 578 条上精确重建开发者修复 574/578 = 99.3%。
 - 诚实定位：该结果量化了「语义信号能覆盖多少真实断裂」与「改写机制在真实语法上的正确性」；端到端信号检测精度与执行验证（449 断裂 / Docker）为后续。详见 realproj/results/reprobreak.md。
+
+## 3.6 ReproBreak 端到端修复（无信息泄漏，真实逐 commit 源码）
+- 数据：449 条执行验证断裂（导出自 SQLite），进入评估 n=413，泄漏护栏跳过 36 条。
+- **无泄漏设定**：修复输入仅「旧（断裂）测试 + 应用源码 old/new diff（已排除测试文件）」；`new_locator` 与新测试文件仅评估用。
+- **规则臂端到端 exact-match**：14/413 = 3.39%（有 app 信号子集 14/392 = 3.57%）。
+- **LLM 臂**：NA（无 API key，记 0）。
+- 关键对比：3.5 离线「已知 oracle 信号」上界 99.3% vs 本节端到端「从 app diff 自行还原信号」规则臂 3.39%——巨大落差量化了信号检测的难度，正是以源码 diff 为上下文的 LLM 修复的增益空间。详见 realproj/results/reprobreak_e2e.md。
 
 ## 4. RQ4 成本/效率
 - 跨 24 个过渡：retest-all 共执行 144 次用例；ours 仅执行 54 次 → 测试执行量下降 62.5%（Safety 仍=1.0）。
@@ -83,7 +96,7 @@
 ## 6. 有效性威胁与局限
 - 主体为受控工程，量化结论的外部效度有限；真实多 commit replay 为后续工作。
 - 生成/修复用确定性 stub（无 LLM key）：可执行率/相关性/修复率可测，语义有效率需人工或真实 LLM。
-- 修复在真实数据（ReproBreak, 见 3.5）上已量化可达性与改写器正确性；但执行验证版（449 断裂/Docker）与端到端信号检测精度尚待补。
+- 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂仅 3.4%）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续；LLM 臂需 API key 方能给出对照数。
 - 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。
 - Semantic UI Diff 在“文案与 handler 同时变更”时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。
 
