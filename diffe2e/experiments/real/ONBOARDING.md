@@ -18,4 +18,6 @@
 ## 已接入
 | 项目 | 仓库 | 覆盖方法 | E2E 数 | 选用 commit 数 | 状态 |
 |---|---|---|---|---|---|
-| cand_coverage | mxschmitt/playwright-test-coverage | istanbul | … | … | 接入中 |
+| cand_coverage | mxschmitt/playwright-test-coverage | istanbul | 3 | 0 | **replay 不可行**：unshallow 后全仓 12 commit，仅 2 个动过 `src/`（初始 + Vite 迁移）→ 唯一过渡且 `npm ci` 在旧 commit 失败（`install_failed_vnew`，见 `out/real/cand_coverage_rq1_skips.json`）。该仓是演示项目、无源码演化史，不适合 RQ1 replay。 |
+
+> **RQ1 真实数据结论（实测）**：cand_coverage 通过可插桩闸门，但**无可 replay 的源码历史**。需另接 ≥2 个有真实多 commit 源码演化、且能逐 commit 干净安装的 Playwright 项目（候选见 E2EGit 数据集 framework=Playwright 子集）。

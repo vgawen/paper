@@ -1,0 +1,21 @@
+{
+  "project": "cand_coverage",
+  "n": 0,
+  "summary": {
+    "coverage_only": {
+      "Reduction": 0,
+      "Safety": 0,
+      "Precision": 0
+    },
+    "uidiff_only": {
+      "Reduction": 0,
+      "Safety": 0,
+      "Precision": 0
+    },
+    "dual": {
+      "Reduction": 0,
+      "Safety": 0,
+      "Precision": 0
+    }
+  }
+}

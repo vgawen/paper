@@ -1,6 +1,10 @@
 {
-  "n": 2,
-  "repaired": 2,
+  "provider": "stub",
+  "n": 4,
+  "repaired": 3,
+  "repair_rate_rule": 0.75,
+  "repair_rate_llm": null,
+  "llm_n": 0,
   "rows": [
     {
       "tag": "c08",
@@ -16,6 +20,7 @@
       ],
       "before_pass": false,
       "after_pass": true,
+      "after_pass_llm": null,
       "usability_before": 0,
       "usability_after": 1
     },
@@ -33,8 +38,39 @@
       ],
       "before_pass": false,
       "after_pass": true,
+      "after_pass_llm": null,
       "usability_before": 0,
       "usability_after": 1
+    },
+    {
+      "tag": "c20",
+      "type": "locator_break",
+      "target": "search.spec.ts",
+      "staleness": "STRUCTURAL_ONLY",
+      "edits": [
+        {
+          "kind": "locator",
+          "from": "search-go",
+          "to": "search-find"
+        }
+      ],
+      "before_pass": false,
+      "after_pass": true,
+      "after_pass_llm": null,
+      "usability_before": 0,
+      "usability_after": 1
+    },
+    {
+      "tag": "c21",
+      "type": "assertion_break",
+      "target": "orders.spec.ts",
+      "staleness": "SUSPECTED_REGRESSION",
+      "edits": [],
+      "before_pass": false,
+      "after_pass": false,
+      "after_pass_llm": null,
+      "usability_before": 0,
+      "usability_after": 0
     }
   ]
 }

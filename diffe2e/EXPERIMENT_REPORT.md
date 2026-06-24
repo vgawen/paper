@@ -68,7 +68,7 @@
 - 语义有效率=NA（需人工/LLM 评判；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。
 
 ## 3. RQ3 修复：让选中的失效用例重新可用
-- 修复成功率=1.000 (2/2)；TargetedSetUsability：before 0.000 → after 1.000。
+- 修复成功率=0.750 (3/4)；TargetedSetUsability：before 0.000 → after 0.750。
 - 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）。
 
 ## 3.5 ReproBreak 真实数据子实验（离线 / CSV ground truth）
