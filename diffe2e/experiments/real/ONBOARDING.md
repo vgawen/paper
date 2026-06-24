@@ -19,10 +19,10 @@
 | 项目 | 仓库 | 覆盖方法 | E2E 数 | 选用 commit 数 | 状态 |
 |---|---|---|---|---|---|
 | cand_coverage | mxschmitt/playwright-test-coverage | istanbul | 3 | 0 | **replay 不可行**：unshallow 后全仓 12 commit，仅 2 个动过 `src/`（初始 + Vite 迁移）→ 唯一过渡且 `npm ci` 在旧 commit 失败（`install_failed_vnew`，见 `out/real/cand_coverage_rq1_skips.json`）。该仓是演示项目、无源码演化史，不适合 RQ1 replay。 |
-| actual_desktop | actualbudget/actual（`packages/desktop-client`）| CDP 注入(newpage) | 3 spec 子集 | 3 | ✅ **首个真实 replay 跑通**：3 个稳定 transition、0 skip。coverage_only/dual：Reduction 0.583、**Safety 1.0、Precision 1.0**；uidiff_only 本窗口 0 信号（3 次均为 `.ts` 逻辑改动，无 JSX testid/文本变化）。见 `out/real/actual_desktop_rq1.{md,json,jsonl}`。后续：放开更多 spec、扩大 commit 窗口（含 UI 改动）以激活 uidiff 臂。 |
+| actual_desktop | actualbudget/actual（`packages/desktop-client`）| CDP 注入(newpage) | 6 spec | 9 | ✅ **已扩窗复跑**：6 个 spec（command-bar/settings/payees/schedules/transactions/reports）、16 commit 窗口→9 个稳定 transition、0 skip。coverage_only/dual **Safety 1.0、Precision 1.0**，Reduction 0.111（多数过渡改动核心/共享文件→覆盖选全 34 用例）。**uidiff 臂成功激活**：commit `19cea1a`（schedule 金额改 ± 符号、testId `date`）经 POM 导入闭包映射选中 32 用例，**uidiff_only Precision 1.0**。见 `out/real/actual_desktop_rq1.{md,json,jsonl}`。 |
 | mermaid_live | mermaid-js/mermaid-live-editor | CDP 注入(page) | 7 spec | 5 | ✅ **第二个真实项目跑通**：5 个稳定 transition、0 skip。coverage_only/dual：**Safety 1.0、Precision 1.0**，但 **Reduction 0**——SvelteKit 小型 SPA，编辑器核心组件几乎被每个用例加载，覆盖选择无法缩减（覆盖法在"强耦合核心"应用上的固有局限，诚实记录）。uidiff_only 5 次均 0 信号（diff 未触及 testId/可见文本锚点，该项目 testid 稀疏）。验证了 `page` 注入模式 + 自有 `./test` 夹具导入改写 + `.svelte` 扩展归因。见 `out/real/mermaid_live_rq1.{md,json,jsonl}`。 |
 
-> **RQ1 真实数据结论（实测）**：已达成 ≥2 个真实多 commit 项目的外部效度目标（actual_desktop + mermaid_live，共 8 个稳定过渡，Safety 均 1.0）。两项目 Reduction 差异（0.58 vs 0）量化了**覆盖选择的效益取决于应用的覆盖耦合度**：模块化 monorepo（actual）缩减明显，单页强耦合 SPA（mermaid）几乎不缩减。cand_coverage 通过可插桩闸门但无可 replay 源码史，已弃。
+> **RQ1 真实数据结论（实测）**：已达成 ≥2 个真实多 commit 项目的外部效度目标（actual_desktop 9 + mermaid_live 5 = 14 个稳定过渡，dual 均 Safety 1.0、Precision 1.0）。覆盖选择的缩减取决于应用的覆盖耦合度：本次 actual 6-spec 窗口多数过渡改动核心文件→Reduction 0.111，mermaid 强耦合 SPA→0。**uidiff 臂在真实数据上验证为稀疏触发、高精度的互补信号**（actual 9 过渡中 1 个激活、Precision 1.0），与受控主体"覆盖为安全主干、UI 信号补精度"的结论一致。cand_coverage 通过可插桩闸门但无可 replay 源码史，已弃。
 
 ## 通用 CDP 覆盖注入（已实现，解锁真实项目的关键）
 
@@ -37,6 +37,20 @@
 - 路径命名空间：夹具写"源根相对"路径（如 `src/a.tsx`），`loadCovLive` 用 `mapLeafRelToRepoRel` 拼上 `srcGlob` 前缀（monorepo→`packages/x/src/a.tsx`），与 `git diff` 同域。
 - 文件归因：URL 锚定 **dev-server 源根**（`origin + /src/**`），自动排除 `/@fs/` 跨包源、`/node_modules`、`/.vite/deps`。源扩展支持 `js/jsx/ts/tsx/mjs/cjs/svelte/vue`（SvelteKit/Vue SFC 在 dev 下 URL 仍是 `/src/**.svelte` 可直接归因）。优先选跑 **Vite dev** 的项目；跑生产构建/preview 的需 sourcemap，归因更粗，作 Tier B。`COV_DEBUG=1` 会把前 60 个 URL 转储到 `<COV_OUT>/_urls.json` 便于排查。
 - 限制：仅 Chromium 有 `page.coverage`（adapter 只跑 chromium）。
+
+## UI 信号（uidiff 臂）在真实项目的激活
+
+真实前向开发里 testId/可见文本大多稳定（新功能多为 ADD），故 uidiff 臂自然较少"选中"。为定位能激活的过渡并避免盲跑长 replay，提供离线扫描器 `scan_ui.mjs`：
+
+- `node experiments/real/scan_ui.mjs <adapter>.json [N]` —— 对最近 N 个触碰 `srcGlob` 的过渡，用**与驱动同款**的 `semanticDiffNodes`/`selectByDomDiff` 计算每个过渡的 UI 信号数与"会选中的测试数"，不安装、不跑测试，秒级给出可激活窗口。
+
+为让 uidiff 在真实工程上能正确激活，本批做了三处工程化改进（均有单测、不改变受控实验结论）：
+
+1. **抽取器纳入设计系统组件**：不再只认原生标签，凡带 `data-testid/testID/aria-label/role/name/href/title/placeholder` 的任意 JSX 元素都纳入（`pipeline/src/uidiff.mjs`）。actual 用 `<Button>/<TapField>/<View>` 等自定义组件，旧规则会全部漏掉。
+2. **可见文本去噪**：`directText` 只折叠类文本表达式（`{t('x')}`/`{label}`，无内嵌 `<`、长度 ≤60），不再把嵌套子元素树序列化成超长"文本"锚值。
+3. **引号锚定匹配 + POM 导入闭包**：`selectByDomDiff` 要求信号以 `'x'`/`"x"`/`` `x` `` 出现（消除 `date`→`update` 误匹配）；驱动对 spec 做 1–2 层本地导入展开（`run_rq1_real.mjs#specBundle`），把 `page-models/*` 源码并入匹配，避免页面对象间接层导致的漏选。
+
+> 实测：actual 最近 150 过渡中，仅 `19cea1a`（"schedule 金额改 ± 符号"）产生可被 spec 引用的变更锚点（testId `date`，经 POM 闭包映射到 9 个 spec）——印证 uidiff 臂是**精度/安全互补**的稀疏触发信号，覆盖臂仍为安全主干。
 
 ## 候选清单（GitHub API 实测，2026-06）
 

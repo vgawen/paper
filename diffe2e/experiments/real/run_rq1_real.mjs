@@ -25,6 +25,34 @@ function skip(skips, prev, sha, reason) { skips.push({ prev, sha, reason }); con
 
 const safeShow = (repo, ref, f) => { try { return gitIn(repo, `show ${ref}:${f}`); } catch { return ''; } };
 
+// Bundle a spec's source with its transitively-imported LOCAL modules (Page
+// Object Models live in separate files: `import { X } from './page-models/y'`).
+// Without this, UI-signal selection only sees the top-level spec and misses
+// anchors like getByTestId('date') that live in page-object helpers.
+function specBundle(repo, ref, specRel, depth = 2, seen = new Set()) {
+  if (seen.has(specRel) || depth < 0) return '';
+  seen.add(specRel);
+  const src = safeShow(repo, ref, specRel);
+  if (!src) return '';
+  let out = src;
+  if (depth > 0) {
+    const dir = path.posix.dirname(specRel);
+    const re = /from\s+['"](\.[^'"]+)['"]/g;
+    for (const m of src.matchAll(re)) {
+      const base = path.posix.normalize(path.posix.join(dir, m[1]));
+      const cands = /\.[tj]sx?$/.test(base)
+        ? [base]
+        : ['.ts', '.tsx', '.js', '.jsx', '/index.ts', '/index.tsx'].map((e) => base + e);
+      for (const c of cands) {
+        if (seen.has(c)) continue;
+        const sub = specBundle(repo, ref, c, depth - 1, seen);
+        if (sub) { out += '\n' + sub; break; }
+      }
+    }
+  }
+  return out;
+}
+
 // Collect UI signals (testId / visible text) that were removed or modified
 // between the two commits. JSX/TSX uses the Semantic UI Diff; other source
 // falls back to the vanilla DOM-signal diff.
@@ -69,7 +97,7 @@ async function main() {
     const prev = shas[i - 1], sha = shas[i];
     const changed = changedSrcFiles(adapter.repoAbs, prev, sha, adapter.srcGlob);
     if (!changed.length) continue;
-
+    try {
     // --- V_old: checkout, install (best-effort), full suite w/ coverage ---
     checkoutSha(adapter.repoAbs, prev);
     if (!installLive(adapter)) { skip(skips, prev, sha, 'install_failed_vold'); continue; }
@@ -97,7 +125,7 @@ async function main() {
     const specRoot = [adapter.runRel, adapter.specGlob].filter(Boolean).join('/');
     for (const id of new Set([...voldTests, ...vnewTests])) {
       const specFile = id.split(' > ')[0];
-      testSources[id] = safeShow(adapter.repoAbs, sha, path.posix.join(specRoot, specFile)) || '';
+      testSources[id] = specBundle(adapter.repoAbs, sha, path.posix.join(specRoot, specFile));
     }
     const uiSelected = selectByDomDiff(ui, testSources);
 
@@ -105,6 +133,10 @@ async function main() {
     rows.push({ prev, sha, changed, ui_signals: ui, vold_tests: voldTests.length, vnew_tests: vnewTests.length,
       metrics: r.metrics, selected: r.methods.dual, affected: r.affected });
     console.log(`${sha.slice(0, 8)} changed=${changed.length} cov=${r.metrics.coverage_only.selected_count} ui=${r.metrics.uidiff_only.selected_count} dual Safe=${r.metrics.dual.Safety} Prec=${r.metrics.dual.Precision}`);
+    } catch (e) {
+      skip(skips, prev, sha, `error:${String(e.message || e).split('\n')[0].slice(0, 80)}`);
+      try { gitIn(adapter.repoAbs, 'checkout -f -q HEAD'); } catch { /* best effort */ }
+    }
   }
 
   const base = path.join(OUT, adapter.name);

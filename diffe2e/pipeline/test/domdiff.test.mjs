@@ -20,3 +20,13 @@ test('selectByDomDiff selects tests referencing a changed signal', () => {
   };
   assert.deepEqual(selectByDomDiff(['cart-add'], sources), ['cart.spec.ts > t']);
 });
+
+test('selectByDomDiff requires a quoted literal (no bare-substring mis-fire)', () => {
+  const sources = {
+    // "date" appears only inside words like updateDate/validate -> must NOT match
+    'noise.spec.ts > t': `await updateDate(); await validate();`,
+    // genuine quoted anchor -> must match
+    'real.spec.ts > t': `await page.getByTestId('date').click();`,
+  };
+  assert.deepEqual(selectByDomDiff(['date'], sources), ['real.spec.ts > t']);
+});

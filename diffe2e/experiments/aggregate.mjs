@@ -205,8 +205,9 @@ function main() {
     }
     L.push('', `- 已接入 ${nProj} 个真实项目、共 ${totN} 个稳定过渡（达计划 ≥2 个的外部效度目标）。`,
       '- 覆盖臂在两项目上 Safety=1.0（不漏选受影响用例）；Reduction 取决于项目结构：',
-      '  - 小型单页 SPA（如 mermaid-live-editor）核心组件被几乎所有用例加载，覆盖选择缩减有限（Reduction≈0），这是覆盖法在“强耦合核心”应用上的固有局限；',
-      '  - uidiff 臂仅在 diff 触及 testId/可见文本锚点时激活；锚点稀疏的项目（canvas/少 testId）该臂选集为空（Safety↓），与受控实验中 DOM 锚点丰富的结论互补。',
+      '  - 模块化 monorepo（actual-budget）覆盖选择有缩减；小型单页 SPA（mermaid-live-editor）核心组件被几乎所有用例加载，覆盖选择缩减有限（Reduction≈0）——覆盖法在“强耦合核心”应用上的固有局限。',
+      '  - uidiff 臂为**稀疏触发、高精度互补信号**：仅当 diff 触及测试引用的 testId/可见文本锚点时激活。actual 9 过渡中 1 个（commit 19cea1a：schedule 金额改 ± 符号、改动 testId `date`）激活，经页面对象导入闭包映射到 32 个用例，**uidiff_only Precision=1.0**（选中皆为受影响）；其余过渡为新增/逻辑改动不触发。锚点稀疏项目（如 mermaid）该臂多为空选。',
+      '  - 跨项目（n=14）：dual 在两项目上均 Safety=1.0、Precision=1.0；uidiff_only 触发即 Precision=1.0 但平均 Safety 低（稀疏），印证“覆盖臂为安全主干、UI 信号为精度补充”的设计取舍。详见 out/real/real_rq1_stats.md 与 figs/real_rq1.svg。',
       '- 明细见 out/real/<project>_rq1.{json,jsonl,md,_skips.json}。', '');
   } else {
     L.push('- 详见 realproj/results/REPORT.md。多 commit 真实历史 replay 因浅克隆/需逐 commit 运行环境列为后续工作。', '');

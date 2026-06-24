@@ -14,7 +14,7 @@
 
 方法的核心是一个持久化、可增量维护的**测试↔代码映射器**（带类型的二部索引），以及一个把源码层 UI 变更对应到测试定位器与断言的 **Semantic UI Diff**，二者作为"源码 diff ↔ 浏览器操作"的语义桥，贯穿"选择→运行/修复→缺口分析→生成"的代码变更感知闭环。针对回归测试选择的核心诉求"召回不可妥协"，本文给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题及其证明，并用**非循环的结果差异 oracle** 经验验证；针对测试间共享状态引发的副作用，给出状态依赖闭包及其安全性命题。
 
-在一个含 6+ 路由、共享工具、25 个真实 git 提交、24 个变更过渡的受控被测应用上，本方法在 Safety=1.0（不漏选）的前提下达到 Reduction=0.625、Precision=1.0，是唯一兼顾安全与高缩减的方法；非循环结果差异 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选；副作用场景下经典文件级覆盖选择导致判定 pass→fail 翻转（不保真），状态闭包恢复保真。在 ReproBreak 的 9604 条真实定位器断裂上，量化了 Semantic UI Diff 的语义可达性（12.2%）与确定性改写器在已知信号下的精确重建上界（574/578=99.3%）；在其 449 条执行验证断裂上做端到端无泄漏修复，规则臂仅 3.39%，与上界的巨大落差量化了"从源码 diff 自行还原信号"的难度，凸显 LLM 修复的增益空间。真实项目多 commit replay、真实 LLM 对照与真实 wall-clock 净收益为正在补充的验证。
+在一个含 6+ 路由、共享工具、25 个真实 git 提交、24 个变更过渡的受控被测应用上，本方法在 Safety=1.0（不漏选）的前提下达到 Reduction=0.625、Precision=1.0，是唯一兼顾安全与高缩减的方法；非循环结果差异 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选；副作用场景下经典文件级覆盖选择导致判定 pass→fail 翻转（不保真），状态闭包恢复保真。在 ReproBreak 的 9604 条真实定位器断裂上，量化了 Semantic UI Diff 的语义可达性（12.2%）与确定性改写器在已知信号下的精确重建上界（574/578=99.3%）；在其 449 条执行验证断裂上做端到端无泄漏修复，规则臂仅 3.39%，与上界的巨大落差量化了"从源码 diff 自行还原信号"的难度，凸显 LLM 修复的增益空间。在 2 个真实开源 Playwright 项目（actual-budget、mermaid-live-editor，共 14 个稳定过渡，经 CDP 覆盖注入）上完成多 commit replay，dual 均达 Safety=1.0、Precision=1.0，并实证了 UI 信号臂"稀疏触发、高精度"的互补性。真实 LLM 对照与真实 wall-clock 净收益为正在补充的验证。
 
 **关键词**：回归测试选择；端到端测试；代码变更感知；测试生成；测试修复；持续集成
 
@@ -164,6 +164,10 @@ Semantic UI Diff 从新旧版本 UI 源码（JSX/TSX/HTML）抽取 UI 语义节�
 
 这是本方法的核心连接机制：解决"源码 diff 很难直接对应到浏览器中的用户操作和测试脚本"这一 E2E 场景特有的断点。
 
+**节点抽取（面向真实工程的工程化）**：真实前端极少直接使用原生 `<button>/<a>/<input>`，而是封装自设计系统的组件（`<Button>`、`<TapField>`、`<View>` 等）。因此抽取规则不以标签名白名单为唯一依据：**凡携带定位锚点属性者**（`data-testid`/`testID`/`aria-label`/`role`/`name`/`href`/`title`/`placeholder`）的任意 JSX 元素均纳入 UI 语义节点，与原生交互标签取并集。可见文本仅折叠"类文本"表达式（`{t('Save')}`、`{label}`），跳过内嵌子元素树的长表达式以避免把整棵子树误当文本而产生噪声锚值。
+
+**信号→测试的匹配（精度与召回的工程权衡）**：将变更（REMOVE/MODIFY）的锚值与测试源做关联时，要求锚值以**引号字面量**形式出现（`'sig'`/`"sig"`/`` `sig` ``），与真实定位器写法一致（`getByTestId('amount-input')`、`getByText('No payees found.')`）。这消除了裸子串匹配对短/通用信号的误匹配（如 `date` 命中 `update`/`validate`）。此外，真实套件普遍采用页面对象模型（Page Object），定位锚点位于被 spec 导入的辅助模块而非 spec 顶层；故匹配时对 spec 做 1–2 层**本地导入闭包**展开（`import … from './page-models/…'`），将页面对象源码并入待匹配文本，避免漏选。
+
 ### 3.4 召回保证：定义、命题与边界
 
 **真正受影响集 `A*`（与选择器无关，金标准）**：以测试在两版本上的可观测结果定义，不依赖任何选择算法。记 `outcome_V(t) = (status, fingerprint)`，`status ∈ {pass, fail, error, absent}`，`fingerprint` 为关键断言的可观测取值指纹（捕捉"都 pass 但断言观测值变了"）。则
@@ -251,7 +255,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 ### 4.4 真实数据接入（状态说明）
 
-受控主体给出零依赖、可复现的主结果；真实外部效度需补充以下数据，本稿相应小节以 **【待真实数据】** 标注：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）；(ii) 真实 LLM 生成/修复对照（RQ2/RQ3，语义有效性已用变异杀伤+版本差分敏感性自动度量，仅需 LLM key 回填两臂对照；人工 κ 为辅助校准）；(iii) 真实项目 wall-clock 与 NetSaving（RQ4）。其中 ReproBreak 端到端无泄漏修复（RQ3，§5.3）的规则臂已用 449 条执行验证断裂跑出真实结果，仅 LLM 臂待 key 回填。
+受控主体给出零依赖、可复现的主结果；真实外部效度部分已补齐、部分待补：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）**已完成**（actual-budget + mermaid-live-editor，共 14 个稳定过渡，§5.1）；(ii) 真实 LLM 生成/修复对照（RQ2/RQ3，语义有效性已用变异杀伤+版本差分敏感性自动度量，仅需 LLM key 回填两臂对照；人工 κ 为辅助校准）；(iii) 真实项目 wall-clock 与 NetSaving（RQ4）仍以 **【待真实数据】** 标注。其中 ReproBreak 端到端无泄漏修复（RQ3，§5.3）的规则臂已用 449 条执行验证断裂跑出真实结果，仅 LLM 臂待 key 回填。
 
 ---
 
@@ -295,14 +299,25 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 结论：共享状态副作用下 naive 文件级覆盖 RTS 不安全；状态依赖闭包因 `A ⤳ B` 将 A 纳回，恢复判定保真度（端到端验证命题 2）。
 
-**【待真实数据】RQ1 真实项目多 commit replay**：
+**RQ1 真实项目多 commit replay（已接入 2 个真实 Playwright 项目）**：
 
-| 项目 | 过渡数 | Reduction | Safety | SafetyEmp | Precision | vs retest-all (Precision) | vs random (Safety) |
-|---|---|---|---|---|---|---|---|
-| 项目 1 | — | — | — | — | — | — | — |
-| 项目 2 | — | — | — | — | — | — | — |
+借助通用 **CDP 覆盖注入**（`page.coverage` V8 覆盖，透明改写测试导入、不改业务代码、无需预插桩，详见 §6 实现），在两个真实开源项目的连续 commit 上回放、按 git diff 选择用例。两项目分别代表"模块化 monorepo"与"单页强耦合 SPA"两类典型结构：
 
-> 现状：`out/real/real_rq1_stats.md` 标记 STATUS=无真实数据。达标下限（计划文档）：每个真实项目 dual 满足 Safety≥0.95、Reduction≥0.30、Precision≥0.50，且 Precision 显著高于 retest-all、Safety 显著高于同规模 random。接入 `experiments/real/run_rq1_real.mjs <adapter.json>` 后回填，未达标须如实记录并归因。
+| 项目 | 栈 / 起服务 | 稳定过渡 | 方法 | Reduction | Safety | Precision |
+|---|---|---|---|---|---|---|
+| actual-budget（desktop-client）| React + Vite dev | 9 | coverage_only / dual | 0.111 | **1.0** | **1.0** |
+| | | | uidiff_only | 0.895 | 0.216 | **1.0** |
+| mermaid-live-editor | SvelteKit + Vite dev | 5 | coverage_only / dual | 0.0 | **1.0** | **1.0** |
+| | | | uidiff_only | 1.0 | 0.0 | **1.0** |
+
+跨项目合计 n=14：dual 在两项目上均 **Safety=1.0、Precision=1.0**（bootstrap 95% CI 均为 [1,1]）；coverage_only 与 dual 一致（UI 信号在文件粒度主干上冗余但无害，与受控主体结论一致，Wilcoxon dual vs coverage_only 三指标 p=1）。来源 `out/real/{actual_desktop,mermaid_live}_rq1.json`、`out/real/real_rq1_stats.md`、图 `out/real/figs/real_rq1.svg`。
+
+两点诚实观察，与受控主体互补、量化了方法的适用边界：
+
+- **覆盖选择的缩减取决于"覆盖耦合度"**：actual 的多数过渡改动核心/共享文件，6 个 spec 的 34 个用例几乎全部触及→Reduction 仅 0.111；mermaid 为单页编辑器，核心组件被几乎每个用例加载→Reduction≈0。这是覆盖型 RTS 在强耦合应用上的固有局限，而非本方法特有；Safety 始终为 1.0。
+- **UI 信号臂为稀疏触发、高精度的互补信号**：前向开发中 testId/可见文本大多稳定（新功能多为 ADD，不触发 REMOVE/MODIFY），故 uidiff 自然较少选中。actual 9 个过渡中仅 commit `19cea1a`（"schedule 金额改用 ± 符号"，改动 testId `date`）触发，经页面对象导入闭包映射到 32 个用例，**uidiff_only Precision=1.0**（选中皆受影响）；这与 §5.5 C1 在单组件应用上 uidiff 把精度从覆盖级 0.33 提升到 1.0 的动态证据一致——覆盖臂是安全主干、UI 信号臂在覆盖粒度过粗时补精度。
+
+> 工程化要点（使 uidiff 能在真实工程激活，见 §3.3）：抽取器纳入携带定位锚点属性的设计系统组件（`<Button>/<TapField>` 等，非仅原生标签）；信号→测试匹配要求引号字面量（消除 `date`→`update` 误匹配）并对 spec 做本地导入闭包展开（覆盖 Page Object 间接层）。离线扫描器 `scan_ui.mjs` 可在不安装、不跑测试的前提下定位可激活窗口。
 
 ### 5.2 RQ2：生成——diff 约束的相关性
 
@@ -381,7 +396,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 ## 第 6 章 讨论：有效性威胁与局限
 
-- **外部效度**：主体为受控工程，量化结论的外部效度有限；真实多 commit replay（RQ1）、真实 LLM（RQ2/RQ3）、真实 wall-clock（RQ4）为正在补充的关键证据，本稿相应小节已显式标注 **【待真实数据】**，不以合成数字冒充真实结论。
+- **外部效度**：主体为受控工程；真实多 commit replay（RQ1）已在 2 个真实开源项目（actual-budget、mermaid-live-editor，14 个稳定过渡）上完成并给出 dual Safety/Precision=1.0（§5.1），但项目数仍有限、且两者均为 Vite dev 起服务的前端；真实 LLM（RQ2/RQ3）、真实 wall-clock（RQ4）仍为正在补充的关键证据，相应小节以 **【待真实数据】** 标注，不以合成数字冒充真实结论。
 - **构造效度**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并辅以变异压力测试，破除 Safety 自证循环；但 `A_obs` 在自然 diff 下样本偏小（4 个过渡），变异增强部分缓解。
 - **内部效度**：命题 1 的安全性是条件安全（H1–H3）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。
 - **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性不再依赖人工标注，而以变异杀伤率与版本差分敏感性两个客观自动指标度量（stub 下已出数，真实 LLM 下两臂对照待 key 回填），人工 κ 仅作小样本校准。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂真值（3.39%）——二者落差正面量化了信号检测的难度。仍存局限：LLM 臂需 API key 方能给出对照数，端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
@@ -393,7 +408,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 本文研究代码变更感知的 Web 应用端到端回归测试用例选择与生成方法，把选择、修复、生成统一进一个以 diff 为核心输入的闭环，核心是持久化、可增量维护的测试↔代码映射器与作为"源码 diff ↔ 浏览器操作"语义桥的 Semantic UI Diff。理论上给出与选择器无关的 `A*` 定义、条件安全命题 1 及证明、副作用状态闭包命题 2，并以净收益模型量化成本。在受控主体上，方法在 Safety=1.0 前提下达到 Reduction=0.625、Precision=1.0，非循环 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选，副作用场景下状态闭包恢复判定保真；在 ReproBreak 9604 条真实断裂上量化了语义可达性（12.2%）与改写器上界（99.3%）。
 
-**展望（按优先级）**：① 接入 ≥2 个真实 Playwright 项目跑多 commit replay，补齐 RQ1 真实外部效度与 RQ4 真实 NetSaving；② 接入真实 LLM，验证生成/修复的语义增益（RQ2/RQ3），并完成双标注 κ；③ ReproBreak 端到端（无泄漏）修复的规则臂已在 449 条执行验证断裂上完成（3.39%），尚需补真实 LLM 臂对照与执行验证版（Docker overwrite）；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
+**展望（按优先级）**：① RQ1 多 commit replay 已接入 2 个真实项目（actual-budget、mermaid-live-editor）；后续扩大项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并补齐 RQ4 真实 NetSaving；② 接入真实 LLM，验证生成/修复的语义增益（RQ2/RQ3），并完成双标注 κ；③ ReproBreak 端到端（无泄漏）修复的规则臂已在 449 条执行验证断裂上完成（3.39%），尚需补真实 LLM 臂对照与执行验证版（Docker overwrite）；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
 
 ---
 

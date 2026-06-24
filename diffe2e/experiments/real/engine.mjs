@@ -40,7 +40,11 @@ export function loadAdapter(file) {
   return a;
 }
 export function gitIn(repo, args) { return execSync(`git ${args}`, { cwd: repo, stdio: 'pipe' }).toString(); }
-export function checkoutSha(repo, sha) { gitIn(repo, `checkout -q ${sha}`); }
+// Force-checkout: the per-test coverage codemod dirties tracked specs, which
+// would block a plain `checkout` when the target commit also changed them. The
+// codemod is disposable (re-applied by injectCdpCoverage after checkout) and
+// the generated __cov_fixtures.* is untracked, so -f is safe here.
+export function checkoutSha(repo, sha) { gitIn(repo, `checkout -f -q ${sha}`); }
 
 // best-effort install at the current checkout; returns false on failure so the
 // driver can skip the transition instead of polluting results with empty cov.

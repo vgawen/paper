@@ -6,6 +6,11 @@ const require = createRequire(import.meta.url);
 const ts = require('typescript');
 
 const INTERESTING = new Set(['button', 'a', 'input', 'select', 'textarea', 'form', 'label']);
+// Locator-anchor attributes that make ANY element (incl. design-system
+// components like <Button>/<Input>/<View>) a UI node worth diffing — real apps
+// rarely use raw HTML tags, so tag-only filtering misses most testid/text anchors.
+const ANCHOR_ATTRS = ['data-testid', 'data-test-id', 'testID', 'aria-label', 'role', 'href', 'name', 'title', 'placeholder'];
+const hasAnchor = (a) => ANCHOR_ATTRS.some((k) => a[k] != null);
 
 function attrValue(attr) {
   if (!attr.initializer) return true;
@@ -25,7 +30,13 @@ function directText(node) {
   let txt = '';
   for (const c of node.children || []) {
     if (ts.isJsxText(c)) txt += c.text;
-    else if (ts.isJsxExpression(c) && c.expression) txt += `{${c.expression.getText()}}`;
+    else if (ts.isJsxExpression(c) && c.expression) {
+      // Only fold in *text-like* expressions ({t('Save')}, {label}, {`x`}).
+      // Skip expressions that embed JSX subtrees or are long — serializing a
+      // nested element tree as "text" produces huge, non-anchoring noise.
+      const e = c.expression.getText();
+      if (!e.includes('<') && e.length <= 60) txt += `{${e}}`;
+    }
   }
   return txt.replace(/\s+/g, ' ').trim();
 }
@@ -33,8 +44,9 @@ function directText(node) {
 function nodeFrom(tag, a, line, text) {
   return {
     tag, text: text || '', onClick: a.onClick || null, onSubmit: a.onSubmit || null,
-    testId: a['data-testid'] || a['data-test-id'] || null, ariaLabel: a['aria-label'] || null,
-    role: a.role || null, href: a.href || null, name: a.name || null, line,
+    testId: a['data-testid'] || a['data-test-id'] || a.testID || null, ariaLabel: a['aria-label'] || null,
+    role: a.role || null, href: a.href || null, name: a.name || null,
+    title: a.title || null, placeholder: a.placeholder || null, line,
   };
 }
 
@@ -44,15 +56,17 @@ export function extractFromCode(code, fileName = 'x.tsx') {
   function visit(node) {
     if (ts.isJsxElement(node)) {
       const tag = node.openingElement.tagName.getText().toLowerCase();
-      if (INTERESTING.has(tag)) {
+      const a = collectAttrs(node.openingElement);
+      if (INTERESTING.has(tag) || hasAnchor(a)) {
         const line = sf.getLineAndCharacterOfPosition(node.getStart()).line + 1;
-        nodes.push(nodeFrom(tag, collectAttrs(node.openingElement), line, directText(node)));
+        nodes.push(nodeFrom(tag, a, line, directText(node)));
       }
     } else if (ts.isJsxSelfClosingElement(node)) {
       const tag = node.tagName.getText().toLowerCase();
-      if (INTERESTING.has(tag)) {
+      const a = collectAttrs(node);
+      if (INTERESTING.has(tag) || hasAnchor(a)) {
         const line = sf.getLineAndCharacterOfPosition(node.getStart()).line + 1;
-        nodes.push(nodeFrom(tag, collectAttrs(node), line, ''));
+        nodes.push(nodeFrom(tag, a, line, ''));
       }
     }
     ts.forEachChild(node, visit);
@@ -71,7 +85,7 @@ function keyOf(n) {
   return `${n.tag}@${n.line}`;
 }
 
-const FIELDS = ['text', 'onClick', 'onSubmit', 'testId', 'ariaLabel', 'role', 'href', 'name'];
+const FIELDS = ['text', 'onClick', 'onSubmit', 'testId', 'ariaLabel', 'role', 'href', 'name', 'title', 'placeholder'];
 function diffFields(o, n) {
   const ch = {};
   for (const f of FIELDS) if ((o[f] || null) !== (n[f] || null)) ch[f] = { from: o[f] || null, to: n[f] || null };

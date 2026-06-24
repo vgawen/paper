@@ -1,19 +1,19 @@
 {
   "project": "actual_desktop",
-  "n": 3,
+  "n": 9,
   "summary": {
     "coverage_only": {
-      "Reduction": 0.5833,
+      "Reduction": 0.1111,
       "Safety": 1,
       "Precision": 1
     },
     "uidiff_only": {
-      "Reduction": 1,
-      "Safety": 0,
+      "Reduction": 0.8954,
+      "Safety": 0.2157,
       "Precision": 1
     },
     "dual": {
-      "Reduction": 0.5833,
+      "Reduction": 0.1111,
       "Safety": 1,
       "Precision": 1
     }

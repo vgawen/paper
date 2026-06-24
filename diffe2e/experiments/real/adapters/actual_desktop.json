@@ -10,5 +10,5 @@
   "fixtureImport": "./fixtures",
   "covRel": "cov_pertest",
   "testOneCmd": "COV_OUT=cov_pertest COREPACK_ENABLE_DOWNLOAD_PROMPT=0 corepack yarn playwright test --browser=chromium --workers=1 {spec}",
-  "testAllCmd": "COV_OUT=cov_pertest COREPACK_ENABLE_DOWNLOAD_PROMPT=0 corepack yarn playwright test --browser=chromium --workers=2 command-bar.test.ts settings.test.ts payees.test.ts"
+  "testAllCmd": "COV_OUT=cov_pertest COREPACK_ENABLE_DOWNLOAD_PROMPT=0 corepack yarn playwright test --browser=chromium --workers=2 command-bar.test.ts settings.test.ts payees.test.ts schedules.test.ts transactions.test.ts reports.test.ts"
 }

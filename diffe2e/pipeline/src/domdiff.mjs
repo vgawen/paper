@@ -16,12 +16,22 @@ export function changedUiSignals(oldCode, newCode) {
   return [...sigs];
 }
 
+// A signal is "referenced" by a test only when it appears as a *quoted literal*
+// ('sig' / "sig" / `sig`) — the form real locators use (getByTestId('x'),
+// getByText("y")). Bare-substring matching mis-fires badly on short/common
+// signals (e.g. "date" hitting "update"/"validate"); quote-anchoring removes
+// that noise while still matching genuine selector anchors.
+function referenced(src, s) {
+  if (!s || s.length < 2) return false;
+  return src.includes(`'${s}'`) || src.includes(`"${s}"`) || src.includes(`\`${s}\``);
+}
+
 // testSources: { testId: sourceText }. Returns ids whose source references a
 // changed UI signal.
 export function selectByDomDiff(signals, testSources) {
   const sel = new Set();
   for (const [id, src] of Object.entries(testSources)) {
-    if (signals.some((s) => src.includes(s))) sel.add(id);
+    if (signals.some((s) => referenced(src, s))) sel.add(id);
   }
   return [...sel];
 }
