@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>sideeffect-app</title></head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    const routes = {
+      '/promo': () => import('./src/promo.js'),
+      '/dashboard': () => import('./src/dashboard.js'),
+    };
+    async function render() {
+      const h = location.hash.replace(/^#/, '') || '/promo';
+      const load = routes[h] || routes['/promo'];
+      const mod = await load();
+      await mod.render(document.getElementById('app'));
+    }
+    window.addEventListener('hashchange', render);
+    render();
+  </script>
+</body>
+</html>

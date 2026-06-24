@@ -101,7 +101,22 @@ SelClosed = 闭包(Sel) = Sel ∪ { t : ∃ s ∈ (Sel ∩ A*), t 与 s 在 ⤳ 
 
 **论证要点**：放宽 H3 后，`t` 受影响有两种来源——(a) `t` 直接执行变更实体（被 `SelCov ⊆ Sel` 捕获，同命题 1）；(b) `t` 经共享状态间接受影响，则必存在资源 `r` 与受影响路径相连，`t` 通过 `⤳` 与某 `s ∈ Sel ∩ A*` 共享 `r`，被闭包纳入 `SelClosed`。两种来源都被覆盖。代价是 Reduction 下降——这是"召回不可妥协"下可接受的权衡。∎
 
-> **代价量化**：`run_sideeffect.mjs` 在注入副作用场景下对比 naive 文件级覆盖（漏 `t`）与 `SelClosed`（纳入 `t`），用 §4 的 `A_obs` 证明 `t ∈ A_obs`，并报告两者的 `SafetyEmp` 与 Reduction 差异。
+> **代价量化**：`run_sideeffect.mjs` 在注入副作用场景下对比 naive 文件级覆盖（漏 `t`）与 `SelClosed`（纳入 `t`），并报告两者对受影响测试的**子集执行保真度**（subset fidelity）。
+
+### 5.3 端到端 live 证据（已实测）
+
+自包含 fixture `subject/sideeffect/`（真实浏览器 + 有状态后端）：
+
+- **场景**：生产者测试 A 访问 `/promo`，对共享后端状态 `api:/api/visits` 执行 `POST`（副作用），`cov(A)={src/promo.js}`，**不触达**被改的消费方；消费者测试 B 访问 `/dashboard`（`Δ={src/dashboard.js}`），`GET` 该状态并断言计数为 1——仅当 A 先跑过才成立。运行期 footprint 经网络请求采集：A 写 `api:/api/visits`、B 读 `api:/api/visits`，故 `A ⤳ B`。
+- **实测结果**（`out/sideeffect.json`）：
+
+  | | coverage-only（naive） | state-closed（本方法） |
+  |---|---|---|
+  | 选择集 | 仅 B（**漏掉生产者 A**） | B + A |
+  | B 在子集中重跑的判定 | **fail**（后端未被 A 预置，visits=0） | pass |
+  | 与全量套件判定(pass)的保真度 | **不保真（判定翻转）** | 保真 |
+
+- **结论**：在共享状态副作用下，naive 文件级覆盖 RTS **不安全**——它正确选中了被改文件的消费者 B，却丢弃了 B 正确判定所依赖的状态生产者 A，导致 B 在选择子集中被**误判为失败**。状态依赖闭包（`statedep.mjs`）因 `A ⤳ B` 将 A 纳回，恢复判定保真度。这端到端验证了命题 2 与"召回不可妥协"的保守闭包取向。
 
 ## 6. 论文写作映射
 

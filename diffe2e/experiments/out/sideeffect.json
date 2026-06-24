@@ -1,0 +1,31 @@
+{
+  "fixture": "subject/sideeffect",
+  "delta": [
+    "src/dashboard.js"
+  ],
+  "producer": "a_promo.spec.ts > promo records a visit (producer side effect)",
+  "consumer": "b_dashboard.spec.ts > dashboard shows accumulated visit count (consumer of shared state)",
+  "shared_resource": "api:/api/visits",
+  "dependency_edge": "a_promo.spec.ts > promo records a visit (producer side effect)  ⤳  b_dashboard.spec.ts > dashboard shows accumulated visit count (consumer of shared state)  (A writes, B reads)",
+  "selection": {
+    "coverage_only": [
+      "b_dashboard.spec.ts > dashboard shows accumulated visit count (consumer of shared state)"
+    ],
+    "state_closed": [
+      "b_dashboard.spec.ts > dashboard shows accumulated visit count (consumer of shared state)",
+      "a_promo.spec.ts > promo records a visit (producer side effect)"
+    ],
+    "coverage_only_includes_producer": false,
+    "state_closed_includes_producer": true
+  },
+  "consumer_verdict": {
+    "full": "pass",
+    "naive_subset": "fail",
+    "closed_subset": "pass"
+  },
+  "fidelity": {
+    "naive_faithful": false,
+    "closed_faithful": true
+  },
+  "conclusion": "Naive coverage RTS is UNSAFE under shared-state side effects (consumer verdict flips when the producer is dropped); the state-dependency closure restores fidelity."
+}

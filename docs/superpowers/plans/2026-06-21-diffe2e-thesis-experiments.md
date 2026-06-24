@@ -1362,11 +1362,11 @@ git commit -m "docs(diffe2e): map experiment artifacts to thesis chapters/figure
 | 6.4 映射器形式化 | ✅ 完成 | `diffe2e/docs/MAPPER.md` | 二部索引数据模型 + 构建/增量维护算法 + 复杂度 + 摊销论证 |
 | 7.1 副作用形式化 | ✅ 完成 | `SAFETY.md` §5 + 命题 2 | 确认导师假设成立；给出状态闭包安全性论证 |
 | 7.2 状态依赖闭包模块 | ✅ 完成 | `pipeline/src/statedep.mjs` + `test/statedep.test.mjs` | 5/5 单测通过（writer→reader 依赖 + 保守闭包 + 幂等） |
-| 7.3 副作用 live 实验 | ⬜ 待做 | `experiments/run_sideeffect.mjs` | **需先制作含副作用链的 fixture**（测试 A 写 localStorage/后端态 → Δ 改消费方 → 测试 B 行为变）；机制已被 7.2 单测与命题 2 证明 |
+| 7.3 副作用 live 实验 | ✅ 完成 | `subject/sideeffect/`（fixture：有状态后端 + 生产者/消费者 spec）+ `experiments/run_sideeffect.mjs` | 实跑（真实浏览器+后端）：Δ={src/dashboard.js} 时 coverage-only 仅选消费者 B 漏掉生产者 A，B 在子集重跑判定 **pass→fail 翻转（不保真）**；状态闭包纳回 A 后**保真**。产物 `out/sideeffect.json`；详见 `SAFETY.md §5.3` |
 | 8 成本模型 + 净收益 | ✅ 完成 | `diffe2e/docs/COST_MODEL.md` + `experiments/run_rq4_cost.mjs` | NetSaving/盈亏平衡/SelectionTax + median/IQR + machine-minutes/token 资源位；`T_select` 显式计时（语法校验通过，待真实项目接入跑数） |
 | 9 相关工作矩阵 | ✅ 完成 | `diffe2e/docs/RELATED_WORK.md` | 两维框架(A0–A2 × B0/B1) + 三族逐篇标注 + (A2,B1) 空白定位 |
 | 10 标题去 Playwright | ✅ 完成 | `研究进展汇报_导师版_核实优化v2.1.md` 题目行 | 改为《代码变更感知的 Web 应用端到端回归测试用例选择与生成方法研究》+ 工具无关说明 |
 
 **关键结论（回应导师意见 1）**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并在受控主体上实测 **SafetyEmp = 1.0、0 漏选**，理论侧由 `SAFETY.md` 命题 1 给出条件安全证明。
 
-**下一步（建议）**：① 制作副作用链 fixture 完成 7.3 的 live 证据；② 接入真实项目 adapter 后跑 `run_rq4_cost.mjs` 得到真实 NetSaving；③ 把 `docs/SAFETY.md`、`MAPPER.md`、`COST_MODEL.md`、`RELATED_WORK.md` 正文整合进论文对应章节。
+**下一步（建议）**：① 接入真实项目 adapter 后跑 `run_rq4_cost.mjs` 得到真实 NetSaving；② 把 `docs/SAFETY.md`、`MAPPER.md`、`COST_MODEL.md`、`RELATED_WORK.md` 正文整合进论文对应章节；③（可选）把副作用闭包作为 `--state-closure` 开关接入主选择器并在合成主体上量化其对 Reduction 的影响。
