@@ -183,10 +183,37 @@ function main() {
     if (!g.present) continue;
     L.push(`- ${g.name}: Playwright=${g.hasPW}, 覆盖方法=${g.covMethod}, E2E=${g.e2eCount}, 闸门=${g.gate}, 可replay=${g.replayReady}。`);
   }
-  L.push('- 详见 realproj/results/REPORT.md。多 commit 真实历史 replay 因浅克隆/需逐 commit 运行环境列为后续工作。', '');
+  L.push('');
+
+  // 5.1 真实多 commit replay（CDP 覆盖注入，无需预插桩）
+  const realDir = path.join(OUT, 'real');
+  const realFiles = fs.existsSync(realDir)
+    ? fs.readdirSync(realDir).filter((f) => f.endsWith('_rq1.json')).sort() : [];
+  if (realFiles.length) {
+    L.push('### 5.1 真实多 commit 历史 replay（CDP 覆盖注入）');
+    L.push('通过 CDP 透明注入每用例覆盖（`page.coverage`，不改业务代码、无需预插桩），在真实开源项目的连续 commit 上回放并按变更选择用例。', '');
+    L.push('| 项目 | n | 方法 | Reduction | Safety | Precision |', '|---|---|---|---|---|---|');
+    let totN = 0, nProj = 0;
+    for (const f of realFiles) {
+      const r = readJ(path.join(realDir, f));
+      if (!r.n) continue;
+      totN += r.n; nProj += 1;
+      for (const m of ['coverage_only', 'uidiff_only', 'dual']) {
+        const s = r.summary[m];
+        L.push(`| ${r.project} | ${r.n} | ${m} | ${s.Reduction} | ${s.Safety} | ${s.Precision} |`);
+      }
+    }
+    L.push('', `- 已接入 ${nProj} 个真实项目、共 ${totN} 个稳定过渡（达计划 ≥2 个的外部效度目标）。`,
+      '- 覆盖臂在两项目上 Safety=1.0（不漏选受影响用例）；Reduction 取决于项目结构：',
+      '  - 小型单页 SPA（如 mermaid-live-editor）核心组件被几乎所有用例加载，覆盖选择缩减有限（Reduction≈0），这是覆盖法在“强耦合核心”应用上的固有局限；',
+      '  - uidiff 臂仅在 diff 触及 testId/可见文本锚点时激活；锚点稀疏的项目（canvas/少 testId）该臂选集为空（Safety↓），与受控实验中 DOM 锚点丰富的结论互补。',
+      '- 明细见 out/real/<project>_rq1.{json,jsonl,md,_skips.json}。', '');
+  } else {
+    L.push('- 详见 realproj/results/REPORT.md。多 commit 真实历史 replay 因浅克隆/需逐 commit 运行环境列为后续工作。', '');
+  }
 
   L.push('## 6. 有效性威胁与局限');
-  L.push('- 主体为受控工程，量化结论的外部效度有限；真实多 commit replay 为后续工作。');
+  L.push('- 主体为受控工程；外部效度已在 2 个真实开源项目（actual-budget、mermaid-live-editor）的多 commit replay 上初步验证（§5.1），但项目数仍有限。');
   L.push('- 生成/修复用确定性 stub（无 LLM key）：可执行率/相关性/修复率可测，语义有效率需人工或真实 LLM。');
   L.push('- 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂仅 3.4%）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续；LLM 臂需 API key 方能给出对照数。');
   L.push('- 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。');

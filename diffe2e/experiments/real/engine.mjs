@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { selectByGenericCoverage, toRepoRel } from '../../pipeline/src/covpath.mjs';
 import { buildAffected } from '../../pipeline/src/oracle.mjs';
 import { selectionMetrics } from '../../pipeline/src/metrics.mjs';
-import { srcLeaf, mapLeafRelToRepoRel, rewriteSpecImport, rewriteImportFrom, relImportPath, covFixtureSource, covWrapFixtureSource } from '../../pipeline/src/covinject.mjs';
+import { srcLeaf, mapLeafRelToRepoRel, rewriteImportFrom, relImportPath, covFixtureSource, covWrapFixtureSource } from '../../pipeline/src/covinject.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -73,17 +73,17 @@ export function injectCdpCoverage(adapter) {
   fs.mkdirSync(dir, { recursive: true });
   const fixtureAbs = path.join(dir, '__cov_fixtures.ts');
   // 'newpage' mode: specs import a custom fixtures module and use browser.newPage.
+  // 'page' mode (default): specs use the test-scoped `page` fixture; their import
+  // source is fixtureImport (default '@playwright/test', or a custom './test').
   const newpage = adapter.injectMode === 'newpage';
-  const appImport = adapter.fixtureImport || './fixtures';
-  fs.writeFileSync(fixtureAbs, newpage ? covWrapFixtureSource(leaf, appImport) : covFixtureSource(leaf));
+  const appImport = adapter.fixtureImport || (newpage ? './fixtures' : '@playwright/test');
+  fs.writeFileSync(fixtureAbs, newpage ? covWrapFixtureSource(leaf, appImport) : covFixtureSource(leaf, appImport));
   const specRoot = path.join(adapter.runAbs, adapter.specGlob || injectDir);
   let n = 0;
   for (const f of walkSpecs(specRoot)) {
     if (f === fixtureAbs) continue;
     const relTo = relImportPath(f, fixtureAbs);
-    const { code, changed } = newpage
-      ? rewriteImportFrom(fs.readFileSync(f, 'utf8'), [appImport], relTo)
-      : rewriteSpecImport(fs.readFileSync(f, 'utf8'), relTo);
+    const { code, changed } = rewriteImportFrom(fs.readFileSync(f, 'utf8'), [appImport], relTo);
     if (changed) { fs.writeFileSync(f, code); n++; }
   }
   return n;

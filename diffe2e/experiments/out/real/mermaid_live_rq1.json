@@ -1,21 +1,21 @@
 {
-  "project": "cand_coverage",
-  "n": 0,
+  "project": "mermaid_live",
+  "n": 5,
   "summary": {
     "coverage_only": {
       "Reduction": 0,
-      "Safety": 0,
-      "Precision": 0
+      "Safety": 1,
+      "Precision": 1
     },
     "uidiff_only": {
-      "Reduction": 0,
+      "Reduction": 1,
       "Safety": 0,
-      "Precision": 0
+      "Precision": 1
     },
     "dual": {
       "Reduction": 0,
-      "Safety": 0,
-      "Precision": 0
+      "Safety": 1,
+      "Precision": 1
     }
   }
 }

@@ -7,9 +7,11 @@ real/cand_coverage/
 real/cand_movies/
 real/actual/
 real/tldraw/
+real/mermaid-live-editor/
 realproj/clones/
 experiments/out/*.zip
 **/.nyc_output/
 subject/work/
 **/pw-report.json
 experiments/out/_c1dyn/
+experiments/out/real/*_run.log

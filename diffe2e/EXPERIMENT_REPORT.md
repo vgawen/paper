@@ -92,10 +92,27 @@
 ## 5. 外部效度（真实项目，尽力而为）
 - cand_coverage: Playwright=true, 覆盖方法=istanbul (vite-plugin-istanbul), E2E=3, 闸门=PASS (per-test coverage produced), 可replay=false。
 - cand_movies: Playwright=true, 覆盖方法=CDP page.coverage, E2E=71, 闸门=PASS (method available), 可replay=false。
-- 详见 realproj/results/REPORT.md。多 commit 真实历史 replay 因浅克隆/需逐 commit 运行环境列为后续工作。
+
+### 5.1 真实多 commit 历史 replay（CDP 覆盖注入）
+通过 CDP 透明注入每用例覆盖（`page.coverage`，不改业务代码、无需预插桩），在真实开源项目的连续 commit 上回放并按变更选择用例。
+
+| 项目 | n | 方法 | Reduction | Safety | Precision |
+|---|---|---|---|---|---|
+| actual_desktop | 3 | coverage_only | 0.5833 | 1 | 1 |
+| actual_desktop | 3 | uidiff_only | 1 | 0 | 1 |
+| actual_desktop | 3 | dual | 0.5833 | 1 | 1 |
+| mermaid_live | 5 | coverage_only | 0 | 1 | 1 |
+| mermaid_live | 5 | uidiff_only | 1 | 0 | 1 |
+| mermaid_live | 5 | dual | 0 | 1 | 1 |
+
+- 已接入 2 个真实项目、共 8 个稳定过渡（达计划 ≥2 个的外部效度目标）。
+- 覆盖臂在两项目上 Safety=1.0（不漏选受影响用例）；Reduction 取决于项目结构：
+  - 小型单页 SPA（如 mermaid-live-editor）核心组件被几乎所有用例加载，覆盖选择缩减有限（Reduction≈0），这是覆盖法在“强耦合核心”应用上的固有局限；
+  - uidiff 臂仅在 diff 触及 testId/可见文本锚点时激活；锚点稀疏的项目（canvas/少 testId）该臂选集为空（Safety↓），与受控实验中 DOM 锚点丰富的结论互补。
+- 明细见 out/real/<project>_rq1.{json,jsonl,md,_skips.json}。
 
 ## 6. 有效性威胁与局限
-- 主体为受控工程，量化结论的外部效度有限；真实多 commit replay 为后续工作。
+- 主体为受控工程；外部效度已在 2 个真实开源项目（actual-budget、mermaid-live-editor）的多 commit replay 上初步验证（§5.1），但项目数仍有限。
 - 生成/修复用确定性 stub（无 LLM key）：可执行率/相关性/修复率可测，语义有效率需人工或真实 LLM。
 - 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂仅 3.4%）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续；LLM 臂需 API key 方能给出对照数。
 - 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。

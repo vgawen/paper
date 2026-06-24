@@ -20,21 +20,22 @@
 |---|---|---|---|---|---|
 | cand_coverage | mxschmitt/playwright-test-coverage | istanbul | 3 | 0 | **replay 不可行**：unshallow 后全仓 12 commit，仅 2 个动过 `src/`（初始 + Vite 迁移）→ 唯一过渡且 `npm ci` 在旧 commit 失败（`install_failed_vnew`，见 `out/real/cand_coverage_rq1_skips.json`）。该仓是演示项目、无源码演化史，不适合 RQ1 replay。 |
 | actual_desktop | actualbudget/actual（`packages/desktop-client`）| CDP 注入(newpage) | 3 spec 子集 | 3 | ✅ **首个真实 replay 跑通**：3 个稳定 transition、0 skip。coverage_only/dual：Reduction 0.583、**Safety 1.0、Precision 1.0**；uidiff_only 本窗口 0 信号（3 次均为 `.ts` 逻辑改动，无 JSX testid/文本变化）。见 `out/real/actual_desktop_rq1.{md,json,jsonl}`。后续：放开更多 spec、扩大 commit 窗口（含 UI 改动）以激活 uidiff 臂。 |
+| mermaid_live | mermaid-js/mermaid-live-editor | CDP 注入(page) | 7 spec | 5 | ✅ **第二个真实项目跑通**：5 个稳定 transition、0 skip。coverage_only/dual：**Safety 1.0、Precision 1.0**，但 **Reduction 0**——SvelteKit 小型 SPA，编辑器核心组件几乎被每个用例加载，覆盖选择无法缩减（覆盖法在"强耦合核心"应用上的固有局限，诚实记录）。uidiff_only 5 次均 0 信号（diff 未触及 testId/可见文本锚点，该项目 testid 稀疏）。验证了 `page` 注入模式 + 自有 `./test` 夹具导入改写 + `.svelte` 扩展归因。见 `out/real/mermaid_live_rq1.{md,json,jsonl}`。 |
 
-> **RQ1 真实数据结论（实测）**：cand_coverage 通过可插桩闸门，但**无可 replay 的源码历史**。需另接 ≥2 个有真实多 commit 源码演化、且能逐 commit 干净安装的 Playwright 项目（候选见下「候选清单」）。
+> **RQ1 真实数据结论（实测）**：已达成 ≥2 个真实多 commit 项目的外部效度目标（actual_desktop + mermaid_live，共 8 个稳定过渡，Safety 均 1.0）。两项目 Reduction 差异（0.58 vs 0）量化了**覆盖选择的效益取决于应用的覆盖耦合度**：模块化 monorepo（actual）缩减明显，单页强耦合 SPA（mermaid）几乎不缩减。cand_coverage 通过可插桩闸门但无可 replay 源码史，已弃。
 
 ## 通用 CDP 覆盖注入（已实现，解锁真实项目的关键）
 
 `run_rq1_real.mjs` 原本只支持自带 istanbul 逐用例覆盖的项目（极少）。现已实现**通用 CDP 注入**（`pipeline/src/covinject.mjs` + `engine.mjs#injectCdpCoverage`，纯函数有单测 `pipeline/test/covinject.test.mjs`）：用 Playwright fixture 包裹 `page.coverage`（CDP V8）对**任意**被测 JS 收集逐用例覆盖，**不改动项目业务代码**。
 
 - adapter 设 `injectCoverage:"cdp"` + `injectDir`（放夹具的 spec 目录，默认取 `specGlob`）。两种 `injectMode`：
-  - 默认（`page`）：spec 从 `@playwright/test` 导入、用 test-scoped `page` fixture → 改写导入为 `__cov_fixtures` 并包 `page` fixture。
+  - 默认（`page`）：spec 用 test-scoped `page` fixture。其导入源由 `fixtureImport` 指定（默认 `@playwright/test`；若项目用自有夹具如 `./test`，设 `fixtureImport:"./test"`）→ 夹具 `export *` 重导出该源（带其 `expect`/自定义 fixture 如 `editPage`）、仅覆写 `page` fixture，并改写 spec 导入指向 `__cov_fixtures`。
   - `newpage`：spec 从自有 fixtures（`fixtureImport`，默认 `./fixtures`）导入 `test`、且用 `browser.newPage()` 自建页面 → 夹具再 extend 其 `test`，包 `browser.newPage`（创建即 `startJSCoverage`）并**包 `page.close` 在关闭前收集**（关键：项目常在 `afterEach` 关页，晚于 fixture teardown 会丢覆盖）。
 - monorepo：`repoDir`=仓库根（git diff/`git show` 走根相对路径），`runDir`=子包（安装/测试/注入 cwd），`srcGlob` 用根相对（如 `packages/desktop-client/src`）。
 - replay 每次 `checkout+install` 后自动重注（checkout 会还原 tracked spec）。
 - 仍用**项目自己的 `playwright.config`**（保留其 `webServer`/`baseURL`/projects），`testAllCmd` 即项目正常的 e2e 命令加 `COV_OUT=...`。
 - 路径命名空间：夹具写"源根相对"路径（如 `src/a.tsx`），`loadCovLive` 用 `mapLeafRelToRepoRel` 拼上 `srcGlob` 前缀（monorepo→`packages/x/src/a.tsx`），与 `git diff` 同域。
-- 文件归因：URL 锚定 **dev-server 源根**（`origin + /src/**`），自动排除 `/@fs/` 跨包源、`/node_modules`、`/.vite/deps`。优先选跑 **Vite dev** 的项目；跑生产构建/preview 的需 sourcemap，归因更粗，作 Tier B。`COV_DEBUG=1` 会把前 60 个 URL 转储到 `<COV_OUT>/_urls.json` 便于排查。
+- 文件归因：URL 锚定 **dev-server 源根**（`origin + /src/**`），自动排除 `/@fs/` 跨包源、`/node_modules`、`/.vite/deps`。源扩展支持 `js/jsx/ts/tsx/mjs/cjs/svelte/vue`（SvelteKit/Vue SFC 在 dev 下 URL 仍是 `/src/**.svelte` 可直接归因）。优先选跑 **Vite dev** 的项目；跑生产构建/preview 的需 sourcemap，归因更粗，作 Tier B。`COV_DEBUG=1` 会把前 60 个 URL 转储到 `<COV_OUT>/_urls.json` 便于排查。
 - 限制：仅 Chromium 有 `page.coverage`（adapter 只跑 chromium）。
 
 ## 候选清单（GitHub API 实测，2026-06）

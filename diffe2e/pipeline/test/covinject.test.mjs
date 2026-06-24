@@ -20,6 +20,8 @@ test('cdpUrlToLeafRel extracts origin-root leaf source, skips deps/crosspkg', ()
   assert.equal(cdpUrlToLeafRel('http://localhost:5173/assets/logo.svg', 'src'), null);
   // cross-package source served via Vite /@fs/ must NOT be mis-attributed
   assert.equal(cdpUrlToLeafRel('http://localhost:3001/@fs/x/packages/loot-core/src/q.ts', 'src'), null);
+  // framework single-file components (Svelte/Vue) are valid source too
+  assert.equal(cdpUrlToLeafRel('http://localhost:3000/src/lib/components/Actions.svelte', 'src'), 'src/lib/components/Actions.svelte');
 });
 
 test('mapLeafRelToRepoRel re-attaches the srcGlob prefix', () => {
