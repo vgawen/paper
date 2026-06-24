@@ -14,6 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { selectByGenericCoverage, toRepoRel } from '../../pipeline/src/covpath.mjs';
 import { buildAffected } from '../../pipeline/src/oracle.mjs';
 import { selectionMetrics } from '../../pipeline/src/metrics.mjs';
+import { srcLeaf, mapLeafRelToRepoRel, rewriteSpecImport, relImportPath, covFixtureSource } from '../../pipeline/src/covinject.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -47,6 +48,38 @@ export function installLive(adapter) {
   catch { return false; }
 }
 
+// Recursively collect Playwright spec files under a directory.
+function walkSpecs(root, acc = []) {
+  if (!fs.existsSync(root)) return acc;
+  for (const e of fs.readdirSync(root, { withFileTypes: true })) {
+    const f = path.join(root, e.name);
+    if (e.isDirectory()) { if (e.name !== 'node_modules') walkSpecs(f, acc); }
+    else if (/\.(spec|e2e|test)\.[mc]?[jt]sx?$/.test(e.name)) acc.push(f);
+  }
+  return acc;
+}
+
+// Inject a CDP coverage fixture and codemod spec imports to use it. Idempotent;
+// must be re-run after every `git checkout` (which reverts tracked specs). The
+// untracked fixture file survives checkout but is rewritten anyway. No-op unless
+// adapter.injectCoverage === 'cdp'.
+export function injectCdpCoverage(adapter) {
+  if (adapter.injectCoverage !== 'cdp') return false;
+  const leaf = srcLeaf(adapter.srcGlob || 'src');
+  const dir = path.join(adapter.repoAbs, adapter.injectDir || adapter.specGlob || '.');
+  fs.mkdirSync(dir, { recursive: true });
+  const fixtureAbs = path.join(dir, '__cov_fixtures.ts');
+  fs.writeFileSync(fixtureAbs, covFixtureSource(leaf));
+  const specRoot = path.join(adapter.repoAbs, adapter.specGlob || adapter.injectDir || '.');
+  let n = 0;
+  for (const f of walkSpecs(specRoot)) {
+    if (f === fixtureAbs) continue;
+    const { code, changed } = rewriteSpecImport(fs.readFileSync(f, 'utf8'), relImportPath(f, fixtureAbs));
+    if (changed) { fs.writeFileSync(f, code); n++; }
+  }
+  return n;
+}
+
 export function changedSrcFiles(repo, prev, sha, srcGlob) {
   const diff = gitIn(repo, `diff ${prev} ${sha} -- ${srcGlob}`);
   const files = [...diff.matchAll(/^\+\+\+ b\/(.+)$/gm)].map((m) => m[1]);
@@ -69,7 +102,8 @@ export function runSuiteLive(adapter, spec = '') {
 export function loadCovLive(adapter, covAbs) {
   const map = {};
   if (!fs.existsSync(covAbs)) return map;
-  const mode = adapter.covEntryToPath || 'json:files';
+  const injected = adapter.injectCoverage === 'cdp';
+  const mode = injected ? 'json:files' : (adapter.covEntryToPath || 'json:files');
   for (const f of fs.readdirSync(covAbs)) {
     if (!f.endsWith('.json')) continue;
     let o;
@@ -78,7 +112,9 @@ export function loadCovLive(adapter, covAbs) {
       const id = f.replace(/\.json$/, '');
       map[id] = Object.keys(o).map((p) => toRepoRel(p, adapter.repoAbs));
     } else {
-      map[o.test] = (o.files || []).map((p) => toRepoRel(p, adapter.repoAbs));
+      // injected CDP coverage already writes LEAF-relative paths -> re-attach
+      // the srcGlob prefix so they share the git-diff namespace.
+      map[o.test] = (o.files || []).map((p) => injected ? mapLeafRelToRepoRel(p, adapter.srcGlob) : toRepoRel(p, adapter.repoAbs));
     }
   }
   return map;

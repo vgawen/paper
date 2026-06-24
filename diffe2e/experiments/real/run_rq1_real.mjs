@@ -13,7 +13,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
-  loadAdapter, gitIn, checkoutSha, changedSrcFiles, runSuiteLive, loadCovLive, computeTransition, installLive,
+  loadAdapter, gitIn, checkoutSha, changedSrcFiles, runSuiteLive, loadCovLive, computeTransition, installLive, injectCdpCoverage,
 } from './engine.mjs';
 import { extractFromCode, semanticDiffNodes } from '../../pipeline/src/uidiff.mjs';
 import { changedUiSignals, selectByDomDiff } from '../../pipeline/src/domdiff.mjs';
@@ -73,6 +73,7 @@ async function main() {
     // --- V_old: checkout, install (best-effort), full suite w/ coverage ---
     checkoutSha(adapter.repoAbs, prev);
     if (!installLive(adapter)) { skip(skips, prev, sha, 'install_failed_vold'); continue; }
+    injectCdpCoverage(adapter); // re-inject after checkout reverts tracked specs
     const voldRun = runSuiteLive(adapter);
     const voldCov = loadCovLive(adapter, voldRun.covAbs);
     const ui = uiSignalSelect(adapter, prev, sha, changed);
@@ -80,6 +81,7 @@ async function main() {
     // --- V_new: checkout, install, full suite w/ coverage ---
     checkoutSha(adapter.repoAbs, sha);
     if (!installLive(adapter)) { skip(skips, prev, sha, 'install_failed_vnew'); continue; }
+    injectCdpCoverage(adapter);
     const vnewRun = runSuiteLive(adapter);
     const vnewCov = loadCovLive(adapter, vnewRun.covAbs);
 
