@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { selectByGenericCoverage, toRepoRel } from '../../pipeline/src/covpath.mjs';
 import { buildAffected } from '../../pipeline/src/oracle.mjs';
 import { selectionMetrics } from '../../pipeline/src/metrics.mjs';
-import { srcLeaf, mapLeafRelToRepoRel, rewriteSpecImport, relImportPath, covFixtureSource } from '../../pipeline/src/covinject.mjs';
+import { srcLeaf, mapLeafRelToRepoRel, rewriteSpecImport, rewriteImportFrom, relImportPath, covFixtureSource, covWrapFixtureSource } from '../../pipeline/src/covinject.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -34,7 +34,9 @@ export function computeTransition({ covVold, covVnew, changed, uiSelected = [] }
 // ---- live helpers (driven by adapter; exercised by run_rq1_real.mjs) ----
 export function loadAdapter(file) {
   const a = JSON.parse(fs.readFileSync(file, 'utf8'));
-  a.repoAbs = path.resolve(here, a.repoDir);
+  a.repoAbs = path.resolve(here, a.repoDir); // git root (diffs/`git show` are root-relative)
+  a.runAbs = a.runDir ? path.resolve(a.repoAbs, a.runDir) : a.repoAbs; // install/test/inject cwd
+  a.runRel = path.relative(a.repoAbs, a.runAbs).split(path.sep).join('/'); // '' or 'packages/x'
   return a;
 }
 export function gitIn(repo, args) { return execSync(`git ${args}`, { cwd: repo, stdio: 'pipe' }).toString(); }
@@ -44,7 +46,7 @@ export function checkoutSha(repo, sha) { gitIn(repo, `checkout -q ${sha}`); }
 // driver can skip the transition instead of polluting results with empty cov.
 export function installLive(adapter) {
   if (!adapter.installCmd) return true;
-  try { execSync(adapter.installCmd, { cwd: adapter.repoAbs, stdio: 'pipe', timeout: 600000 }); return true; }
+  try { execSync(adapter.installCmd, { cwd: adapter.runAbs, stdio: 'pipe', timeout: 600000 }); return true; }
   catch { return false; }
 }
 
@@ -66,15 +68,22 @@ function walkSpecs(root, acc = []) {
 export function injectCdpCoverage(adapter) {
   if (adapter.injectCoverage !== 'cdp') return false;
   const leaf = srcLeaf(adapter.srcGlob || 'src');
-  const dir = path.join(adapter.repoAbs, adapter.injectDir || adapter.specGlob || '.');
+  const injectDir = adapter.injectDir || adapter.specGlob || '.';
+  const dir = path.join(adapter.runAbs, injectDir);
   fs.mkdirSync(dir, { recursive: true });
   const fixtureAbs = path.join(dir, '__cov_fixtures.ts');
-  fs.writeFileSync(fixtureAbs, covFixtureSource(leaf));
-  const specRoot = path.join(adapter.repoAbs, adapter.specGlob || adapter.injectDir || '.');
+  // 'newpage' mode: specs import a custom fixtures module and use browser.newPage.
+  const newpage = adapter.injectMode === 'newpage';
+  const appImport = adapter.fixtureImport || './fixtures';
+  fs.writeFileSync(fixtureAbs, newpage ? covWrapFixtureSource(leaf, appImport) : covFixtureSource(leaf));
+  const specRoot = path.join(adapter.runAbs, adapter.specGlob || injectDir);
   let n = 0;
   for (const f of walkSpecs(specRoot)) {
     if (f === fixtureAbs) continue;
-    const { code, changed } = rewriteSpecImport(fs.readFileSync(f, 'utf8'), relImportPath(f, fixtureAbs));
+    const relTo = relImportPath(f, fixtureAbs);
+    const { code, changed } = newpage
+      ? rewriteImportFrom(fs.readFileSync(f, 'utf8'), [appImport], relTo)
+      : rewriteSpecImport(fs.readFileSync(f, 'utf8'), relTo);
     if (changed) { fs.writeFileSync(f, code); n++; }
   }
   return n;
@@ -88,10 +97,10 @@ export function changedSrcFiles(repo, prev, sha, srcGlob) {
 
 export function runSuiteLive(adapter, spec = '') {
   const cmd = (spec ? adapter.testOneCmd.replace('{spec}', spec) : adapter.testAllCmd);
-  const covAbs = path.join(adapter.repoAbs, adapter.covRel);
+  const covAbs = path.join(adapter.runAbs, adapter.covRel);
   fs.rmSync(covAbs, { recursive: true, force: true });
   let ok = true;
-  try { execSync(cmd, { cwd: adapter.repoAbs, stdio: 'pipe' }); } catch { ok = false; }
+  try { execSync(cmd, { cwd: adapter.runAbs, stdio: 'pipe' }); } catch { ok = false; }
   return { ok, covAbs };
 }
 

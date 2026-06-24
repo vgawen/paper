@@ -5,6 +5,8 @@ test-results/
 playwright-report/
 real/cand_coverage/
 real/cand_movies/
+real/actual/
+real/tldraw/
 realproj/clones/
 experiments/out/*.zip
 **/.nyc_output/

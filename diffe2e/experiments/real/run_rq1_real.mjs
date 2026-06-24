@@ -94,9 +94,10 @@ async function main() {
 
     // map UI signals to tests by source reference (read spec sources at sha)
     const testSources = {};
+    const specRoot = [adapter.runRel, adapter.specGlob].filter(Boolean).join('/');
     for (const id of new Set([...voldTests, ...vnewTests])) {
       const specFile = id.split(' > ')[0];
-      testSources[id] = safeShow(adapter.repoAbs, sha, path.posix.join(adapter.specGlob, specFile)) || '';
+      testSources[id] = safeShow(adapter.repoAbs, sha, path.posix.join(specRoot, specFile)) || '';
     }
     const uiSelected = selectByDomDiff(ui, testSources);
 
