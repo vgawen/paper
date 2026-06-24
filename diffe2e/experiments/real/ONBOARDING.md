@@ -19,7 +19,7 @@
 | 项目 | 仓库 | 覆盖方法 | E2E 数 | 选用 commit 数 | 状态 |
 |---|---|---|---|---|---|
 | cand_coverage | mxschmitt/playwright-test-coverage | istanbul | 3 | 0 | **replay 不可行**：unshallow 后全仓 12 commit，仅 2 个动过 `src/`（初始 + Vite 迁移）→ 唯一过渡且 `npm ci` 在旧 commit 失败（`install_failed_vnew`，见 `out/real/cand_coverage_rq1_skips.json`）。该仓是演示项目、无源码演化史，不适合 RQ1 replay。 |
-| actual_desktop | actualbudget/actual（`packages/desktop-client`）| CDP 注入(newpage) | ~34 | 进行中 | **覆盖注入已实测通过**：`yarn install` 1m41s 成功；`yarn start`（Vite dev :3001）由 webServer 自动起，2 用例 26.8s 通过；CDP `newpage` 夹具按 `packages/desktop-client/src/**` 正确归因逐用例覆盖。adapter=`adapters/actual_desktop.json`。下一步：跑多 commit replay（`run_rq1_real.mjs`）。 |
+| actual_desktop | actualbudget/actual（`packages/desktop-client`）| CDP 注入(newpage) | 3 spec 子集 | 3 | ✅ **首个真实 replay 跑通**：3 个稳定 transition、0 skip。coverage_only/dual：Reduction 0.583、**Safety 1.0、Precision 1.0**；uidiff_only 本窗口 0 信号（3 次均为 `.ts` 逻辑改动，无 JSX testid/文本变化）。见 `out/real/actual_desktop_rq1.{md,json,jsonl}`。后续：放开更多 spec、扩大 commit 窗口（含 UI 改动）以激活 uidiff 臂。 |
 
 > **RQ1 真实数据结论（实测）**：cand_coverage 通过可插桩闸门，但**无可 replay 的源码历史**。需另接 ≥2 个有真实多 commit 源码演化、且能逐 commit 干净安装的 Playwright 项目（候选见下「候选清单」）。
 
