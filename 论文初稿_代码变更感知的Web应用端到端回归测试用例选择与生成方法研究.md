@@ -247,11 +247,11 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 ### 4.3 对照臂与指标
 
 - **RQ1 基线**：`retest_all`（全量）、`random_k`（同规模随机）、`static_heuristic`（静态路由/组件启发式），以及信号消融 `coverage_only / uidiff_only / dual`。
-- **指标**：`Reduction = 1 − |Sel|/|S|`；`Safety`（覆盖型）`= |Sel∩Affected|/|Affected|`；`SafetyEmp`（非循环）`= |Sel∩A_obs|/|A_obs|`；`Precision = |Sel∩Affected|/|Sel|`；`TargetedSetUsability`；`NetSaving`；Cohen's κ（标注一致性）。
+- **指标**：`Reduction = 1 − |Sel|/|S|`；`Safety`（覆盖型）`= |Sel∩Affected|/|Affected|`；`SafetyEmp`（非循环）`= |Sel∩A_obs|/|A_obs|`；`Precision = |Sel∩Affected|/|Sel|`；`TargetedSetUsability`；`NetSaving`；RQ2 语义有效性以**自动指标**为主——变异杀伤率（mutation kill）与版本差分敏感性（V_new 过/V_old 失败），Cohen's κ 仅作人工小样本校准。
 
 ### 4.4 真实数据接入（状态说明）
 
-受控主体给出零依赖、可复现的主结果；真实外部效度需补充以下数据，本稿相应小节以 **【待真实数据】** 标注：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）；(ii) 真实 LLM 生成/修复对照 + 双标注 κ（RQ2/RQ3）；(iii) 真实项目 wall-clock 与 NetSaving（RQ4）。其中 ReproBreak 端到端无泄漏修复（RQ3，§5.3）的规则臂已用 449 条执行验证断裂跑出真实结果，仅 LLM 臂待 key 回填。
+受控主体给出零依赖、可复现的主结果；真实外部效度需补充以下数据，本稿相应小节以 **【待真实数据】** 标注：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）；(ii) 真实 LLM 生成/修复对照（RQ2/RQ3，语义有效性已用变异杀伤+版本差分敏感性自动度量，仅需 LLM key 回填两臂对照；人工 κ 为辅助校准）；(iii) 真实项目 wall-clock 与 NetSaving（RQ4）。其中 ReproBreak 端到端无泄漏修复（RQ3，§5.3）的规则臂已用 449 条执行验证断裂跑出真实结果，仅 LLM 臂待 key 回填。
 
 ---
 
@@ -306,23 +306,29 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 ### 5.2 RQ2：生成——diff 约束的相关性
 
+**语义有效性度量（方法）**：人工双标注成本高、规模小、且主观，本文以**两个客观自动指标**作为语义有效性的主度量，人工 Cohen's κ 仅用于小样本校准：
+
+- **变异杀伤（mutation kill）**：向缺口新增源码注入可被测试观察到的变异（重命名各 `data-testid`、对可见文本追加标记），重跑该生成用例。若其由通过转为失败即"杀掉"该变异，说明用例确实在验证新行为；恒真/仅占位的断言一个也杀不掉。指标为每条用例 killed/injected 的均值。
+- **版本差分敏感性（change sensitivity）**：同一生成用例在 V_new（缺口提交，新功能存在）通过、在 V_old（前一提交，新功能尚不存在）失败，则判定其对该变更敏感——这排除了与变更无关的"哪个版本都能过"的弱用例。
+- **自动语义有效率** = 可执行 ∧ 版本敏感 ∧ 杀掉≥1 个注入变异（完全客观、无需人工）。
+
 **双臂结果（受控主体，provider=stub）**：
 
-| 臂 | n | executable-rate | change-relevant-rate |
-|---|---|---|---|
-| diff（约束）| 3 | 1.0 | 1.0 |
-| nodiff（基线）| 3 | 1.0 | 1.0 |
+| 臂 | n | executable-rate | change-relevant-rate | 变异杀伤(均值) | 版本敏感率 | 自动语义有效率 |
+|---|---|---|---|---|---|---|
+| diff（约束）| 3 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
+| nodiff（基线）| 3 | 1.0 | 1.0 | 1.0 | 1.0 | 1.0 |
 
-来源：`out/rq2_results.md`。stub 下两率均出数；语义有效率=NA（需人工/真实 LLM 评判，盲标候选见 `rq2_to_annotate.jsonl`、解盲键 `rq2_unblind.json`）。核心论点是：真实 LLM 下 diff 约束臂的变更相关率应明显高于无约束基线。
+来源：`out/rq2_results.md`。stub 下两臂返回同一模板故各率相等；其中模板基于 `data-testid` 的可见性断言能杀掉 testId 变异，验证了变异度量的公平性。核心论点是：真实 LLM 下 diff 约束臂的变更相关率/变异杀伤/自动语义有效率应明显高于无约束基线。
 
-**【待真实数据】RQ2 真实 LLM + 语义有效率 + κ**：
+**【待真实数据】RQ2 真实 LLM + 自动语义指标 + 人工 κ 校准**：
 
-| 臂 | provider | executable-rate | change-relevant-rate | semantic-validity | 双标注 κ |
-|---|---|---|---|---|---|
-| diff | （真实 LLM）| — | — | — | — |
-| nodiff | （真实 LLM）| — | — | — | — |
+| 臂 | provider | executable-rate | change-relevant-rate | 变异杀伤 | 版本敏感率 | 自动语义有效率 |
+|---|---|---|---|---|---|---|
+| diff | （真实 LLM）| — | — | — | — | — |
+| nodiff | （真实 LLM）| — | — | — | — | — |
 
-> 现状：仅 stub。设 `DEEPSEEK_API_KEY` 等重跑 `run_rq2.mjs`，并按 `annotate/PROTOCOL.md` 双标注、用 `cohenKappa` 算一致性（κ≥0.6 可接受）后回填。预期：diff 臂语义有效率显著高于 nodiff。
+> 现状：仅 stub。设 `DEEPSEEK_API_KEY` 等重跑 `run_rq2.mjs` 即自动产出上表两臂的自动语义指标；人工双标注（`annotate/PROTOCOL.md` + `cohenKappa`，κ≥0.6 可接受）仅在小样本上校准自动指标与人类判断的一致性。预期：diff 臂自动语义有效率显著高于 nodiff。
 
 ### 5.3 RQ3：修复——失效用例复用
 
@@ -378,7 +384,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 - **外部效度**：主体为受控工程，量化结论的外部效度有限；真实多 commit replay（RQ1）、真实 LLM（RQ2/RQ3）、真实 wall-clock（RQ4）为正在补充的关键证据，本稿相应小节已显式标注 **【待真实数据】**，不以合成数字冒充真实结论。
 - **构造效度**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并辅以变异压力测试，破除 Safety 自证循环；但 `A_obs` 在自然 diff 下样本偏小（4 个过渡），变异增强部分缓解。
 - **内部效度**：命题 1 的安全性是条件安全（H1–H3）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。
-- **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率，语义有效率记 NA。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂真值（3.39%）——二者落差正面量化了信号检测的难度。仍存局限：LLM 臂需 API key 方能给出对照数，端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
+- **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性不再依赖人工标注，而以变异杀伤率与版本差分敏感性两个客观自动指标度量（stub 下已出数，真实 LLM 下两臂对照待 key 回填），人工 κ 仅作小样本校准。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂真值（3.39%）——二者落差正面量化了信号检测的难度。仍存局限：LLM 臂需 API key 方能给出对照数，端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
 - **覆盖映射粒度**：bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。Semantic UI Diff 在"文案与 handler 同时变更"时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。
 
 ---

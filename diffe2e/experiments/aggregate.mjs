@@ -119,12 +119,14 @@ function main() {
   L.push('## 2. RQ2 生成：覆盖缺口补齐（双臂：diff 约束 vs 无约束基线）');
   if (rq2.summary && rq2.summary.diff) {
     L.push(`- provider=${rq2.provider}。`);
-    L.push('| 臂 | n | 可执行率 | 变更相关率 |', '|---|---|---|---|');
+    L.push('| 臂 | n | 可执行率 | 变更相关率 | 变异杀伤(均值) | 版本敏感率 | 自动语义有效率 |',
+      '|---|---|---|---|---|---|---|');
     for (const arm of ['diff', 'nodiff']) {
       const s = rq2.summary[arm];
-      if (s) L.push(`| ${arm} | ${s.n} | ${s.execRate} | ${s.relRate} |`);
+      if (s) L.push(`| ${arm} | ${s.n} | ${s.execRate} | ${s.relRate} | ${s.mutKillMean ?? 'NA'} | ${s.changeSensRate ?? 'NA'} | ${s.semanticAutoRate ?? 'NA'} |`);
     }
-    L.push('', '- 核心论点：diff 约束臂的变更相关率应高于无约束基线（stub 下两臂相同，差异在真实 LLM 下显现）。');
+    L.push('', '- 自动语义有效率 = 可执行 ∧ 版本敏感（V_new 过、V_old 失败）∧ 杀掉≥1个注入变异；客观、无需人工。',
+      '- 核心论点：diff 约束臂的变更相关率/变异杀伤/自动语义有效率应高于无约束基线（stub 下两臂相同，差异在真实 LLM 下显现）。');
   } else {
     // backward-compat with the single-arm result shape
     L.push(`- provider=${rq2.provider}，缺口数 n=${rq2.n}：可执行率=${rq2.execRate}，变更相关率=${rq2.relRate}。`);
@@ -133,10 +135,10 @@ function main() {
   const annPath = path.join(OUT, 'rq2_annotation.json');
   if (fs.existsSync(annPath)) {
     const ann = readJ(annPath);
-    L.push(`- 语义有效率（人工双标注，n=${ann.n}）：总体 ${ann.semantic_validity}，Cohen's κ=${ann.kappa.kappa}` +
+    L.push(`- 人工小样本校准（双标注，n=${ann.n}）：语义有效率 ${ann.semantic_validity}，Cohen's κ=${ann.kappa.kappa}` +
       (ann.by_arm ? `；分臂 diff=${ann.by_arm.diff.semantic_validity} / nodiff=${ann.by_arm.nodiff.semantic_validity}。` : '。'));
   } else {
-    L.push('- 语义有效率=NA（需人工/LLM 评判；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。');
+    L.push('- 人工小样本校准=待办（仅作自动语义指标的辅助验证；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。');
   }
   L.push('');
 
