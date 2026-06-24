@@ -1,0 +1,11 @@
+{
+  "name": "cand_coverage",
+  "repoDir": "../../real/cand_coverage",
+  "srcGlob": "src",
+  "covRel": "cov_pertest",
+  "installCmd": "npm ci",
+  "testOneCmd": "COV_OUT=cov_pertest npx playwright test {spec}",
+  "testAllCmd": "COV_OUT=cov_pertest npx playwright test",
+  "covEntryToPath": "istanbul",
+  "specGlob": "e2e"
+}
