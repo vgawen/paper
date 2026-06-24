@@ -36,5 +36,11 @@
       "Safety": 0.6667,
       "Precision": 1
     }
+  },
+  "safety_emp": {
+    "transitions_with_observed_affected": 4,
+    "SafetyEmp_ours": 1,
+    "SafetyEmp_coverage_only": 1,
+    "total_misses": 0
   }
 }

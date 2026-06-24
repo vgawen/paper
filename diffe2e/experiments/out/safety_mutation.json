@@ -1,0 +1,37 @@
+{
+  "files_evaluated": 4,
+  "files_with_observable_effect": 1,
+  "mean_SafetyEmp": 1,
+  "all_safe": true,
+  "total_misses": 0,
+  "rows": [
+    {
+      "file": "src/cart.js",
+      "mutated_token": "Add to cart",
+      "selcov_count": 1,
+      "affected_obs_count": 0,
+      "SafetyEmp": 1
+    },
+    {
+      "file": "src/coupon.js",
+      "mutated_token": "invalid",
+      "selcov_count": 0,
+      "affected_obs_count": 0,
+      "SafetyEmp": 1
+    },
+    {
+      "file": "src/faq.js",
+      "mutated_token": "Use the demo.",
+      "selcov_count": 0,
+      "affected_obs_count": 0,
+      "SafetyEmp": 1
+    },
+    {
+      "file": "src/home.js",
+      "mutated_token": "Welcome Home",
+      "selcov_count": 1,
+      "affected_obs_count": 1,
+      "SafetyEmp": 1
+    }
+  ]
+}

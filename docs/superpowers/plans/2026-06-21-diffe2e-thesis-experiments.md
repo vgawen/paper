@@ -1169,3 +1169,204 @@ git commit -m "docs(diffe2e): map experiment artifacts to thesis chapters/figure
 4. **RQ4 成本不公平（Task 4.1）** → 重写：full 与 selected 用同一命令模板、同 `--workers`、同覆盖设置；selected 一次性传入单次调用；各 arm 重复 ≥3 次报告 median/IQR。
 
 **次要建议（已纳入顶部「评审修订要点」）：** 开发顺序可并行但**最终闭环评估顺序固定为 选择→运行/修复→缺口→生成**；每个 `git commit` 改为**需用户授权的可选提交点**；RQ1 完成判据补 **Reduction ≥ 0.30 / Precision ≥ 0.50** 的工程价值下限（防止靠多选刷 Safety）。
+
+---
+
+## 导师评审意见（v3）补充计划
+
+> 来源：导师对《研究进展汇报_导师版_核实优化v2.1》的 6 条意见（按导师给出的重要程度排序）。本节先**原样记录意见**，再把每条落成可执行的新阶段/任务（Phase 6–10）与对现有 RQ 框架的修订。这些任务大多产出**论文正文 + 形式化定义 + 实验证据**三类交付物，部分需要新增代码模块。
+
+### 意见原文（按重要程度）
+
+1. **召回率（Safety）不可被 compromise。** 宁可多跑也不能漏测。需要在**理论上证明**方法不会遗漏应执行的测试用例，并用**合理实验**验证确实不漏。当前看不出召回保证是怎么做到的。
+2. **副作用 / 间接依赖假设。** 可能存在某测试用例并不直接触达 diff 相关代码，但它影响某一系统状态（存在副作用），从而**间接**影响 diff 相关代码。请验证该假设是否成立，若成立方法需覆盖这种情况。
+3. **技术路线与创新点不够清晰严谨。** 目前只用自然语言描述。创新点似乎是"测试用例到代码的映射器"，但它是**什么结构、如何高效构建与维护**没有说清楚。
+4. **实验缺设计、缺可信量化结果。** 要在问题定义之初就**量化目标**（例如：只执行必要用例 / 最小变更相关用例集；给出节约比例与时间）。核心问题应表述为：**「测试选择算法执行时间 + 选中用例执行时间」是否远小于「全量执行时间」**？并讨论**时间是否唯一指标**，其他计算资源是否也要测。
+5. **相关工作调研偏粗。** 需从两个关注点构造区分维度：**（1）代码变更感知**（要求定向分析与生成）、**（2）浏览器端到端测试**（区别于单元测试等局部测试，需全局上下文分析）。要在技术层面指出现有工作不足并引出本方法。
+6. **标题不应突出 Playwright。** 它只是工具，方法理论上可迁移到 Selenium / Cypress。标题应体现"代码变更感知"。建议：**《代码变更感知的 Web 应用端到端回归测试用例选择与生成方法研究》**。
+
+### 对现有计划的总体影响
+
+- **完成判据新增（v3）：** 在原 5 项之外，补 3 项硬指标：
+  6. **召回保证**：给出可证明的安全性论证（Phase 6）+ 用**非循环的、基于真实结果差异/变异**的 oracle 验证 Safety（Phase 6），而非用覆盖映射自证覆盖。
+  7. **副作用情形被显式处理**：至少 1 个注入副作用的场景，证明 naive 覆盖选择会漏、状态依赖闭包能补回（Phase 7）。
+  8. **净收益量化**：报告 `T_select + T_run(Sel)` vs `T_full` 的净节省与盈亏平衡点，并报告时间以外的至少 1 项资源指标（Phase 8）。
+- **标题与问题定义全局替换**：去掉 Playwright 限定，改为工具无关表述（Phase 10）。
+
+---
+
+## Phase 6：可证明的召回保证（意见 1）+ 方法形式化（意见 3）
+
+> **核心矛盾（必须正面回应）**：现有 `oracle.mjs` 的 affected 集合是用 `selectByCoverage(covVnew, changed)` 构造的——与选择器同源，导致 Safety 近乎自证、缺乏说服力。Phase 6 要做两件事：(a) 把"应执行的测试集 A\*"用**与选择器无关**的方式定义并经验测量；(b) 给出选择规则 `Sel ⊇ A*` 的安全性论证及其成立假设。
+
+### Task 6.1: 安全性形式化与定理（论文 + 文档）
+
+**Files:**
+- Create: `diffe2e/docs/SAFETY.md`（形式化定义、假设、安全性命题与证明草图；后并入论文方法/理论章节）
+
+- [ ] **Step 1: 形式化定义**
+  - 变更实体集 `Δ`（文件/函数/路由/组件/UI 节点，多粒度）。
+  - 覆盖映射 `cov: T → 2^Δ`（测试触达的实体）。
+  - **真正受影响集** `A* = { t ∈ T : outcome_{Vold}(t) ≠ outcome_{Vnew}(t) 在某确定性语义下可能不同 }`——**不依赖选择器**。
+  - 选择规则 `Sel = SelCov ∪ SelUI`，其中 `SelCov = { t : cov(t) ∩ Δ ≠ ∅ }`。
+- [ ] **Step 2: 安全性命题 + 假设**
+  - 命题：在 (H1) 测试确定性、(H2) 覆盖映射完备（执行到的实体都被记录）、(H3) 变更实体粒度覆盖所有语义改动 三个假设下，`A* ⊆ SelCov ⊆ Sel`，即**覆盖信号臂本身即安全**；UI 语义臂只增不减（并集），故 `Sel` 安全。
+  - 证明草图：若 `t ∉ SelCov`，则 `cov(t) ∩ Δ = ∅`，t 未执行任何变更实体；在 H1–H3 下其执行轨迹与结果在 V_old/V_new 不变，故 `t ∉ A*`。取逆否即 `A* ⊆ SelCov`。
+  - **显式列出假设何时失效**：H1 失效（flaky/时间相关）、H2 失效（动态加载/SSR/未插桩代码）、H3 失效（配置/数据/**副作用**导致的语义改动不在 Δ 内）——其中副作用情形交 Phase 7 专门处理。
+- [ ] **Step 3: 把它接到 thesis 映射**：在 `THESIS_MAPPING.md` 增加"理论：安全性命题"行。
+
+### Task 6.2: 非循环的"受影响" oracle（结果差异 oracle）
+
+**Files:**
+- Create: `diffe2e/pipeline/src/outcome_oracle.mjs`
+- Test: `diffe2e/pipeline/test/outcome_oracle.test.mjs`
+
+- [ ] **Step 1: 写失败测试**：`buildAffectedByOutcome({ resVold, resVnew })` 返回在两版本上 pass/fail 或断言结果发生变化的测试集；与覆盖无关。
+- [ ] **Step 2: 实现**：输入两版本的逐用例执行结果（pass/fail/error + 可选断言指纹），输出结果发生变化的测试 id 集合 `A_obs`。
+- [ ] **Step 3: 安全性验证指标**：新增 `SafetyEmp = |Sel ∩ A_obs| / |A_obs|`，与原覆盖型 Safety **并列报告**。`A_obs` 即"应执行且不可漏"的经验真值（来自全量跑 V_new 的真实结果差异），打破自证循环。
+- [ ] **Step 4: 漏选个案审计**：任何 `A_obs \ Sel ≠ ∅` 的样本，逐条记录到 `out/safety_misses.json`（实体、原因：H1/H2/H3 哪条失效），论文如实分析。
+
+### Task 6.3: 变异 / 故障注入增强真值（强化召回实验）
+
+**Files:**
+- Create: `diffe2e/experiments/run_safety_mutation.mjs`
+
+- [ ] **Step 1:** 在受控主体上对变更实体做小型变异（改文案/属性/逻辑分支），重跑全量得到 `A_obs^{mut}`，检验 `Sel` 是否仍覆盖所有结果变化的测试。
+- [ ] **Step 2:** 报告 `SafetyEmp`（在自然 diff 与变异两种真值下），目标 **= 1.0**；任何 < 1.0 个案进 `safety_misses.json` 并归因。
+- [ ] **Step 3:** 把"覆盖信号臂单独的 SafetyEmp"也报出来，用以支撑 Task 6.1 的"覆盖臂即安全"命题。
+
+### Task 6.4: 映射器（Test↔Code Mapper）的形式化结构（意见 3）
+
+**Files:**
+- Create: `diffe2e/docs/MAPPER.md`（数据模型 + 构建算法 + 增量维护 + 复杂度；并入论文方法章节）
+
+- [ ] **Step 1: 数据模型**：把"映射器"明确为一个**带类型的二部索引** `M ⊆ E × T`，其中实体节点 `E = 文件 ∪ 函数 ∪ 路由 ∪ 组件 ∪ UI 语义节点(text/testId/role/aria/href/handler)`，测试节点 `T`。给出 schema（JSON/表）与每条边的来源（动态覆盖边 / 静态 UI 语义边）。
+- [ ] **Step 2: 构建算法**：动态边 = 逐用例插桩执行（istanbul / CDP）；静态 UI 边 = AST 抽取 UI 语义节点并与测试定位器做语义匹配（复用 `uidiff.mjs` / `selector.mjs`）。给出伪代码与一次全量构建复杂度。
+- [ ] **Step 3: 增量维护（关键，回应"如何高效维护"）**：定义增量更新规则——只对"触达变更文件的测试"重插桩、对变更文件重抽 UI 语义边；其余边复用旧映射。给出增量复杂度，并论证它使 `T_select` 在长期 CI 中**摊销**到很小（接到 Phase 8 的盈亏平衡分析）。
+- [ ] **Step 4: 架构图**：画 5 步闭环 + 映射器作为持久化、增量维护的中枢；标注 Semantic UI Diff 作为"源码 diff↔浏览器操作"的桥（创新点定位）。
+
+---
+
+## Phase 7：副作用 / 状态依赖建模（意见 2）
+
+> **假设确认**：导师假设成立。覆盖型 RTS 的经典安全性依赖"测试隔离"（H1/H3）。当测试间通过**共享状态**（DB、localStorage/sessionStorage、cookie、全局变量、后端持久化、外部服务）耦合时，一个不直接触达 Δ 的测试 t 可能：(a) 为受影响测试建立前置状态；(b) 其行为依赖被 Δ 改动的状态写入逻辑。此时 `cov(t) ∩ Δ = ∅` 但 t 实际受影响——naive 文件级覆盖会漏。
+
+### Task 7.1: 状态依赖的形式化与安全闭包
+
+**Files:**
+- Modify: `diffe2e/docs/SAFETY.md`（新增"副作用与状态依赖"小节）
+
+- [ ] **Step 1:** 定义状态资源集 `R`（storage key / endpoint / table / 全局符号），测试的**读写足迹** `rw: T → 2^{R×{read,write}}`。
+- [ ] **Step 2:** 定义状态依赖关系 `t1 ⤳ t2`（t1 写、t2 读同一资源，或执行序上 t1 先于 t2）。**安全扩展**：`SelClosed = 闭包(Sel) =` 在 `⤳` 关系下，凡与 `Sel ∩ A*` 共享资源者保守纳入。
+- [ ] **Step 3:** 给出修订命题：在放宽 H3（允许副作用）后，`A* ⊆ SelClosed`，代价是 Reduction 下降——把"召回不可妥协、宁可多跑"显式编码进方法。
+
+### Task 7.2: 状态足迹采集与依赖图（代码）
+
+**Files:**
+- Create: `diffe2e/pipeline/src/statedep.mjs`
+- Test: `diffe2e/pipeline/test/statedep.test.mjs`
+
+- [ ] **Step 1: 写失败测试**：`buildStateGraph(footprints)` 输入逐用例 `{ test, reads:[r], writes:[r] }`，输出 `t→t` 依赖边；`closeSelection(sel, graph)` 返回纳入共享资源依赖后的扩展选择集。
+- [ ] **Step 2: 实现**：纯函数构图 + 闭包；采集层（运行期 hook localStorage/网络/全局）作为 live helper（单测只测纯逻辑）。
+- [ ] **Step 3:** 在选择器中提供可选开关 `--state-closure`，默认 conservative=on（体现"宁可多跑不漏"）。
+
+### Task 7.3: 副作用场景实验（证伪/证实）
+
+**Files:**
+- Create: `diffe2e/experiments/run_sideeffect.mjs`
+
+- [ ] **Step 1:** 在受控主体注入一条副作用链：测试 A（写 localStorage/后端状态，不触达 Δ）→ 变更 Δ 改了消费该状态的代码 → 测试 B 行为改变。
+- [ ] **Step 2:** 对比：naive 文件级覆盖（漏 A）vs 状态闭包选择（纳入 A）；用 Task 6.2 的结果差异 oracle 证明 A ∈ A_obs。
+- [ ] **Step 3:** 报告：副作用场景下两种方法的 SafetyEmp 与 Reduction，量化"安全闭包"的召回收益与成本代价。
+
+---
+
+## Phase 8：量化目标与净收益成本实验（意见 4）
+
+> **问题在定义之初就量化**：目标 = 在 **SafetyEmp = 1** 约束下，最小化执行用例数与端到端时间。核心判据：**`T_select + T_run(Sel) ≪ T_full`**。并报告时间以外的资源。
+
+### Task 8.1: 成本模型与指标定义
+
+**Files:**
+- Create: `diffe2e/docs/COST_MODEL.md`
+
+- [ ] **Step 1: 时间分解**：`T_full`、`T_select = T_mapper_update + T_diff_analyze + T_select_compute`、`T_run(Sel)`。定义 **净节省** `NetSaving = 1 − (T_select + T_run(Sel)) / T_full` 与 **盈亏平衡**：在何种 suite 规模 / 选择率下净节省 > 0。
+- [ ] **Step 2: 比例指标**：`Reduction`（少跑用例比例，如 200/10000 = 98%）与时间节省解耦报告——强调"少跑 98% 不等于省 98% 时间"（导师原话）。
+- [ ] **Step 3: 非时间资源**：CI 机器分钟（machine-minutes）、峰值并行 worker / 浏览器实例数、峰值内存、（修复/生成臂）LLM token 与 $；可选能耗。明确哪些是关注指标及理由。
+- [ ] **Step 4: 摊销论证**：结合 Phase 6.4 的增量维护，论证 `T_mapper_update` 在长期 CI 中被摊销，首次全量构建成本单列。
+
+### Task 8.2: 净收益实验（扩展 RQ4）
+
+**Files:**
+- Modify: `diffe2e/experiments/run_rq4_cost.mjs`（在 Phase 4 基础上加 `T_select` 计量与净节省）
+
+- [ ] **Step 1:** 在公平对比（同 workers/命令/覆盖设置、各重复 ≥3 取 median/IQR）基础上，**额外计时** `T_select`（映射器增量更新 + diff 分析 + 选择计算），输出 `NetSaving` 与盈亏平衡点。
+- [ ] **Step 2: 真实项目报告**：至少 1 个真实项目上给出 `T_full / T_select / T_run(Sel) / NetSaving` 与 Reduction 同表，呈现"少跑比例 vs 实际时间节省"的差距。
+- [ ] **Step 3: 资源指标**：记录 machine-minutes 与峰值并行度；LLM 臂记录 token/$。
+
+### Task 8.3: 问题定义量化化（报告/论文）
+
+**Files:**
+- Modify: 进展汇报与论文"解决问题/成功标准"章节
+
+- [ ] **Step 1:** 把"少跑/不漏/能跑/相关"改写为带阈值与公式的量化目标（SafetyEmp=1、Reduction、NetSaving、盈亏平衡规模），并在问题陈述处即给出 200/10000 这类直觉示例。
+
+---
+
+## Phase 9：相关工作矩阵与定位（意见 5）
+
+**Files:**
+- Create: `diffe2e/docs/RELATED_WORK.md`（结构化对比 + 叙述；并入论文相关工作章节）
+
+- [ ] **Step 1: 两维框架**：维度 A = **代码变更感知程度**（无 / 粗粒度文件级 / 细粒度定向分析与生成）；维度 B = **测试层级与上下文**（单元/集成的局部上下文 vs 浏览器 E2E 的全局上下文：页面/路由/DOM/定位器）。
+- [ ] **Step 2: 对比矩阵**：把现有参考文献按 RTS/变更影响分析、E2E 生成、E2E 修复 三族，逐篇标注（变更感知？E2E？全局上下文分析？diff 作为核心输入？闭环？），形成一张表。
+- [ ] **Step 3: 技术不足→引出本方法**：对每族指出技术层面缺口——单元 RTS 无法跨越源码↔DOM/定位器鸿沟；E2E 生成多不以 diff 为核心；E2E 修复多"失败后修测试"、不以源码 diff 为上下文，也不服务于 targeted 集整体可用性。由此引出"代码变更感知 + 全局 UI 语义桥接"的定位。
+- [ ] **Step 4:** 至少 2–3 个对比维度上明确 SOTA 边界，确保区分度可被审稿人验证。
+
+---
+
+## Phase 10：标题与工具无关化（意见 6）
+
+**Files:**
+- Modify: 进展汇报、论文标题与全文工具表述、`THESIS_MAPPING.md`
+
+- [ ] **Step 1: 改标题**为 **《代码变更感知的 Web 应用端到端回归测试用例选择与生成方法研究》**（去 Playwright）。
+- [ ] **Step 2: 工具无关化**：正文将 Playwright 降级为"实现实例"，明确方法对 Selenium / Cypress 等同样适用（定位器与覆盖/UI 语义抽象是工具无关的），并说明实现选择 Playwright 的工程原因（trace/coverage 支持好）。
+- [ ] **Step 3:** 全文检索替换"Playwright E2E 方法"为"Web 端到端方法（以 Playwright 为实现）"，保持术语一致。
+
+---
+
+## 导师意见 → 计划落点速查表
+
+| 导师意见 | 落点 | 关键交付物 |
+|---|---|---|
+| 1 召回不可妥协 + 理论证明 + 实验 | Phase 6（6.1–6.3） | `SAFETY.md` 安全性命题；非循环 `A_obs`/变异真值的 `SafetyEmp=1` 证据；漏选审计 |
+| 2 副作用/间接依赖 | Phase 7 | 状态依赖闭包形式化 + `statedep.mjs` + 注入副作用实验 |
+| 3 技术路线/创新点/映射器结构 | Phase 6.4 + Task 6.1 | `MAPPER.md`（数据模型/构建/增量维护/复杂度）+ 架构图 |
+| 4 量化目标与净收益实验 | Phase 8 | `COST_MODEL.md`；`NetSaving`/盈亏平衡；非时间资源；问题定义量化 |
+| 5 相关工作 | Phase 9 | `RELATED_WORK.md` 两维对比矩阵 + 技术缺口叙述 |
+| 6 标题去 Playwright | Phase 10 | 新标题 + 工具无关化全文修订 |
+
+---
+
+## v3 执行进度（已落地）
+
+> 下表记录 v3 各 Phase 的实际执行状态。代码均通过 `node --test`（50/50 通过），关键召回实验已用真实 Playwright 跑出数据。
+
+| Phase / Task | 状态 | 产物 | 验证结果 |
+|---|---|---|---|
+| 6.1 安全性形式化 | ✅ 完成 | `diffe2e/docs/SAFETY.md` | 命题 1（覆盖臂即安全，含证明）+ H1–H3 假设边界 + 命题 2（副作用闭包） |
+| 6.2 非循环结果差异 oracle | ✅ 完成 | `pipeline/src/outcome_oracle.mjs` + `test/outcome_oracle.test.mjs` | 7/7 单测通过 |
+| 6.2′ 接入 RQ1 驱动 | ✅ 完成 | `experiments/run_rq1.mjs`（新增 SafetyEmp + 漏选审计） | 实跑：**SafetyEmp(ours)=1.0、SafetyEmp(coverage_only)=1.0、0 漏选**（4 个有 observed-affected 的过渡）；产物 `out/rq1_summary.json`、`out/safety_misses.json`（空） |
+| 6.3 变异召回压力测试 | ✅ 完成 | `experiments/run_safety_mutation.mjs` | 实跑：4 文件 mean SafetyEmp=1.0、all_safe=true、0 漏选；`home.js` 变异产生 1 个 observed-affected 且被覆盖臂命中（非空有效样本）；产物 `out/safety_mutation.json` |
+| 6.4 映射器形式化 | ✅ 完成 | `diffe2e/docs/MAPPER.md` | 二部索引数据模型 + 构建/增量维护算法 + 复杂度 + 摊销论证 |
+| 7.1 副作用形式化 | ✅ 完成 | `SAFETY.md` §5 + 命题 2 | 确认导师假设成立；给出状态闭包安全性论证 |
+| 7.2 状态依赖闭包模块 | ✅ 完成 | `pipeline/src/statedep.mjs` + `test/statedep.test.mjs` | 5/5 单测通过（writer→reader 依赖 + 保守闭包 + 幂等） |
+| 7.3 副作用 live 实验 | ⬜ 待做 | `experiments/run_sideeffect.mjs` | **需先制作含副作用链的 fixture**（测试 A 写 localStorage/后端态 → Δ 改消费方 → 测试 B 行为变）；机制已被 7.2 单测与命题 2 证明 |
+| 8 成本模型 + 净收益 | ✅ 完成 | `diffe2e/docs/COST_MODEL.md` + `experiments/run_rq4_cost.mjs` | NetSaving/盈亏平衡/SelectionTax + median/IQR + machine-minutes/token 资源位；`T_select` 显式计时（语法校验通过，待真实项目接入跑数） |
+| 9 相关工作矩阵 | ✅ 完成 | `diffe2e/docs/RELATED_WORK.md` | 两维框架(A0–A2 × B0/B1) + 三族逐篇标注 + (A2,B1) 空白定位 |
+| 10 标题去 Playwright | ✅ 完成 | `研究进展汇报_导师版_核实优化v2.1.md` 题目行 | 改为《代码变更感知的 Web 应用端到端回归测试用例选择与生成方法研究》+ 工具无关说明 |
+
+**关键结论（回应导师意见 1）**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并在受控主体上实测 **SafetyEmp = 1.0、0 漏选**，理论侧由 `SAFETY.md` 命题 1 给出条件安全证明。
+
+**下一步（建议）**：① 制作副作用链 fixture 完成 7.3 的 live 证据；② 接入真实项目 adapter 后跑 `run_rq4_cost.mjs` 得到真实 NetSaving；③ 把 `docs/SAFETY.md`、`MAPPER.md`、`COST_MODEL.md`、`RELATED_WORK.md` 正文整合进论文对应章节。

@@ -9,3 +9,10 @@
 | retest_all | 0 | 1 | 0.375 |
 | random_k | 0.625 | 0.3958 | 0.3958 |
 | static_heuristic | 0.875 | 0.6667 | 1 |
+
+## Non-circular recall (SafetyEmp, outcome-diff oracle)
+
+- transitions with observed-affected tests: 4
+- SafetyEmp (ours/dual): **1**
+- SafetyEmp (coverage-only arm): 1
+- total recall misses (see safety_misses.json): 0
