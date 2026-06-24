@@ -74,6 +74,26 @@ export function normalCdf(z) {
   return p;
 }
 
+// Cohen's kappa for two annotators over categorical labels.
+// pairs: [[a1,a2], ...]. Returns { kappa, po, pe, n }.
+export function cohenKappa(pairs) {
+  const n = pairs.length;
+  if (!n) return { kappa: 0, po: 0, pe: 0, n: 0 };
+  const labels = [...new Set(pairs.flat())];
+  let agree = 0;
+  const m1 = {}, m2 = {};
+  for (const [a, b] of pairs) {
+    if (a === b) agree++;
+    m1[a] = (m1[a] || 0) + 1;
+    m2[b] = (m2[b] || 0) + 1;
+  }
+  const po = agree / n;
+  let pe = 0;
+  for (const l of labels) pe += ((m1[l] || 0) / n) * ((m2[l] || 0) / n);
+  const kappa = pe === 1 ? 1 : (po - pe) / (1 - pe);
+  return { kappa: +kappa.toFixed(4), po: +po.toFixed(4), pe: +pe.toFixed(4), n };
+}
+
 // Two-sided Wilcoxon signed-rank p-value (normal approximation w/ continuity).
 export function wilcoxonP(pairs) {
   const { wPlus, n } = wilcoxonSigned(pairs);
