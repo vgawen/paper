@@ -48,6 +48,35 @@ node tools/mutate.mjs revert
 node tools/select.mjs --vold cov/vold --vnew cov/vnew --diff src/cart.js
 ```
 
+## 真实 LLM API Key
+
+默认不设置 key 时，生成/修复实验会走确定性 stub，便于离线复现。需要跑真实 LLM 对照时，在本目录创建或编辑 `.env`：
+
+```env
+DEEPSEEK_API_KEY=你的key
+# OPENAI_API_KEY=你的key
+# ANTHROPIC_API_KEY=你的key
+```
+
+推荐使用 DeepSeek，成本较低。运行时通过 Node 读取 `.env`：
+
+```bash
+node --env-file=.env experiments/run_rq2.mjs
+node --env-file=.env experiments/run_rq3.mjs
+node --env-file=.env realproj/reprobreak_e2e.mjs
+```
+
+如果当前 Node 版本不支持 `--env-file`，可以先把 `.env` 导入当前 shell：
+
+```bash
+set -a
+source .env
+set +a
+node experiments/run_rq2.mjs
+```
+
+provider 检测顺序为 `OPENAI_API_KEY`、`DEEPSEEK_API_KEY`、`ANTHROPIC_API_KEY`；如果同时设置多个 key，会优先使用 OpenAI。`.env` 已被 `.gitignore` 忽略，不要提交真实密钥。
+
 ## 已验证结果（绿灯）
 
 | 场景 | diff | 选中 | Reduction | Safety | Precision |

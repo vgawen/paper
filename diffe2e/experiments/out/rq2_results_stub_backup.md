@@ -1,9 +1,9 @@
-# RQ2: Two-arm Gap Generation + automatic semantic validity (provider=deepseek)
+# RQ2: Two-arm Gap Generation + automatic semantic validity (provider=stub)
 
 | arm | n | executable | change-relevant | mutation-kill (mean) | change-sensitive | semantic-valid (auto) |
 |---|---|---|---|---|---|---|
 | diff | 3 | 1 | 1 | 1 | 1 | 1 |
-| nodiff | 3 | 0 | 0 | 0 | 0 | 0 |
+| nodiff | 3 | 1 | 1 | 1 | 1 | 1 |
 
 - **automatic semantic validity** = executable ∧ change-sensitive (pass V_new, fail V_old) ∧ kills ≥1 injected new-behavior mutant. Objective, no human needed.
 - mutation-kill (mean) = mean over specs of killed/injected mutants on the gap source (testId renames + visible-text edits).

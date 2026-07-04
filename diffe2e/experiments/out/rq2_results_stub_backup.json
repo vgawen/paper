@@ -1,5 +1,5 @@
 {
-  "provider": "deepseek",
+  "provider": "stub",
   "summary": {
     "diff": {
       "n": 3,
@@ -11,11 +11,11 @@
     },
     "nodiff": {
       "n": 3,
-      "execRate": 0,
-      "relRate": 0,
-      "mutKillMean": 0,
-      "changeSensRate": 0,
-      "semanticAutoRate": 0
+      "execRate": 1,
+      "relRate": 1,
+      "mutKillMean": 1,
+      "changeSensRate": 1,
+      "semanticAutoRate": 1
     }
   },
   "rows": [
@@ -37,13 +37,13 @@
       "route": "/coupon",
       "gap_file": "src/coupon.js",
       "arm": "nodiff",
-      "executable": false,
-      "change_relevant": false,
-      "mutants": 0,
-      "killed": 0,
-      "mutation_score": 0,
-      "change_sensitive": false,
-      "semantic_auto": false
+      "executable": true,
+      "change_relevant": true,
+      "mutants": 3,
+      "killed": 3,
+      "mutation_score": 1,
+      "change_sensitive": true,
+      "semantic_auto": true
     },
     {
       "tag": "c13",
@@ -63,13 +63,13 @@
       "route": "/wishlist",
       "gap_file": "src/wishlist.js",
       "arm": "nodiff",
-      "executable": false,
-      "change_relevant": false,
-      "mutants": 0,
-      "killed": 0,
-      "mutation_score": 0,
-      "change_sensitive": false,
-      "semantic_auto": false
+      "executable": true,
+      "change_relevant": true,
+      "mutants": 3,
+      "killed": 3,
+      "mutation_score": 1,
+      "change_sensitive": true,
+      "semantic_auto": true
     },
     {
       "tag": "c19",
@@ -89,13 +89,13 @@
       "route": "/faq",
       "gap_file": "src/faq.js",
       "arm": "nodiff",
-      "executable": false,
-      "change_relevant": false,
-      "mutants": 0,
-      "killed": 0,
-      "mutation_score": 0,
-      "change_sensitive": false,
-      "semantic_auto": false
+      "executable": true,
+      "change_relevant": true,
+      "mutants": 3,
+      "killed": 3,
+      "mutation_score": 1,
+      "change_sensitive": true,
+      "semantic_auto": true
     }
   ]
 }
