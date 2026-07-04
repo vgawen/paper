@@ -34,6 +34,39 @@ test('generateForGap with stub client returns template', async () => {
   assert.match(spec, /coupon-apply/);
 });
 
+test('real provider failure throws instead of falling back silently', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({
+    error: { message: 'Insufficient Balance', code: 'invalid_request_error' },
+  }), { status: 402, headers: { 'content-type': 'application/json' } });
+  try {
+    const client = createClient({ DEEPSEEK_API_KEY: 'sk-test' });
+    await assert.rejects(
+      client.complete('prompt', { fallback: 'local fallback' }),
+      /deepseek API request failed.*402.*Insufficient Balance/
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
+test('real provider empty response throws instead of falling back silently', async () => {
+  const originalFetch = globalThis.fetch;
+  globalThis.fetch = async () => new Response(JSON.stringify({ choices: [] }), {
+    status: 200,
+    headers: { 'content-type': 'application/json' },
+  });
+  try {
+    const client = createClient({ DEEPSEEK_API_KEY: 'sk-test' });
+    await assert.rejects(
+      client.complete('prompt', { fallback: 'local fallback' }),
+      /deepseek API returned empty completion/
+    );
+  } finally {
+    globalThis.fetch = originalFetch;
+  }
+});
+
 test('buildPromptNoDiff omits diff/route constraints', () => {
   const p = buildPromptNoDiff({ appName: 'demo' });
   assert.ok(!/diff|changed|route /i.test(p) || /no specific change/i.test(p));
