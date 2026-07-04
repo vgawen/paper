@@ -31,7 +31,7 @@ export function createClient(env = process.env) {
       }
       const base = provider === 'deepseek' ? 'https://api.deepseek.com/chat/completions' : 'https://api.openai.com/v1/chat/completions';
       const key = provider === 'deepseek' ? env.DEEPSEEK_API_KEY : env.OPENAI_API_KEY;
-      const model = provider === 'deepseek' ? 'deepseek-chat' : 'gpt-4o-mini';
+      const model = provider === 'deepseek' ? 'deepseek-v4-flash' : 'gpt-4o-mini';
       const res = await fetch(base, {
         method: 'POST',
         headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
