@@ -75,7 +75,7 @@ export async function generateFromUiNodes({ addNodes, title, route = null, clien
   const prompt = `New UI elements were added: ${JSON.stringify(addNodes.map((n) => ({ tag: n.tag, text: n.text, testId: n.testId })))}. ` +
     `Write ONE Playwright test importing { test, expect } from './fixtures' that exercises them and asserts a visible outcome.`;
   const out = await client.complete(prompt, { fallback });
-  return { spec: out || fallback };
+  return { spec: cleanGeneratedSpec(out || fallback) };
 }
 
 // No-diff-constraint baseline (RQ2 ablation): only the app name, no diff, no
@@ -84,7 +84,9 @@ export function buildPromptNoDiff({ appName = 'the app' } = {}) {
   return [
     `Write a single Playwright smoke test for ${appName}.`,
     'You are given no specific change to target; pick any meaningful user flow.',
-    'Output only a TypeScript Playwright test using @playwright/test.',
+    "Use only this import: import { test, expect } from './fixtures';",
+    "Use relative navigation such as page.goto('/#/') or page.goto('/#/cart'); do not use external websites.",
+    'Output only a TypeScript Playwright test.',
   ].join('\n');
 }
 
@@ -93,5 +95,15 @@ export async function generateForGap({ route, code, title, client }) {
   const fallback = buildSpecTemplate({ route, signals, title });
   const prompt = buildPrompt({ route, code });
   const out = await client.complete(prompt, { fallback });
-  return { signals, spec: out || fallback };
+  return { signals, spec: cleanGeneratedSpec(out || fallback) };
+}
+
+export function cleanGeneratedSpec(raw) {
+  let spec = String(raw || '').trim();
+  const fenced = spec.match(/```(?:typescript|ts|javascript|js)?\s*([\s\S]*?)```/i);
+  if (fenced) spec = fenced[1].trim();
+  spec = spec
+    .replace(/from\s+['"]@playwright\/test['"]/g, "from './fixtures'")
+    .trim();
+  return spec.endsWith('\n') ? spec : spec + '\n';
 }

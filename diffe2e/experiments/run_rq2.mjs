@@ -18,7 +18,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { WORK, OUT, checkout, readManifest, runSuite, loadCov, parseFailed, git, ensureOut } from './lib.mjs';
-import { generateForGap, buildPromptNoDiff } from '../pipeline/src/generate.mjs';
+import { generateForGap, buildPromptNoDiff, cleanGeneratedSpec } from '../pipeline/src/generate.mjs';
 import { createClient } from '../pipeline/src/llm/client.mjs';
 
 const norm = (p) => p.replace(/^\/+/, '');
@@ -100,7 +100,7 @@ async function main() {
     const diffFile = `_gen_${stem}.spec.ts`;
     fs.writeFileSync(path.join(WORK, 'tests', diffFile), spec);
 
-    const nodiffSpec = await client.complete(buildPromptNoDiff({ appName: 'demo-app' }), { fallback: spec });
+    const nodiffSpec = cleanGeneratedSpec(await client.complete(buildPromptNoDiff({ appName: 'demo-app' }), { fallback: spec }));
     const ndFile = `_gen_nodiff_${stem}.spec.ts`;
     fs.writeFileSync(path.join(WORK, 'tests', ndFile), nodiffSpec);
 
