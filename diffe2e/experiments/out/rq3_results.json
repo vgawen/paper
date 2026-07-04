@@ -1,10 +1,10 @@
 {
-  "provider": "stub",
+  "provider": "deepseek",
   "n": 4,
   "repaired": 3,
   "repair_rate_rule": 0.75,
-  "repair_rate_llm": null,
-  "llm_n": 0,
+  "repair_rate_llm": 1,
+  "llm_n": 4,
   "rows": [
     {
       "tag": "c08",
@@ -20,7 +20,7 @@
       ],
       "before_pass": false,
       "after_pass": true,
-      "after_pass_llm": null,
+      "after_pass_llm": true,
       "usability_before": 0,
       "usability_after": 1
     },
@@ -38,7 +38,7 @@
       ],
       "before_pass": false,
       "after_pass": true,
-      "after_pass_llm": null,
+      "after_pass_llm": true,
       "usability_before": 0,
       "usability_after": 1
     },
@@ -56,7 +56,7 @@
       ],
       "before_pass": false,
       "after_pass": true,
-      "after_pass_llm": null,
+      "after_pass_llm": true,
       "usability_before": 0,
       "usability_after": 1
     },
@@ -68,7 +68,7 @@
       "edits": [],
       "before_pass": false,
       "after_pass": false,
-      "after_pass_llm": null,
+      "after_pass_llm": true,
       "usability_before": 0,
       "usability_after": 0
     }

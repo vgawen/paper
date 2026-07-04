@@ -338,14 +338,16 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 ### 5.3 RQ3：修复——失效用例复用
 
-**受控主体（n=2）**：修复成功率 1.0（2/2）；mean TargetedSetUsability：before 0.0 → after 1.0。
+**受控主体（n=4，provider=deepseek）**：规则臂修复成功率 0.75（3/4），LLM 臂修复成功率 1.0（4/4）；mean TargetedSetUsability（按规则修复后可进入 targeted set 的保守口径）：before 0.0 → after 0.75。
 
-| tag | type | target | staleness | usability_before | usability_after |
-|---|---|---|---|---|---|
-| c08 | locator_break | cart.spec.ts | STRUCTURAL_ONLY | 0 | 1 |
-| c15 | assertion_break | login.spec.ts | EXPECTATION_CHANGE | 0 | 1 |
+| tag | type | target | staleness | rule 修复 | LLM 修复 | usability_before | usability_after |
+|---|---|---|---|---|---|---|---|
+| c08 | locator_break | cart.spec.ts | STRUCTURAL_ONLY | true | true | 0 | 1 |
+| c15 | assertion_break | login.spec.ts | EXPECTATION_CHANGE | true | true | 0 | 1 |
+| c20 | locator_break | search.spec.ts | STRUCTURAL_ONLY | true | true | 0 | 1 |
+| c21 | assertion_break | orders.spec.ts | SUSPECTED_REGRESSION | false | true | 0 | 0 |
 
-来源：`out/rq3_results.md`。过时三分类正确区分定位失效（STRUCTURAL_ONLY，语义定位重写）与期望变化（EXPECTATION_CHANGE，断言更新）。
+来源：`out/rq3_results.md`。过时三分类正确区分定位失效（STRUCTURAL_ONLY，语义定位重写）与期望变化（EXPECTATION_CHANGE，断言更新）；c21 被保守分为 SUSPECTED_REGRESSION，规则臂不改写，因此不进入 targeted set，LLM 臂可生成通过补丁但需结合人工/业务语义判断是否应采纳。
 
 **ReproBreak 真实数据（离线 / CSV ground truth）**，来源 `realproj/results/reprobreak.md`：
 - **E1 数据刻画**：9604 条真实结构性 locator 断裂对，Playwright 4867（50.7%）/ Cypress 4737（49.3%）。

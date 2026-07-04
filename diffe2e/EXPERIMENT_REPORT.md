@@ -70,8 +70,10 @@
 - 人工小样本校准=待办（仅作自动语义指标的辅助验证；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。
 
 ## 3. RQ3 修复：让选中的失效用例重新可用
-- 修复成功率=0.750 (3/4)；TargetedSetUsability：before 0.000 → after 0.750。
-- 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）。
+- provider=deepseek。
+- 修复成功率（rule）=0.750 (3/4)；修复成功率（LLM）=1.000 (4/4)。
+- TargetedSetUsability（按规则修复后可进入 targeted set 的保守口径）：before 0.000 → after 0.750。
+- 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）；c21 被保守分为 SUSPECTED_REGRESSION，规则臂不改写，LLM 臂可生成通过补丁但需人工/业务语义确认是否采纳。
 
 ## 3.5 ReproBreak 真实数据子实验（离线 / CSV ground truth）
 - 数据：9604 条真实结构性 locator 断裂对（Playwright 4867/Cypress 4737，多个开源项目）。
