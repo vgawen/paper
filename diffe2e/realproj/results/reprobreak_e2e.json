@@ -1,2916 +1,3339 @@
 {
-  "provider": "stub",
-  "n": 413,
-  "skipped": 36,
+  "provider": "deepseek",
+  "n": 414,
+  "skipped": 35,
   "leakage_free": true,
-  "rule_rate": 0.0339,
-  "llm_rate": 0,
+  "partial": false,
+  "rule_rate": 0.0338,
+  "llm_rate": 0.0556,
   "arms": {
     "rule": {
       "ok": 14,
-      "n": 413
+      "n": 414
     },
     "llm": {
-      "ok": 0,
-      "n": 413
+      "ok": 23,
+      "n": 414
     }
   },
   "app_signal_subset": {
-    "n": 392,
+    "n": 393,
     "rule_ok": 14,
-    "rule_rate": 0.0357
+    "rule_rate": 0.0356
   },
+  "llm_errors": [],
   "rows": [
     {
       "id": 1169,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1170,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1211,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1216,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1220,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1221,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1222,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1223,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1224,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1225,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1226,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1227,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1228,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1229,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1230,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1231,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1232,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1233,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1234,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1244,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1265,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1266,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1267,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1268,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1269,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1276,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1277,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1278,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1279,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1317,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1320,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1321,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1483,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1177,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1178,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1179,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1180,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1181,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1182,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1183,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1184,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1185,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1186,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1188,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1190,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1191,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1192,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1193,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1194,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1195,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1196,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1197,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1198,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1199,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1200,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1202,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1203,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1204,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1205,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1206,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1207,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1208,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1209,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1210,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1215,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1251,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1252,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1253,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1254,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1255,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1256,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1257,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1258,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1259,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1260,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1261,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1262,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1263,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1264,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1270,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1271,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1272,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1273,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1274,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1275,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1280,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1281,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1282,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1283,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1284,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1285,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1286,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1287,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1288,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1289,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1290,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1291,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1292,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1293,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1294,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1295,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1296,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1297,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1298,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1299,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1300,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1301,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1302,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1303,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1304,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1305,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1306,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1307,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1308,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1309,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1310,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1311,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1312,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1313,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1314,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1315,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1316,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1322,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1323,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1324,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1325,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1326,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1327,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1335,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1336,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1337,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1338,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1339,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1340,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1341,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1342,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1343,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1344,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1345,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1346,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1347,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1348,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1349,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1351,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1352,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1353,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1354,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1355,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1356,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1357,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1358,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1360,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1361,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1362,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1364,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1365,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1366,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1367,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1368,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1369,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1370,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1371,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1372,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1373,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1374,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1375,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1376,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1377,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1378,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1379,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1380,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1381,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1382,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1383,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1384,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1385,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1386,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1387,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1388,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1418,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1419,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1420,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1421,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1422,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1423,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1424,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1425,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1426,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1427,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1428,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1429,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1430,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1431,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1432,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1433,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1434,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1435,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1436,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1437,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1438,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1439,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1440,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1441,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1442,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1443,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1444,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1445,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1446,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1447,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1448,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1449,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1450,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1451,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1452,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1453,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1454,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1455,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1456,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1457,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1458,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1459,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1460,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1461,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1462,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1463,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1464,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1465,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1466,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1481,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1482,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1488,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1489,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1490,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1491,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1492,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1493,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1494,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1495,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1496,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1497,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1505,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1506,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1507,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 1242,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 1508,
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 711,
       "repo": "tryghost/koenig",
       "app_files": 2,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 685,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 698,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 699,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 700,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 705,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 709,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 714,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 720,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 723,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 724,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 756,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 764,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 834,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 702,
       "repo": "tryghost/koenig",
       "app_files": 24,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 703,
       "repo": "tryghost/koenig",
       "app_files": 24,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 715,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": true,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 716,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": true,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 746,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 749,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
+    },
+    {
+      "id": 614,
+      "repo": "tryghost/koenig",
+      "app_files": 35,
+      "rule": false,
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 621,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 688,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": true,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 689,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": true,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 690,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": true,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 713,
       "repo": "tryghost/koenig",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 750,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 751,
       "repo": "tryghost/koenig",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 752,
       "repo": "tryghost/koenig",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 757,
       "repo": "tryghost/koenig",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 758,
       "repo": "tryghost/koenig",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 836,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 837,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 839,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 840,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 841,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 842,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 616,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 619,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 648,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 649,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 652,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 655,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 656,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 660,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 664,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 783,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 784,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 785,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 786,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 788,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 791,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 792,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 793,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 794,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 795,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 797,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 800,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 801,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 748,
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 754,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 768,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 769,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": true,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 770,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 771,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 772,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 774,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 775,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 776,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 777,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": true,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 778,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 779,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 780,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 781,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 782,
       "repo": "tryghost/koenig",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 765,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 766,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 767,
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3316,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": true,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 3318,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": true,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 3402,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3406,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": true,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 3457,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3458,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3466,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3467,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3468,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3469,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": true,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 3470,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3514,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3515,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3549,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": true,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 3550,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3558,
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": true,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 3408,
       "repo": "nasa/openmct",
       "app_files": 16,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3497,
       "repo": "nasa/openmct",
       "app_files": 16,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3559,
       "repo": "nasa/openmct",
       "app_files": 16,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3319,
       "repo": "nasa/openmct",
       "app_files": 34,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3320,
       "repo": "nasa/openmct",
       "app_files": 34,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3321,
       "repo": "nasa/openmct",
       "app_files": 34,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3403,
       "repo": "nasa/openmct",
       "app_files": 34,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3407,
       "repo": "nasa/openmct",
       "app_files": 34,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3405,
       "repo": "nasa/openmct",
       "app_files": 19,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3414,
       "repo": "nasa/openmct",
       "app_files": 19,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3473,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3474,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3475,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3476,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3477,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3480,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3481,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3482,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3483,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3484,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3485,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3486,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3487,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3488,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3489,
       "repo": "nasa/openmct",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3533,
       "repo": "nasa/openmct",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3534,
       "repo": "nasa/openmct",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3545,
       "repo": "nasa/openmct",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3546,
       "repo": "nasa/openmct",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 3556,
       "repo": "nasa/openmct",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5770,
       "repo": "microsoft/playwright",
       "app_files": 2,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5771,
       "repo": "microsoft/playwright",
       "app_files": 2,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5772,
       "repo": "microsoft/playwright",
       "app_files": 2,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5773,
       "repo": "microsoft/playwright",
       "app_files": 2,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5443,
       "repo": "microsoft/playwright",
       "app_files": 0,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5403,
       "repo": "microsoft/playwright",
       "app_files": 6,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5625,
       "repo": "microsoft/playwright",
       "app_files": 6,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5626,
       "repo": "microsoft/playwright",
       "app_files": 6,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5627,
       "repo": "microsoft/playwright",
       "app_files": 6,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5407,
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5632,
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5633,
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5634,
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5635,
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5636,
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5637,
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5638,
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5408,
       "repo": "microsoft/playwright",
       "app_files": 10,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5435,
       "repo": "microsoft/playwright",
       "app_files": 28,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5609,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5620,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5641,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5642,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5646,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5651,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5660,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5661,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5662,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5663,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5664,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5665,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5666,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5667,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": true,
+      "llm_error": null
     },
     {
       "id": 5611,
       "repo": "microsoft/playwright",
       "app_files": 1,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5615,
       "repo": "microsoft/playwright",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5616,
       "repo": "microsoft/playwright",
       "app_files": 4,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5623,
       "repo": "microsoft/playwright",
       "app_files": 2,
       "rule": true,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5410,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5650,
       "repo": "microsoft/playwright",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5656,
       "repo": "microsoft/playwright",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5657,
       "repo": "microsoft/playwright",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5658,
       "repo": "microsoft/playwright",
       "app_files": 5,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5619,
       "repo": "microsoft/playwright",
       "app_files": 3,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5649,
       "repo": "microsoft/playwright",
       "app_files": 18,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     },
     {
       "id": 5678,
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": false
+      "llm": false,
+      "llm_error": null
     }
   ]
 }
