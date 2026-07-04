@@ -20,6 +20,7 @@ const BREAKS = path.join(here, 'results', 'reprobreak_breaks.json');
 const CLONES = path.join(here, 'clones', 'aut');
 const OUT = path.join(here, 'results', 'reprobreak_e2e.json');
 const norm = (s) => (s || '').replace(/\s+/g, ' ').trim();
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 function ensureClone(repoName) {
   const dest = path.join(CLONES, repoName.replace('/', '__'));
@@ -50,7 +51,20 @@ async function main() {
   const client = createClient();
   const arms = { rule: { ok: 0, n: 0 }, llm: { ok: 0, n: 0 } };
   const rows = [];
+  const llmErrors = [];
   let skipped = 0;
+  const writeOut = (partial = false) => {
+    const rate = (a) => (a.n ? +(a.ok / a.n).toFixed(4) : 0);
+    const withApp = rows.filter((r) => r.app_files > 0);
+    const ruleWithApp = withApp.filter((r) => r.rule).length;
+    fs.writeFileSync(OUT, JSON.stringify({
+      provider: client.provider, n: rows.length, skipped, leakage_free: true, partial,
+      rule_rate: rate(arms.rule), llm_rate: rate(arms.llm), arms,
+      app_signal_subset: { n: withApp.length, rule_ok: ruleWithApp, rule_rate: withApp.length ? +(ruleWithApp / withApp.length).toFixed(4) : 0 },
+      llm_errors: llmErrors,
+      rows,
+    }, null, 2));
+  };
   for (const b of breaks.slice(0, limit)) {
     let repo;
     try { repo = ensureClone(b.repository_name); } catch { skipped++; continue; }
@@ -66,6 +80,7 @@ async function main() {
 
     // LLM arm: old broken test + APP diff context only (answer excluded)
     let llmFixed = false;
+    let llmError = null;
     if (client.provider !== 'stub') {
       const prompt = [
         'A Playwright/Cypress test locator broke after a structural change in the application UI.',
@@ -75,23 +90,34 @@ async function main() {
         'Application source AFTER the change:', appNew.slice(0, 3500),
         'Using ONLY the application change above, output ONLY the single corrected locator string.',
       ].join('\n');
-      const ans = await client.complete(prompt, { fallback: b.old_locator });
-      llmFixed = norm(ans).includes(norm(b.new_locator));
+      try {
+        const ans = await completeWithRetry(client, prompt, { fallback: b.old_locator });
+        llmFixed = norm(ans).includes(norm(b.new_locator));
+      } catch (e) {
+        llmError = e.message || String(e);
+        llmErrors.push({ id: b.id, repo: b.repository_name, error: llmError });
+      }
     }
     arms.llm.n++; if (llmFixed) arms.llm.ok++;
-    rows.push({ id: b.id, repo: b.repository_name, app_files: appFiles.length, rule: ruleFixed, llm: llmFixed });
-    console.log(`#${b.id} ${b.repository_name} appFiles=${appFiles.length} rule=${ruleFixed} llm=${llmFixed}`);
+    rows.push({ id: b.id, repo: b.repository_name, app_files: appFiles.length, rule: ruleFixed, llm: llmFixed, llm_error: llmError });
+    writeOut(true);
+    console.log(`#${b.id} ${b.repository_name} appFiles=${appFiles.length} rule=${ruleFixed} llm=${llmFixed}${llmError ? ' llm_error=' + llmError : ''}`);
   }
+  writeOut(false);
   const rate = (a) => (a.n ? +(a.ok / a.n).toFixed(4) : 0);
-  // app-signal subset: rows where the structural change IS in this commit's app diff
-  const withApp = rows.filter((r) => r.app_files > 0);
-  const ruleWithApp = withApp.filter((r) => r.rule).length;
-  fs.writeFileSync(OUT, JSON.stringify({
-    provider: client.provider, n: rows.length, skipped, leakage_free: true,
-    rule_rate: rate(arms.rule), llm_rate: rate(arms.llm), arms,
-    app_signal_subset: { n: withApp.length, rule_ok: ruleWithApp, rule_rate: withApp.length ? +(ruleWithApp / withApp.length).toFixed(4) : 0 },
-    rows,
-  }, null, 2));
   console.log(`\nReproBreak e2e (leakage-free): rule=${rate(arms.rule)} llm=${rate(arms.llm)} (provider=${client.provider}, n=${rows.length}, skipped=${skipped})`);
 }
 main();
+
+async function completeWithRetry(client, prompt, options, attempts = 3) {
+  let last;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      return await client.complete(prompt, options);
+    } catch (e) {
+      last = e;
+      if (i < attempts - 1) await sleep(1000 * (i + 1));
+    }
+  }
+  throw last;
+}
