@@ -1,8 +1,9 @@
-# DiffE2E 实验报告（面向代码变更的 Playwright E2E 针对性回归测试）
+# DiffE2E 实验报告（代码变更感知的 Playwright E2E 选测与生成）
 
 ## 0. 概览
 - 主体：受控多文件应用（6+ 路由、共享 util），真实 git 历史 25 个 commit、24 个变更过渡。
-- 全流程零外部依赖、可一键复现；生成/修复使用可插拔 LLM 客户端（无 key 时走确定性 stub）。
+- 主链路聚焦安全选测（RQ1）与 diff 约束缺口生成（RQ2）；修复（RQ3）用于闭环支撑和真实边界分析。
+- 全流程可一键复现；生成/修复使用可插拔 LLM 客户端（真实 provider 失败会明确报错，无 key 时仅本地 stub）。
 - 无信息泄漏：选择只用 V_old 覆盖 + diff；V_new 全量覆盖仅用于构造 affected oracle。
 
 ## 1. RQ1 选择：最小且安全的针对性测试集
@@ -69,25 +70,22 @@
 - 工程护栏：真实 provider 请求失败或返回空 completion 时直接报错；LLM 输出会清洗 Markdown 代码围栏，并统一导入 `./fixtures` 以保留覆盖采集。
 - 人工小样本校准=待办（仅作自动语义指标的辅助验证；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。
 
-## 3. RQ3 修复：让选中的失效用例重新可用
-- provider=deepseek。
-- 修复成功率（rule）=0.750 (3/4)；修复成功率（LLM）=1.000 (4/4)。
-- TargetedSetUsability（按规则修复后可进入 targeted set 的保守口径）：before 0.000 → after 0.750。
-- 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）；c21 被保守分为 SUSPECTED_REGRESSION，规则臂不改写，LLM 臂可生成通过补丁但需人工/业务语义确认是否采纳。
+## 3. RQ3 闭环支撑：让选中的失效用例重新可用
+- 修复成功率=0.750 (3/4)；TargetedSetUsability：before 0.000 → after 0.750。该结果说明轻量修复能支撑 selected tests 的闭环可用性，但不作为本文主创新点。
+- 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）。
 
 ## 3.5 ReproBreak 真实数据子实验（离线 / CSV ground truth）
 - 数据：9604 条真实结构性 locator 断裂对（Playwright 4867/Cypress 4737，多个开源项目）。
 - **Semantic UI Diff 可达性**：1172/9604 = 12.2% 为 testId/text/role-name/href 语义锚值替换（本方法 UI 信号直接可定位）；其余为 CSS id/class 改名、结构重排、策略切换（需 DOM 拓扑或 LLM）。Playwright 语义定位的可达性显著高于 Cypress。
 - **确定性修复改写器**（已知 oracle 信号，上界）：在可达的 578 条上精确重建开发者修复 574/578 = 99.3%。
-- 诚实定位：该结果量化了「语义信号能覆盖多少真实断裂」与「改写机制在真实语法上的正确性」；端到端信号检测精度与执行验证（449 断裂 / Docker）为后续。详见 realproj/results/reprobreak.md。
+- 诚实定位：该结果量化了「语义信号能覆盖多少真实断裂」与「改写机制在真实语法上的正确性」；它是修复上界和边界证据，不等同于端到端真实修复能力。详见 realproj/results/reprobreak.md。
 
 ## 3.6 ReproBreak 端到端修复（无信息泄漏，真实逐 commit 源码）
 - 数据：449 条执行验证断裂（导出自 SQLite），进入评估 n=414，泄漏护栏跳过 35 条。
 - **无泄漏设定**：修复输入仅「旧（断裂）测试 + 应用源码 old/new diff（已排除测试文件）」；`new_locator` 与新测试文件仅评估用。
 - **规则臂端到端 exact-match**：14/414 = 3.38%（有 app 信号子集 14/393 = 3.56%）。
-- **LLM 臂端到端 exact-match（DeepSeek）**：23/414 = 5.56%（LLM 调用错误 0）。
-- 分项目：angular-slickgrid 1/245、koenig 2/78、openmct 6/46、playwright 14/45。
-- 关键对比：3.5 离线「已知 oracle 信号」上界 99.3% vs 本节端到端「从 app diff 自行还原信号」规则臂 3.38%、DeepSeek LLM 臂 5.56%——LLM 有增益，但整体 exact-match 仍低，量化了信号检测的难度。详见 realproj/results/reprobreak_e2e.md。
+- **LLM 臂**：23/414 = 5.56%。
+- 关键对比：3.5 离线「已知 oracle 信号」上界 99.3% vs 本节端到端「从 app diff 自行还原信号」规则臂 3.38%、DeepSeek LLM 臂 5.56%——LLM 有增益，但整体 exact-match 仍低。因此 ReproBreak 在本文中主要作为真实修复难度和方法边界的量化证据。详见 realproj/results/reprobreak_e2e.md。
 
 ## 4. RQ4 成本/效率
 - 跨 24 个过渡：retest-all 共执行 144 次用例；ours 仅执行 54 次 → 测试执行量下降 62.5%（Safety 仍=1.0）。
@@ -118,7 +116,7 @@
 
 ## 6. 有效性威胁与局限
 - 主体为受控工程；外部效度已在 2 个真实开源项目（actual-budget、mermaid-live-editor）的多 commit replay 上初步验证（§5.1），但项目数仍有限。
-- 生成实验已接入真实 DeepSeek 对照；修复在无 LLM key 时仍走确定性 stub，可执行率/相关性/修复率可测，语义有效率需人工或真实 LLM。
+- 生成实验已接入真实 DeepSeek 对照；真实 provider 调用失败或返回空结果时实验会明确报错，避免把本地 stub 误当真实 LLM 结果。
 - 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂 3.38%、DeepSeek LLM 臂 5.56%）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
 - 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。
 - Semantic UI Diff 在“文案与 handler 同时变更”时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。

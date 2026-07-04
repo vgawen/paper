@@ -10,11 +10,11 @@
 
 ## 摘要
 
-现代 Web 项目提交频繁，持续集成（CI）中每次都全量运行端到端（E2E）测试成本高昂；但若人工挑选少跑，又容易漏掉受本次代码变更影响的用例，且页面结构、文本、定位器或断言的变化会使既有测试频繁失效。本文研究**代码变更感知的 Web 应用端到端回归测试用例选择与生成方法**：给定一次代码变更（diff），自动产出一组"与变更相关、能运行、能覆盖变化"的 E2E 测试集——能复用的旧测试予以选择，因页面变化失效的选中测试予以修复，既有测试覆盖不到的新变化再行生成。
+现代 Web 项目提交频繁，持续集成（CI）中每次都全量运行端到端（E2E）测试成本高昂；但若人工挑选少跑，又容易漏掉受本次代码变更影响的用例。与此同时，新增页面、路由或交互常常没有对应 E2E 覆盖，使回归测试既"跑得多"又"补得慢"。本文研究**代码变更感知的 Web 应用端到端回归测试用例选择与生成方法**：给定一次代码变更（diff），围绕两个核心目标自动构造 targeted E2E 测试集——从既有测试中安全选择受影响用例，并对既有测试覆盖不到的新变化进行 diff 约束生成。测试修复作为闭环支撑能力，用于提升选中失效用例的可用性并量化真实测试演化难度，而非本文主创新点。
 
-方法的核心是一个持久化、可增量维护的**测试↔代码映射器**（带类型的二部索引），以及一个把源码层 UI 变更对应到测试定位器与断言的 **Semantic UI Diff**，二者作为"源码 diff ↔ 浏览器操作"的语义桥，贯穿"选择→运行/修复→缺口分析→生成"的代码变更感知闭环。针对回归测试选择的核心诉求"召回不可妥协"，本文给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题及其证明，并用**非循环的结果差异 oracle** 经验验证；针对测试间共享状态引发的副作用，给出状态依赖闭包及其安全性命题。
+方法的核心是一个持久化、可增量维护的**测试↔代码映射器**（带类型的二部索引），以及一个把源码层 UI 变更对应到测试定位器、断言和新增交互的 **Semantic UI Diff**，二者作为"源码 diff ↔ 浏览器操作"的语义桥，支撑"选择→缺口分析→生成"主链路，并在运行阶段提供轻量修复锚点。针对回归测试选择的核心诉求"召回不可妥协"，本文给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题及其证明，并用**非循环的结果差异 oracle** 经验验证；针对测试间共享状态引发的副作用，给出状态依赖闭包及其安全性命题。针对生成质量，本文引入可执行率、变更相关率、版本差分敏感性与变异杀伤等自动指标，避免只以"能运行"衡量生成用例。
 
-在一个含 6+ 路由、共享工具、25 个真实 git 提交、24 个变更过渡的受控被测应用上，本方法在 Safety=1.0（不漏选）的前提下达到 Reduction=0.625、Precision=1.0，是唯一兼顾安全与高缩减的方法；非循环结果差异 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选；副作用场景下经典文件级覆盖选择导致判定 pass→fail 翻转（不保真），状态闭包恢复保真。在 ReproBreak 的 9604 条真实定位器断裂上，量化了 Semantic UI Diff 的语义可达性（12.2%）与确定性改写器在已知信号下的精确重建上界（574/578=99.3%）；在其 449 条执行验证断裂上做端到端无泄漏修复，规则臂为 14/414=3.38%，DeepSeek LLM 臂提升至 23/414=5.56%，但仍远低于已知信号上界，说明"从源码 diff 自行还原信号"是主要瓶颈。在 2 个真实开源 Playwright 项目（actual-budget、mermaid-live-editor，共 14 个稳定过渡，经 CDP 覆盖注入）上完成多 commit replay，dual 均达 Safety=1.0、Precision=1.0，并实证了 UI 信号臂"稀疏触发、高精度"的互补性。真实 DeepSeek 生成对照显示，diff 约束臂在 3 个缺口上可执行率、变更相关率、版本敏感率与自动语义有效率均为 1.0，明显优于无 diff 基线；真实 wall-clock 净收益仍在补充。
+在一个含 6+ 路由、共享工具、25 个真实 git 提交、24 个变更过渡的受控被测应用上，本方法在 Safety=1.0（不漏选）的前提下达到 Reduction=0.625、Precision=1.0，是唯一兼顾安全与高缩减的方法；非循环结果差异 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选；副作用场景下经典文件级覆盖选择导致判定 pass→fail 翻转（不保真），状态闭包恢复保真。在 2 个真实开源 Playwright 项目（actual-budget、mermaid-live-editor，共 14 个稳定过渡，经 CDP 覆盖注入）上完成多 commit replay，dual 均达 Safety=1.0、Precision=1.0，并实证了 UI 信号臂"稀疏触发、高精度"的互补性。真实 DeepSeek 生成对照显示，diff 约束臂在 3 个缺口上可执行率、变更相关率、版本敏感率与自动语义有效率均为 1.0，明显优于无 diff 基线。作为闭环支撑和边界分析，在 ReproBreak 的 9604 条真实定位器断裂上，本文量化了 Semantic UI Diff 的语义可达性（12.2%）与确定性改写器在已知信号下的精确重建上界（574/578=99.3%）；端到端无泄漏修复中，规则臂为 14/414=3.38%，DeepSeek LLM 臂为 23/414=5.56%，说明真实 locator 修复仍是困难问题。真实 wall-clock 净收益仍在补充。
 
 **关键词**：回归测试选择；端到端测试；代码变更感知；测试生成；测试修复；持续集成
 
@@ -22,9 +22,9 @@
 
 ## Abstract
 
-Modern web projects commit frequently, making full end-to-end (E2E) test execution in CI prohibitively expensive; yet manually trimming the suite risks missing tests affected by a change, and brittle locators/assertions break easily as the UI evolves. This thesis studies a **code-change-aware method for E2E regression test selection and generation** for web applications: given a code diff, it automatically yields a *targeted* E2E test set that is change-relevant, executable, and change-covering—reusing relevant existing tests by *selection*, *repairing* selected tests broken by UI changes, and *generating* tests for changes not covered by any existing test.
+Modern web projects commit frequently, making full end-to-end (E2E) test execution in CI prohibitively expensive; yet manually trimming the suite risks missing tests affected by a change, while newly added routes or interactions often lack E2E coverage. This thesis studies a **code-change-aware method for E2E regression test selection and generation** for web applications: given a code diff, it automatically yields a *targeted* E2E test set by safely selecting affected existing tests and generating diff-constrained tests for uncovered changes. Test repair is treated as a supporting capability in the closed loop, used to improve targeted-set usability and to quantify the difficulty of real test evolution rather than as the primary contribution.
 
-The method centers on a persistent, incrementally maintained **test–code mapper** (a typed bipartite index) and a **Semantic UI Diff** that bridges source-level UI changes to test locators and assertions, threading a closed loop of *selection → run/repair → gap analysis → generation*. To make "recall is non-negotiable" provable, we define a selector-independent truly-affected set `A*`, state and prove a conditional safety proposition, and validate it empirically with a **non-circular outcome-difference oracle**; for side effects via shared state, we give a state-dependency closure with an accompanying safety proposition. On a controlled subject (6+ routes, 25 commits, 24 transitions), the method achieves Reduction=0.625 and Precision=1.0 at Safety=1.0, with SafetyEmp=1.0 and zero misses under both the outcome-difference oracle and a mutation stress test. On ReproBreak's 9604 real locator breaks, we quantify Semantic UI Diff addressability (12.2%) and the deterministic rewriter's exact-match upper bound (574/578=99.3%); on its 449 execution-validated breaks, leakage-free end-to-end repair yields 3.38% with the rule arm and 5.56% with a DeepSeek LLM arm, still far below the known-signal upper bound. Real-project commit replay and real-LLM generation/repair comparisons have been completed; real wall-clock net-saving remains ongoing.
+The method centers on a persistent, incrementally maintained **test–code mapper** (a typed bipartite index) and a **Semantic UI Diff** that bridges source-level UI changes to test locators, assertions, and newly added interactions, supporting the main chain of *selection → gap analysis → generation* and providing lightweight repair anchors when selected tests become stale. To make "recall is non-negotiable" provable, we define a selector-independent truly-affected set `A*`, state and prove a conditional safety proposition, and validate it empirically with a **non-circular outcome-difference oracle**; for side effects via shared state, we give a state-dependency closure with an accompanying safety proposition. On a controlled subject (6+ routes, 25 commits, 24 transitions), the method achieves Reduction=0.625 and Precision=1.0 at Safety=1.0, with SafetyEmp=1.0 and zero misses under both the outcome-difference oracle and a mutation stress test. Real-project commit replay on two Playwright projects also reaches Safety=1.0 and Precision=1.0. For generation, a real DeepSeek comparison shows that the diff-constrained arm reaches 1.0 executable, change-relevant, change-sensitive, and automatically semantic-valid rates, clearly outperforming the no-diff baseline. As a supporting boundary study, ReproBreak shows that end-to-end locator repair remains difficult: 3.38% exact-match for rules and 5.56% for DeepSeek, far below the known-signal upper bound. Real wall-clock net-saving remains ongoing.
 
 **Keywords**: regression test selection; end-to-end testing; code-change awareness; test generation; test repair; continuous integration
 
@@ -48,16 +48,16 @@ The method centers on a persistent, incrementally maintained **test–code mappe
 
 - **RQ1（选择：能否少跑但不漏？）** 基于"旧版本覆盖映射 + diff"能否最小且安全地选出受影响的 E2E 测试？
 - **RQ2（生成：diff 约束是否更相关？）** 对覆盖缺口（新增路由 / 无对应测试），能否生成可执行、变更相关的用例，且优于无 diff 约束的生成基线？
-- **RQ3（修复：能否复用失效用例？）** 对选中的失效用例，能否分类其过时类型并自动修复、提升 targeted set 的整体可用性？
+- **RQ3（闭环支撑：修复能提供多大帮助、边界在哪里？）** 轻量修复能否提升 targeted set 的可用性？在真实 locator 断裂上，端到端仅依赖旧测试与应用 diff 的修复难度如何？
 - **RQ4（成本：净收益是否为正？）** "选择算法时间 + 选中用例执行时间"是否远小于全量执行时间，并在时间以外的资源维度同样划算？
 
 ### 1.3 研究内容与贡献
 
 1. **测试↔代码映射器**：把"源码 diff 难以直接对应到浏览器中的用户操作与测试脚本"这一 E2E 核心断点，形式化为一个**带类型的二部索引** `M ⊆ E×T`（动态覆盖边 + 静态 UI 语义边），并给出构建算法、增量维护规则与复杂度/摊销论证（第 3.2 节）。
-2. **Semantic UI Diff 语义桥**：从 JSX/TSX/HTML 抽取 UI 语义节点（text/testId/role/aria/href/handler），比较新旧版本得到 UI 层增删改，贯穿选择（关联受影响测试）、修复（定位失效锚点）、生成（指出未覆盖新 UI）三阶段（第 3.3 节）。
-3. **可证明的召回保证**：给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题 1 及其证明，并以**非循环结果差异 oracle** 与变异压力测试经验验证；针对副作用经共享状态的间接依赖，给出状态依赖闭包与命题 2（第 3.4–3.5 节）。
-4. **净收益成本模型**：把"少跑用例比例"（Reduction）与"实际时间节省"（TimeReduction）、"选择开销税"（SelectionTax）解耦，定义净收益 `NetSaving` 与盈亏平衡，并纳入 machine-minutes、LLM token 等非时间资源（第 3.6 节）。
-5. **端到端原型 DiffE2E 与系统化评估**：实现覆盖映射、diff 分析、双信号选择、运行分诊、修复与缺口生成的完整原型，并在受控主体与 ReproBreak 真实数据上给出统计检验与图表（第 4–5 章）。
+2. **Semantic UI Diff 语义桥与 diff 约束缺口生成**：从 JSX/TSX/HTML 抽取 UI 语义节点（text/testId/role/aria/href/handler），比较新旧版本得到 UI 层增删改，用于关联受影响测试、识别未覆盖新增 UI，并约束生成用例必须触达 diff、包含变化相关断言且在新版本真实通过（第 3.3 节）。
+3. **可证明的安全选测与生成质量度量**：给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题 1 及其证明，并以**非循环结果差异 oracle** 与变异压力测试经验验证；针对副作用经共享状态的间接依赖，给出状态依赖闭包与命题 2。针对生成用例，采用可执行率、变更相关率、版本差分敏感性与变异杀伤率作为自动语义质量指标（第 3.4–3.5 节）。
+4. **端到端闭环原型与轻量修复边界分析**：实现 DiffE2E 原型，将覆盖映射、diff 分析、双信号选择、运行分诊、轻量修复与缺口生成串联起来；修复模块作为闭环支撑能力评估 targeted set 可用性，并用 ReproBreak 量化真实 locator 修复的困难边界（第 4–5 章）。
+5. **净收益成本模型**：把"少跑用例比例"（Reduction）与"实际时间节省"（TimeReduction）、"选择开销税"（SelectionTax）解耦，定义净收益 `NetSaving` 与盈亏平衡，并纳入 machine-minutes、LLM token 等非时间资源（第 3.6 节）。
 
 ### 1.4 论文组织
 
@@ -105,7 +105,7 @@ E2E 修复多为"失败后修测试"：语义化 Web 测试修复 [12]、引导 
 
 1. **缺源码↔浏览器的语义桥**：单元 RTS/修复的覆盖/依赖映射止于源码层；E2E 生成/修复又不以 diff 为核心。→ 本方法用 **Semantic UI Diff + 测试↔代码映射器** 显式建立该桥。
 2. **缺可证明的召回保证**：RTS 工作多报经验 Safety，但 E2E 场景下缺少"与选择器无关"的真值定义与安全性论证，且未处理副作用经共享状态的间接影响。→ 本方法给出条件安全命题 + 非循环结果差异 oracle + 状态依赖闭包。
-3. **缺端到端闭环与净收益量化**：现有工作多为单点（选择 或 生成 或 修复），少有"选择开销 + 执行时间 vs 全量"的净收益与资源量化。→ 本方法把选择→运行/修复→缺口→生成串成代码变更感知闭环，并以净收益模型量化。
+3. **缺端到端闭环与净收益量化**：现有工作多为单点（选择 或 生成），少有"选出受影响测试之后如何识别未覆盖 diff 并定向生成"的闭环，也少有"选择开销 + 执行时间 vs 全量"的净收益与资源量化。→ 本方法以选择与生成为主链路，把选择→运行→缺口分析→生成串成代码变更感知闭环，轻量修复仅作为支撑环节，并以净收益模型量化。
 
 > **一句话定位**：现有工作要么"变更感知但停在单元层"（A2,B0：[1][3][49][50][51][52]），要么"做浏览器 E2E 但与变更无关"（A0,B1：[6][7][9][12][16]）。本方法填补 **(A2, B1)** 空白。
 
@@ -115,12 +115,12 @@ E2E 修复多为"失败后修测试"：语义化 Web 测试修复 [12]、引导 
 
 ### 3.1 总体框架：五步闭环
 
-记输入为旧版本 `V_old`、新版本 `V_new`、本次变更 `diff` 与既有 E2E 测试集 `T`。方法是一条以 diff 为核心输入的五步闭环：
+记输入为旧版本 `V_old`、新版本 `V_new`、本次变更 `diff` 与既有 E2E 测试集 `T`。方法是一条以 diff 为核心输入、以**选择与生成为主链路**的五步闭环：
 
 1. **建立旧版本覆盖映射**：在 `V_old` 上逐条运行 `T`，记录每条测试实际触达的源码文件、路由与组件，沉淀为测试↔代码映射器 `M` 的动态边。
 2. **分析本次代码变更**：解析 git diff 得到变更实体 `Δ`（文件/函数/组件/路由/UI 语义节点），并对 UI 源码做 Semantic UI Diff。
 3. **选择相关 E2E 测试**：在 `M` 上做邻居查询，取覆盖信号臂与 UI 语义信号臂的并集 `Sel`。
-4. **运行、分诊与修复**：在 `V_new` 上运行 `Sel`；通过者直接进入 targeted set；失败者分诊为疑似回归或测试过时，过时者结合 diff/DOM/trace/Semantic UI Diff 给出修复候选，修复后重跑通过方可进入。
+4. **运行、分诊与轻量修复**：在 `V_new` 上运行 `Sel`；通过者直接进入 targeted set；失败者分诊为疑似回归或测试过时。对明显定位器/断言过时的样本，结合 diff/DOM/trace/Semantic UI Diff 给出轻量修复候选，修复通过后进入 targeted set；复杂真实修复不作为本文主贡献。
 5. **缺口分析与生成**：对 diff 中未被已选/已修测试触达的部分进行带约束生成（必须触达 diff、含可解释操作路径、含变化相关断言、在 `V_new` 上真实通过）。
 
 > **无信息泄漏纪律（贯穿全程）**：选择只用 `V_old` 覆盖 + diff；`V_new` 全量执行仅用于构造评估 oracle，不参与选择。修复的输入只能是"旧（断裂）测试 + 应用源码 old/new diff + DOM/trace/候选元素"；`V_new` 的测试文件与 `new_locator` 只能用于评估，绝不进入修复输入或生成 prompt。
@@ -255,7 +255,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 ### 4.4 真实数据接入（状态说明）
 
-受控主体给出零依赖、可复现的主结果；真实外部效度部分已补齐、部分待补：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）**已完成**（actual-budget + mermaid-live-editor，共 14 个稳定过渡，§5.1）；(ii) 真实 LLM 生成对照（RQ2）**已完成**，采用 DeepSeek 对 diff 约束臂与无 diff 基线做自动语义指标评估；(iii) 真实 LLM 修复对照（RQ3）**已完成**，受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 23/414；人工 κ 为辅助校准；(iv) 真实项目 wall-clock 与 NetSaving（RQ4）仍以 **【待真实数据】** 标注。
+受控主体给出零依赖、可复现的主结果；真实外部效度部分已补齐、部分待补：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）**已完成**（actual-budget + mermaid-live-editor，共 14 个稳定过渡，§5.1）；(ii) 真实 LLM 生成对照（RQ2）**已完成**，采用 DeepSeek 对 diff 约束臂与无 diff 基线做自动语义指标评估；(iii) 闭环支撑与修复边界对照（RQ3）**已完成**，受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 23/414；人工 κ 为辅助校准；(iv) 真实项目 wall-clock 与 NetSaving（RQ4）仍以 **【待真实数据】** 标注。
 
 ---
 
@@ -336,9 +336,11 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 来源：`out/rq2_results.md`。为避免 LLM 输出格式影响执行，生成端对 Markdown 代码围栏做清洗，并统一将 `@playwright/test` 导入改写为项目覆盖采集 fixture `./fixtures`；真实 provider 请求失败或返回空 completion 时直接报错，禁止静默 fallback。结果显示，diff 约束臂在 3 个新增缺口上全部可执行、全部触达变更文件、全部对版本差异敏感，且均杀掉至少 1 个注入变异；无 diff 基线仅 1/3 可执行，且 0/3 触达变更文件。人工双标注（`rq2_to_annotate.jsonl` + `rq2_unblind.json` + Cohen's κ）保留为自动指标的小样本校准，不作为主度量。
 
-### 5.3 RQ3：修复——失效用例复用
+### 5.3 RQ3：闭环支撑与修复边界
 
-**受控主体（n=4，provider=deepseek）**：规则臂修复成功率 0.75（3/4），LLM 臂修复成功率 1.0（4/4）；mean TargetedSetUsability（按规则修复后可进入 targeted set 的保守口径）：before 0.0 → after 0.75。
+RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回答两个支撑性问题：第一，轻量修复是否能让受控场景中的 selected stale tests 重新进入 targeted set；第二，真实 locator 断裂在"只给旧测试 + 应用 diff"的无泄漏设定下到底有多难。前者服务于选择+生成闭环的可用性，后者用于限定本文方法边界。
+
+**受控主体（n=4，provider=deepseek）**：规则臂修复成功率 0.75（3/4），LLM 臂修复成功率 1.0（4/4）；mean TargetedSetUsability（按规则修复后可进入 targeted set 的保守口径）：before 0.0 → after 0.75。该结果说明轻量修复足以支撑受控闭环，但不外推为真实项目修复能力。
 
 | tag | type | target | staleness | rule 修复 | LLM 修复 | usability_before | usability_after |
 |---|---|---|---|---|---|---|---|
@@ -365,7 +367,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 | 规则（rule）| 414 | 3.38%（14/414）| 仅用旧测试 + 应用 diff（有 app 信号子集 14/393=3.56%）|
 | LLM（DeepSeek）| 414 | 5.56%（23/414）| 同上输入 + LLM 推理；LLM 调用错误 0 |
 
-> **关键对比**：E3 离线「已知 oracle 信号」改写器上界为 99.3%，而本节端到端「从应用 diff 自行还原 old→new 信号」的规则臂仅 **3.38%**，DeepSeek LLM 臂提升至 **5.56%**。LLM 在 microsoft/playwright 子集上增益明显（14/45），但整体 exact-match 仍远低于已知信号上界，说明主要瓶颈仍是从应用 diff 中恢复可验证定位信号；执行验证版（Docker overwrite）与过时三分类的模型 vs 人工 κ 为后续。
+> **关键对比**：E3 离线「已知 oracle 信号」改写器上界为 99.3%，而本节端到端「从应用 diff 自行还原 old→new 信号」的规则臂仅 **3.38%**，DeepSeek LLM 臂提升至 **5.56%**。LLM 在 microsoft/playwright 子集上增益明显（14/45），但整体 exact-match 仍远低于已知信号上界。因此，ReproBreak 在本文中应被解读为**真实修复难度和边界的量化**：当前轻量修复模块可支撑闭环，但还不能作为真实 locator 修复的强结果；后续需要 DOM/trace 候选元素、运行时对齐和执行验证式语义等价判定。
 
 ### 5.4 RQ4：成本——净收益
 
@@ -399,7 +401,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 ## 第 7 章 总结与展望
 
-本文研究代码变更感知的 Web 应用端到端回归测试用例选择与生成方法，把选择、修复、生成统一进一个以 diff 为核心输入的闭环，核心是持久化、可增量维护的测试↔代码映射器与作为"源码 diff ↔ 浏览器操作"语义桥的 Semantic UI Diff。理论上给出与选择器无关的 `A*` 定义、条件安全命题 1 及证明、副作用状态闭包命题 2，并以净收益模型量化成本。在受控主体上，方法在 Safety=1.0 前提下达到 Reduction=0.625、Precision=1.0，非循环 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选，副作用场景下状态闭包恢复判定保真；在 ReproBreak 9604 条真实断裂上量化了语义可达性（12.2%）与改写器上界（99.3%）。
+本文研究代码变更感知的 Web 应用端到端回归测试用例选择与生成方法，把安全选测、覆盖缺口识别与 diff 约束生成统一进一个以 diff 为核心输入的闭环，核心是持久化、可增量维护的测试↔代码映射器与作为"源码 diff ↔ 浏览器操作"语义桥的 Semantic UI Diff。理论上给出与选择器无关的 `A*` 定义、条件安全命题 1 及证明、副作用状态闭包命题 2，并以净收益模型量化成本。在受控主体上，方法在 Safety=1.0 前提下达到 Reduction=0.625、Precision=1.0，非循环 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选，副作用场景下状态闭包恢复判定保真；真实 DeepSeek 生成对照表明 diff 约束显著提升生成用例的变更相关性与自动语义有效性。修复模块作为闭环支撑，在受控主体上可提升 targeted set 可用性；ReproBreak 结果则诚实揭示真实 locator 修复仍困难，本文不将其作为主贡献夸大。
 
 **展望（按优先级）**：① RQ1 多 commit replay 已接入 2 个真实项目（actual-budget、mermaid-live-editor）；后续扩大项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并补齐 RQ4 真实 NetSaving；② RQ2/RQ3 真实 LLM 对照已完成，后续补双标注 κ 与更强 DOM/trace 候选上下文；③ ReproBreak 端到端（无泄漏）修复已完成规则臂与 DeepSeek 臂，尚需补执行验证版（Docker overwrite）；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
 

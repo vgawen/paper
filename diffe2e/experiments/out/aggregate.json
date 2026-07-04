@@ -90,23 +90,23 @@
     }
   },
   "rq2": {
-    "provider": "stub",
+    "provider": "deepseek",
     "summary": {
       "diff": {
         "n": 3,
         "execRate": 1,
         "relRate": 1,
-        "mutKillMean": 1,
+        "mutKillMean": 0.6667,
         "changeSensRate": 1,
         "semanticAutoRate": 1
       },
       "nodiff": {
         "n": 3,
-        "execRate": 1,
-        "relRate": 1,
-        "mutKillMean": 1,
-        "changeSensRate": 1,
-        "semanticAutoRate": 1
+        "execRate": 0.3333,
+        "relRate": 0,
+        "mutKillMean": 0.2222,
+        "changeSensRate": 0.3333,
+        "semanticAutoRate": 0.3333
       }
     },
     "rows": [
@@ -118,8 +118,8 @@
         "executable": true,
         "change_relevant": true,
         "mutants": 3,
-        "killed": 3,
-        "mutation_score": 1,
+        "killed": 2,
+        "mutation_score": 0.6667,
         "change_sensitive": true,
         "semantic_auto": true
       },
@@ -129,10 +129,10 @@
         "gap_file": "src/coupon.js",
         "arm": "nodiff",
         "executable": true,
-        "change_relevant": true,
+        "change_relevant": false,
         "mutants": 3,
-        "killed": 3,
-        "mutation_score": 1,
+        "killed": 2,
+        "mutation_score": 0.6667,
         "change_sensitive": true,
         "semantic_auto": true
       },
@@ -144,8 +144,8 @@
         "executable": true,
         "change_relevant": true,
         "mutants": 3,
-        "killed": 3,
-        "mutation_score": 1,
+        "killed": 2,
+        "mutation_score": 0.6667,
         "change_sensitive": true,
         "semantic_auto": true
       },
@@ -154,13 +154,13 @@
         "route": "/wishlist",
         "gap_file": "src/wishlist.js",
         "arm": "nodiff",
-        "executable": true,
-        "change_relevant": true,
-        "mutants": 3,
-        "killed": 3,
-        "mutation_score": 1,
-        "change_sensitive": true,
-        "semantic_auto": true
+        "executable": false,
+        "change_relevant": false,
+        "mutants": 0,
+        "killed": 0,
+        "mutation_score": 0,
+        "change_sensitive": false,
+        "semantic_auto": false
       },
       {
         "tag": "c19",
@@ -170,8 +170,8 @@
         "executable": true,
         "change_relevant": true,
         "mutants": 3,
-        "killed": 3,
-        "mutation_score": 1,
+        "killed": 2,
+        "mutation_score": 0.6667,
         "change_sensitive": true,
         "semantic_auto": true
       },
@@ -180,13 +180,13 @@
         "route": "/faq",
         "gap_file": "src/faq.js",
         "arm": "nodiff",
-        "executable": true,
-        "change_relevant": true,
-        "mutants": 3,
-        "killed": 3,
-        "mutation_score": 1,
-        "change_sensitive": true,
-        "semantic_auto": true
+        "executable": false,
+        "change_relevant": false,
+        "mutants": 0,
+        "killed": 0,
+        "mutation_score": 0,
+        "change_sensitive": false,
+        "semantic_auto": false
       }
     ]
   },

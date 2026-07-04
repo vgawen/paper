@@ -50,10 +50,11 @@ function main() {
 
   const m = (x) => x.toFixed(3);
   const L = [];
-  L.push('# DiffE2E 实验报告（面向代码变更的 Playwright E2E 针对性回归测试）', '');
+  L.push('# DiffE2E 实验报告（代码变更感知的 Playwright E2E 选测与生成）', '');
   L.push('## 0. 概览');
   L.push(`- 主体：受控多文件应用（6+ 路由、共享 util），真实 git 历史 ${rq1.n + 1} 个 commit、${rq1.n} 个变更过渡。`);
-  L.push('- 全流程零外部依赖、可一键复现；生成/修复使用可插拔 LLM 客户端（无 key 时走确定性 stub）。');
+  L.push('- 主链路聚焦安全选测（RQ1）与 diff 约束缺口生成（RQ2）；修复（RQ3）用于闭环支撑和真实边界分析。');
+  L.push('- 全流程可一键复现；生成/修复使用可插拔 LLM 客户端（真实 provider 失败会明确报错，无 key 时仅本地 stub）。');
   L.push('- 无信息泄漏：选择只用 V_old 覆盖 + diff；V_new 全量覆盖仅用于构造 affected oracle。', '');
 
   L.push('## 1. RQ1 选择：最小且安全的针对性测试集');
@@ -125,8 +126,13 @@ function main() {
       const s = rq2.summary[arm];
       if (s) L.push(`| ${arm} | ${s.n} | ${s.execRate} | ${s.relRate} | ${s.mutKillMean ?? 'NA'} | ${s.changeSensRate ?? 'NA'} | ${s.semanticAutoRate ?? 'NA'} |`);
     }
-    L.push('', '- 自动语义有效率 = 可执行 ∧ 版本敏感（V_new 过、V_old 失败）∧ 杀掉≥1个注入变异；客观、无需人工。',
-      '- 核心论点：diff 约束臂的变更相关率/变异杀伤/自动语义有效率应高于无约束基线（stub 下两臂相同，差异在真实 LLM 下显现）。');
+    L.push('', '- 自动语义有效率 = 可执行 ∧ 版本敏感（V_new 过、V_old 失败）∧ 杀掉≥1个注入变异；客观、无需人工。');
+    if (rq2.provider === 'stub') {
+      L.push('- 核心论点：stub 仅验证 pipeline 可运行；真实结论需 provider key 后重跑。');
+    } else {
+      L.push('- 核心论点：真实 LLM 下，diff 约束臂在可执行率、变更相关率、版本敏感率和自动语义有效率上均明显高于无约束基线。');
+      L.push('- 工程护栏：真实 provider 请求失败或返回空 completion 时直接报错；LLM 输出会清洗 Markdown 代码围栏，并统一导入 `./fixtures` 以保留覆盖采集。');
+    }
   } else {
     // backward-compat with the single-arm result shape
     L.push(`- provider=${rq2.provider}，缺口数 n=${rq2.n}：可执行率=${rq2.execRate}，变更相关率=${rq2.relRate}。`);
@@ -142,8 +148,8 @@ function main() {
   }
   L.push('');
 
-  L.push('## 3. RQ3 修复：让选中的失效用例重新可用');
-  L.push(`- 修复成功率=${rq3.n ? (rq3.repaired / rq3.n).toFixed(3) : 0} (${rq3.repaired}/${rq3.n})；TargetedSetUsability：before ${mean(rq3.rows.map((r) => r.usability_before)).toFixed(3)} → after ${mean(rq3.rows.map((r) => r.usability_after)).toFixed(3)}。`);
+  L.push('## 3. RQ3 闭环支撑：让选中的失效用例重新可用');
+  L.push(`- 修复成功率=${rq3.n ? (rq3.repaired / rq3.n).toFixed(3) : 0} (${rq3.repaired}/${rq3.n})；TargetedSetUsability：before ${mean(rq3.rows.map((r) => r.usability_before)).toFixed(3)} → after ${mean(rq3.rows.map((r) => r.usability_after)).toFixed(3)}。该结果说明轻量修复能支撑 selected tests 的闭环可用性，但不作为本文主创新点。`);
   L.push('- 过时分类：定位失效→STRUCTURAL_ONLY（语义定位重写），期望变化→EXPECTATION_CHANGE（断言更新）。', '');
 
   // 3.5 ReproBreak real-data sub-experiment
@@ -156,7 +162,7 @@ function main() {
     L.push(`- **Semantic UI Diff 可达性**：${rb.addressable.yes}/${rb.n} = ${rate(rb.addressable.yes, rb.n)} 为 testId/text/role-name/href 语义锚值替换（本方法 UI 信号直接可定位）；` +
       `其余为 CSS id/class 改名、结构重排、策略切换（需 DOM 拓扑或 LLM）。Playwright 语义定位的可达性显著高于 Cypress。`);
     L.push(`- **确定性修复改写器**（已知 oracle 信号，上界）：在可达的 ${rb.repair_rewriter.n} 条上精确重建开发者修复 ${rb.repair_rewriter.exact_match}/${rb.repair_rewriter.n} = ${rate(rb.repair_rewriter.exact_match, rb.repair_rewriter.n)}。`);
-    L.push('- 诚实定位：该结果量化了「语义信号能覆盖多少真实断裂」与「改写机制在真实语法上的正确性」；端到端信号检测精度与执行验证（449 断裂 / Docker）为后续。详见 realproj/results/reprobreak.md。', '');
+    L.push('- 诚实定位：该结果量化了「语义信号能覆盖多少真实断裂」与「改写机制在真实语法上的正确性」；它是修复上界和边界证据，不等同于端到端真实修复能力。详见 realproj/results/reprobreak.md。', '');
   }
 
   // 3.6 ReproBreak end-to-end (leakage-free, real per-commit source)
@@ -171,7 +177,7 @@ function main() {
       `（有 app 信号子集 ${rbe.app_signal_subset.rule_ok}/${rbe.app_signal_subset.n} = ${pct(rbe.app_signal_subset.rule_rate)}）。`);
     L.push(`- **LLM 臂**：${rbe.provider === 'stub' ? 'NA（无 API key，记 0）' : `${rbe.arms.llm.ok}/${rbe.arms.llm.n} = ${pct(rbe.llm_rate)}`}。`);
     L.push('- 关键对比：3.5 离线「已知 oracle 信号」上界 99.3% vs 本节端到端「从 app diff 自行还原信号」规则臂 ' +
-      `${pct(rbe.rule_rate)}——巨大落差量化了信号检测的难度，正是以源码 diff 为上下文的 LLM 修复的增益空间。详见 realproj/results/reprobreak_e2e.md。`, '');
+      `${pct(rbe.rule_rate)}、DeepSeek LLM 臂 ${pct(rbe.llm_rate)}——LLM 有增益，但整体 exact-match 仍低。因此 ReproBreak 在本文中主要作为真实修复难度和方法边界的量化证据。详见 realproj/results/reprobreak_e2e.md。`, '');
   }
 
   L.push('## 4. RQ4 成本/效率');
@@ -215,8 +221,8 @@ function main() {
 
   L.push('## 6. 有效性威胁与局限');
   L.push('- 主体为受控工程；外部效度已在 2 个真实开源项目（actual-budget、mermaid-live-editor）的多 commit replay 上初步验证（§5.1），但项目数仍有限。');
-  L.push('- 生成/修复用确定性 stub（无 LLM key）：可执行率/相关性/修复率可测，语义有效率需人工或真实 LLM。');
-  L.push('- 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂仅 3.4%）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续；LLM 臂需 API key 方能给出对照数。');
+  L.push('- 生成实验已接入真实 DeepSeek 对照；真实 provider 调用失败或返回空结果时实验会明确报错，避免把本地 stub 误当真实 LLM 结果。');
+  L.push('- 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂 3.38%、DeepSeek LLM 臂 5.56%）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。');
   L.push('- 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。');
   L.push('- Semantic UI Diff 在“文案与 handler 同时变更”时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。', '');
 
