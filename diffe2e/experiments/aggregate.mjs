@@ -55,6 +55,9 @@ function main() {
     ? fs.readdirSync(realDir).filter((f) => f.endsWith('_rq4_batch.json')).sort() : [];
   const rq4Batch = rq4BatchFiles.map((f) => readJ(path.join(realDir, f)));
   agg.rq4.batch = rq4Batch;
+  const llmCostPath = path.join(OUT, 'llm_cost.json');
+  const llmCost = fs.existsSync(llmCostPath) ? readJ(llmCostPath) : null;
+  if (llmCost) agg.llm_cost = llmCost;
   fs.writeFileSync(path.join(OUT, 'aggregate.json'), JSON.stringify(agg, null, 2));
 
   const m = (x) => x.toFixed(3);
@@ -223,6 +226,16 @@ function main() {
     }
     L.push('', '- 读法：batch-estimated 用 RQ1 多个过渡的选中分布套用已测 RQ4 cost profile，避免只报告单个空选集边界场景；full-selection 过渡按全量执行处理，因此不会贡献时间收益。');
   }
+  if (llmCost) {
+    L.push('', '### LLM token / $ 成本（估算）');
+    L.push('| 范围 | calls | input tokens est. | output tokens est. | estimated USD |',
+      '|---|---:|---:|---:|---:|');
+    for (const [name, r] of Object.entries(llmCost.by_experiment)) {
+      L.push(`| ${name} | ${r.calls} | ${r.input_tokens_est} | ${r.output_tokens_est} | $${r.estimated_usd.toFixed(6)} |`);
+    }
+    L.push(`| total | ${llmCost.total.calls} | ${llmCost.total.input_tokens_est} | ${llmCost.total.output_tokens_est} | $${llmCost.total.estimated_usd.toFixed(6)} |`);
+    L.push('', `- 说明：该表为估算，因早期真实 LLM 实验未持久化 provider usage 字段；后续真实调用可设置 \`LLM_USAGE_OUT\` 记录 API 返回的精确 usage。价格按 ${llmCost.pricing.source}`);
+  }
   L.push('- 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。', '');
 
   L.push('## 5. 外部效度（真实项目，尽力而为）');
@@ -294,6 +307,7 @@ function main() {
     'node experiments/run_rq4_cost.mjs experiments/real/adapters/cand_coverage.json "App.test.ts -g \\"use Red as a background color\\"" 1 3 3',
     'node experiments/run_rq4_cost.mjs experiments/real/adapters/actual_desktop.json "" 2 3 34',
     'node experiments/run_rq4_batch.mjs experiments/out/real/actual_desktop_rq1.jsonl experiments/out/real/actual_desktop_rq4.json dual',
+    'node experiments/run_llm_cost.mjs',
     'node experiments/aggregate.mjs',
     '```', '',
     '## ReproBreak 复现', '```bash', 'cd diffe2e',
@@ -302,7 +316,7 @@ function main() {
     'RB_LIMIT=449 node --env-file=.env realproj/reprobreak_e2e.mjs  # 端到端规则臂 + LLM 臂',
     '```', '',
     '## 产物', '- experiments/out/rq1_dataset.jsonl, rq1_summary.md, rq1_stats.md, figs/rq1_metrics.svg',
-    '- experiments/out/rq2_results.md, rq3_results.md, aggregate.json',
+    '- experiments/out/rq2_results.md, rq3_results.md, llm_cost.md, aggregate.json',
     '- experiments/out/real/*_rq1.json, *_rq4.json, *_rq4_batch.json, real_rq1_stats.md',
     '- realproj/results/reprobreak.md, reprobreak_e2e.md',
     '- EXPERIMENT_REPORT.md, realproj/results/REPORT.md', '',

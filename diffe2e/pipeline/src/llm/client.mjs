@@ -1,3 +1,6 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
 // Pluggable LLM client. Without an API key it runs a deterministic stub that
 // returns the caller-provided template `fallback`, so the whole pipeline is
 // reproducible offline. With a key it calls the provider's chat API.
@@ -25,6 +28,7 @@ export function createClient(env = process.env) {
         });
         const j = await readJsonOrText(res);
         assertProviderOk(provider, res, j);
+        recordUsage(env, { provider, model: 'claude-3-5-sonnet-latest', usage: j.usage || null });
         const out = (j.content || []).map((c) => c.text || '').join('').trim();
         if (!out) throw new Error(`${provider} API returned empty completion`);
         return out;
@@ -39,11 +43,18 @@ export function createClient(env = process.env) {
       });
       const j = await readJsonOrText(res);
       assertProviderOk(provider, res, j);
+      recordUsage(env, { provider, model, usage: j.usage || null });
       const out = (j.choices?.[0]?.message?.content || '').trim();
       if (!out) throw new Error(`${provider} API returned empty completion`);
       return out;
     },
   };
+}
+
+function recordUsage(env, row) {
+  if (!env.LLM_USAGE_OUT || !row.usage) return;
+  fs.mkdirSync(path.dirname(env.LLM_USAGE_OUT), { recursive: true });
+  fs.appendFileSync(env.LLM_USAGE_OUT, JSON.stringify({ ts: new Date().toISOString(), ...row }) + '\n');
 }
 
 async function readJsonOrText(res) {

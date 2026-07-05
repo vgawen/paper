@@ -50,7 +50,7 @@ SelectionTax   = T_select / T_full              # 选择本身占的"税"
 | LLM token / $ | 修复+生成臂的 token 与费用 | 本方法引入 LLM，必须计入端到端成本 |
 | 能耗（可选） | 估算 kWh | 绿色 CI 视角 |
 
-报告原则：**至少 machine-minutes + 一项 LLM 成本**与 wall-clock 并列，说明哪些是主关注指标及理由。
+报告原则：**至少 machine-minutes + 一项 LLM 成本**与 wall-clock 并列，说明哪些是主关注指标及理由。当前产物 `experiments/out/llm_cost.{json,md}` 给出已完成真实 LLM 实验的 token/$ 估算；因早期运行未持久化 provider usage 字段，该表按调用次数与 prompt/output 大小估算。后续真实调用可设置 `LLM_USAGE_OUT=<jsonl>`，由 LLM client 自动记录 API 返回的精确 usage。
 
 ## 5. 公平对比协议（避免不公平比较）
 

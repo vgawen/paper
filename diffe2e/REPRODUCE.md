@@ -31,6 +31,7 @@ node --env-file=.env experiments/run_rq3.mjs
 node experiments/run_rq4_cost.mjs experiments/real/adapters/cand_coverage.json "App.test.ts -g \"use Red as a background color\"" 1 3 3
 node experiments/run_rq4_cost.mjs experiments/real/adapters/actual_desktop.json "" 2 3 34
 node experiments/run_rq4_batch.mjs experiments/out/real/actual_desktop_rq1.jsonl experiments/out/real/actual_desktop_rq4.json dual
+node experiments/run_llm_cost.mjs
 node experiments/aggregate.mjs
 ```
 
@@ -44,7 +45,7 @@ RB_LIMIT=449 node --env-file=.env realproj/reprobreak_e2e.mjs  # 端到端规则
 
 ## 产物
 - experiments/out/rq1_dataset.jsonl, rq1_summary.md, rq1_stats.md, figs/rq1_metrics.svg
-- experiments/out/rq2_results.md, rq3_results.md, aggregate.json
+- experiments/out/rq2_results.md, rq3_results.md, llm_cost.md, aggregate.json
 - experiments/out/real/*_rq1.json, *_rq4.json, *_rq4_batch.json, real_rq1_stats.md
 - realproj/results/reprobreak.md, reprobreak_e2e.md
 - EXPERIMENT_REPORT.md, realproj/results/REPORT.md

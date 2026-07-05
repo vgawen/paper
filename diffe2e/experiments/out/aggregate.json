@@ -487,5 +487,44 @@
       "gate": "PASS (method available)",
       "replayReady": false
     }
-  ]
+  ],
+  "llm_cost": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "pricing": {
+      "inputUsdPerMTok": 0.14,
+      "outputUsdPerMTok": 0.28,
+      "source": "DeepSeek API pricing page, deepseek-v4-flash cache-miss input and output prices, checked 2026-07-05."
+    },
+    "caveat": "Estimated from call counts and prompt/output-size assumptions because prior experiment outputs did not persist provider usage fields. Future runs should capture API usage directly.",
+    "by_experiment": {
+      "rq2": {
+        "calls": 6,
+        "input_tokens_est": 5400,
+        "output_tokens_est": 789,
+        "estimated_usd": 0.000977,
+        "basis": "RQ2 has one LLM call per generated spec; output tokens estimated from rq2_to_annotate specs, input tokens from prompt-size assumption."
+      },
+      "rq3_controlled": {
+        "calls": 4,
+        "input_tokens_est": 7200,
+        "output_tokens_est": 1800,
+        "estimated_usd": 0.001512,
+        "basis": "RQ3 controlled repair stores call count but not completions; input/output tokens use prompt/template-size assumptions."
+      },
+      "reprobreak_e2e": {
+        "calls": 414,
+        "input_tokens_est": 745200,
+        "output_tokens_est": 16560,
+        "estimated_usd": 0.108965,
+        "basis": "ReproBreak LLM arm asks for one corrected locator string per case; call count is exact, tokens are estimated because API usage was not captured."
+      }
+    },
+    "total": {
+      "calls": 424,
+      "input_tokens_est": 757800,
+      "output_tokens_est": 19149,
+      "estimated_usd": 0.111454
+    }
+  }
 }

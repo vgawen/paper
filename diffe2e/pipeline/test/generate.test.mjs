@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { extractDomSignals, buildSpecTemplate, generateForGap, buildPromptNoDiff, cleanGeneratedSpec } from '../src/generate.mjs';
 import { createClient, detectProvider } from '../src/llm/client.mjs';
 
@@ -82,6 +85,27 @@ test('real provider empty response throws instead of falling back silently', asy
     );
   } finally {
     globalThis.fetch = originalFetch;
+  }
+});
+
+test('real provider usage is appended to JSONL when LLM_USAGE_OUT is set', async () => {
+  const originalFetch = globalThis.fetch;
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'diffe2e-llm-usage-'));
+  const usagePath = path.join(tmp, 'usage.jsonl');
+  globalThis.fetch = async () => new Response(JSON.stringify({
+    choices: [{ message: { content: 'ok' } }],
+    usage: { prompt_tokens: 11, completion_tokens: 3, total_tokens: 14 },
+  }), { status: 200, headers: { 'content-type': 'application/json' } });
+  try {
+    const client = createClient({ DEEPSEEK_API_KEY: 'sk-test', LLM_USAGE_OUT: usagePath });
+    assert.equal(await client.complete('prompt'), 'ok');
+    const row = JSON.parse(fs.readFileSync(usagePath, 'utf8').trim());
+    assert.equal(row.provider, 'deepseek');
+    assert.equal(row.model, 'deepseek-v4-flash');
+    assert.deepEqual(row.usage, { prompt_tokens: 11, completion_tokens: 3, total_tokens: 14 });
+  } finally {
+    globalThis.fetch = originalFetch;
+    fs.rmSync(tmp, { recursive: true, force: true });
   }
 });
 

@@ -104,6 +104,16 @@
 | actual_desktop | 9 | 1 | 0 | 8 | 11.1% | 11.1% | 0.0% | 11.1% | false |
 
 - 读法：batch-estimated 用 RQ1 多个过渡的选中分布套用已测 RQ4 cost profile，避免只报告单个空选集边界场景；full-selection 过渡按全量执行处理，因此不会贡献时间收益。
+
+### LLM token / $ 成本（估算）
+| 范围 | calls | input tokens est. | output tokens est. | estimated USD |
+|---|---:|---:|---:|---:|
+| rq2 | 6 | 5400 | 789 | $0.000977 |
+| rq3_controlled | 4 | 7200 | 1800 | $0.001512 |
+| reprobreak_e2e | 414 | 745200 | 16560 | $0.108965 |
+| total | 424 | 757800 | 19149 | $0.111454 |
+
+- 说明：该表为估算，因早期真实 LLM 实验未持久化 provider usage 字段；后续真实调用可设置 `LLM_USAGE_OUT` 记录 API 返回的精确 usage。价格按 DeepSeek API pricing page, deepseek-v4-flash cache-miss input and output prices, checked 2026-07-05.
 - 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。
 
 ## 5. 外部效度（真实项目，尽力而为）
