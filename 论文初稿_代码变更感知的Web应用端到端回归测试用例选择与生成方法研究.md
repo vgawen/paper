@@ -255,7 +255,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 ### 4.4 真实数据接入（状态说明）
 
-受控主体给出零依赖、可复现的主结果；真实外部效度部分已补齐、部分待补：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）**已完成**（actual-budget + mermaid-live-editor，共 14 个稳定过渡，§5.1）；(ii) 真实 LLM 生成对照（RQ2）**已完成**，采用 DeepSeek 对 diff 约束臂与无 diff 基线做自动语义指标评估；(iii) 闭环支撑与修复边界对照（RQ3）**已完成**，受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 23/414；(iv) 真实项目 wall-clock 与 NetSaving（RQ4）**已完成初步计时**，覆盖 cand_coverage 与 actual_desktop 两个场景；人工 κ 仍作为辅助校准待补。
+受控主体给出零依赖、可复现的主结果；真实外部效度部分已补齐、部分待补：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）**已完成**（actual-budget + mermaid-live-editor，共 14 个稳定过渡，§5.1）；(ii) 真实 LLM 生成对照（RQ2）**已完成**，采用 DeepSeek 对 diff 约束臂与无 diff 基线做自动语义指标评估；(iii) 闭环支撑与修复边界对照（RQ3）**已完成**，受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 23/414；(iv) 真实项目 wall-clock、NetSaving、多过渡平均与 LLM token/$ 成本（RQ4）**已完成**，覆盖 cand_coverage 与 actual_desktop 两个成本场景；人工 κ 仍作为辅助校准待补。
 
 ---
 
@@ -380,7 +380,9 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 | cand_coverage（C1 动态，选中 1/3） | 1 | 3 | 1 | 66.7% | 1.64s (1.64-2.27) | 1.43s (1.43-1.44) | 0.12s (0.12-0.13) | 12.4% | 5.0% | true | 0.027/0.026 |
 | actual_desktop（无影响过渡，空选集） | 2 | 34 | 0 | 100.0% | 110.84s (110.58-119.35) | 0.00s (0.00-0.00) | not measured | 100.0% | 100.0% | true | 3.695/0.000 |
 
-> 读法：`cand_coverage` 说明用例数量减少 66.7% 并不等价于 wall-clock 同比例下降，真实 TimeReduction 为 12.4%，计入 0.12s 选择开销后 NetSaving 为 5.0%，主要受浏览器启动、dev server 与单测时长不均影响；`actual_desktop` 记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 全量执行，但不能代表该项目平均收益。actual_desktop 的 `T_select` 仍未接入真实 selection hook，后续需扩展为多过渡平均。
+> 读法：`cand_coverage` 说明用例数量减少 66.7% 并不等价于 wall-clock 同比例下降，真实 TimeReduction 为 12.4%，计入 0.12s 选择开销后 NetSaving 为 5.0%，主要受浏览器启动、dev server 与单测时长不均影响；`actual_desktop` 单场景记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 全量执行，但不能代表该项目平均收益。进一步按 RQ1 的 9 个 actual_desktop 过渡做 batch-estimated 汇总：1 个 empty、0 个 partial、8 个 full，mean NetSaving 为 11.1%，median NetSaving 为 0，break-even rate 为 11.1%。这说明真实平均收益受 full-selection 过渡比例限制，论文中应同时报告单场景收益与多过渡分布。
+
+**LLM token/$ 非时间成本**，来源 `out/llm_cost.{json,md}`：已完成的真实 LLM 实验共 424 次调用（RQ2 6 次、RQ3 受控 4 次、ReproBreak 414 次），估算约 757.8k input tokens 与 19.1k output tokens；按 DeepSeek 官方 `deepseek-v4-flash` cache-miss 输入 $0.14/M、输出 $0.28/M 计，成本约 $0.111。该表为估算，因为早期真实运行未持久化 provider usage 字段；后续运行已支持通过 `LLM_USAGE_OUT` 记录 API 返回的精确 usage。
 
 ### 5.5 C1 闭环：Semantic UI Diff 驱动整条链
 
@@ -392,7 +394,7 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 ## 第 6 章 讨论：有效性威胁与局限
 
-- **外部效度**：主体为受控工程；真实多 commit replay（RQ1）已在 2 个真实开源项目（actual-budget、mermaid-live-editor，14 个稳定过渡）上完成并给出 dual Safety/Precision=1.0（§5.1），但项目数仍有限、且两者均为 Vite dev 起服务的前端；真实 LLM 生成（RQ2）与修复（RQ3）对照已用 DeepSeek 跑通；真实 wall-clock（RQ4）已在 cand_coverage 与 actual_desktop 两个场景给出初步 NetSaving，但 `T_select` 尚未接入真实 selection hook，仍需扩大项目与过渡数量。
+- **外部效度**：主体为受控工程；真实多 commit replay（RQ1）已在 2 个真实开源项目（actual-budget、mermaid-live-editor，14 个稳定过渡）上完成并给出 dual Safety/Precision=1.0（§5.1），但项目数仍有限、且两者均为现代前端应用；真实 LLM 生成（RQ2）与修复（RQ3）对照已用 DeepSeek 跑通；真实 wall-clock（RQ4）已在 cand_coverage 与 actual_desktop 两个场景给出 NetSaving，并对 actual_desktop 给出多过渡平均，但 actual_desktop 的 `T_select` 尚未实测，仍需扩大项目与过渡数量。
 - **构造效度**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并辅以变异压力测试，破除 Safety 自证循环；但 `A_obs` 在自然 diff 下样本偏小（4 个过渡），变异增强部分缓解。
 - **内部效度**：命题 1 的安全性是条件安全（H1–H3）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。
 - **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性不再依赖人工标注，而以变异杀伤率与版本差分敏感性两个客观自动指标度量。RQ2 真实 DeepSeek 对照已给出 diff vs nodiff 的自动语义指标差异，人工 κ 仅作小样本校准。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂 3.38% 与 DeepSeek LLM 臂 5.56%——二者均远低于上界，正面量化了信号检测的难度。仍存局限：端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
@@ -404,7 +406,7 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 本文研究代码变更感知的 Web 应用端到端回归测试用例选择与生成方法，把安全选测、覆盖缺口识别与 diff 约束生成统一进一个以 diff 为核心输入的闭环，核心是持久化、可增量维护的测试↔代码映射器与作为"源码 diff ↔ 浏览器操作"语义桥的 Semantic UI Diff。理论上给出与选择器无关的 `A*` 定义、条件安全命题 1 及证明、副作用状态闭包命题 2，并以净收益模型量化成本。在受控主体上，方法在 Safety=1.0 前提下达到 Reduction=0.625、Precision=1.0，非循环 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选，副作用场景下状态闭包恢复判定保真；真实 DeepSeek 生成对照表明 diff 约束显著提升生成用例的变更相关性与自动语义有效性。修复模块作为闭环支撑，在受控主体上可提升 targeted set 可用性；ReproBreak 结果则诚实揭示真实 locator 修复仍困难，本文不将其作为主贡献夸大。
 
-**展望（按优先级）**：① RQ1 多 commit replay 已接入 2 个真实项目（actual-budget、mermaid-live-editor）；后续扩大项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并把 RQ4 计时扩展为多过渡平均且纳入真实 `T_select`；② RQ2/RQ3 真实 LLM 对照已完成，后续补双标注 κ 与更强 DOM/trace 候选上下文；③ ReproBreak 端到端（无泄漏）修复已完成规则臂与 DeepSeek 臂，尚需补执行验证版（Docker overwrite）；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
+**展望（按优先级）**：① RQ1 多 commit replay 已接入 2 个真实项目（actual-budget、mermaid-live-editor）；后续扩大项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并在更多项目上实测 `T_select` 与多过渡 NetSaving；② RQ2/RQ3 真实 LLM 对照已完成，后续补双标注 κ 与更强 DOM/trace 候选上下文；③ ReproBreak 端到端（无泄漏）修复已完成规则臂与 DeepSeek 臂，尚需补执行验证版（Docker overwrite）；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
 
 ---
 
