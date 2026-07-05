@@ -114,8 +114,8 @@ async function main() {
 
   // staleness-classification annotation sheet (model label vs two human labels);
   // score later via cohenKappa over the (human1,human2) pairs and model agreement.
-  const stCsv = ['tag,target,model_label,human1,human2',
-    ...rows.map((r) => `${r.tag},${r.target},${r.staleness},,`)].join('\n');
+  const stCsv = ['tag,target,model_label,human1,human2,final',
+    ...rows.map((r) => `${r.tag},${r.target},${r.staleness},,,`)].join('\n');
   fs.writeFileSync(path.join(OUT, 'rq3_staleness_to_annotate.csv'), stCsv + '\n');
 
   const md = [

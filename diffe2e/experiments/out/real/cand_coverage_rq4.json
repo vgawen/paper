@@ -1,0 +1,52 @@
+{
+  "project": "cand_coverage",
+  "workers": 1,
+  "repeats": 3,
+  "selected_count": 1,
+  "full_count": 3,
+  "Reduction": 0.6667,
+  "T_select_ms": {
+    "median": 0,
+    "iqr": [
+      0,
+      0
+    ],
+    "runs": [
+      0,
+      0,
+      0
+    ],
+    "measured": false
+  },
+  "T_full_ms": {
+    "median": 1598,
+    "iqr": [
+      1593.5,
+      1599
+    ],
+    "runs": [
+      1598,
+      1589,
+      1600
+    ]
+  },
+  "T_run_sel_ms": {
+    "median": 1445,
+    "iqr": [
+      1439.5,
+      1448
+    ],
+    "runs": [
+      1445,
+      1434,
+      1451
+    ]
+  },
+  "ours_total_ms": {
+    "median": 1445
+  },
+  "TimeReduction": 0.0957,
+  "NetSaving": 0.0957,
+  "SelectionTax": 0,
+  "break_even": true
+}

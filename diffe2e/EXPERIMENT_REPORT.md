@@ -89,6 +89,14 @@
 
 ## 4. RQ4 成本/效率
 - 跨 24 个过渡：retest-all 共执行 144 次用例；ours 仅执行 54 次 → 测试执行量下降 62.5%（Safety 仍=1.0）。
+- 真实 wall-clock 计时如下（每臂 repeats=3，报告 median/IQR；`T_select` 未实测时显式标注，不把选择开销假装为 0）。
+
+| 项目 | workers | full_count | selected_count | Reduction | T_full | T_run(Sel) | T_select | TimeReduction | NetSaving | break_even | machine-minutes(full/ours) |
+|---|---:|---:|---:|---:|---|---|---|---:|---:|---|---|
+| actual_desktop | 2 | 34 | 0 | 100.0% | 110.84s (110.58s-119.35s) | 0.00s (0.00s-0.00s) | not measured | 100.0% | 100.0% | true | 3.695/0.000 |
+| cand_coverage | 1 | 3 | 1 | 66.7% | 1.60s (1.59s-1.60s) | 1.45s (1.44s-1.45s) | not measured | 9.6% | 9.6% | true | 0.027/0.024 |
+
+- 读法：cand_coverage 显示用例数减少 66.7% 但 wall-clock 仅减少 9.6%，说明 Reduction 与真实时间收益必须解耦报告；actual_desktop 当前记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 的 full run，但不能代表该项目平均收益。
 - 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。
 
 ## 5. 外部效度（真实项目，尽力而为）

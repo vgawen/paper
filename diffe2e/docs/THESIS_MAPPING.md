@@ -2,7 +2,7 @@
 
 > 论文题目：《代码变更感知的 Web 应用端到端回归测试用例选择与生成方法研究》。
 > 本表把每个数据/代码产物对应到论文章节、图表与一句话结论，便于写作时直接引用。
-> 标注 `[待真实数据]` 的行需要先接入真实项目 / LLM key / ReproBreak DB 才有最终数字。
+> 标注 `[待真实数据]` 的行需要先接入真实项目 / LLM key / ReproBreak DB 才有最终数字；已补齐的行保留产物路径作为论文数字来源。
 
 ## 理论与方法（第 3 章）
 | 论文位置 | 来源 | 一句话结论 |
@@ -40,7 +40,7 @@
 | 论文位置 | 数据/图表来源 | 一句话结论 |
 |---|---|---|
 | RQ4 合成主体执行量 | `EXPERIMENT_REPORT.md` §4 | 测试执行量下降 62.5%（Safety=1.0） |
-| RQ4 真实 wall-clock + NetSaving `[待真实数据]` | `out/real/*_rq4.json` | full vs selected 的 median/IQR、NetSaving、盈亏平衡、machine-minutes |
+| RQ4 真实 wall-clock + NetSaving | `out/real/cand_coverage_rq4.json`、`out/real/actual_desktop_rq4.json` | full vs selected 的 median/IQR、NetSaving、盈亏平衡、machine-minutes；`T_select` hook 待补 |
 
 ## 第 2 章 相关工作 / 第 5 章 威胁
 | 论文位置 | 数据/图表来源 | 一句话结论 |

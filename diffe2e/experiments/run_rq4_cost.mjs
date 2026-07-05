@@ -21,17 +21,24 @@ const OUT = path.join(here, 'out', 'real');
 
 function loadAdapter(file) {
   const a = JSON.parse(fs.readFileSync(file, 'utf8'));
-  a.repoAbs = path.resolve(path.dirname(file), a.repoDir);
+  a.repoAbs = path.resolve(here, 'real', a.repoDir);
+  a.runAbs = a.runDir ? path.resolve(a.repoAbs, a.runDir) : a.repoAbs;
   return a;
+}
+
+function selectedCommand(adapter, specsStr, workers) {
+  const specAndWorkers = `${specsStr} --workers=${workers}`.trim();
+  const template = adapter.testOneCmd.replace(/\s--workers=\S+/g, '');
+  return template.replace('{spec}', specAndWorkers);
 }
 
 // One Playwright invocation. Empty specsStr => full suite. Same template /
 // workers / COV for both arms. Returns elapsed ms (breaks may exit non-zero;
 // timing is still valid).
 function timeRun(adapter, specsStr, workers) {
-  const cmd = adapter.testOneCmd.replace('{spec}', `${specsStr} --workers=${workers}`.trim());
+  const cmd = specsStr ? selectedCommand(adapter, specsStr, workers) : adapter.testAllCmd;
   const t = Date.now();
-  try { execSync(cmd, { cwd: adapter.repoAbs, stdio: 'pipe' }); } catch { /* expected on breaks */ }
+  try { execSync(cmd, { cwd: adapter.runAbs, stdio: 'pipe' }); } catch { /* expected on breaks */ }
   return Date.now() - t;
 }
 
@@ -42,7 +49,7 @@ function timeRun(adapter, specsStr, workers) {
 function timeSelect(adapter) {
   if (!adapter.selectCmd) return { ms: 0, measured: false };
   const t = Date.now();
-  try { execSync(adapter.selectCmd, { cwd: adapter.repoAbs, stdio: 'pipe' }); } catch { /* */ }
+  try { execSync(adapter.selectCmd, { cwd: adapter.runAbs, stdio: 'pipe' }); } catch { /* */ }
   return { ms: Date.now() - t, measured: true };
 }
 
@@ -65,7 +72,7 @@ function main() {
   for (let r = 0; r < repeats; r++) {
     full.push(timeRun(adapter, '', workers));
     const t = timeSelect(adapter); selOverhead.push(t.ms);
-    sel.push(timeRun(adapter, specPaths, workers));
+    sel.push(selected.length ? timeRun(adapter, specPaths, workers) : 0);
   }
   const selectMeasured = !!adapter.selectCmd;
 

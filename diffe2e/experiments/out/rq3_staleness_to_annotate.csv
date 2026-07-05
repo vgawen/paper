@@ -1,5 +1,5 @@
-tag,target,model_label,human1,human2
-c08,cart.spec.ts,STRUCTURAL_ONLY,,
-c15,login.spec.ts,EXPECTATION_CHANGE,,
-c20,search.spec.ts,STRUCTURAL_ONLY,,
-c21,orders.spec.ts,SUSPECTED_REGRESSION,,
+tag,target,model_label,human1,human2,final
+c08,cart.spec.ts,STRUCTURAL_ONLY,,,
+c15,login.spec.ts,EXPECTATION_CHANGE,,,
+c20,search.spec.ts,STRUCTURAL_ONLY,,,
+c21,orders.spec.ts,SUSPECTED_REGRESSION,,,

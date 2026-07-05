@@ -14,3 +14,25 @@
 - `spec`：待判定的生成用例全文。
 - `annotator1_yn` / `annotator2_yn`：两名标注者各填 y/n。
 - `final`：仅当两人不一致时由第三人仲裁填写（y/n）。
+
+## RQ3 过时类型分类校准
+
+对 `out/rq3_staleness_to_annotate.csv` 中每条 selected-but-failing 测试，两名标注者独立判断失效类型：
+
+- `STRUCTURAL_ONLY`：测试意图仍成立，主要是 locator / 文案 / DOM 结构变化导致旧测试过时。
+- `EXPECTATION_CHANGE`：业务预期或断言目标随需求变化，修复需要更新断言语义。
+- `SUSPECTED_REGRESSION`：不能确定是测试过时，可能是新版本真实回归；不应自动改写采纳。
+
+字段说明：
+
+- `model_label`：DiffE2E 自动分诊标签。
+- `human1` / `human2`：两名标注者独立填写上述三类之一。
+- `final`：仅当两人不一致时填写仲裁标签。
+
+评分命令：
+
+```bash
+node experiments/annotate/score.mjs experiments/out/rq3_staleness_to_annotate.csv
+```
+
+输出 `out/rq3_staleness_annotation.json`，包含人工一致性 κ、模型 vs 人工金标 accuracy 与 κ。

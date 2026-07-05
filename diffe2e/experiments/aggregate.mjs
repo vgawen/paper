@@ -46,9 +46,17 @@ function main() {
 
   const agg = { rq1: rq1.summary, rq1_n: rq1.n, sig, ci, rq2, rq3: { n: rq3.n, repaired: rq3.repaired },
     rq4: { totalFull, totalSel, execSaving }, gate };
+  const realDir = path.join(OUT, 'real');
+  const rq4Files = fs.existsSync(realDir)
+    ? fs.readdirSync(realDir).filter((f) => f.endsWith('_rq4.json')).sort() : [];
+  const rq4Real = rq4Files.map((f) => readJ(path.join(realDir, f)));
+  agg.rq4.real = rq4Real;
   fs.writeFileSync(path.join(OUT, 'aggregate.json'), JSON.stringify(agg, null, 2));
 
   const m = (x) => x.toFixed(3);
+  const pct = (x) => `${(100 * x).toFixed(1)}%`;
+  const sec = (ms) => `${(ms / 1000).toFixed(2)}s`;
+  const statCell = (s) => `${sec(s.median)} (${sec(s.iqr[0])}-${sec(s.iqr[1])})`;
   const L = [];
   L.push('# DiffE2E 实验报告（代码变更感知的 Playwright E2E 选测与生成）', '');
   L.push('## 0. 概览');
@@ -182,6 +190,18 @@ function main() {
 
   L.push('## 4. RQ4 成本/效率');
   L.push(`- 跨 ${rq1.n} 个过渡：retest-all 共执行 ${totalFull} 次用例；ours 仅执行 ${totalSel} 次 → 测试执行量下降 ${(execSaving * 100).toFixed(1)}%（Safety 仍=1.0）。`);
+  if (rq4Real.length) {
+    L.push('- 真实 wall-clock 计时如下（每臂 repeats=3，报告 median/IQR；`T_select` 未实测时显式标注，不把选择开销假装为 0）。', '');
+    L.push('| 项目 | workers | full_count | selected_count | Reduction | T_full | T_run(Sel) | T_select | TimeReduction | NetSaving | break_even | machine-minutes(full/ours) |',
+      '|---|---:|---:|---:|---:|---|---|---|---:|---:|---|---|');
+    for (const r of rq4Real) {
+      const tsel = r.T_select_ms.measured ? statCell(r.T_select_ms) : 'not measured';
+      const fullMm = (r.T_full_ms.median * r.workers / 60000).toFixed(3);
+      const oursMm = ((r.T_run_sel_ms.median + (r.T_select_ms.measured ? r.T_select_ms.median : 0)) * r.workers / 60000).toFixed(3);
+      L.push(`| ${r.project} | ${r.workers} | ${r.full_count} | ${r.selected_count} | ${pct(r.Reduction)} | ${statCell(r.T_full_ms)} | ${statCell(r.T_run_sel_ms)} | ${tsel} | ${pct(r.TimeReduction)} | ${pct(r.NetSaving)} | ${r.break_even} | ${fullMm}/${oursMm} |`);
+    }
+    L.push('', '- 读法：cand_coverage 显示用例数减少 66.7% 但 wall-clock 仅减少 9.6%，说明 Reduction 与真实时间收益必须解耦报告；actual_desktop 当前记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 的 full run，但不能代表该项目平均收益。');
+  }
   L.push('- 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。', '');
 
   L.push('## 5. 外部效度（真实项目，尽力而为）');
@@ -192,7 +212,6 @@ function main() {
   L.push('');
 
   // 5.1 真实多 commit replay（CDP 覆盖注入，无需预插桩）
-  const realDir = path.join(OUT, 'real');
   const realFiles = fs.existsSync(realDir)
     ? fs.readdirSync(realDir).filter((f) => f.endsWith('_rq1.json')).sort() : [];
   if (realFiles.length) {
