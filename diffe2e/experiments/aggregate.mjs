@@ -51,6 +51,10 @@ function main() {
     ? fs.readdirSync(realDir).filter((f) => f.endsWith('_rq4.json')).sort() : [];
   const rq4Real = rq4Files.map((f) => readJ(path.join(realDir, f)));
   agg.rq4.real = rq4Real;
+  const rq4BatchFiles = fs.existsSync(realDir)
+    ? fs.readdirSync(realDir).filter((f) => f.endsWith('_rq4_batch.json')).sort() : [];
+  const rq4Batch = rq4BatchFiles.map((f) => readJ(path.join(realDir, f)));
+  agg.rq4.batch = rq4Batch;
   fs.writeFileSync(path.join(OUT, 'aggregate.json'), JSON.stringify(agg, null, 2));
 
   const m = (x) => x.toFixed(3);
@@ -210,6 +214,15 @@ function main() {
       : 'actual_desktop 空选集过渡可作为边界案例';
     L.push('', `- 读法：${candNote}，说明 Reduction 与真实时间收益必须解耦报告；${actualNote}。`);
   }
+  if (rq4Batch.length) {
+    L.push('', '### 多过渡平均（batch-estimated）');
+    L.push('| 项目 | transitions | empty | partial | full | mean Reduction | mean NetSaving | median NetSaving | break-even rate | T_select measured |',
+      '|---|---:|---:|---:|---:|---:|---:|---:|---:|---|');
+    for (const r of rq4Batch) {
+      L.push(`| ${r.project} | ${r.transitions} | ${r.buckets.empty} | ${r.buckets.partial} | ${r.buckets.full} | ${pct(r.meanReduction)} | ${pct(r.meanNetSaving)} | ${pct(r.medianNetSaving)} | ${pct(r.breakEvenRate)} | ${r.selectionMeasured} |`);
+    }
+    L.push('', '- 读法：batch-estimated 用 RQ1 多个过渡的选中分布套用已测 RQ4 cost profile，避免只报告单个空选集边界场景；full-selection 过渡按全量执行处理，因此不会贡献时间收益。');
+  }
   L.push('- 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。', '');
 
   L.push('## 5. 外部效度（真实项目，尽力而为）');
@@ -280,6 +293,7 @@ function main() {
     'node --env-file=.env experiments/run_rq3.mjs',
     'node experiments/run_rq4_cost.mjs experiments/real/adapters/cand_coverage.json "App.test.ts -g \\"use Red as a background color\\"" 1 3 3',
     'node experiments/run_rq4_cost.mjs experiments/real/adapters/actual_desktop.json "" 2 3 34',
+    'node experiments/run_rq4_batch.mjs experiments/out/real/actual_desktop_rq1.jsonl experiments/out/real/actual_desktop_rq4.json dual',
     'node experiments/aggregate.mjs',
     '```', '',
     '## ReproBreak 复现', '```bash', 'cd diffe2e',
@@ -289,7 +303,7 @@ function main() {
     '```', '',
     '## 产物', '- experiments/out/rq1_dataset.jsonl, rq1_summary.md, rq1_stats.md, figs/rq1_metrics.svg',
     '- experiments/out/rq2_results.md, rq3_results.md, aggregate.json',
-    '- experiments/out/real/*_rq1.json, *_rq4.json, real_rq1_stats.md',
+    '- experiments/out/real/*_rq1.json, *_rq4.json, *_rq4_batch.json, real_rq1_stats.md',
     '- realproj/results/reprobreak.md, reprobreak_e2e.md',
     '- EXPERIMENT_REPORT.md, realproj/results/REPORT.md', '',
     '## 人工校准', '```bash',

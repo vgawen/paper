@@ -1,6 +1,6 @@
 # 成本模型与量化目标（净收益）
 
-> 本文回应评审意见 #4（实验缺设计、缺可信量化结果；在问题定义之初就量化目标）。核心判据由导师明确给出：**「测试选择算法执行时间 + 选中用例执行时间」是否远小于「全量执行时间」**。本文给出量化目标、时间分解、净收益与盈亏平衡定义、非时间资源指标，以及公平对比协议。对应代码：`experiments/run_rq4_cost.mjs`。
+> 本文回应评审意见 #4（实验缺设计、缺可信量化结果；在问题定义之初就量化目标）。核心判据由导师明确给出：**「测试选择算法执行时间 + 选中用例执行时间」是否远小于「全量执行时间」**。本文给出量化目标、时间分解、净收益与盈亏平衡定义、非时间资源指标，以及公平对比协议。对应代码：`experiments/run_rq4_cost.mjs`（单场景 wall-clock）与 `experiments/run_rq4_batch.mjs`（多过渡平均）。
 
 ## 1. 量化目标（在问题定义之初给出）
 
@@ -58,6 +58,7 @@ SelectionTax   = T_select / T_full              # 选择本身占的"税"
 2. `selected` 的多个 spec **一次性**传入单次调用（让其按同样并行度跑），而非逐个冷启动顺序执行；
 3. 每个 arm 重复 `R ≥ 3` 次，报告 **median 与 IQR**（而非单次或求和）；
 4. `T_select` 单独计时并显式纳入 `T_ours_total`，不得"假装选择免费"。
+5. 多过渡平均不得只用一个空选集边界案例代表项目收益；应报告 empty/partial/full 过渡分布、mean/median NetSaving 与 break-even rate。
 
 ## 6. 报告模板（run_rq4_cost.mjs 产物）
 
@@ -77,11 +78,29 @@ SelectionTax   = T_select / T_full              # 选择本身占的"税"
 }
 ```
 
+`run_rq4_batch.mjs` 产物补充报告：
+
+```jsonc
+{
+  "project": "...",
+  "method": "dual batch-estimated from RQ1 transitions and one RQ4 cost profile",
+  "transitions": 9,
+  "buckets": { "empty": 1, "partial": 0, "full": 8 },
+  "meanReduction": 0.1111,
+  "meanNetSaving": 0.1111,
+  "medianNetSaving": 0,
+  "breakEvenRate": 0.1111,
+  "selectionMeasured": false
+}
+```
+
+注意：batch-estimated 表示它复用已测 cost profile 对 RQ1 多个 transition 做聚合，不等同于每个 transition 都重新实测 wall-clock；论文中应按此限定表述。
+
 ## 7. 论文写作映射
 
 | 论文位置 | 本文对应 | 交付物 |
 |---|---|---|
 | 问题定义·量化目标 | §1 | 目标式 + 召回硬约束 |
-| 实验 RQ4·时间分解与净收益 | §2–§3 | `run_rq4_cost.mjs` 的 NetSaving/盈亏平衡 |
+| 实验 RQ4·时间分解与净收益 | §2–§3、§6 | `run_rq4_cost.mjs` 的 NetSaving/盈亏平衡 + `run_rq4_batch.mjs` 的多过渡平均 |
 | 实验 RQ4·资源指标 | §4 | machine-minutes / token 成本 |
 | 实验·公平性说明 | §5 | 对比协议 |

@@ -97,6 +97,13 @@
 | cand_coverage | 1 | 3 | 1 | 66.7% | 1.64s (1.64s-2.27s) | 1.43s (1.43s-1.44s) | 0.12s (0.12s-0.13s) | 12.4% | 5.0% | true | 0.027/0.026 |
 
 - 读法：cand_coverage 显示用例数减少 66.7%，但计入选择开销后 NetSaving 仅 5.0%（SelectionTax=7.4%），说明 Reduction 与真实时间收益必须解耦报告；actual_desktop 当前记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 110.84s 的 full run，但不能代表该项目平均收益。
+
+### 多过渡平均（batch-estimated）
+| 项目 | transitions | empty | partial | full | mean Reduction | mean NetSaving | median NetSaving | break-even rate | T_select measured |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| actual_desktop | 9 | 1 | 0 | 8 | 11.1% | 11.1% | 0.0% | 11.1% | false |
+
+- 读法：batch-estimated 用 RQ1 多个过渡的选中分布套用已测 RQ4 cost profile，避免只报告单个空选集边界场景；full-selection 过渡按全量执行处理，因此不会贡献时间收益。
 - 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。
 
 ## 5. 外部效度（真实项目，尽力而为）
