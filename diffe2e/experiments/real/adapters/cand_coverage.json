@@ -6,6 +6,7 @@
   "installCmd": "npm ci",
   "testOneCmd": "COV_OUT=cov_pertest npx playwright test {spec}",
   "testAllCmd": "COV_OUT=cov_pertest npx playwright test",
+  "selectCmd": "node ../../experiments/select_c1_dynamic.mjs .",
   "covEntryToPath": "istanbul",
   "specGlob": "e2e"
 }

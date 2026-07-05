@@ -200,7 +200,15 @@ function main() {
       const oursMm = ((r.T_run_sel_ms.median + (r.T_select_ms.measured ? r.T_select_ms.median : 0)) * r.workers / 60000).toFixed(3);
       L.push(`| ${r.project} | ${r.workers} | ${r.full_count} | ${r.selected_count} | ${pct(r.Reduction)} | ${statCell(r.T_full_ms)} | ${statCell(r.T_run_sel_ms)} | ${tsel} | ${pct(r.TimeReduction)} | ${pct(r.NetSaving)} | ${r.break_even} | ${fullMm}/${oursMm} |`);
     }
-    L.push('', '- 读法：cand_coverage 显示用例数减少 66.7% 但 wall-clock 仅减少 9.6%，说明 Reduction 与真实时间收益必须解耦报告；actual_desktop 当前记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 的 full run，但不能代表该项目平均收益。');
+    const cand = rq4Real.find((r) => r.project === 'cand_coverage');
+    const actual = rq4Real.find((r) => r.project === 'actual_desktop');
+    const candNote = cand
+      ? `cand_coverage 显示用例数减少 ${pct(cand.Reduction)}，但计入选择开销后 NetSaving 仅 ${pct(cand.NetSaving)}（SelectionTax=${pct(cand.SelectionTax)}）`
+      : 'cand_coverage 显示用例数量缩减与 wall-clock 收益并非线性关系';
+    const actualNote = actual
+      ? `actual_desktop 当前记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 ${sec(actual.T_full_ms.median)} 的 full run，但不能代表该项目平均收益`
+      : 'actual_desktop 空选集过渡可作为边界案例';
+    L.push('', `- 读法：${candNote}，说明 Reduction 与真实时间收益必须解耦报告；${actualNote}。`);
   }
   L.push('- 生成/修复均为按需触发（仅缺口/失效用例），额外成本与变更规模成正比。', '');
 

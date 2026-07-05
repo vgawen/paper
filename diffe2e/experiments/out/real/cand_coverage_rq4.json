@@ -6,47 +6,47 @@
   "full_count": 3,
   "Reduction": 0.6667,
   "T_select_ms": {
-    "median": 0,
+    "median": 122,
     "iqr": [
-      0,
-      0
+      116.5,
+      125
     ],
     "runs": [
-      0,
-      0,
-      0
+      122,
+      128,
+      111
     ],
-    "measured": false
+    "measured": true
   },
   "T_full_ms": {
-    "median": 1598,
+    "median": 1638,
     "iqr": [
-      1593.5,
-      1599
+      1636.5,
+      2273.5
     ],
     "runs": [
-      1598,
-      1589,
-      1600
+      2909,
+      1638,
+      1635
     ]
   },
   "T_run_sel_ms": {
-    "median": 1445,
+    "median": 1434,
     "iqr": [
-      1439.5,
-      1448
+      1431.5,
+      1443.5
     ],
     "runs": [
-      1445,
-      1434,
-      1451
+      1453,
+      1429,
+      1434
     ]
   },
   "ours_total_ms": {
-    "median": 1445
+    "median": 1556
   },
-  "TimeReduction": 0.0957,
-  "NetSaving": 0.0957,
-  "SelectionTax": 0,
+  "TimeReduction": 0.1245,
+  "NetSaving": 0.0501,
+  "SelectionTax": 0.0745,
   "break_even": true
 }

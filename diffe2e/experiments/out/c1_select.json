@@ -1,0 +1,18 @@
+{
+  "selected": [
+    "App.test.ts::red"
+  ],
+  "full_count": 3,
+  "selected_count": 1,
+  "affected": [
+    "App.test.ts::red"
+  ],
+  "metrics": {
+    "Reduction": 0.6667,
+    "Safety": 1,
+    "Precision": 1,
+    "selected_count": 1,
+    "affected_count": 1,
+    "full_suite": 3
+  }
+}
