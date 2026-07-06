@@ -3,6 +3,27 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { cohenKappa } from '../../pipeline/src/stats.mjs';
 
+export function applyClassificationUnblind(rows, unblind) {
+  return rows.map((r) => {
+    if (r.model_label || !r.case_id) return r;
+    const key = unblind[r.case_id];
+    const modelLabel = typeof key === 'string' ? key : key?.model_label;
+    return modelLabel ? { ...r, model_label: modelLabel } : r;
+  });
+}
+
+export function applyRq2Unblind(rows, unblind) {
+  const armOf = (caseId) => {
+    const key = unblind[caseId];
+    return typeof key === 'string' ? key : key?.arm;
+  };
+  const by_arm = {};
+  for (const arm of ['diff', 'nodiff']) {
+    by_arm[arm] = scoreRows(rows.filter((r) => armOf(r.case_id) === arm));
+  }
+  return by_arm;
+}
+
 export function scoreRows(rows) {
   const labeled = rows.filter((r) => r.annotator1_yn && r.annotator2_yn);
   const pairs = labeled.map((r) => [r.annotator1_yn.trim(), r.annotator2_yn.trim()]);
@@ -49,7 +70,13 @@ function parseCSV(t) {
 if (import.meta.url === `file://${process.argv[1]}`) {
   const here = path.dirname(fileURLToPath(import.meta.url));
   const input = process.argv[2] || path.join(here, 'sheet.csv');
-  const rows = parseCSV(fs.readFileSync(input, 'utf8'));
+  let rows = parseCSV(fs.readFileSync(input, 'utf8'));
+  if (rows.length && 'human1' in rows[0] && 'human2' in rows[0]) {
+    if (!('model_label' in rows[0])) {
+      const unblindPath = input.replace(/\.csv$/i, '_unblind.json');
+      if (fs.existsSync(unblindPath)) rows = applyClassificationUnblind(rows, JSON.parse(fs.readFileSync(unblindPath, 'utf8')));
+    }
+  }
   if (rows.length && 'model_label' in rows[0] && 'human1' in rows[0] && 'human2' in rows[0]) {
     const res = scoreClassificationRows(rows);
     fs.writeFileSync(path.join(here, '..', 'out', 'rq3_staleness_annotation.json'), JSON.stringify(res, null, 2));
@@ -58,15 +85,15 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
   const res = scoreRows(rows);
   // join arm via the unblinding key and report per-arm semantic validity
-  const unblindPath = path.join(here, '..', 'out', 'rq2_unblind.json');
+  const unblindPath = fs.existsSync(input.replace(/\.csv$/i, '_unblind.json'))
+    ? input.replace(/\.csv$/i, '_unblind.json')
+    : path.join(here, '..', 'out', 'rq2_unblind.json');
   if (fs.existsSync(unblindPath)) {
     const unblind = JSON.parse(fs.readFileSync(unblindPath, 'utf8'));
-    res.by_arm = {};
-    for (const arm of ['diff', 'nodiff']) {
-      res.by_arm[arm] = scoreRows(rows.filter((r) => unblind[r.case_id] === arm));
-    }
+    res.by_arm = applyRq2Unblind(rows, unblind);
   }
-  fs.writeFileSync(path.join(here, '..', 'out', 'rq2_annotation.json'), JSON.stringify(res, null, 2));
+  const outJson = input.replace(/\.csv$/i, '_annotation.json');
+  fs.writeFileSync(fs.existsSync(path.dirname(outJson)) ? outJson : path.join(here, '..', 'out', 'rq2_annotation.json'), JSON.stringify(res, null, 2));
   console.log(`semantic-validity=${res.semantic_validity}  kappa=${res.kappa.kappa} (n=${res.n})` +
     (res.by_arm ? `\n  diff=${res.by_arm.diff.semantic_validity}  nodiff=${res.by_arm.nodiff.semantic_validity}` : ''));
 }

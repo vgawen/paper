@@ -26,7 +26,7 @@
 | 论文位置 | 数据/图表来源 | 一句话结论 |
 |---|---|---|
 | RQ2 双臂表 | `out/rq2_results.md` | diff 约束臂 vs 无约束基线的 executable/change-relevant 率 |
-| RQ2 人工小样本校准 `[待人工校准]` | `out/rq2_to_annotate.jsonl` + `out/rq2_unblind.json` + `annotate/sheet.csv` | 自动指标为主；人工双标注仅校准 semantic-validity 与 κ |
+| RQ2 真实项目人工双盲标注 `[待人工校准]` | `out/rq2_real_to_annotate.csv` + `out/rq2_real_to_annotate_unblind.json` + `out/rq2_real_to_annotate_status.json` | 已构建 30 条真实项目样本（actual 28 + mermaid 2；diff/nodiff 各 15）；待填写双标注并计算 κ |
 
 ## 第 4 章 RQ3：修复
 | 论文位置 | 数据/图表来源 | 一句话结论 |

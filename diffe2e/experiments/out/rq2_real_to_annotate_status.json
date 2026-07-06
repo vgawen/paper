@@ -1,0 +1,19 @@
+{
+  "found": [
+    {
+      "source": "real_actual_rq2",
+      "rows": 28
+    },
+    {
+      "source": "real_mermaid_rq2",
+      "rows": 2
+    }
+  ],
+  "stats": {
+    "total": 30,
+    "by_source": {
+      "real_actual_rq2": 28,
+      "real_mermaid_rq2": 2
+    }
+  }
+}

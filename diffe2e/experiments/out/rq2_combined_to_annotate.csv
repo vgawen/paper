@@ -1,0 +1,97 @@
+case_id,route,gap_file,spec,annotator1_yn,annotator2_yn,final
+rq2_001,"/wishlist","src/wishlist.js","import { test, expect } from './fixtures';
+
+test('home page loads and displays product list', async ({ page }) => {
+  await page.goto('/#/');
+  // Verify the page has loaded by checking for a heading or product items
+  await expect(page.locator('h1')).toContainText('Products');
+  // Expect at least one product card to be visible
+  await expect(page.locator('.product-item')).not.toHaveCount(0);
+});
+",,,
+rq2_002,"/wishlist","src/wishlist.js","import { test, expect } from './fixtures';
+
+test('should increment wishlist count on button click', async ({ page }) => {
+  await page.goto('/#/wishlist');
+
+  // Verify initial count is 0
+  const countLocator = page.getByTestId('wishlist-count');
+  await expect(countLocator).toHaveText('0');
+
+  // Click the ""Save"" button
+  const addButton = page.getByTestId('wishlist-add');
+  await addButton.click();
+
+  // Assert count incremented to 1
+  await expect(countLocator).toHaveText('1');
+});
+",,,
+rq2_003,"/coupon","src/coupon.js","import { test, expect } from './fixtures';
+
+test('smoke test: navigate to cart', async ({ page }) => {
+  await page.goto('/#/');
+  // Homepage should have a header
+  await expect(page.getByRole('heading', { name: /Welcome/i })).toBeVisible();
+  // Click on cart link
+  await page.getByRole('link', { name: /Cart/i }).click();
+  // Verify we are on the cart page
+  await expect(page).toHaveURL(/\/cart/);
+  // Cart page should have a heading or content
+  await expect(page.getByText(/Cart/i)).toBeVisible();
+});
+",,,
+rq2_004,"/faq","src/faq.js","import { test, expect } from './fixtures';
+
+test('FAQ toggle shows answer', async ({ page }) => {
+  await page.goto('/#/faq');
+  await page.locator('[data-testid=""faq-toggle""]').click();
+  await expect(page.locator('[data-testid=""faq-body""]')).toBeVisible();
+});
+",,,
+rq2_005,"/coupon","src/coupon.js","import { test, expect } from './fixtures';
+
+test('coupon route applies correct discount and shows invalid code', async ({ page }) => {
+  await page.goto('/#/coupon');
+
+  const codeInput = page.getByTestId('coupon-code');
+  const applyButton = page.getByTestId('coupon-apply');
+  const message = page.getByTestId('coupon-msg');
+
+  // Valid coupon
+  await codeInput.fill('SAVE10');
+  await applyButton.click();
+  await expect(message).toHaveText('10% off');
+
+  // Invalid coupon
+  await codeInput.fill('WRONG');
+  await applyButton.click();
+  await expect(message).toHaveText('invalid');
+});
+",,,
+rq2_006,"/faq","src/faq.js","import { test, expect } from './fixtures';
+
+test('Smoke test: Login, add item to cart, verify in cart', async ({ page }) => {
+  // Navigate to the app (login page)
+  await page.goto('/#/');
+
+  // Perform login as standard_user
+  await page.fill('[data-test=""username""]', 'standard_user');
+  await page.fill('[data-test=""password""]', 'secret_sauce');
+  await page.click('[data-test=""login-button""]');
+
+  // Verify inventory page is displayed
+  await expect(page.locator('.inventory_list')).toBeVisible();
+
+  // Add ""Sauce Labs Backpack"" to the cart
+  await page.click('[data-test=""add-to-cart-sauce-labs-backpack""]');
+
+  // Verify cart badge shows 1 item
+  await expect(page.locator('.shopping_cart_badge')).toHaveText('1');
+
+  // Navigate to the cart page
+  await page.goto('/#/cart');
+
+  // Verify the item appears in the cart
+  await expect(page.locator('.cart_item')).toHaveCount(1);
+});
+",,,

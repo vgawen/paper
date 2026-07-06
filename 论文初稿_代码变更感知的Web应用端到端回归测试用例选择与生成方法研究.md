@@ -251,11 +251,11 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 ### 4.3 对照臂与指标
 
 - **RQ1 基线**：`retest_all`（全量）、`random_k`（同规模随机）、`static_heuristic`（静态路由/组件启发式），以及信号消融 `coverage_only / uidiff_only / dual`。
-- **指标**：`Reduction = 1 − |Sel|/|S|`；`Safety`（覆盖型）`= |Sel∩Affected|/|Affected|`；`SafetyEmp`（非循环）`= |Sel∩A_obs|/|A_obs|`；`Precision = |Sel∩Affected|/|Sel|`；`TargetedSetUsability`；`NetSaving`；RQ2 语义有效性以**自动指标**为主——变异杀伤率（mutation kill）与版本差分敏感性（V_new 过/V_old 失败），Cohen's κ 仅作人工小样本校准。
+- **指标**：`Reduction = 1 − |Sel|/|S|`；`Safety`（覆盖型）`= |Sel∩Affected|/|Affected|`；`SafetyEmp`（非循环）`= |Sel∩A_obs|/|A_obs|`；`Precision = |Sel∩Affected|/|Sel|`；`TargetedSetUsability`；`NetSaving`；RQ2 语义有效性以**自动指标**为主——变异杀伤率（mutation kill）与版本差分敏感性（V_new 过/V_old 失败），人工双盲 Cohen's κ 用于**中等规模样本的一致性验证**。
 
 ### 4.4 真实数据接入（状态说明）
 
-受控主体给出零依赖、可复现的主结果；真实外部效度部分已补齐、部分待补：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）**已完成**（actual-budget + mermaid-live-editor，共 14 个稳定过渡，§5.1）；(ii) 真实 LLM 生成对照（RQ2）**已完成**，采用 DeepSeek 对 diff 约束臂与无 diff 基线做自动语义指标评估；(iii) 闭环支撑与修复边界对照（RQ3）**已完成**，受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 23/414；(iv) 真实项目 wall-clock、NetSaving、多过渡平均与 LLM token/$ 成本（RQ4）**已完成**，覆盖 cand_coverage 与 actual_desktop 两个成本场景；人工 κ 仍作为辅助校准待补。
+受控主体给出零依赖、可复现的主结果；真实外部效度部分已补齐、部分待补：(i) ≥2 个真实 Playwright 项目的多 commit replay（RQ1）**已完成**（actual-budget + mermaid-live-editor，共 14 个稳定过渡，§5.1）；(ii) 真实 LLM 生成对照（RQ2）**已完成**，采用 DeepSeek 对 diff 约束臂与无 diff 基线做自动语义指标评估，并已从两个真实项目构建 30 条双盲标注候选；(iii) 闭环支撑与修复边界对照（RQ3）**已完成**，受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 23/414；(iv) 真实项目 wall-clock、NetSaving、多过渡平均与 LLM token/$ 成本（RQ4）**已完成**，覆盖 cand_coverage 与 actual_desktop 两个成本场景；当前待补的主要是 RQ2/RQ3 双标注填写与 κ 回填，而不再是样本池构建。
 
 ---
 
@@ -321,7 +321,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 ### 5.2 RQ2：生成——diff 约束的相关性
 
-**语义有效性度量（方法）**：人工双标注成本高、规模小、且主观，本文以**两个客观自动指标**作为语义有效性的主度量，人工 Cohen's κ 仅用于小样本校准：
+**语义有效性度量（方法）**：人工双标注成本高且带主观性，本文以**两个客观自动指标**作为语义有效性的主度量；人工 Cohen's κ 不用于替代自动评测，而用于对自动判据做**中等规模双盲一致性验证**：
 
 - **变异杀伤（mutation kill）**：向缺口新增源码注入可被测试观察到的变异（重命名各 `data-testid`、对可见文本追加标记），重跑该生成用例。若其由通过转为失败即"杀掉"该变异，说明用例确实在验证新行为；恒真/仅占位的断言一个也杀不掉。指标为每条用例 killed/injected 的均值。
 - **版本差分敏感性（change sensitivity）**：同一生成用例在 V_new（缺口提交，新功能存在）通过、在 V_old（前一提交，新功能尚不存在）失败，则判定其对该变更敏感——这排除了与变更无关的"哪个版本都能过"的弱用例。
@@ -334,7 +334,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 | diff（约束）| 3 | **1.0** | **1.0** | **0.6667** | **1.0** | **1.0** |
 | nodiff（基线）| 3 | 0.3333 | 0.0 | 0.2222 | 0.3333 | 0.3333 |
 
-来源：`out/rq2_results.md`。为避免 LLM 输出格式影响执行，生成端对 Markdown 代码围栏做清洗，并统一将 `@playwright/test` 导入改写为项目覆盖采集 fixture `./fixtures`；真实 provider 请求失败或返回空 completion 时直接报错，禁止静默 fallback。结果显示，diff 约束臂在 3 个新增缺口上全部可执行、全部触达变更文件、全部对版本差异敏感，且均杀掉至少 1 个注入变异；无 diff 基线仅 1/3 可执行，且 0/3 触达变更文件。人工双标注（`rq2_to_annotate.jsonl` + `rq2_unblind.json` + Cohen's κ）保留为自动指标的小样本校准，不作为主度量。
+来源：`out/rq2_results.md`。为避免 LLM 输出格式影响执行，生成端对 Markdown 代码围栏做清洗，并统一将 `@playwright/test` 导入改写为项目覆盖采集 fixture `./fixtures`；真实 provider 请求失败或返回空 completion 时直接报错，禁止静默 fallback。结果显示，diff 约束臂在 3 个新增缺口上全部可执行、全部触达变更文件、全部对版本差异敏感，且均杀掉至少 1 个注入变异；无 diff 基线仅 1/3 可执行，且 0/3 触达变更文件。为验证自动语义判据与人工判断的一致性，本文已进一步从两个真实项目（actual-budget、mermaid-live-editor）中构建 30 条双盲标注样本（`out/rq2_real_to_annotate.csv` + `out/rq2_real_to_annotate_unblind.json`），其中 diff/nodiff 各 15 条；当前待完成的是双标注填写与 κ 计算，而不再是样本扩充本身。
 
 ### 5.3 RQ3：闭环支撑与修复边界
 
@@ -397,7 +397,7 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 - **外部效度**：主体为受控工程；真实多 commit replay（RQ1）已在 2 个真实开源项目（actual-budget、mermaid-live-editor，14 个稳定过渡）上完成并给出 dual Safety/Precision=1.0（§5.1），但项目数仍有限、且两者均为现代前端应用；真实 LLM 生成（RQ2）与修复（RQ3）对照已用 DeepSeek 跑通；真实 wall-clock（RQ4）已在 cand_coverage 与 actual_desktop 两个场景给出 NetSaving，并对 actual_desktop 给出多过渡平均，但 actual_desktop 的 `T_select` 尚未实测，仍需扩大项目与过渡数量。
 - **构造效度**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并辅以变异压力测试，破除 Safety 自证循环；但 `A_obs` 在自然 diff 下样本偏小（4 个过渡），变异增强部分缓解。
 - **内部效度**：命题 1 的安全性是条件安全（H1–H3）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。
-- **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性不再依赖人工标注，而以变异杀伤率与版本差分敏感性两个客观自动指标度量。RQ2 真实 DeepSeek 对照已给出 diff vs nodiff 的自动语义指标差异，人工 κ 仅作小样本校准。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂 3.38% 与 DeepSeek LLM 臂 5.56%——二者均远低于上界，正面量化了信号检测的难度。仍存局限：端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
+- **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性不再依赖人工标注作为主度量，而以变异杀伤率与版本差分敏感性两个客观自动指标度量。RQ2 真实 DeepSeek 对照已给出 diff vs nodiff 的自动语义指标差异，且已从两个真实项目构建 30 条双盲标注候选（diff/nodiff 各 15 条），足以替代此前仅 6 条的预检查样本；定稿前需完成的是这些样本的双标注填写与 Cohen's κ 回填。RQ3 同理，当前受控主体 4 条样本不足以支撑过时分类一致性结论，已改为从 ReproBreak 414 条无泄漏评估样本中抽取 `30-50` 条做双人盲评。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂 3.38% 与 DeepSeek LLM 臂 5.56%——二者均远低于上界，正面量化了信号检测的难度。仍存局限：端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
 - **覆盖映射粒度**：bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。Semantic UI Diff 在"文案与 handler 同时变更"时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。
 
 ---
@@ -406,7 +406,7 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 本文研究代码变更感知的 Web 应用端到端回归测试用例选择与生成方法，把安全选测、覆盖缺口识别与 diff 约束生成统一进一个以 diff 为核心输入的闭环，核心是持久化、可增量维护的测试↔代码映射器与作为"源码 diff ↔ 浏览器操作"语义桥的 Semantic UI Diff。理论上给出与选择器无关的 `A*` 定义、条件安全命题 1 及证明、副作用状态闭包命题 2，并以净收益模型量化成本。在受控主体上，方法在 Safety=1.0 前提下达到 Reduction=0.625、Precision=1.0，非循环 oracle 与变异压力测试均给出 SafetyEmp=1.0、0 漏选，副作用场景下状态闭包恢复判定保真；真实 DeepSeek 生成对照表明 diff 约束显著提升生成用例的变更相关性与自动语义有效性。修复模块作为闭环支撑，在受控主体上可提升 targeted set 可用性；ReproBreak 结果则诚实揭示真实 locator 修复仍困难，本文不将其作为主贡献夸大。
 
-**展望（按优先级）**：① RQ1 多 commit replay 已接入 2 个真实项目（actual-budget、mermaid-live-editor）；后续扩大项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并在更多项目上实测 `T_select` 与多过渡 NetSaving；② RQ2/RQ3 真实 LLM 对照已完成，后续补双标注 κ 与更强 DOM/trace 候选上下文；③ ReproBreak 端到端（无泄漏）修复已完成规则臂与 DeepSeek 臂，尚需补执行验证版（Docker overwrite）；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
+**展望（按优先级）**：① RQ1 多 commit replay 已接入 2 个真实项目（actual-budget、mermaid-live-editor）；后续扩大项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并在更多项目上实测 `T_select` 与多过渡 NetSaving；② RQ2/RQ3 真实 LLM 对照已完成，定稿前优先从真实项目与 ReproBreak 数据池中各抽取 `30-50` 条样本做双人盲评，补齐 Cohen's κ 与模型-人工一致性；③ ReproBreak 端到端（无泄漏）修复已完成规则臂与 DeepSeek 臂，尚需补执行验证版（Docker overwrite）；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
 
 ---
 

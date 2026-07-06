@@ -1,0 +1,122 @@
+{
+  "rq2_001": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_002": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_003": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_004": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_005": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_006": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_007": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_008": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_009": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_010": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_011": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_012": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_013": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_014": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_015": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_016": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_017": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_018": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_019": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_020": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_021": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_022": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_023": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_024": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_025": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_026": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_027": {
+    "arm": "diff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_028": {
+    "arm": "nodiff",
+    "source": "real_actual_rq2"
+  },
+  "rq2_029": {
+    "arm": "diff",
+    "source": "real_mermaid_rq2"
+  },
+  "rq2_030": {
+    "arm": "nodiff",
+    "source": "real_mermaid_rq2"
+  }
+}

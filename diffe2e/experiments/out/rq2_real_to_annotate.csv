@@ -1,0 +1,574 @@
+case_id,route,gap_file,spec,annotator1_yn,annotator2_yn,final
+rq2_001,"actual_desktop:packages/desktop-client/src/components/transactions/TransactionsTable.tsx","packages/desktop-client/src/components/transactions/TransactionsTable.tsx","import { test, expect } from './fixtures';
+
+test('exercises new UI elements and verifies visibility', async ({ page }) => {
+  // Fill the first input cell
+  await page.locator('inputcell').first().fill('test data');
+
+  // Click the button
+  await page.locator('button').click();
+
+  // Assert that the sheet name provider is visible
+  await expect(page.locator('sheetnameprovider')).toBeVisible();
+
+  // Assert that a custom cell is visible
+  await expect(page.locator('customcell').first()).toBeVisible();
+});
+",,,
+rq2_002,"actual_desktop:packages/desktop-client/src/components/transactions/TransactionsTable.tsx","packages/desktop-client/src/components/transactions/TransactionsTable.tsx","import { test, expect } from './fixtures';
+
+test('smoke test for actual_desktop', async ({ page }) => {
+  await page.goto('/#/');
+  // Wait for the application to load
+  await page.waitForLoadState('networkidle');
+  // Verify key UI elements are present
+  await expect(page.locator('[data-testid=""budget-header""]')).toBeVisible();
+  await expect(page.locator('text=Budget')).toBeVisible();
+});
+",,,
+rq2_003,"actual_desktop:packages/desktop-client/src/components/schedules/SchedulesTable.tsx","packages/desktop-client/src/components/schedules/SchedulesTable.tsx","import { test, expect } from './fixtures';
+
+test('exercise new UI elements', async ({ page }) => {
+  await page.setContent(`
+    <cell></cell>
+    <view>±</view>
+    <financialtext></financialtext>
+    <field></field>
+    <field></field>
+    <field></field>
+    <field></field>
+    <field></field>
+    <field></field>
+  `);
+
+  // Locate all elements
+  const cell = page.locator('cell');
+  const viewPlusMinus = page.getByText('±');
+  const financialText = page.locator('financialtext');
+  const fields = page.locator('field');
+
+  // Assert initial visibility
+  await expect(cell).toBeVisible();
+  await expect(viewPlusMinus).toBeVisible();
+  await expect(financialText).toBeVisible();
+  await expect(fields.first()).toBeVisible();
+
+  // Interact with the view (±)
+  await viewPlusMinus.click();
+
+  // Fill the first field
+  await fields.first().fill('123');
+
+  // Verify field value and that view is still visible
+  await expect(fields.first()).toHaveValue('123');
+  await expect(viewPlusMinus).toBeVisible();
+});
+",,,
+rq2_004,"actual_desktop:packages/desktop-client/src/components/schedules/SchedulesTable.tsx","packages/desktop-client/src/components/schedules/SchedulesTable.tsx","import { test, expect } from './fixtures';
+
+test('smoke test: add an expense and verify budget summary on actual_desktop', async ({ page }) => {
+  // Navigate to the main page
+  await page.goto('/#/');
+  
+  // Wait for the app to load (e.g., a budget table or ""Add Expense"" button)
+  await page.waitForSelector('button:has-text(""Add Expense"")', { timeout: 10000 });
+
+  // Click ""Add Expense"" to open the form
+  await page.click('button:has-text(""Add Expense"")');
+
+  // Fill in expense details
+  await page.fill('input[name=""description""]', 'Test Expense');
+  await page.fill('input[name=""amount""]', '42.50');
+  await page.selectOption('select[name=""category""]', 'Food');
+
+  // Submit the expense
+  await page.click('button[type=""submit""]:has-text(""Save"")');
+
+  // Wait for the table to update
+  await page.waitForTimeout(1000);
+
+  // Verify the expense appears in the table
+  const expenseRow = page.locator('table tbody tr', { hasText: 'Test Expense' });
+  await expect(expenseRow).toBeVisible();
+  await expect(expenseRow.locator('td:nth-child(2)')).toHaveText('42.50');
+  await expect(expenseRow.locator('td:nth-child(3)')).toHaveText('Food');
+
+  // Navigate to budget summary (assuming a separate route)
+  await page.goto('/#/budget');
+  await page.waitForSelector('h1:has-text(""Budget Summary"")', { timeout: 5000 });
+
+  // Verify the total spent includes our expense
+  const totalSpent = page.locator('[data-testid=""total-spent""]');
+  await expect(totalSpent).toHaveText(/\$42\.50/);
+});
+",,,
+rq2_005,"actual_desktop:packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx","packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx","import { test, expect } from './fixtures';
+
+test('actual_desktop SelectLinkedAccountsModal.tsx changed UI', async ({ page }) => {
+  await expect(page.locator('body')).toBeVisible();
+});
+",,,
+rq2_006,"actual_desktop:packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx","packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx","import { test, expect } from './fixtures';
+
+test('smoke test: main page loads correctly', async ({ page }) => {
+  await page.goto('/#/');
+  await expect(page.locator('body')).toBeVisible();
+  await expect(page).toHaveURL('/#/');
+});
+",,,
+rq2_007,"actual_desktop:packages/desktop-client/src/components/rules/RuleEditor.tsx","packages/desktop-client/src/components/rules/RuleEditor.tsx","import { test, expect } from './fixtures';
+
+test('exercises new UI elements and asserts visible outcome', async ({ page }) => {
+  // Navigate to the page that contains the rule builder
+  await page.goto('/');
+
+  // Interact with the all/any conditions selector
+  const conditionsOp = page.locator('[data-testid=""conditions-op""]');
+  await conditionsOp.selectOption('any');
+
+  // Fill in the first condition: select field, operator, value
+  const fieldSelects = page.locator('[data-testid=""condition-list""] [data-testid=""field-select""]');
+  const opSelects = page.locator('[data-testid=""condition-list""] [data-testid=""op-select""]');
+  const editorRows = page.locator('[data-testid=""condition-list""] [data-testid=""editor-row""]');
+
+  // First condition
+  await fieldSelects.nth(0).selectOption('amount');
+  await opSelects.nth(0).selectOption('greaterThan');
+  await editorRows.nth(0).fill('100');
+
+  // Second condition (the second field-select exists because the list renders multiple conditions)
+  await fieldSelects.nth(1).selectOption('date');
+  await opSelects.nth(1).selectOption('is');
+  await editorRows.nth(1).fill('today');
+
+  // Assert that the condition list contains the entered values
+  await expect(page.locator('[data-testid=""condition-list""]')).toContainText('100');
+  await expect(page.locator('[data-testid=""condition-list""]')).toContainText('today');
+
+  // Assert that the action split list and action list are visible
+  await expect(page.locator('[data-testid=""action-split-list""]')).toBeVisible();
+  await expect(page.locator('[data-testid=""action-list""]').first()).toBeVisible();
+});
+",,,
+rq2_008,"actual_desktop:packages/desktop-client/src/components/rules/RuleEditor.tsx","packages/desktop-client/src/components/rules/RuleEditor.tsx","import { test, expect } from './fixtures';
+
+test('smoke test - budget page loads', async ({ page }) => {
+  await page.goto('/#/');
+  // Wait for the budget page to render (e.g., a heading or key element)
+  await expect(page.locator('h1:has-text(""Budget"")')).toBeVisible({ timeout: 15000 });
+});
+",,,
+rq2_009,"actual_desktop:packages/desktop-client/src/components/reports/reports/Formula.tsx","packages/desktop-client/src/components/reports/reports/Formula.tsx","import { test, expect } from './fixtures';
+
+test('exercise new UI elements and assert visibility', async ({ page }) => {
+  // Navigate to a page where these elements exist.
+  // Adjust the URL as needed for your application.
+  await page.goto('/');
+
+  // Locate each element by its tag name.
+  const mobilePageHeader = page.locator('mobilepageheader');
+  const pageHeader = page.locator('pageheader');
+  const editablePageHeaderTitle = page.locator('editablepageheadertitle');
+  const button = page.locator('button');
+  const label = page.locator('label');
+  const select = page.locator('select');
+  const input = page.locator('input');
+
+  // Assert all elements are visible.
+  await expect(mobilePageHeader).toBeVisible();
+  await expect(pageHeader).toBeVisible();
+  await expect(editablePageHeaderTitle).toBeVisible();
+  await expect(button).toBeVisible();
+  await expect(label).toBeVisible();
+  await expect(select).toBeVisible();
+  await expect(input).toBeVisible();
+
+  // Interact with the elements to exercise them.
+  // Fill the input with text.
+  await input.fill('Test input value');
+
+  // Select an option from the select (assuming there is at least one option).
+  // Use a value or label that exists in your app; fallback to selecting by index.
+  const options = await select.locator('option').all();
+  if (options.length > 0) {
+    await select.selectOption({ index: 0 });
+  }
+
+  // Click the button.
+  await button.click();
+
+  // After interaction, verify that the elements remain visible.
+  // This is a simple visible outcome assertion.
+  await expect(mobilePageHeader).toBeVisible();
+  await expect(pageHeader).toBeVisible();
+  await expect(editablePageHeaderTitle).toBeVisible();
+  await expect(button).toBeVisible();
+  await expect(label).toBeVisible();
+  await expect(select).toBeVisible();
+  await expect(input).toBeVisible();
+});
+",,,
+rq2_010,"actual_desktop:packages/desktop-client/src/components/reports/reports/Formula.tsx","packages/desktop-client/src/components/reports/reports/Formula.tsx","import { test, expect } from './fixtures';
+
+test('smoke test - add item to cart and verify in cart', async ({ page }) => {
+  // Navigate to the home page
+  await page.goto('/#/');
+
+  // Wait for product list to be visible
+  await page.waitForSelector('[data-testid=""product-item""]');
+
+  // Add the first product to the cart
+  await page.click('[data-testid=""product-item""] [data-testid=""add-to-cart""]');
+
+  // Navigate to the cart page
+  await page.goto('/#/cart');
+
+  // Verify that a cart item is visible
+  await expect(page.locator('[data-testid=""cart-item""]')).toBeVisible();
+});
+",,,
+rq2_011,"actual_desktop:packages/desktop-client/src/components/settings/Format.tsx","packages/desktop-client/src/components/settings/Format.tsx","import { test, expect } from './fixtures';
+
+test('exercise new UI elements', async ({ page }) => {
+  // Navigate to the page (assume it's the current page, or use a baseURL from fixtures)
+  // Since no specific URL is given, we assume the test starts on the correct page.
+  // If needed, we can add: await page.goto('/');
+
+  // Locate all the new elements by tag (assumed order from the array)
+  const elements = page.locator('label, select, [class*=""column""]'); // heuristic for column
+
+  // Alternatively, we can use more generic selectors assuming they are direct children or within a container.
+  // For simplicity, we'll use page.locator('label, select') and then check columns via role? Not ideal.
+
+  // Better: rely on the fact that we have exactly these elements in the DOM in that order.
+  // We can collect them by traversing the DOM structure if known.
+  // Since we don't have testIds, we'll assume they are inside a common container.
+  // We'll use a more robust approach: iterate over the expected elements.
+
+  // Let's define the expected tags in order
+  const expectedTags = [
+    { tag: 'column' },
+    { tag: 'select' },
+    { tag: 'label' },
+    { tag: 'column' },
+    { tag: 'select' },
+    { tag: 'column' },
+    { tag: 'select' },
+  ];
+
+  // We'll locate all elements that match these tags in the page.
+  // For columns, we might need a custom selector if it's a custom element or a class.
+  // Assume columns are represented as divs with role='column' or something.
+  // Since no details, we'll use a generic approach: query all elements by tag name and filter.
+
+  // Actually, let's use a simpler method: assume each element has a unique index and we can get them by a common parent.
+  // We'll suppose the elements are direct children of a container with id 'new-ui'.
+  const container = page.locator('#new-ui'); // If not present, we can use body.
+
+  // If we cannot rely on that, we'll just verify visibility of each expected element.
+  // For select elements, we can select an option and check value.
+  // For label, we can check it is visible.
+  // For column, we can check it is visible.
+
+  // Let's proceed with a robust but simple approach: locate all labels, selects, and any element with class containing ""column"".
+
+  // Check label visibility
+  const label = page.locator('label').first();
+  await expect(label).toBeVisible();
+
+  // Check all selects
+  const selects = page.locator('select');
+  const count = await selects.count();
+  expect(count).toBeGreaterThanOrEqual(3); // at least the three selects
+
+  // For each select, choose an option and assert it changed
+  for (let i = 0; i < await selects.count(); i++) {
+    const select = selects.nth(i);
+    await select.selectOption({ index: 1 }); // select second option if available
+    const value = await select.inputValue();
+    expect(value).toBeTruthy();
+  }
+
+  // Check columns: we don't know the exact tag, but we can assume they are elements with role='region' or something.
+  // Since they are 'column', maybe they are divs with a class or a custom element.
+  // Let's use a generic: any element that is not a label or select and is visible.
+  // That's not reliable. Instead, we'll rely on the fact that the page now has these elements.
+  // We'll assert that the number of elements with a specific class (say 'column') is at least 3.
+  const columnElements = page.locator('[class*=""column""], column');
+  await expect(columnElements.first()).toBeVisible(); // at least one column visible
+
+  // To assert a visible outcome: after interacting, we can check that some text or UI state appears.
+  // For example, we can check that the first select's selected option's text is visible.
+  const firstSelect = page.locator('select').first();
+  const selectedText = await firstSelect.locator('option:checked').innerText();
+  await expect(page.locator('body')).toContainText(selectedText); // crude but ensures something visible
+
+  // Or we can check that the page title contains something.
+  // Since no specific outcome, we'll just assert that the page has loaded and elements are interactable.
+  // More concrete: if there is a submit button or something, we could trigger an event.
+  // But we'll keep it simple.
+
+  // Final assertion: all expected tags are present and visible (selects have been interacted with)
+  console.log('New UI elements exercised successfully');
+});
+",,,
+rq2_012,"actual_desktop:packages/desktop-client/src/components/settings/Format.tsx","packages/desktop-client/src/components/settings/Format.tsx","import { test, expect } from './fixtures';
+
+test.describe('Actual Desktop Smoke Test', () => {
+  test('should load the main page and display the app', async ({ page }) => {
+    await page.goto('/#/');
+    
+    // Wait for the app to load by checking for a key element
+    await expect(page.locator('#root')).toBeVisible();
+    
+    // Optionally verify the title or a specific text
+    await expect(page).toHaveTitle(/Actual/);
+  });
+});
+",,,
+rq2_013,"actual_desktop:packages/desktop-client/src/components/reports/Overview.tsx","packages/desktop-client/src/components/reports/Overview.tsx","import { test, expect } from './fixtures';
+
+test('exercises new UI elements and asserts visible outcome', async ({ page }) => {
+  await page.goto('/');
+  const header = page.locator('mobilepageheader');
+  await expect(header).toBeVisible();
+  
+  const buttons = page.locator('button');
+  await expect(buttons).toHaveCount(3);
+  
+  for (let i = 0; i < 3; i++) {
+    await buttons.nth(i).click();
+  }
+  
+  // Assert that after interacting, the header remains visible
+  await expect(header).toBeVisible();
+});
+",,,
+rq2_014,"actual_desktop:packages/desktop-client/src/components/reports/Overview.tsx","packages/desktop-client/src/components/reports/Overview.tsx","import { test, expect } from './fixtures';
+
+test('desktop app loads and displays accounts', async ({ page }) => {
+  await page.goto('/#/accounts');
+  await expect(page.locator('.accounts-table')).toBeVisible();
+});
+",,,
+rq2_015,"actual_desktop:packages/desktop-client/src/components/settings/index.tsx","packages/desktop-client/src/components/settings/index.tsx","import { test, expect } from './fixtures';
+
+test('exercises new UI elements and asserts visible outcome', async ({ page }) => {
+  // Navigate to a page that contains the new elements (adjust URL as needed)
+  await page.goto('/');
+
+  // Locate the new elements
+  const label = page.locator('label');
+  const formlabel = page.locator('formlabel');
+  const input = page.locator('input');
+  const button = page.locator('button');
+
+  // Verify elements are visible
+  await expect(label).toBeVisible();
+  await expect(formlabel).toBeVisible();
+  await expect(input).toBeVisible();
+  await expect(button).toBeVisible();
+
+  // Interact: type text into input and click button
+  await input.fill('test value');
+  await button.click();
+
+  // Assert a visible outcome, e.g., input is cleared or a success message appears
+  // Here we assume clicking the button clears the input (common behavior)
+  await expect(input).toHaveValue('');
+});
+",,,
+rq2_016,"actual_desktop:packages/desktop-client/src/components/settings/index.tsx","packages/desktop-client/src/components/settings/index.tsx","import { test, expect } from './fixtures';
+
+test.describe('Actual Desktop Smoke Test', () => {
+  test('should load the budget page and display account balance', async ({ page }) => {
+    // Navigate to the budget overview
+    await page.goto('/#/budget');
+
+    // Wait for the budget table to be visible
+    await page.waitForSelector('[data-testid=""budget-table""]', { timeout: 10000 });
+
+    // Verify the page title or header is present
+    await expect(page.locator('h1')).toContainText('Budget');
+
+    // Check that at least one account balance is displayed (non-zero or placeholder)
+    const balance = page.locator('[data-testid=""account-balance""]').first();
+    await expect(balance).toBeVisible();
+  });
+});
+",,,
+rq2_017,"actual_desktop:packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx","packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx","import { test, expect } from './fixtures';
+
+test('actual_desktop AccountSyncCheck.tsx changed UI', async ({ page }) => {
+  await expect(page.locator('body')).toBeVisible();
+});
+",,,
+rq2_018,"actual_desktop:packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx","packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx","import { test, expect } from './fixtures';
+
+test('desktop smoke test', async ({ page }) => {
+  await page.goto('/#/');
+  // Verify the app loads by checking the page title
+  await expect(page).toHaveTitle(/Actual/);
+  // Quick sanity: the navigation or sidebar should be present
+  await expect(page.locator('[data-testid=""sidebar""]')).toBeVisible();
+});
+",,,
+rq2_019,"actual_desktop:packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx","packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx","import { test, expect } from './fixtures';
+
+test('functiontooltip is visible', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('functiontooltip')).toBeVisible();
+});
+",,,
+rq2_020,"actual_desktop:packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx","packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx","import { test, expect } from './fixtures';
+
+test('desktop smoke test - home page loads', async ({ page }) => {
+  await page.goto('/#/');
+  await expect(page.locator('h1')).toBeVisible();
+});
+",,,
+rq2_021,"actual_desktop:packages/desktop-client/src/components/reports/FormulaResult.tsx","packages/desktop-client/src/components/reports/FormulaResult.tsx","import { test, expect } from './fixtures';
+
+test('actual_desktop FormulaResult.tsx changed UI', async ({ page }) => {
+  await expect(page.locator('body')).toBeVisible();
+});
+",,,
+rq2_022,"actual_desktop:packages/desktop-client/src/components/reports/FormulaResult.tsx","packages/desktop-client/src/components/reports/FormulaResult.tsx","import { test, expect } from './fixtures';
+
+test('smoke test: add item to cart and verify', async ({ page }) => {
+  // Navigate to the home page
+  await page.goto('/#/');
+  await expect(page).toHaveTitle(/Actual Desktop/);
+
+  // Find and click the first ""Add to Cart"" button
+  const addToCartButton = page.locator('button:has-text(""Add to Cart"")').first();
+  await addToCartButton.click();
+
+  // Navigate to cart
+  await page.goto('/#/cart');
+
+  // Verify that the cart contains an item
+  const cartItem = page.locator('.cart-item, .cart-item-row, [data-testid=""cart-item""]');
+  await expect(cartItem).toHaveCount(1);
+});
+",,,
+rq2_023,"actual_desktop:packages/desktop-client/src/components/reports/reports/FormulaCard.tsx","packages/desktop-client/src/components/reports/reports/FormulaCard.tsx","import { test, expect } from './fixtures';
+
+test('should interact with reportcardname element and show visible outcome', async ({ page }) => {
+  await page.goto('/');
+  const reportCardName = page.locator('[tag=""reportcardname""]');
+  await expect(reportCardName).toBeVisible();
+  await reportCardName.fill('Math Report');
+  await expect(reportCardName).toHaveValue('Math Report');
+});
+",,,
+rq2_024,"actual_desktop:packages/desktop-client/src/components/reports/reports/FormulaCard.tsx","packages/desktop-client/src/components/reports/reports/FormulaCard.tsx","import { test, expect } from './fixtures';
+
+test('smoke test: application loads and displays budget page', async ({ page }) => {
+  await page.goto('/#/');
+  // Verify the app root is rendered
+  await expect(page.locator('#root')).toBeVisible();
+  // Verify a key navigation element is present (e.g., Budget link)
+  await expect(page.getByRole('link', { name: /budget/i })).toBeVisible();
+  // Confirm page has loaded by checking for a common heading
+  await expect(page.locator('h1')).toContainText(/budget/i);
+});
+",,,
+rq2_025,"actual_desktop:packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx","packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx","import { test, expect } from './fixtures';
+
+test('should display split transaction dialog after clicking the button', async ({ page }) => {
+  // Locate the button using its test ID
+  const splitButton = page.getByTestId('split-transaction-button');
+  
+  // Assert the button is visible before interaction
+  await expect(splitButton).toBeVisible();
+  
+  // Click the button
+  await splitButton.click();
+  
+  // Assert that a dialog (expected to appear on click) is now visible
+  // Replace 'split-transaction-dialog' with the actual test ID of the visible element
+  const splitDialog = page.getByTestId('split-transaction-dialog');
+  await expect(splitDialog).toBeVisible();
+});
+",,,
+rq2_026,"actual_desktop:packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx","packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx","import { test, expect } from './fixtures';
+
+test('smoke test: budget page loads correctly', async ({ page }) => {
+  // Navigate to the root of the app
+  await page.goto('/#/');
+  
+  // Wait for the app to load and the sidebar to be visible
+  await page.waitForSelector('nav');
+  
+  // Click on the ""Budget"" link in the sidebar
+  await page.click('text=Budget');
+  
+  // Verify the URL changes to the budget route
+  await expect(page).toHaveURL(/\/#\/budget/);
+  
+  // Assert that the budget table is visible
+  await expect(page.locator('[data-testid=""budget-table""]')).toBeVisible();
+});
+",,,
+rq2_027,"actual_desktop:packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx","packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx","import { test, expect } from './fixtures';
+
+test('actual_desktop TransactionsTable.test.tsx changed UI', async ({ page }) => {
+  await expect(page.locator('body')).toBeVisible();
+});
+",,,
+rq2_028,"actual_desktop:packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx","packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx","import { test, expect } from './fixtures';
+
+test('desktop app loads and shows budget page', async ({ page }) => {
+  await page.goto('/#/');
+  
+  // Wait for the page to be fully loaded
+  await page.waitForLoadState('networkidle');
+  
+  // Verify the app is on the budget page by checking for a common element
+  // Most Actual Budget views have a table or a heading
+  const budgetContent = page.locator('.budget-table, .budget-header, .budget-overview');
+  await expect(budgetContent.first()).toBeVisible();
+  
+  // Also confirm the URL includes the hash route
+  await expect(page).toHaveURL(/#\//);
+});
+",,,
+rq2_029,"mermaid_live:src/lib/components/Preset.svelte","src/lib/components/Preset.svelte","import { test, expect } from './fixtures';
+
+test('should open popover when trigger is clicked', async ({ page }) => {
+  // Navigate to the page containing the card and popover trigger
+  await page.goto('/');
+
+  // Locate the card element (assuming it's a custom tag)
+  const card = page.locator('card');
+  await expect(card).toBeVisible();
+
+  // Within the card, locate the popover trigger
+  const popoverTrigger = card.locator('popover.trigger');
+  await expect(popoverTrigger).toBeVisible();
+
+  // Click the trigger to open the popover
+  await popoverTrigger.click();
+
+  // Assert that a popover element becomes visible (assuming it's a sibling or appears)
+  const popover = page.locator('popover');
+  await expect(popover).toBeVisible();
+});
+",,,
+rq2_030,"mermaid_live:src/lib/components/Preset.svelte","src/lib/components/Preset.svelte","import { test, expect } from './fixtures';
+
+test('smoke test: load page and verify default diagram renders', async ({ page }) => {
+  await page.goto('/#/');
+  // Wait for the CodeMirror editor to be visible
+  await page.waitForSelector('.CodeMirror', { timeout: 10000 });
+  // Verify the default Mermaid code is present in the editor
+  const editorContent = await page.textContent('.CodeMirror-code');
+  expect(editorContent).toContain('graph TD');
+  // Wait for the preview area to contain a rendered SVG (the diagram output)
+  await page.waitForSelector('#preview svg', { timeout: 10000 });
+  // Ensure at least one SVG is rendered
+  const svgCount = await page.locator('#preview svg').count();
+  expect(svgCount).toBeGreaterThan(0);
+});
+",,,

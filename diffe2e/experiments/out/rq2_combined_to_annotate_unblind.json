@@ -1,0 +1,26 @@
+{
+  "rq2_001": {
+    "arm": "nodiff",
+    "source": "controlled_rq2"
+  },
+  "rq2_002": {
+    "arm": "diff",
+    "source": "controlled_rq2"
+  },
+  "rq2_003": {
+    "arm": "nodiff",
+    "source": "controlled_rq2"
+  },
+  "rq2_004": {
+    "arm": "diff",
+    "source": "controlled_rq2"
+  },
+  "rq2_005": {
+    "arm": "diff",
+    "source": "controlled_rq2"
+  },
+  "rq2_006": {
+    "arm": "nodiff",
+    "source": "controlled_rq2"
+  }
+}

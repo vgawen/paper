@@ -1,0 +1,120 @@
+{
+  "project": "actual_desktop",
+  "provider": "deepseek",
+  "contexts_found": 14,
+  "contexts_picked": 14,
+  "rows": [
+    {
+      "project": "actual_desktop",
+      "prev": "fbdad57ff0aeee6561cc6fcbb9e65776b3118d75",
+      "sha": "a492453e1ccbae0f8ac1cc15da2b6417d408b607",
+      "gap_file": "packages/desktop-client/src/components/transactions/TransactionsTable.tsx",
+      "score": 23,
+      "add_nodes": 15
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "9cd5ed484974e24a782133ce87c680a2a2f7a719",
+      "sha": "19cea1aaff53b88058a78a8333585aa0d9553c30",
+      "gap_file": "packages/desktop-client/src/components/schedules/SchedulesTable.tsx",
+      "score": 10,
+      "add_nodes": 8
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "sha": "fbdad57ff0aeee6561cc6fcbb9e65776b3118d75",
+      "gap_file": "packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx",
+      "score": 9,
+      "add_nodes": 0
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "sha": "fbdad57ff0aeee6561cc6fcbb9e65776b3118d75",
+      "gap_file": "packages/desktop-client/src/components/rules/RuleEditor.tsx",
+      "score": 8,
+      "add_nodes": 8
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "gap_file": "packages/desktop-client/src/components/reports/reports/Formula.tsx",
+      "score": 7,
+      "add_nodes": 7
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "gap_file": "packages/desktop-client/src/components/settings/Format.tsx",
+      "score": 7,
+      "add_nodes": 7
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "gap_file": "packages/desktop-client/src/components/reports/Overview.tsx",
+      "score": 5,
+      "add_nodes": 4
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "gap_file": "packages/desktop-client/src/components/settings/index.tsx",
+      "score": 5,
+      "add_nodes": 4
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "a492453e1ccbae0f8ac1cc15da2b6417d408b607",
+      "sha": "9cd5ed484974e24a782133ce87c680a2a2f7a719",
+      "gap_file": "packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx",
+      "score": 4,
+      "add_nodes": 0
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "gap_file": "packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx",
+      "score": 1,
+      "add_nodes": 1
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "gap_file": "packages/desktop-client/src/components/reports/FormulaResult.tsx",
+      "score": 1,
+      "add_nodes": 0
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "gap_file": "packages/desktop-client/src/components/reports/reports/FormulaCard.tsx",
+      "score": 1,
+      "add_nodes": 1
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "abb1e4fbd74074adbcd72fb157bd4aca9fcef58c",
+      "sha": "8f2302eb1c449cdcad8c5dcb62deaad31d6f817b",
+      "gap_file": "packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx",
+      "score": 1,
+      "add_nodes": 1
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "fbdad57ff0aeee6561cc6fcbb9e65776b3118d75",
+      "sha": "a492453e1ccbae0f8ac1cc15da2b6417d408b607",
+      "gap_file": "packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx",
+      "score": 1,
+      "add_nodes": 0
+    }
+  ]
+}

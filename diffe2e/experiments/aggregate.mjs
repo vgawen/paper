@@ -156,10 +156,10 @@ function main() {
   const annPath = path.join(OUT, 'rq2_annotation.json');
   if (fs.existsSync(annPath)) {
     const ann = readJ(annPath);
-    L.push(`- 人工小样本校准（双标注，n=${ann.n}）：语义有效率 ${ann.semantic_validity}，Cohen's κ=${ann.kappa.kappa}` +
+    L.push(`- 人工双盲校准（n=${ann.n}）：语义有效率 ${ann.semantic_validity}，Cohen's κ=${ann.kappa.kappa}` +
       (ann.by_arm ? `；分臂 diff=${ann.by_arm.diff.semantic_validity} / nodiff=${ann.by_arm.nodiff.semantic_validity}。` : '。'));
   } else {
-    L.push('- 人工小样本校准=待办（仅作自动语义指标的辅助验证；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。');
+    L.push('- 人工双盲校准=待办（30 条真实项目样本已生成；盲标注表见 out/rq2_real_to_annotate.csv，解盲键 rq2_real_to_annotate_unblind.json）。');
   }
   L.push('');
 
@@ -321,9 +321,8 @@ function main() {
     '- realproj/results/reprobreak.md, reprobreak_e2e.md',
     '- EXPERIMENT_REPORT.md, realproj/results/REPORT.md', '',
     '## 人工校准', '```bash',
-    'node experiments/annotate/make_sheet.mjs',
-    '# 填写 experiments/annotate/sheet.csv 后：',
-    'node experiments/annotate/score.mjs',
+    '# 填写 experiments/out/rq2_real_to_annotate.csv 后：',
+    'node experiments/annotate/score.mjs experiments/out/rq2_real_to_annotate.csv',
     '# 填写 experiments/out/rq3_staleness_to_annotate.csv 后：',
     'node experiments/annotate/score.mjs experiments/out/rq3_staleness_to_annotate.csv',
     '```',

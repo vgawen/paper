@@ -1,0 +1,26 @@
+{
+  "found": [
+    {
+      "source": "controlled_rq2",
+      "rows": 6
+    }
+  ],
+  "missing": [
+    {
+      "source": "real_actual_rq2",
+      "jsonl": "real/actual_desktop_rq2_to_annotate.jsonl",
+      "unblind": "real/actual_desktop_rq2_unblind.json"
+    },
+    {
+      "source": "real_mermaid_rq2",
+      "jsonl": "real/mermaid_live_rq2_to_annotate.jsonl",
+      "unblind": "real/mermaid_live_rq2_unblind.json"
+    }
+  ],
+  "stats": {
+    "total": 6,
+    "by_source": {
+      "controlled_rq2": 6
+    }
+  }
+}

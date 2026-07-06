@@ -68,7 +68,7 @@
 - 自动语义有效率 = 可执行 ∧ 版本敏感（V_new 过、V_old 失败）∧ 杀掉≥1个注入变异；客观、无需人工。
 - 核心论点：真实 LLM 下，diff 约束臂在可执行率、变更相关率、版本敏感率和自动语义有效率上均明显高于无约束基线。
 - 工程护栏：真实 provider 请求失败或返回空 completion 时直接报错；LLM 输出会清洗 Markdown 代码围栏，并统一导入 `./fixtures` 以保留覆盖采集。
-- 人工小样本校准=待办（仅作自动语义指标的辅助验证；盲标注候选见 out/rq2_to_annotate.jsonl，解盲键 rq2_unblind.json）。
+- 人工双盲校准样本已生成（30 条真实项目样本；盲标注表见 out/rq2_real_to_annotate.csv，解盲键 rq2_real_to_annotate_unblind.json）；待填写后计算 κ。
 
 ## 3. RQ3 闭环支撑：让选中的失效用例重新可用
 - 修复成功率=0.750 (3/4)；TargetedSetUsability：before 0.000 → after 0.750。该结果说明轻量修复能支撑 selected tests 的闭环可用性，但不作为本文主创新点。
