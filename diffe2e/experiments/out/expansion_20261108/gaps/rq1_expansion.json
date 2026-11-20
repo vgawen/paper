@@ -1,0 +1,215 @@
+{
+  "generated_at": "2026-11-08T11:47:19.268Z",
+  "gaps": [
+    {
+      "gap_id": "x01",
+      "route": "/settings",
+      "tag": "x01",
+      "prev_tag": "x00",
+      "changed_files": [
+        "src/main.js",
+        "src/settings.js"
+      ],
+      "full_suite": 6,
+      "baseline_failed": [],
+      "affected_existing_specs": [],
+      "coverage": {
+        "cart.spec.ts > cart adds an item and updates count and total": [
+          "src/cart.js",
+          "src/main.js",
+          "src/util.js"
+        ],
+        "home.spec.ts > home shows welcome title": [
+          "src/home.js",
+          "src/main.js"
+        ],
+        "login.spec.ts > login greets the user after submit": [
+          "src/login.js",
+          "src/main.js"
+        ],
+        "orders.spec.ts > orders lists prior orders with totals": [
+          "src/main.js",
+          "src/orders.js",
+          "src/util.js"
+        ],
+        "profile.spec.ts > profile edits the name": [
+          "src/main.js",
+          "src/profile.js"
+        ],
+        "search.spec.ts > search filters items by query": [
+          "src/main.js",
+          "src/search.js"
+        ]
+      },
+      "expected_affected": []
+    },
+    {
+      "gap_id": "x02",
+      "route": "/feedback",
+      "tag": "x02",
+      "prev_tag": "x01",
+      "changed_files": [
+        "src/feedback.js",
+        "src/main.js"
+      ],
+      "full_suite": 6,
+      "baseline_failed": [],
+      "affected_existing_specs": [],
+      "coverage": {
+        "cart.spec.ts > cart adds an item and updates count and total": [
+          "src/cart.js",
+          "src/main.js",
+          "src/util.js"
+        ],
+        "home.spec.ts > home shows welcome title": [
+          "src/home.js",
+          "src/main.js"
+        ],
+        "login.spec.ts > login greets the user after submit": [
+          "src/login.js",
+          "src/main.js"
+        ],
+        "orders.spec.ts > orders lists prior orders with totals": [
+          "src/main.js",
+          "src/orders.js",
+          "src/util.js"
+        ],
+        "profile.spec.ts > profile edits the name": [
+          "src/main.js",
+          "src/profile.js"
+        ],
+        "search.spec.ts > search filters items by query": [
+          "src/main.js",
+          "src/search.js"
+        ]
+      },
+      "expected_affected": []
+    },
+    {
+      "gap_id": "x03",
+      "route": "/inbox",
+      "tag": "x03",
+      "prev_tag": "x02",
+      "changed_files": [
+        "src/inbox.js",
+        "src/main.js"
+      ],
+      "full_suite": 6,
+      "baseline_failed": [],
+      "affected_existing_specs": [],
+      "coverage": {
+        "cart.spec.ts > cart adds an item and updates count and total": [
+          "src/cart.js",
+          "src/main.js",
+          "src/util.js"
+        ],
+        "home.spec.ts > home shows welcome title": [
+          "src/home.js",
+          "src/main.js"
+        ],
+        "login.spec.ts > login greets the user after submit": [
+          "src/login.js",
+          "src/main.js"
+        ],
+        "orders.spec.ts > orders lists prior orders with totals": [
+          "src/main.js",
+          "src/orders.js",
+          "src/util.js"
+        ],
+        "profile.spec.ts > profile edits the name": [
+          "src/main.js",
+          "src/profile.js"
+        ],
+        "search.spec.ts > search filters items by query": [
+          "src/main.js",
+          "src/search.js"
+        ]
+      },
+      "expected_affected": []
+    },
+    {
+      "gap_id": "x04",
+      "route": "/checkout",
+      "tag": "x04",
+      "prev_tag": "x03",
+      "changed_files": [
+        "src/checkout.js",
+        "src/main.js"
+      ],
+      "full_suite": 6,
+      "baseline_failed": [],
+      "affected_existing_specs": [],
+      "coverage": {
+        "cart.spec.ts > cart adds an item and updates count and total": [
+          "src/cart.js",
+          "src/main.js",
+          "src/util.js"
+        ],
+        "home.spec.ts > home shows welcome title": [
+          "src/home.js",
+          "src/main.js"
+        ],
+        "login.spec.ts > login greets the user after submit": [
+          "src/login.js",
+          "src/main.js"
+        ],
+        "orders.spec.ts > orders lists prior orders with totals": [
+          "src/main.js",
+          "src/orders.js",
+          "src/util.js"
+        ],
+        "profile.spec.ts > profile edits the name": [
+          "src/main.js",
+          "src/profile.js"
+        ],
+        "search.spec.ts > search filters items by query": [
+          "src/main.js",
+          "src/search.js"
+        ]
+      },
+      "expected_affected": []
+    },
+    {
+      "gap_id": "x05",
+      "route": "/help",
+      "tag": "x05",
+      "prev_tag": "x04",
+      "changed_files": [
+        "src/help.js",
+        "src/main.js"
+      ],
+      "full_suite": 6,
+      "baseline_failed": [],
+      "affected_existing_specs": [],
+      "coverage": {
+        "cart.spec.ts > cart adds an item and updates count and total": [
+          "src/cart.js",
+          "src/main.js",
+          "src/util.js"
+        ],
+        "home.spec.ts > home shows welcome title": [
+          "src/home.js",
+          "src/main.js"
+        ],
+        "login.spec.ts > login greets the user after submit": [
+          "src/login.js",
+          "src/main.js"
+        ],
+        "orders.spec.ts > orders lists prior orders with totals": [
+          "src/main.js",
+          "src/orders.js",
+          "src/util.js"
+        ],
+        "profile.spec.ts > profile edits the name": [
+          "src/main.js",
+          "src/profile.js"
+        ],
+        "search.spec.ts > search filters items by query": [
+          "src/main.js",
+          "src/search.js"
+        ]
+      },
+      "expected_affected": []
+    }
+  ]
+}

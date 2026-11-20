@@ -1,0 +1,1077 @@
+{
+  "generated_for": "RQ3 expansion batch real triage (stage 2)",
+  "provider": "deepseek",
+  "model": "deepseek-v4-flash",
+  "temperature": 0,
+  "first_column_policy": "扩展批次真实分诊；主实验模型列仍为常量 STRUCTURAL_ONLY。两批不合并、不重跑主实验。",
+  "input_material": "旧定位器 + 完整旧测试块 + commit 主题/正文 + 应用源码 diff + 遮蔽后的断言级测试 diff；不含 new_locator、不含主实验条目。",
+  "n": 40,
+  "failures": [],
+  "attempts_total": 45,
+  "usage": {
+    "calls_with_usage": 40,
+    "prompt_tokens": 140806,
+    "completion_tokens": 35244
+  },
+  "distribution": {
+    "STRUCTURAL_ONLY": 38,
+    "SUSPECTED_REGRESSION": 2
+  },
+  "by_repo": {
+    "ghiscoding/angular-slickgrid": {
+      "STRUCTURAL_ONLY": 10
+    },
+    "microsoft/playwright": {
+      "STRUCTURAL_ONLY": 8,
+      "SUSPECTED_REGRESSION": 2
+    },
+    "nasa/openmct": {
+      "STRUCTURAL_ONLY": 10
+    },
+    "tryghost/koenig": {
+      "STRUCTURAL_ONLY": 10
+    }
+  },
+  "cases": [
+    {
+      "case_id": "rbx001",
+      "rb_id": "1450",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为“feat!: migrate to Slickgrid-Universal v4.0 new major version”，源码 diff 主要升级 @slickgrid-universal/* 到 4.0.1-alpha.1，并将 KeyCode 改为 event.key、Formatters.deleteIcon 改为 Formatters.icon、SlickNamespace 改为 SlickGlobalEditorLock；断言级测试 diff 仅显示 LOCATOR_REDACTED 变为 LOCATOR_CHANGED，而 '1 day'、'2 days'、'5'、'6'、'22 days'、'Tasty Granite Table' 等语义断言未变，旧测试块中 Mass Update 标题、'All 501 records selected'、modified 数量、validation-summary、'51'、modal 不存在等断言仍保留，说明是定位器/API/DOM 迁移而非断言目标变化。",
+      "prompt_sha256": "f509293000de07b7b89fb19b575c41122e98215a19fa669beedf16610d2fccb6",
+      "prompt_chars": 14810,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为“feat!: migrate to Slickgrid-Universal v4.0 new major version”，源码 diff 主要升级 @slickgrid-universal/* 到 4.0.1-alpha.1，并将 KeyCode 改为 event.key、Formatters.deleteIcon 改为 Formatters.icon、SlickNamespace 改为 SlickGlobalEditorLock；断言级测试 diff 仅显示 LOCATOR_REDACTED 变为 LOCATOR_CHANGED，而 '1 day'、'2 days'、'5'、'6'、'22 days'、'Tasty Granite Table' 等语义断言未变，旧测试块中 Mass Update 标题、'All 501 records selected'、modified 数量、validation-summary、'51'、modal 不存在等断言仍保留，说明是定位器/API/DOM 迁移而非断言目标变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 4484,
+        "completion_tokens": 1295,
+        "total_tokens": 5779,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1095
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4484
+      }
+    },
+    {
+      "case_id": "rbx002",
+      "rb_id": "1451",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为 feat!: migrate to Slickgrid-Universal v4.0 new major version；package.json 将 @slickgrid-universal/* 从 ~3.7.1 升至 ~4.0.1-alpha.1，angular.json 移除 slickgrid script，源码中还出现 KeyCode→event.key、Formatters.deleteIcon→Formatters.icon、SlickNamespace→SlickGlobalEditorLock 等 API/框架迁移。断言级 diff 仅将 <LOCATOR_REDACTED> 改为 <LOCATOR_CHANGED>，旧测试块中的 'contain 51/Straightforward/Belgium'、checkmark length、not.be.empty 等语义锚未变，说明测试意图不变，断裂来自定位器/DOM/框架迁移。",
+      "prompt_sha256": "157ecd6a1fada6aefe20c5f6a45b2cd0ba3ce8ff728971c0f692a98fc64f5126",
+      "prompt_chars": 14770,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为 feat!: migrate to Slickgrid-Universal v4.0 new major version；package.json 将 @slickgrid-universal/* 从 ~3.7.1 升至 ~4.0.1-alpha.1，angular.json 移除 slickgrid script，源码中还出现 KeyCode→event.key、Formatters.deleteIcon→Formatters.icon、SlickNamespace→SlickGlobalEditorLock 等 API/框架迁移。断言级 diff 仅将 <LOCATOR_REDACTED> 改为 <LOCATOR_CHANGED>，旧测试块中的 'contain 51/Straightforward/Belgium'、checkmark length、not.be.empty 等语义锚未变，说明测试意图不变，断裂来自定位器/DOM/框架迁移。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 4736,
+        "completion_tokens": 784,
+        "total_tokens": 5520,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 607
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4736
+      }
+    },
+    {
+      "case_id": "rbx003",
+      "rb_id": "1453",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为“feat!: migrate to Slickgrid-Universal v4.0 new major version”，源码 diff 显示依赖从 3.7.x 升级到 4.0.1-alpha.1，并伴随 API 迁移（如 KeyCode 改为 event.key、SlickNamespace 改为 SlickGlobalEditorLock、Formatters.deleteIcon 改为 Formatters.icon），说明是框架/版本迁移导致的定位器失效。断言级测试 diff 中仅定位路径由 LOCATOR_REDACTED 变为 LOCATOR_CHANGED，而断言语义锚如 should('contain', 'days')、'1 day'、'5'、'6'、have.length 1、'Tasty Granite Table' 等未变；旧测试块“选择 row 1 和 2 并检查按钮不 disabled”的测试意图也未变。因此属于定位器/DOM 层级/测试 API 迁移引起的 STRUCTURAL_ONLY。",
+      "prompt_sha256": "99fefa41f01dfb320ce022b9751a92e095f834155601a6ddaf07933206cbeba0",
+      "prompt_chars": 12874,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为“feat!: migrate to Slickgrid-Universal v4.0 new major version”，源码 diff 显示依赖从 3.7.x 升级到 4.0.1-alpha.1，并伴随 API 迁移（如 KeyCode 改为 event.key、SlickNamespace 改为 SlickGlobalEditorLock、Formatters.deleteIcon 改为 Formatters.icon），说明是框架/版本迁移导致的定位器失效。断言级测试 diff 中仅定位路径由 LOCATOR_REDACTED 变为 LOCATOR_CHANGED，而断言语义锚如 should('contain', 'days')、'1 day'、'5'、'6'、have.length 1、'Tasty Granite Table' 等未变；旧测试块“选择 row 1 和 2 并检查按钮不 disabled”的测试意图也未变。因此属于定位器/DOM 层级/测试 API 迁移引起的 STRUCTURAL_ONLY。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3997,
+        "completion_tokens": 856,
+        "total_tokens": 4853,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 640
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3997
+      }
+    },
+    {
+      "case_id": "rbx004",
+      "rb_id": "1454",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "提交主题明确为“migrate to Slickgrid-Universal v4.0 new major version”，package.json 中相关依赖从 ~3.7.1 升至 ~4.0.1-alpha.1；旧定位器依赖 slick-cell、style top 等 DOM/class 层级锚点。测试 diff 仅显示定位路径由 <LOCATOR_REDACTED> 变为 <LOCATOR_CHANGED>，断言仍检查 '51'、'77'、'Belgium'、'Belize'、checkmark 数量及 not.be.empty 等原业务结果，测试意图未变，属于定位器/框架迁移导致的过时。",
+      "prompt_sha256": "529c303da502137b5e3b4b663f9fba5dcbd6163c44a04e2fff3d45da609e2244",
+      "prompt_chars": 14349,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"提交主题明确为“migrate to Slickgrid-Universal v4.0 new major version”，package.json 中相关依赖从 ~3.7.1 升至 ~4.0.1-alpha.1；旧定位器依赖 slick-cell、style top 等 DOM/class 层级锚点。测试 diff 仅显示定位路径由 <LOCATOR_REDACTED> 变为 <LOCATOR_CHANGED>，断言仍检查 '51'、'77'、'Belgium'、'Belize'、checkmark 数量及 not.be.empty 等原业务结果，测试意图未变，属于定位器/框架迁移导致的过时。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 4575,
+        "completion_tokens": 616,
+        "total_tokens": 5191,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 462
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 4447
+      }
+    },
+    {
+      "case_id": "rbx005",
+      "rb_id": "1455",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题明确为“migrate to Slickgrid-Universal v4.0 new major version”，package.json 中依赖从 ~3.7.1 批量升级到 ~4.0.1-alpha.1；源码 diff 显示的是框架/API 迁移（如 Formatters.deleteIcon 改为 Formatters.icon、KeyCode 改为 event.key、Slick.GlobalEditorLock 改为 SlickGlobalEditorLock、移除 slickgrid script），而断言级 diff 中仅定位器从 <LOCATOR_REDACTED> 变为 <LOCATOR_CHANGED>，断言值如 'days'、'1 day'、'2 days'、'5'、'6'、'22 days' 等保持不变；旧测试块仍验证行值、勾选和文本等业务目标，因此属于 locator/DOM/API 迁移导致的定位器过时。",
+      "prompt_sha256": "dc87a88ff903ffc1e6bd6384c17dc5e40c123c52b5734300f5eacd5922b24b04",
+      "prompt_chars": 14349,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题明确为“migrate to Slickgrid-Universal v4.0 new major version”，package.json 中依赖从 ~3.7.1 批量升级到 ~4.0.1-alpha.1；源码 diff 显示的是框架/API 迁移（如 Formatters.deleteIcon 改为 Formatters.icon、KeyCode 改为 event.key、Slick.GlobalEditorLock 改为 SlickGlobalEditorLock、移除 slickgrid script），而断言级 diff 中仅定位器从 <LOCATOR_REDACTED> 变为 <LOCATOR_CHANGED>，断言值如 'days'、'1 day'、'2 days'、'5'、'6'、'22 days' 等保持不变；旧测试块仍验证行值、勾选和文本等业务目标，因此属于 locator/DOM/API 迁移导致的定位器过时。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 4575,
+        "completion_tokens": 696,
+        "total_tokens": 5271,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 493
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4575
+      }
+    },
+    {
+      "case_id": "rbx006",
+      "rb_id": "1456",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题明确为“migrate to Slickgrid-Universal v4.0 new major version”，package.json 中相关依赖从 ~3.7.1 升级到 ~4.0.1-alpha.1，源码出现 Formatters.deleteIcon 改为 Formatters.icon、Slick.GlobalEditorLock 改为 SlickGlobalEditorLock、KeyCode 改为 event.key 等 API/框架迁移证据；断言级测试 diff 仅显示定位路径由 <LOCATOR_REDACTED> 变为 <LOCATOR_CHANGED>，而断言值如 'days'、'1 day'、'2 days'、'5'、'6' 以及旧测试块中检查选中行单元格内容、checkmark、非空和国家的意图均未改变。因此属于 locator/DOM/测试 API 迁移导致的 STRUCTURAL_ONLY。",
+      "prompt_sha256": "a97265f67fa94f30aa8a8be017cb5558486dd8134f482a65d6bdec70b4b56da9",
+      "prompt_chars": 14349,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题明确为“migrate to Slickgrid-Universal v4.0 new major version”，package.json 中相关依赖从 ~3.7.1 升级到 ~4.0.1-alpha.1，源码出现 Formatters.deleteIcon 改为 Formatters.icon、Slick.GlobalEditorLock 改为 SlickGlobalEditorLock、KeyCode 改为 event.key 等 API/框架迁移证据；断言级测试 diff 仅显示定位路径由 <LOCATOR_REDACTED> 变为 <LOCATOR_CHANGED>，而断言值如 'days'、'1 day'、'2 days'、'5'、'6' 以及旧测试块中检查选中行单元格内容、checkmark、非空和国家的意图均未改变。因此属于 locator/DOM/测试 API 迁移导致的 STRUCTURAL_ONLY。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 4575,
+        "completion_tokens": 754,
+        "total_tokens": 5329,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 558
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4575
+      }
+    },
+    {
+      "case_id": "rbx007",
+      "rb_id": "1457",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为“feat!: migrate to Slickgrid-Universal v4.0 new major version”，package.json 将 @slickgrid-universal/* 从 ~3.7.1 升级到 ~4.0.1-alpha.1；源码改动显示 API/框架迁移（KeyCode→event.key、Formatters.deleteIcon→Formatters.icon、SlickNamespace→SlickGlobalEditorLock 等）；断言级 diff 仅将 LOCATOR_REDACTED 改为 LOCATOR_CHANGED，而 '1 day'、'2 days'、'22 days'、'Tasty Granite Table' 等断言值保持不变，旧测试块意图仍是验证更新值只作用于 2 个选中行。故属于定位器/DOM/API 迁移，测试意图未变。",
+      "prompt_sha256": "30bef18da130b777494252bcfa7ad6d09336adda7e7c8974ba0977e9384af160",
+      "prompt_chars": 14349,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为“feat!: migrate to Slickgrid-Universal v4.0 new major version”，package.json 将 @slickgrid-universal/* 从 ~3.7.1 升级到 ~4.0.1-alpha.1；源码改动显示 API/框架迁移（KeyCode→event.key、Formatters.deleteIcon→Formatters.icon、SlickNamespace→SlickGlobalEditorLock 等）；断言级 diff 仅将 LOCATOR_REDACTED 改为 LOCATOR_CHANGED，而 '1 day'、'2 days'、'22 days'、'Tasty Granite Table' 等断言值保持不变，旧测试块意图仍是验证更新值只作用于 2 个选中行。故属于定位器/DOM/API 迁移，测试意图未变。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 4575,
+        "completion_tokens": 1320,
+        "total_tokens": 5895,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1135
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 4575
+      }
+    },
+    {
+      "case_id": "rbx008",
+      "rb_id": "1482",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试意图是点击下一页后验证第二页仅有1行选中，并校验指定行的 checkbox 为 checked；断言级 diff 仅将定位路径从 <LOCATOR_REDACTED> 改为 <LOCATOR_CHANGED>，仍保留 should('be.checked')，业务断言目标未变。Commit 主题为“migrate to Slickgrid-Universal v4.0 new major version”，且源码改动包含依赖从 3.7.x 升级到 4.0.x、移除 slickgrid 脚本、API 迁移（如 KeyCode 改为 event.key、SlickNamespace 改为 SlickGlobalEditorLock、Formatters.deleteIcon 改为 Formatters.icon），符合 locator/DOM/class/测试 API 或框架迁移导致的定位器断裂。",
+      "prompt_sha256": "33f34c7ad6de59d467c95a6d526422e56653c0e44f3da741f972f03dcc284f83",
+      "prompt_chars": 10230,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试意图是点击下一页后验证第二页仅有1行选中，并校验指定行的 checkbox 为 checked；断言级 diff 仅将定位路径从 <LOCATOR_REDACTED> 改为 <LOCATOR_CHANGED>，仍保留 should('be.checked')，业务断言目标未变。Commit 主题为“migrate to Slickgrid-Universal v4.0 new major version”，且源码改动包含依赖从 3.7.x 升级到 4.0.x、移除 slickgrid 脚本、API 迁移（如 KeyCode 改为 event.key、SlickNamespace 改为 SlickGlobalEditorLock、Formatters.deleteIcon 改为 Formatters.icon），符合 locator/DOM/class/测试 API 或框架迁移导致的定位器断裂。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3179,
+        "completion_tokens": 486,
+        "total_tokens": 3665,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 308
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3179
+      }
+    },
+    {
+      "case_id": "rbx009",
+      "rb_id": "1483",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题与说明表明本次变更是为 HeaderMenu 等菜单新增子菜单；源码改动中 grid-headermenu.component.ts 的菜单定义由 items 改为 commandItem，且依赖从 ~3.3.2 升级到 ~3.4.0，说明菜单结构/API 发生变化。旧测试仍验证点击 Resize by Content 后列宽由小于 120 变为大于 120，断言级测试 diff 明确未改动断言，业务意图未变；断裂的旧定位器 .slick-header-menu 属于菜单 DOM/结构或测试 API 迁移导致的定位器过时，材料中也没有显示真实回归证据。",
+      "prompt_sha256": "e9772e8862319d94ae05177e4631b3481910714009622c738fce79aa1a3310de",
+      "prompt_chars": 9617,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题与说明表明本次变更是为 HeaderMenu 等菜单新增子菜单；源码改动中 grid-headermenu.component.ts 的菜单定义由 items 改为 commandItem，且依赖从 ~3.3.2 升级到 ~3.4.0，说明菜单结构/API 发生变化。旧测试仍验证点击 Resize by Content 后列宽由小于 120 变为大于 120，断言级测试 diff 明确未改动断言，业务意图未变；断裂的旧定位器 .slick-header-menu 属于菜单 DOM/结构或测试 API 迁移导致的定位器过时，材料中也没有显示真实回归证据。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2961,
+        "completion_tokens": 848,
+        "total_tokens": 3809,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 697
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2961
+      }
+    },
+    {
+      "case_id": "rbx010",
+      "rb_id": "1489",
+      "repo": "ghiscoding/angular-slickgrid",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "提交主题为“migrate to Slickgrid-Universal v4.0 new major version”，package.json 中 @slickgrid-universal/* 从 ~3.7.x 升级到 ~4.0.1-alpha.1，且源码从 Slick.GlobalEditorLock 迁移到 SlickGlobalEditorLock、Formatters.deleteIcon 改为 Formatters.icon；同时断言级测试 diff 明确“未改动断言级代码；旧断言保持不变”，完整旧测试块仍在验证 Task 2 的异步 tooltip 内容。因此属于框架/API 迁移导致的定位器或 DOM 锚点变化，测试意图未变。",
+      "prompt_sha256": "3c82356c3dcffae4df44ad516f9648633115a0903d758a28b8c3008f9b6be22e",
+      "prompt_chars": 10459,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"提交主题为“migrate to Slickgrid-Universal v4.0 new major version”，package.json 中 @slickgrid-universal/* 从 ~3.7.x 升级到 ~4.0.1-alpha.1，且源码从 Slick.GlobalEditorLock 迁移到 SlickGlobalEditorLock、Formatters.deleteIcon 改为 Formatters.icon；同时断言级测试 diff 明确“未改动断言级代码；旧断言保持不变”，完整旧测试块仍在验证 Task 2 的异步 tooltip 内容。因此属于框架/API 迁移导致的定位器或 DOM 锚点变化，测试意图未变。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3268,
+        "completion_tokens": 526,
+        "total_tokens": 3794,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 375
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3268
+      }
+    },
+    {
+      "case_id": "rbx011",
+      "rb_id": "5403",
+      "repo": "microsoft/playwright",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题明确为“test: use role based selectors in trace-viewer tests (#36295)”；应用源码 diff 在 metadataView.tsx 中移除 data-testid='metadata-view'，并在 listView.tsx/gridView.tsx 等增加 aria-label/aria-selected，说明是定位锚点与可访问性属性迁移。旧测试块仍验证同一“should include metainfo”意图及 start time、duration、engine 等元数据断言；断言级 diff 也显示将旧断言/定位 API 改为 toHaveText、getByRole 等，未体现业务断言目标变化。",
+      "prompt_sha256": "1e8a8cc00d53d779aadd9c3664ce0e4947f319e9ee2edf44aa44fdbe6f29fb2b",
+      "prompt_chars": 8288,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题明确为“test: use role based selectors in trace-viewer tests (#36295)”；应用源码 diff 在 metadataView.tsx 中移除 data-testid='metadata-view'，并在 listView.tsx/gridView.tsx 等增加 aria-label/aria-selected，说明是定位锚点与可访问性属性迁移。旧测试块仍验证同一“should include metainfo”意图及 start time、duration、engine 等元数据断言；断言级 diff 也显示将旧断言/定位 API 改为 toHaveText、getByRole 等，未体现业务断言目标变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2550,
+        "completion_tokens": 597,
+        "total_tokens": 3147,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 452
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2550
+      }
+    },
+    {
+      "case_id": "rbx012",
+      "rb_id": "5407",
+      "repo": "microsoft/playwright",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试块中定位器为 page.getByTestId('stack-trace')，断言内容 /doClick.*trace-viewer\\.spec\\.ts:[\\d]+/ 未变；断言级测试 diff 也只把 <LOCATOR_REDACTED> 改为 <LOCATOR_CHANGED>，语义锚不变。应用源码 stackTrace.tsx 将 StackFrameListView 的 dataTestId='stack-trace' 改为 name='stack-trace'，而 listView.tsx 中 data-testid={dataTestId || (name + '-list')}，说明测试定位器随 test id 生成方式变化，测试意图和断言目标未变，属于定位器/测试 API 迁移。",
+      "prompt_sha256": "968b3586820832a29eb04256d0341565342e6eecec9d851cf473f7d4deb07882",
+      "prompt_chars": 7422,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试块中定位器为 page.getByTestId('stack-trace')，断言内容 /doClick.*trace-viewer\\\\.spec\\\\.ts:[\\\\d]+/ 未变；断言级测试 diff 也只把 <LOCATOR_REDACTED> 改为 <LOCATOR_CHANGED>，语义锚不变。应用源码 stackTrace.tsx 将 StackFrameListView 的 dataTestId='stack-trace' 改为 name='stack-trace'，而 listView.tsx 中 data-testid={dataTestId || (name + '-list')}，说明测试定位器随 test id 生成方式变化，测试意图和断言目标未变，属于定位器/测试 API 迁移。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2310,
+        "completion_tokens": 373,
+        "total_tokens": 2683,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 208
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2310
+      }
+    },
+    {
+      "case_id": "rbx013",
+      "rb_id": "5408",
+      "repo": "microsoft/playwright",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧定位器为 page.locator('.window-address-bar')；应用源码 diff 中删除了 .window-address-bar，并在 browserFrame.css 新增 .browser-frame-address-bar，browserFrame.tsx 中对应地址栏 div 使用 className='browser-frame-address-bar'。断言仍为 toHaveText(server.EMPTY_PAGE)，测试目标未变，属于 class/locator 迁移导致的定位器断裂。",
+      "prompt_sha256": "24238d70fd09457036aff40c880f79a3460e27ea92c22640b824caeec574e4f4",
+      "prompt_chars": 9718,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器为 page.locator('.window-address-bar')；应用源码 diff 中删除了 .window-address-bar，并在 browserFrame.css 新增 .browser-frame-address-bar，browserFrame.tsx 中对应地址栏 div 使用 className='browser-frame-address-bar'。断言仍为 toHaveText(server.EMPTY_PAGE)，测试目标未变，属于 class/locator 迁移导致的定位器断裂。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3096,
+        "completion_tokens": 302,
+        "total_tokens": 3398,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 194
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3096
+      }
+    },
+    {
+      "case_id": "rbx014",
+      "rb_id": "5410",
+      "repo": "microsoft/playwright",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试用 page.locator('.stack-trace-frame.selected') 定位选中帧，断言文本 /doClick.*trace-viewer\\.spec\\.ts:[\\d]+/ 未变；源码将 stackTrace.tsx 中自定义的 className='stack-trace-frame' + ' selected' 改为使用 ListView，并设置 dataTestId='stack-trace'，listView.tsx 新增 dataTestId 且条目使用 .list-view-entry.selected 类；断言级 diff 也仅把定位方式改为 page.getByTestId('<LOCATOR_REDACTED>').locator('.list-view-entry.selected')，断言目标仍是同一 stack trace 选中帧文本，属于组件迁移导致的 locator/DOM 类名变化。",
+      "prompt_sha256": "b87c671b3305831a5a00682a6823bdc2443e1f3daba2b2b3ed2a4d3b58bb5835",
+      "prompt_chars": 9658,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试用 page.locator('.stack-trace-frame.selected') 定位选中帧，断言文本 /doClick.*trace-viewer\\\\.spec\\\\.ts:[\\\\d]+/ 未变；源码将 stackTrace.tsx 中自定义的 className='stack-trace-frame' + ' selected' 改为使用 ListView，并设置 dataTestId='stack-trace'，listView.tsx 新增 dataTestId 且条目使用 .list-view-entry.selected 类；断言级 diff 也仅把定位方式改为 page.getByTestId('<LOCATOR_REDACTED>').locator('.list-view-entry.selected')，断言目标仍是同一 stack trace 选中帧文本，属于组件迁移导致的 locator/DOM 类名变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2866,
+        "completion_tokens": 480,
+        "total_tokens": 3346,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 310
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2866
+      }
+    },
+    {
+      "case_id": "rbx015",
+      "rb_id": "5609",
+      "repo": "microsoft/playwright",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧定位器为 page.getByRole('listitem')，依赖列表项角色；本次提交主题为“implement tree w/o list”，源码 diff 将 .ui-mode-list-item 改为 .ui-mode-tree-item、.tests-list-view .list-view-entry 改为 .tests-tree-view .tree-view-entry，并从 ListView/GridView 移除 indent、onLeftArrow、onRightArrow 等列表能力，表明是列表视图迁移为树视图导致的 DOM/组件/定位器锚点变化。断言级测试 diff 显示未改断言级代码、旧断言保持不变，没有证据表明业务断言目标改变；因此属于测试意图不变的结构性定位器过时。",
+      "prompt_sha256": "f3051fd0fbd21dc6ede1bee8c662203ba5e538aee64f2c5268c37233ee77cab3",
+      "prompt_chars": 9165,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器为 page.getByRole('listitem')，依赖列表项角色；本次提交主题为“implement tree w/o list”，源码 diff 将 .ui-mode-list-item 改为 .ui-mode-tree-item、.tests-list-view .list-view-entry 改为 .tests-tree-view .tree-view-entry，并从 ListView/GridView 移除 indent、onLeftArrow、onRightArrow 等列表能力，表明是列表视图迁移为树视图导致的 DOM/组件/定位器锚点变化。断言级测试 diff 显示未改断言级代码、旧断言保持不变，没有证据表明业务断言目标改变；因此属于测试意图不变的结构性定位器过时。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2676,
+        "completion_tokens": 615,
+        "total_tokens": 3291,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 462
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2676
+      }
+    },
+    {
+      "case_id": "rbx016",
+      "rb_id": "5658",
+      "repo": "microsoft/playwright",
+      "label": "SUSPECTED_REGRESSION",
+      "reason": "材料中“本次提交未改动断言级代码；旧断言保持不变”，因此不满足 EXPECTATION_CHANGE（断言目标未变）。旧定位器为 getByRole('treeitem')，但可见的应用源码 diff 只显示以下重构性改动：actionList.tsx 把内联回调提取为 useCallback；treeView.tsx 新增 title 属性，并把 flattenTree 与可见项过滤逻辑抽成 indexTree 调用（该 diff 被截断）；toolbarButton.tsx 把 aria-label={ariaLabel} 改为 aria-label={ariaLabel || title}；toMatchAriaSnapshot.ts 新增 unshift 做空白裁剪。可见证据中没有任何行显示 treeitem 角色被移除、改名或 DOM 层级被替换成其他语义，因此无法确认这是测试定位过时，还是新版应用真实回归；按保守规则只能选 SUSPECTED_REGRESSION。",
+      "prompt_sha256": "3f29e07f0b990e0ad42989843e8168998ba708b67cb09ac22435c1b88e93cb0e",
+      "prompt_chars": 8870,
+      "raw": "{\"label\":\"SUSPECTED_REGRESSION\",\"reason\":\"材料中“本次提交未改动断言级代码；旧断言保持不变”，因此不满足 EXPECTATION_CHANGE（断言目标未变）。旧定位器为 getByRole('treeitem')，但可见的应用源码 diff 只显示以下重构性改动：actionList.tsx 把内联回调提取为 useCallback；treeView.tsx 新增 title 属性，并把 flattenTree 与可见项过滤逻辑抽成 indexTree 调用（该 diff 被截断）；toolbarButton.tsx 把 aria-label={ariaLabel} 改为 aria-label={ariaLabel || title}；toMatchAriaSnapshot.ts 新增 unshift 做空白裁剪。可见证据中没有任何行显示 treeitem 角色被移除、改名或 DOM 层级被替换成其他语义，因此无法确认这是测试定位过时，还是新版应用真实回归；按保守规则只能选 SUSPECTED_REGRESSION。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2629,
+        "completion_tokens": 1297,
+        "total_tokens": 3926,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1090
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2629
+      }
+    },
+    {
+      "case_id": "rbx017",
+      "rb_id": "5660",
+      "repo": "microsoft/playwright",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为“chore: implement tree w/o list (#33167)”，源码 diff 将 list 组件迁移为 tree 组件：CSS/类名从 .ui-mode-list-item 改为 .ui-mode-tree-item，ListVi​​ew 删除 indent/onLeftArrow/onRightArrow 等列表能力，并新增 treeView.css。旧定位器 page.getByRole('listitem') 因 list 被 tree 替代而断裂，属于 DOM/结构迁移；材料同时说明“本次提交未改动断言级代码；旧断言保持不变”，测试断言目标未变，因此是 STRUCTURAL_ONLY。",
+      "prompt_sha256": "3813b372532de0d9d9898e3491babb04fb0674d0adc9ab43cb25c0dbad1ae043",
+      "prompt_chars": 8897,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为“chore: implement tree w/o list (#33167)”，源码 diff 将 list 组件迁移为 tree 组件：CSS/类名从 .ui-mode-list-item 改为 .ui-mode-tree-item，ListVi​​ew 删除 indent/onLeftArrow/onRightArrow 等列表能力，并新增 treeView.css。旧定位器 page.getByRole('listitem') 因 list 被 tree 替代而断裂，属于 DOM/结构迁移；材料同时说明“本次提交未改动断言级代码；旧断言保持不变”，测试断言目标未变，因此是 STRUCTURAL_ONLY。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2620,
+        "completion_tokens": 857,
+        "total_tokens": 3477,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 712
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2620
+      }
+    },
+    {
+      "case_id": "rbx018",
+      "rb_id": "5661",
+      "repo": "microsoft/playwright",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "提交主题为“implement tree w/o list”，diff 中 CSS/TSX 将 ui-mode-list-item/list-view 相关命名迁移为 ui-mode-tree-item/tree-view，并新增 treeView.css、移除 ListView 的 indent/onLeftArrow/onRightArrow；这些都属于列表到树的 DOM/class/定位器结构迁移。断言级测试 diff 明确“本次提交未改动断言级代码；旧断言保持不变”，没有证据表明业务断言目标改变，也不足以指向真实回归。",
+      "prompt_sha256": "3813b372532de0d9d9898e3491babb04fb0674d0adc9ab43cb25c0dbad1ae043",
+      "prompt_chars": 8897,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"提交主题为“implement tree w/o list”，diff 中 CSS/TSX 将 ui-mode-list-item/list-view 相关命名迁移为 ui-mode-tree-item/tree-view，并新增 treeView.css、移除 ListView 的 indent/onLeftArrow/onRightArrow；这些都属于列表到树的 DOM/class/定位器结构迁移。断言级测试 diff 明确“本次提交未改动断言级代码；旧断言保持不变”，没有证据表明业务断言目标改变，也不足以指向真实回归。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2620,
+        "completion_tokens": 861,
+        "total_tokens": 3481,
+        "prompt_tokens_details": {
+          "cached_tokens": 2432
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 743
+        },
+        "prompt_cache_hit_tokens": 2432,
+        "prompt_cache_miss_tokens": 188
+      }
+    },
+    {
+      "case_id": "rbx019",
+      "rb_id": "5663",
+      "repo": "microsoft/playwright",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为“chore: implement tree w/o list (#33167)”，应用源码将 uiModeTestListView.css 中的 .ui-mode-list-item 系列类名改为 .ui-mode-tree-item，并在 listView.tsx/treeView.tsx 中由列表视图迁移为树视图；旧定位器 page.getByRole('listitem') 依赖列表项角色，属于 DOM/组件结构迁移导致的定位器断裂。材料同时说明“本次提交未改动断言级代码；旧断言保持不变”，测试意图未体现业务结果变化，也无证据指向新版本真实回归。",
+      "prompt_sha256": "423999b84d1772967dbec3704e786a41b360050b30b39661ca4b066ac89a8de5",
+      "prompt_chars": 8929,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为“chore: implement tree w/o list (#33167)”，应用源码将 uiModeTestListView.css 中的 .ui-mode-list-item 系列类名改为 .ui-mode-tree-item，并在 listView.tsx/treeView.tsx 中由列表视图迁移为树视图；旧定位器 page.getByRole('listitem') 依赖列表项角色，属于 DOM/组件结构迁移导致的定位器断裂。材料同时说明“本次提交未改动断言级代码；旧断言保持不变”，测试意图未体现业务结果变化，也无证据指向新版本真实回归。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2627,
+        "completion_tokens": 595,
+        "total_tokens": 3222,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 459
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2627
+      }
+    },
+    {
+      "case_id": "rbx020",
+      "rb_id": "5678",
+      "repo": "microsoft/playwright",
+      "label": "SUSPECTED_REGRESSION",
+      "reason": "旧测试块只包含 setViewportSize 与 toHaveScreenshot，未出现旧定位器 page.getByText(/Log/)；材料又明确“本次提交未改动断言级代码；旧断言保持不变”。同时源码 diff 涉及 traceUtils.ts 的 attachment.sha1/path 处理、testInfo.attach 新增 step，以及 attachmentsTab/callTab/workbench 等 UI 改动，无法从材料判断 /Log/ 断裂只是文案锚点或 DOM 层级变化，还是新版本真实行为回归，故按规则保守选 SUSPECTED_REGRESSION。",
+      "prompt_sha256": "fcb832884d9b28cc007be59138646ea4b64de9319cdd8fb4d57540daa0f7bcf8",
+      "prompt_chars": 9124,
+      "raw": "{\"label\":\"SUSPECTED_REGRESSION\",\"reason\":\"旧测试块只包含 setViewportSize 与 toHaveScreenshot，未出现旧定位器 page.getByText(/Log/)；材料又明确“本次提交未改动断言级代码；旧断言保持不变”。同时源码 diff 涉及 traceUtils.ts 的 attachment.sha1/path 处理、testInfo.attach 新增 step，以及 attachmentsTab/callTab/workbench 等 UI 改动，无法从材料判断 /Log/ 断裂只是文案锚点或 DOM 层级变化，还是新版本真实行为回归，故按规则保守选 SUSPECTED_REGRESSION。\"}",
+      "attempts": 2,
+      "budget_used": 4000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2711,
+        "completion_tokens": 1923,
+        "total_tokens": 4634,
+        "prompt_tokens_details": {
+          "cached_tokens": 2560
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1782
+        },
+        "prompt_cache_hit_tokens": 2560,
+        "prompt_cache_miss_tokens": 151
+      }
+    },
+    {
+      "case_id": "rbx021",
+      "rb_id": "3320",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧定位器为 page.getByRole('button', { name: 'OK' })，依赖可访问角色/名称；断言级测试 diff 明确“未改动断言级代码；旧断言保持不变”，完整旧测试块中的列表计数、展开/高亮、清空后计数等断言也未变，说明测试意图未变。提交主题为“[e2e] Update remaining tests and add missing comparison coverage (#7363)”，应用源码 diff 中多处新增 aria-label/role（如 MenuComponent.vue 的 :aria-label=\"action.name\"、GridView.vue 的 role=\"grid\"/\"gridcell\"、ImageControls.vue 的 aria-label 等），表明是 DOM 可访问性锚点/定位路径变化，而非断言目标变化。",
+      "prompt_sha256": "cf2c987e29d2ab340fbbfd7a45448ef718dbb710e8996a418a7c554a498c96ba",
+      "prompt_chars": 12717,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器为 page.getByRole('button', { name: 'OK' })，依赖可访问角色/名称；断言级测试 diff 明确“未改动断言级代码；旧断言保持不变”，完整旧测试块中的列表计数、展开/高亮、清空后计数等断言也未变，说明测试意图未变。提交主题为“[e2e] Update remaining tests and add missing comparison coverage (#7363)”，应用源码 diff 中多处新增 aria-label/role（如 MenuComponent.vue 的 :aria-label=\\\"action.name\\\"、GridView.vue 的 role=\\\"grid\\\"/\\\"gridcell\\\"、ImageControls.vue 的 aria-label 等），表明是 DOM 可访问性锚点/定位路径变化，而非断言目标变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3772,
+        "completion_tokens": 1750,
+        "total_tokens": 5522,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1574
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3772
+      }
+    },
+    {
+      "case_id": "rbx022",
+      "rb_id": "3321",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试断言未改动，仍验证清除最近对象后的列表数量及按钮启用状态；提交源码 diff 主要是在多个组件中补充 aria-label/role（如 MenuComponent.vue 增加 :aria-label、GridView.vue 增加 role=\"grid\"/\"gridcell\"、ImageControls.vue 增加 aria-label），属于可访问性定位锚点变化，材料未显示业务断言目标改变。",
+      "prompt_sha256": "ebb2f0f1f1a685fb4e50b872eb8fe84e6522118280e4de8f664791c1a10a64d9",
+      "prompt_chars": 11536,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试断言未改动，仍验证清除最近对象后的列表数量及按钮启用状态；提交源码 diff 主要是在多个组件中补充 aria-label/role（如 MenuComponent.vue 增加 :aria-label、GridView.vue 增加 role=\\\"grid\\\"/\\\"gridcell\\\"、ImageControls.vue 增加 aria-label），属于可访问性定位锚点变化，材料未显示业务断言目标改变。\"}",
+      "attempts": 3,
+      "budget_used": 8000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3469,
+        "completion_tokens": 2403,
+        "total_tokens": 5872,
+        "prompt_tokens_details": {
+          "cached_tokens": 3328
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 2305
+        },
+        "prompt_cache_hit_tokens": 3328,
+        "prompt_cache_miss_tokens": 141
+      }
+    },
+    {
+      "case_id": "rbx023",
+      "rb_id": "3457",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "测试意图仍是验证 LAD Table 编辑模式下隐藏列及重载后状态不变；断言从 page.getByRole('cell', { name: 'Timestamp', exact: true }) 改为 page.getByRole('columnheader', { name: 'Timestamp', exact: true })，属于 locator/角色锚点迁移。源码 LadTable.vue 中表头 th 增加了 scope=\"col\"，LadRow.vue 中 td 增加了 scope=\"row\"，说明表头语义由 cell 变为 columnheader；同时 'WATCH' 等改名为 'Limit WATCH' 等，属于文案锚点变化，未改变要验证的业务结果。",
+      "prompt_sha256": "ffb611f131e0ab3b13e12d7a4f8d0db7440f52430017a6978d93cbc1145fb058",
+      "prompt_chars": 21597,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"测试意图仍是验证 LAD Table 编辑模式下隐藏列及重载后状态不变；断言从 page.getByRole('cell', { name: 'Timestamp', exact: true }) 改为 page.getByRole('columnheader', { name: 'Timestamp', exact: true })，属于 locator/角色锚点迁移。源码 LadTable.vue 中表头 th 增加了 scope=\\\"col\\\"，LadRow.vue 中 td 增加了 scope=\\\"row\\\"，说明表头语义由 cell 变为 columnheader；同时 'WATCH' 等改名为 'Limit WATCH' 等，属于文案锚点变化，未改变要验证的业务结果。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 6751,
+        "completion_tokens": 410,
+        "total_tokens": 7161,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 257
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 6751
+      }
+    },
+    {
+      "case_id": "rbx024",
+      "rb_id": "3466",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧用例用 getByRole('cell', { name: 'Timestamp', exact: true }) 检查表头；新用例改为 getByRole('columnheader', { name: 'Timestamp', exact: true })，仍检查同一列的可见/隐藏。源码 diff 中 LadTable.vue 给表头 <th> 增加了 scope=\"col\"，并调整表头结构，说明是语义角色/定位锚点迁移。断言目标仍是隐藏列后对应列不可见，测试意图未变；WATCH 等改为 'Limit WATCH' 也是文案锚点随表头更新，不是业务断言目标变化。",
+      "prompt_sha256": "ffb611f131e0ab3b13e12d7a4f8d0db7440f52430017a6978d93cbc1145fb058",
+      "prompt_chars": 21597,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧用例用 getByRole('cell', { name: 'Timestamp', exact: true }) 检查表头；新用例改为 getByRole('columnheader', { name: 'Timestamp', exact: true })，仍检查同一列的可见/隐藏。源码 diff 中 LadTable.vue 给表头 <th> 增加了 scope=\\\"col\\\"，并调整表头结构，说明是语义角色/定位锚点迁移。断言目标仍是隐藏列后对应列不可见，测试意图未变；WATCH 等改为 'Limit WATCH' 也是文案锚点随表头更新，不是业务断言目标变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 6751,
+        "completion_tokens": 497,
+        "total_tokens": 7248,
+        "prompt_tokens_details": {
+          "cached_tokens": 6528
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 352
+        },
+        "prompt_cache_hit_tokens": 6528,
+        "prompt_cache_miss_tokens": 223
+      }
+    },
+    {
+      "case_id": "rbx025",
+      "rb_id": "3467",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "测试意图仍是验证 LAD 表编辑模式下列的显示/隐藏；断言 diff 只是把 getByRole('cell', ...) 改为 getByRole('columnheader', ...)，并将 WATCH 等锚点更新为 Limit WATCH 等。应用源码 LadTable.vue 中给表头增加了 scope=\"col\"，说明是表头语义/DOM 定位方式变化，断言的业务目标未变。",
+      "prompt_sha256": "ffb611f131e0ab3b13e12d7a4f8d0db7440f52430017a6978d93cbc1145fb058",
+      "prompt_chars": 21597,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"测试意图仍是验证 LAD 表编辑模式下列的显示/隐藏；断言 diff 只是把 getByRole('cell', ...) 改为 getByRole('columnheader', ...)，并将 WATCH 等锚点更新为 Limit WATCH 等。应用源码 LadTable.vue 中给表头增加了 scope=\\\"col\\\"，说明是表头语义/DOM 定位方式变化，断言的业务目标未变。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 6751,
+        "completion_tokens": 341,
+        "total_tokens": 7092,
+        "prompt_tokens_details": {
+          "cached_tokens": 6528
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 238
+        },
+        "prompt_cache_hit_tokens": 6528,
+        "prompt_cache_miss_tokens": 223
+      }
+    },
+    {
+      "case_id": "rbx026",
+      "rb_id": "3468",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "测试意图仍是验证 LAD 表列在编辑配置后可见/隐藏，断言目标未变；变化是定位角色从 getByRole('cell') 迁移为 getByRole('columnheader')，且应用源码在 LadTable.vue 中给表头 th 增加了 scope=\"col\"，属于 DOM 语义/可访问角色与文案锚点调整，符合 STRUCTURAL_ONLY。",
+      "prompt_sha256": "b09393c2003829ad12ec4988c447da958aa3a4a22f44f8f49fedee537e751269",
+      "prompt_chars": 19917,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"测试意图仍是验证 LAD 表列在编辑配置后可见/隐藏，断言目标未变；变化是定位角色从 getByRole('cell') 迁移为 getByRole('columnheader')，且应用源码在 LadTable.vue 中给表头 th 增加了 scope=\\\"col\\\"，属于 DOM 语义/可访问角色与文案锚点调整，符合 STRUCTURAL_ONLY。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 6252,
+        "completion_tokens": 539,
+        "total_tokens": 6791,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 442
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 6252
+      }
+    },
+    {
+      "case_id": "rbx027",
+      "rb_id": "3469",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧定位器使用文案锚点 name: 'OK'；应用源码 FormProperties.vue 将默认提交按钮文案从 'OK' 改为 'Ok'，ImageExporter.js 也将按钮 label 从 'OK' 改为 'Ok'，且 Commit 说明明确写有“consistently use 'Ok' instead of 'OK' and 'Ok' mixed”。测试仍是在删除对象后点击确认按钮，并继续断言 Units/Limit 列隐藏，测试意图和断言目标未变，属于文案锚点变化。",
+      "prompt_sha256": "1bc1451cac3675a33adcadb179687de2ae4537193a409cecd8b849898d87b096",
+      "prompt_chars": 19911,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器使用文案锚点 name: 'OK'；应用源码 FormProperties.vue 将默认提交按钮文案从 'OK' 改为 'Ok'，ImageExporter.js 也将按钮 label 从 'OK' 改为 'Ok'，且 Commit 说明明确写有“consistently use 'Ok' instead of 'OK' and 'Ok' mixed”。测试仍是在删除对象后点击确认按钮，并继续断言 Units/Limit 列隐藏，测试意图和断言目标未变，属于文案锚点变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 6251,
+        "completion_tokens": 451,
+        "total_tokens": 6702,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 325
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 6251
+      }
+    },
+    {
+      "case_id": "rbx028",
+      "rb_id": "3485",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试块标题仍为 'in edit mode, LAD Tables provide ability to hide columns'，断言仍验证 Timestamp 等列的 visible/hidden；测试 diff 仅将 getByRole('cell', { name: 'Timestamp' }) 等改为增加 exact: true，属于同一文案锚点的定位器精确化。源码 diff 在 LadRow.vue 给 td 添加 aria-label（DOM/可访问性属性变化），未改变测试要验证的列显隐业务结果。",
+      "prompt_sha256": "880cbd204be3b0c1308750574585da08f3725660ac550a824916233f42134f8a",
+      "prompt_chars": 12201,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试块标题仍为 'in edit mode, LAD Tables provide ability to hide columns'，断言仍验证 Timestamp 等列的 visible/hidden；测试 diff 仅将 getByRole('cell', { name: 'Timestamp' }) 等改为增加 exact: true，属于同一文案锚点的定位器精确化。源码 diff 在 LadRow.vue 给 td 添加 aria-label（DOM/可访问性属性变化），未改变测试要验证的列显隐业务结果。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3604,
+        "completion_tokens": 1270,
+        "total_tokens": 4874,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1153
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3604
+      }
+    },
+    {
+      "case_id": "rbx029",
+      "rb_id": "3486",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧定位器为 getByRole('cell', { name: 'Type' })，断言级 diff 中仅将其改为 getByRole('cell', { name: 'Type', exact: true })，即定位锚点精确化；测试块仍围绕“in edit mode, LAD Tables provide ability to hide columns”，断言目标仍是同一批列的 visible/hidden 状态，测试意图未变。应用源码 diff 在 LadRow.vue 中为 td 增加 aria-label（如 'lad type'、'lad value'），属于 DOM/可访问性锚点变化，与定位器调整对应；未显示业务断言目标改变或无法排除的真实回归证据。",
+      "prompt_sha256": "30f848f5fe3016dc1afde89cd001319f5e0511d7fd07c2701e84da5a5e935d0a",
+      "prompt_chars": 12196,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器为 getByRole('cell', { name: 'Type' })，断言级 diff 中仅将其改为 getByRole('cell', { name: 'Type', exact: true })，即定位锚点精确化；测试块仍围绕“in edit mode, LAD Tables provide ability to hide columns”，断言目标仍是同一批列的 visible/hidden 状态，测试意图未变。应用源码 diff 在 LadRow.vue 中为 td 增加 aria-label（如 'lad type'、'lad value'），属于 DOM/可访问性锚点变化，与定位器调整对应；未显示业务断言目标改变或无法排除的真实回归证据。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3604,
+        "completion_tokens": 543,
+        "total_tokens": 4147,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 388
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3604
+      }
+    },
+    {
+      "case_id": "rbx030",
+      "rb_id": "3487",
+      "repo": "nasa/openmct",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧定位器为 getByRole('cell', { name: 'Timestamp' })，断言级 diff 仅将其改为 getByRole('cell', { name: 'Timestamp', exact: true })，同类改动也仅对 'Type' 增加 exact: true，属于定位器/文案锚点精确化；完整旧测试块仍验证“Timestamp/Units/Type 等列可见或隐藏”的同一业务结果，未改变断言目标。应用源码 diff 中 LadRow.vue 为 td 增加 aria-label 等 DOM 属性，并调整 LadTableSetView.show 参数，符合 locator/DOM 层级/属性变化而非业务预期变化。",
+      "prompt_sha256": "b3387702e480797e8834b661b3e8db771dd049ecc728e2531b59455d1e1891f1",
+      "prompt_chars": 10469,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器为 getByRole('cell', { name: 'Timestamp' })，断言级 diff 仅将其改为 getByRole('cell', { name: 'Timestamp', exact: true })，同类改动也仅对 'Type' 增加 exact: true，属于定位器/文案锚点精确化；完整旧测试块仍验证“Timestamp/Units/Type 等列可见或隐藏”的同一业务结果，未改变断言目标。应用源码 diff 中 LadRow.vue 为 td 增加 aria-label 等 DOM 属性，并调整 LadTableSetView.show 参数，符合 locator/DOM 层级/属性变化而非业务预期变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3089,
+        "completion_tokens": 387,
+        "total_tokens": 3476,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 233
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3089
+      }
+    },
+    {
+      "case_id": "rbx031",
+      "rb_id": "614",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧定位器是 '[data-kg-card-toolbar=\"html\"] [aria-label=\"Visibility\"]'，旧测试验证工具栏中 Visibility 图标可见；Commit 说明明确写有“Moved HTML card visibility settings to the SettingsPanel”和“Removed VisibilityDropdown component”，源码改动也涉及 SettingsPanel.jsx、TabView.jsx、HtmlCard.jsx 等，测试 diff 将 'visibility-settings' 改为 'settings-panel' 并新增 'visibility-show-on-web'。这些证据表明可见性设置仍在验证，只是从工具栏/Dropdown 迁移到 SettingsPanel，属于 DOM 层级和定位锚点变化。",
+      "prompt_sha256": "4f5fb4ea6f2fc6c66a0b1378eaccb9523b2390750cb64c251c6adc499f345f70",
+      "prompt_chars": 14249,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器是 '[data-kg-card-toolbar=\\\"html\\\"] [aria-label=\\\"Visibility\\\"]'，旧测试验证工具栏中 Visibility 图标可见；Commit 说明明确写有“Moved HTML card visibility settings to the SettingsPanel”和“Removed VisibilityDropdown component”，源码改动也涉及 SettingsPanel.jsx、TabView.jsx、HtmlCard.jsx 等，测试 diff 将 'visibility-settings' 改为 'settings-panel' 并新增 'visibility-show-on-web'。这些证据表明可见性设置仍在验证，只是从工具栏/Dropdown 迁移到 SettingsPanel，属于 DOM 层级和定位锚点变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3981,
+        "completion_tokens": 930,
+        "total_tokens": 4911,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 779
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3981
+      }
+    },
+    {
+      "case_id": "rbx032",
+      "rb_id": "664",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "材料中 Commit 主题为“Migration to playwright (#647)”，说明“Migration from vitest to playwright runner for e2e tests”；断言级 diff 显示 page.$ 被替换为 page.locator、toBeNull 被替换为 toHaveCount(0)，属于测试 API/框架迁移；旧定位器锚点 [data-kg-plus-menu] 及测试块中关闭菜单、焦点移动等断言目标未变。",
+      "prompt_sha256": "877ce00aaf3621c340f4122ce0d5bdbf96ea0a77fd8c653977204c99a726fe5e",
+      "prompt_chars": 10297,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"材料中 Commit 主题为“Migration to playwright (#647)”，说明“Migration from vitest to playwright runner for e2e tests”；断言级 diff 显示 page.$ 被替换为 page.locator、toBeNull 被替换为 toHaveCount(0)，属于测试 API/框架迁移；旧定位器锚点 [data-kg-plus-menu] 及测试块中关闭菜单、焦点移动等断言目标未变。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3240,
+        "completion_tokens": 323,
+        "total_tokens": 3563,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 220
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3240
+      }
+    },
+    {
+      "case_id": "rbx033",
+      "rb_id": "720",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试仍验证同一业务目标：通过 /snippet 菜单插入 snippet 后 embed card 数量为 2；测试 diff 仅把等待任意 selected 菜单项的定位器改为等待带 hasText 'snippet' 的菜单项可见。Commit 说明明确称这是修复 snippet menu race condition，做法是“waiting for the correct menu item text instead of any selected item”，且应用源码改动文件为 0、无应用源码 diff，说明测试意图未变，只是文案/定位锚点变化。",
+      "prompt_sha256": "5b4b1ccd8ade666414600f8e37727e2e0509316de6611b91a5f7f630d6a448c7",
+      "prompt_chars": 2325,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试仍验证同一业务目标：通过 /snippet 菜单插入 snippet 后 embed card 数量为 2；测试 diff 仅把等待任意 selected 菜单项的定位器改为等待带 hasText 'snippet' 的菜单项可见。Commit 说明明确称这是修复 snippet menu race condition，做法是“waiting for the correct menu item text instead of any selected item”，且应用源码改动文件为 0、无应用源码 diff，说明测试意图未变，只是文案/定位锚点变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 752,
+        "completion_tokens": 276,
+        "total_tokens": 1028,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 153
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 752
+      }
+    },
+    {
+      "case_id": "rbx034",
+      "rb_id": "723",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试等待的是任意已选中菜单项 `[data-kg-cardmenu-selected=\"true\"]`；Commit 说明明确这是“snippet menu race condition”，修复方式是“waiting for the correct menu item text instead of any selected item”，并指出未过滤菜单会短暂先出现。断言级 diff 只把定位改为过滤 `hasText: 'snippet'` 的可见性等待；应用源码改动文件为 0、无 diff，旧测试最终仍断言 `[data-kg-card=\"html\"]` 数量为 2，业务断言目标未变。因此属于定位器/等待锚点的结构性维护。",
+      "prompt_sha256": "2c10eb7249ada627dc1efca3ba8a7dc0f914f0fc5d45e4b52216effb9550853a",
+      "prompt_chars": 2487,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试等待的是任意已选中菜单项 `[data-kg-cardmenu-selected=\\\"true\\\"]`；Commit 说明明确这是“snippet menu race condition”，修复方式是“waiting for the correct menu item text instead of any selected item”，并指出未过滤菜单会短暂先出现。断言级 diff 只把定位改为过滤 `hasText: 'snippet'` 的可见性等待；应用源码改动文件为 0、无 diff，旧测试最终仍断言 `[data-kg-card=\\\"html\\\"]` 数量为 2，业务断言目标未变。因此属于定位器/等待锚点的结构性维护。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 787,
+        "completion_tokens": 398,
+        "total_tokens": 1185,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 249
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 659
+      }
+    },
+    {
+      "case_id": "rbx035",
+      "rb_id": "748",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试意图仍是上传图片并断言 markdown 内容写入；源码 diff 只改 spellcheck 菜单 className（'fa fa-check active'→'fa fa-check'）并新增 codemirror.setOption('mode','gfm')，未改变上传业务结果。测试 diff 只是定位器断言方式与数量更新（not.toBeNull、toHaveCount(0)→toHaveCount(1)），核心 assertRootChildren 的 markdown 断言不变，符合 locator/DOM/class 层面的结构性适配。",
+      "prompt_sha256": "aa8467141c9e44a52a327059e30df83533d0c8c36c3ae1e874cadfe55a7f03c9",
+      "prompt_chars": 3821,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试意图仍是上传图片并断言 markdown 内容写入；源码 diff 只改 spellcheck 菜单 className（'fa fa-check active'→'fa fa-check'）并新增 codemirror.setOption('mode','gfm')，未改变上传业务结果。测试 diff 只是定位器断言方式与数量更新（not.toBeNull、toHaveCount(0)→toHaveCount(1)），核心 assertRootChildren 的 markdown 断言不变，符合 locator/DOM/class 层面的结构性适配。\"}",
+      "attempts": 3,
+      "budget_used": 8000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 1145,
+        "completion_tokens": 3153,
+        "total_tokens": 4298,
+        "prompt_tokens_details": {
+          "cached_tokens": 896
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 3028
+        },
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 249
+      }
+    },
+    {
+      "case_id": "rbx036",
+      "rb_id": "749",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为“Fix three flaky E2E tests”，说明中明确“product-card 'can add snippet': wait for the specific snippet menu item to be selected rather than any menu item, avoiding false matches from intermediate typing states”；旧定位器是 `page.waitForSelector('[data-kg-cardmenu-selected=\"true\"]')`，断言级 diff 改为定位并等待 `filter({hasText: 'snippet'})` 可见。应用源码改动文件为 0、diff 无，说明测试意图未变，只是等待/定位条件从任意选中菜单项细化为具体 snippet 菜单项，属于定位器/等待 API 调整。",
+      "prompt_sha256": "271a6533228b85737c445ec2ce23ddd56c1906a854c806cc92f0ae491c0d3d70",
+      "prompt_chars": 2019,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为“Fix three flaky E2E tests”，说明中明确“product-card 'can add snippet': wait for the specific snippet menu item to be selected rather than any menu item, avoiding false matches from intermediate typing states”；旧定位器是 `page.waitForSelector('[data-kg-cardmenu-selected=\\\"true\\\"]')`，断言级 diff 改为定位并等待 `filter({hasText: 'snippet'})` 可见。应用源码改动文件为 0、diff 无，说明测试意图未变，只是等待/定位条件从任意选中菜单项细化为具体 snippet 菜单项，属于定位器/等待 API 调整。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 680,
+        "completion_tokens": 531,
+        "total_tokens": 1211,
+        "prompt_tokens_details": {
+          "cached_tokens": 128
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 378
+        },
+        "prompt_cache_hit_tokens": 128,
+        "prompt_cache_miss_tokens": 552
+      }
+    },
+    {
+      "case_id": "rbx037",
+      "rb_id": "751",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为“Reworked signup card background image selection”，源码 SettingsPanel.jsx 中 MediaUploadSetting 的 data-testid 由 \"custom-thumbnail\" 改为 \"media-upload-setting\"，属于 DOM/测试锚点变化；断言级测试 diff 中同一 toHaveAttribute('src', /blob:/) 断言仅将 <LOCATOR_REDACTED> 换成 <LOCATOR_CHANGED>，断言目标未变；新增断言仍围绕 background-image/src blob 的可见性与颜色，属于背景图选择重构后的定位与覆盖调整，未显示旧断言仍在检查旧业务结果，也无充分证据表明应用真实回归。",
+      "prompt_sha256": "7cefcf2964005f3e3696b7aaeffe1f5a83cb98c565dbc1bbdd3c7fa500952eb0",
+      "prompt_chars": 11904,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为“Reworked signup card background image selection”，源码 SettingsPanel.jsx 中 MediaUploadSetting 的 data-testid 由 \\\"custom-thumbnail\\\" 改为 \\\"media-upload-setting\\\"，属于 DOM/测试锚点变化；断言级测试 diff 中同一 toHaveAttribute('src', /blob:/) 断言仅将 <LOCATOR_REDACTED> 换成 <LOCATOR_CHANGED>，断言目标未变；新增断言仍围绕 background-image/src blob 的可见性与颜色，属于背景图选择重构后的定位与覆盖调整，未显示旧断言仍在检查旧业务结果，也无充分证据表明应用真实回归。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3134,
+        "completion_tokens": 1798,
+        "total_tokens": 4932,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 1643
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3134
+      }
+    },
+    {
+      "case_id": "rbx038",
+      "rb_id": "752",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧定位器是 `[data-testid=\"media-upload-filled\"] img`，对应断言仍是 `toHaveAttribute('src', /blob:/)`；测试 diff 中仅把该定位器从 `<LOCATOR_REDACTED>` 改为 `<LOCATOR_CHANGED>`，断言目标未变。源码 diff 显示 `MediaUploadSetting` 的 `data-testid` 从 `custom-thumbnail` 改为 `media-upload-setting`，并新增 `setFileInputRef` 等组件/DOM 重构，说明断裂来自定位锚点或 DOM 变化；旧测试意图“can swap split layout sides on image”及相关 swap 断言也未被替换为新的业务结果。",
+      "prompt_sha256": "5c62f7d76d858731bab11d80655971f96cfbc99981875e88526596b905317a2a",
+      "prompt_chars": 12010,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器是 `[data-testid=\\\"media-upload-filled\\\"] img`，对应断言仍是 `toHaveAttribute('src', /blob:/)`；测试 diff 中仅把该定位器从 `<LOCATOR_REDACTED>` 改为 `<LOCATOR_CHANGED>`，断言目标未变。源码 diff 显示 `MediaUploadSetting` 的 `data-testid` 从 `custom-thumbnail` 改为 `media-upload-setting`，并新增 `setFileInputRef` 等组件/DOM 重构，说明断裂来自定位锚点或 DOM 变化；旧测试意图“can swap split layout sides on image”及相关 swap 断言也未被替换为新的业务结果。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3158,
+        "completion_tokens": 1130,
+        "total_tokens": 4288,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 966
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3158
+      }
+    },
+    {
+      "case_id": "rbx039",
+      "rb_id": "758",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "Commit 主题为“Switched all nested editor styles to use @apply (#834)”，源码 diff 显示多处 class 重命名，如 'koenig-lexical-header-heading'→'koenig-lexical-heading'、'koenig-lexical-header-subheading'→'koenig-lexical-subheading'、'koenig-lexical-collection-heading'→'koenig-lexical-section-title'，且 ToggleCard.jsx 在改动文件列表中；旧测试仍断言 heading 的 toContainText('Heading')，测试意图未变，断裂来自依赖的 '.koenig-lexical-toggle-heading' class 随样式迁移而变化。",
+      "prompt_sha256": "8d56d913332834cb8a8805496006041de51770e99f7ee60f2c0969e596642110",
+      "prompt_chars": 10420,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 主题为“Switched all nested editor styles to use @apply (#834)”，源码 diff 显示多处 class 重命名，如 'koenig-lexical-header-heading'→'koenig-lexical-heading'、'koenig-lexical-header-subheading'→'koenig-lexical-subheading'、'koenig-lexical-collection-heading'→'koenig-lexical-section-title'，且 ToggleCard.jsx 在改动文件列表中；旧测试仍断言 heading 的 toContainText('Heading')，测试意图未变，断裂来自依赖的 '.koenig-lexical-toggle-heading' class 随样式迁移而变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 2612,
+        "completion_tokens": 1068,
+        "total_tokens": 3680,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 909
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 2612
+      }
+    },
+    {
+      "case_id": "rbx040",
+      "rb_id": "768",
+      "repo": "tryghost/koenig",
+      "label": "STRUCTURAL_ONLY",
+      "reason": "旧测试块仍然围绕 custom thumbnail 的上传、替换和删除流程，断言目标（settings-panel 可见、空缩略图占位可见、custom-thumbnail-filled 可见、删除后占位再次可见）未变；Commit 说明包含“Rename ThumbnailSetting to be more reusable”和“Fix tests”，且测试 diff 显示 Video card 测试中 getByTestId 由旧定位器变为新定位器，应用源码改动也涉及 VideoCard.jsx、SettingsPanel.jsx 等组件重构，符合 locator/组件命名迁移导致的结构性变化。",
+      "prompt_sha256": "404644faec83db6182a4305945c25784c9709b8fcab2b64d77b6f8a1c0bde349",
+      "prompt_chars": 12454,
+      "raw": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧测试块仍然围绕 custom thumbnail 的上传、替换和删除流程，断言目标（settings-panel 可见、空缩略图占位可见、custom-thumbnail-filled 可见、删除后占位再次可见）未变；Commit 说明包含“Rename ThumbnailSetting to be more reusable”和“Fix tests”，且测试 diff 显示 Video card 测试中 getByTestId 由旧定位器变为新定位器，应用源码改动也涉及 VideoCard.jsx、SettingsPanel.jsx 等组件重构，符合 locator/组件命名迁移导致的结构性变化。\"}",
+      "attempts": 1,
+      "budget_used": 2000,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 3393,
+        "completion_tokens": 965,
+        "total_tokens": 4358,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 826
+        },
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 3393
+      }
+    }
+  ]
+}

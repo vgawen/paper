@@ -1,0 +1,20 @@
+{
+  "name": "tldraw_examples",
+  "repoDir": "../../real/tldraw",
+  "runDir": "apps/examples",
+  "srcGlob": "apps/examples/src",
+  "srcGlobs": ["apps/examples/src", "packages/tldraw/src"],
+  "fsRoots": ["packages/tldraw/src"],
+  "historyLimit": 600,
+  "specGlob": "e2e/tests",
+  "installCmd": "cd ../.. && COREPACK_ENABLE_DOWNLOAD_PROMPT=0 npm_config_engine_strict=false corepack pnpm install --filter './apps/examples...' --frozen-lockfile --ignore-scripts --prefer-offline",
+  "injectCoverage": "cdp",
+  "injectMode": "page",
+  "fixtureImport": "../fixtures/fixtures",
+  "fixtureDefaultExport": true,
+  "injectUrlRoot": "apps/examples/src",
+  "rewriteFrom": ["../fixtures/fixtures", "@playwright/test"],
+  "covRel": "cov_pertest",
+  "testOneCmd": "COV_OUT=cov_pertest NODE_OPTIONS='--no-strip-types' node_modules/.bin/playwright test -c e2e/__cov_playwright.config.ts --project=chromium --workers=1 {spec}",
+  "testAllCmd": "COV_OUT=cov_pertest NODE_OPTIONS='--no-strip-types' node_modules/.bin/playwright test -c e2e/__cov_playwright.config.ts --project=chromium --workers=2 test-routes.spec.ts --grep \"comment-anchors|comment-regions|comment-notifications|custom-language-translations|cubic-bezier-shape|pen-tool|basic|custom-shape\""
+}

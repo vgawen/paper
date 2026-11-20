@@ -1,0 +1,215 @@
+{
+  "batch": "new10_20261108",
+  "created_at": "2026-11-08T12:41:15.745Z",
+  "stage": "第三步：受控缺口扩样 5 → 10（扩展历史追加 y01–y05）",
+  "inclusion_rule": "扩展历史中所有“新增路由且无测试”的 commit 全部纳入；x01–x05 沿用上一批，y01–y05 为本批新增，不做结果驱动筛选",
+  "extension_history": "subject/work_exp 的独立克隆（/tmp/expv3/work_exp），从阶段三 bundle 恢复后追加提交；不追加到主 24 过渡历史",
+  "main_history_untouched": {
+    "worktree": "subject/work（未创建/未修改）",
+    "manifest": "subject/history/manifest.json（只读引用，未写入）",
+    "main_gaps_reference": [
+      {
+        "tag": "c03",
+        "route": "/coupon",
+        "manifest_commit": "0ddfb1a",
+        "desc": "add /coupon route, no test"
+      },
+      {
+        "tag": "c13",
+        "route": "/wishlist",
+        "manifest_commit": "0938e31",
+        "desc": "add /wishlist route, no test"
+      },
+      {
+        "tag": "c19",
+        "route": "/faq",
+        "manifest_commit": "e345769",
+        "desc": "add /faq route, no test"
+      }
+    ]
+  },
+  "lineage": {
+    "previous_batch_manifest": "diffe2e/experiments/out/expansion_20261108/gaps/manifest_expansion.json",
+    "previous_batch_manifest_sha256": "7a675361d5429eab553a2dafa26584ab4a8672c016491a8f50c7ca47ff320506",
+    "source_bundle": "diffe2e/experiments/out/expansion_20261108/gaps/work_exp.bundle",
+    "source_bundle_sha256": "6de585cebc97fdb6578dc916828fdca05243d5635b77fc88eaeae6cea35db667",
+    "parent_tag": "x05",
+    "parent_commit": "eb57c55",
+    "history_tags_before": [
+      "x00",
+      "x01",
+      "x02",
+      "x03",
+      "x04",
+      "x05"
+    ]
+  },
+  "gaps": [
+    {
+      "gap_id": "y01",
+      "route": "/notifications",
+      "source_file": "app/public/src/notifications.js",
+      "route_type": "通知开关（notification toggle）",
+      "interaction": "点击复选框（change 事件）",
+      "signal_density": "data-testid 富集 + aria-label",
+      "data_testids": [
+        "notif-title",
+        "notif-toggle",
+        "notif-status"
+      ],
+      "aria_signals": [
+        "aria-label=\"Enable alerts\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 6 个 spec 均不导航到 /notifications，预期覆盖映射为空",
+      "pre_expectation": {
+        "diff": "可执行且 change-relevant；testid/文本/属性/逻辑均可杀（与 x01 同类结构）",
+        "nodiff": "可能可执行但不指向 /notifications，预期 change-relevant=false"
+      },
+      "code": "export function render(root){\n  root.innerHTML=`<section><h1 data-testid=\"notif-title\">Notifications</h1>\n  <label><input type=\"checkbox\" data-testid=\"notif-toggle\" aria-label=\"Enable alerts\"/> Enable alerts</label>\n  <span data-testid=\"notif-status\">Alerts disabled</span></section>`;\n  const box=root.querySelector('[data-testid=\"notif-toggle\"]');\n  const status=root.querySelector('[data-testid=\"notif-status\"]');\n  box.addEventListener('change',()=>{\n    status.textContent=box.checked?'Alerts enabled':'Alerts disabled';\n  });\n}\n",
+      "tag": "y01",
+      "parent_tag": "x05",
+      "source_commit": "180af2b",
+      "changed_files": [
+        "app/public/src/notifications.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "cadc5e3be4d2e353804312bbc88acb02604f0cc1b0db2fb44826b018f6d5cf38",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    },
+    {
+      "gap_id": "y02",
+      "route": "/survey",
+      "source_file": "app/public/src/survey.js",
+      "route_type": "表单提交（survey submit）",
+      "interaction": "选择下拉项 + 填写文本域 + 点击提交",
+      "signal_density": "仅可见文本 / role / aria（无 data-testid）",
+      "data_testids": [],
+      "aria_signals": [
+        "aria-label=\"Favorite color\"",
+        "aria-label=\"Note\"",
+        "role=\"status\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 spec 不覆盖；无 testid，覆盖映射为空",
+      "pre_expectation": {
+        "diff": "可执行概率中等（依赖 LLM 从角色/标签定位）；change-relevant 应成立",
+        "nodiff": "可能可执行但指向既有路由，预期 change-relevant=false"
+      },
+      "code": "export function render(root){\n  root.innerHTML=`<section><h1>Survey</h1>\n  <label for=\"sv-color\">Favorite color</label>\n  <select id=\"sv-color\" name=\"color\" aria-label=\"Favorite color\"><option>Red</option><option>Blue</option></select>\n  <label for=\"sv-note\">Note</label>\n  <textarea id=\"sv-note\" name=\"note\" aria-label=\"Note\"></textarea>\n  <button type=\"button\">Submit survey</button>\n  <p role=\"status\"></p></section>`;\n  const choice=root.querySelector('#sv-color');\n  const btn=root.querySelector('button');\n  const msg=root.querySelector('[role=\"status\"]');\n  btn.addEventListener('click',()=>{msg.textContent=`Recorded ${choice.value} choice`;});\n}\n",
+      "tag": "y02",
+      "parent_tag": "y01",
+      "source_commit": "7990e05",
+      "changed_files": [
+        "app/public/src/survey.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "9dd5484edf1f0de68f3fcbc53da7f3e0d6c586a6e28f7784eaf48ff587d429e7",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    },
+    {
+      "gap_id": "y03",
+      "route": "/downloads",
+      "source_file": "app/public/src/downloads.js",
+      "route_type": "列表清空（list clear）",
+      "interaction": "点击按钮清空列表并更新计数",
+      "signal_density": "testid 容器 + 可见文本计数",
+      "data_testids": [
+        "downloads-title",
+        "downloads-list",
+        "downloads-count"
+      ],
+      "aria_signals": [],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 spec 不覆盖 /downloads",
+      "pre_expectation": {
+        "diff": "可执行且 change-relevant；文本/属性（按钮名/禁用）/结构/逻辑算子均有注入点",
+        "nodiff": "可能可执行但指向既有路由，预期 change-relevant=false"
+      },
+      "code": "const FILES=['report.pdf','invoice.pdf','manual.pdf'];\nexport function render(root){\n  root.innerHTML=`<section><h1 data-testid=\"downloads-title\">Downloads</h1>\n  <ul data-testid=\"downloads-list\">${FILES.map(f=>`<li>${f}</li>`).join('')}</ul>\n  <button type=\"button\">Clear list</button>\n  <span data-testid=\"downloads-count\">3 files</span></section>`;\n  const btn=root.querySelector('button');\n  const list=root.querySelector('[data-testid=\"downloads-list\"]');\n  const count=root.querySelector('[data-testid=\"downloads-count\"]');\n  btn.addEventListener('click',()=>{\n    list.innerHTML='';\n    count.textContent='0 files';\n  });\n}\n",
+      "tag": "y03",
+      "parent_tag": "y02",
+      "source_commit": "e9634c0",
+      "changed_files": [
+        "app/public/src/downloads.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "a407e69014e98908785b644a1b4bc45711c7d2b185e73aeea98863475ee4b062",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    },
+    {
+      "gap_id": "y04",
+      "route": "/support",
+      "source_file": "app/public/src/support.js",
+      "route_type": "长度阈值校验（length threshold）",
+      "interaction": "填写文本域 + 点击检查（阈值分支）",
+      "signal_density": "仅 role / aria / 可见文本（无 data-testid）",
+      "data_testids": [],
+      "aria_signals": [
+        "aria-label=\"Message\"",
+        "role=\"status\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 spec 不覆盖；无 testid",
+      "pre_expectation": {
+        "diff": "可执行概率中等；逻辑算子（阈值分支对调）只在断言结果文案时被杀死",
+        "nodiff": "可能可执行但指向既有路由，预期 change-relevant=false"
+      },
+      "code": "export function render(root){\n  root.innerHTML=`<section><h1>Support</h1>\n  <label for=\"sup-msg\">Message</label>\n  <textarea id=\"sup-msg\" aria-label=\"Message\"></textarea>\n  <button type=\"button\">Check message</button>\n  <p role=\"status\">Waiting for input</p></section>`;\n  const msg=root.querySelector('#sup-msg');\n  const btn=root.querySelector('button');\n  const out=root.querySelector('[role=\"status\"]');\n  btn.addEventListener('click',()=>{\n    const n=msg.value.trim().length;\n    out.textContent=n>=20?'Message long enough':'Message too short';\n  });\n}\n",
+      "tag": "y04",
+      "parent_tag": "y03",
+      "source_commit": "be0b2dd",
+      "changed_files": [
+        "app/public/src/support.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "379175b4b5e5f4975633c055af4d98733816c8bf67a0d8a126525079f4b719cb",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    },
+    {
+      "gap_id": "y05",
+      "route": "/reports",
+      "source_file": "app/public/src/reports.js",
+      "route_type": "报表生成（report generate）",
+      "interaction": "选择周期 + 点击生成（结果串包含所选周期）",
+      "signal_density": "testid + role",
+      "data_testids": [
+        "reports-title",
+        "reports-status"
+      ],
+      "aria_signals": [
+        "aria-label=\"Period\"",
+        "role=\"status\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 spec 不覆盖 /reports",
+      "pre_expectation": {
+        "diff": "可执行且 change-relevant；结果串与周期选择可被文本/属性/逻辑算子杀",
+        "nodiff": "可能可执行但指向既有路由，预期 change-relevant=false"
+      },
+      "code": "export function render(root){\n  root.innerHTML=`<section><h1 data-testid=\"reports-title\">Reports</h1>\n  <label for=\"rp-period\">Period</label>\n  <select id=\"rp-period\" aria-label=\"Period\"><option>Week</option><option>Month</option></select>\n  <button type=\"button\">Generate report</button>\n  <p data-testid=\"reports-status\" role=\"status\">No report</p></section>`;\n  const period=root.querySelector('#rp-period');\n  const btn=root.querySelector('button');\n  const out=root.querySelector('[data-testid=\"reports-status\"]');\n  btn.addEventListener('click',()=>{\n    out.textContent=`Report for ${period.value}: 12 rows`;\n  });\n}\n",
+      "tag": "y05",
+      "parent_tag": "y04",
+      "source_commit": "b702e90",
+      "changed_files": [
+        "app/public/src/reports.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "612acb66f903cddbe643b4190b6902e215c7e7166a2cd0aaac38bbe87fc034fd",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    }
+  ],
+  "y_history_head": "b702e90",
+  "y_tags": [
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05"
+  ]
+}

@@ -18,13 +18,14 @@ const rq3Path = path.join(outDir, 'rq3_staleness_annotation.json');
 
 export function renderRq2Section(rq2) {
   const lines = ['## RQ2'];
-  lines.push(`- 已从两个真实项目构建 30 条双盲标注样本。`);
+  lines.push(`- 已从两个真实项目构建 30 条标注样本（第一列为现行 B 正式预标注，来源：${rq2.first_source || 'b-majority'}，三次多数票；旧 \`annotator1_yn\` 列不参与）。`);
   if (!rq2.n) {
-    lines.push('- 尚未完成有效双标注评分；待填写 `annotator1_yn` / `annotator2_yn` / `final` 后重新运行评分脚本。');
+    lines.push('- 尚未完成有效的一致性评分；待填写 `annotator2_yn` / `final` 后重新运行评分脚本。');
     return lines.concat(['']);
   }
-  lines.push(`- 已完成双人盲评（n=${rq2.n}）。`);
-  lines.push(`- 人工语义有效率为 ${rq2.semantic_validity}，Cohen's κ=${rq2.kappa.kappa}。`);
+  lines.push(`- 已完成现行预标注-人工一致性评估（n=${rq2.n}，第一列来源：${rq2.first_source || 'b-majority'}）。`);
+  lines.push(`- 人工语义有效率为 ${rq2.semantic_validity}，Po=${rq2.po}，Pe=${rq2.pe}，Cohen's κ=${rq2.kappa.kappa}。`);
+  if (rq2.confusion) lines.push(`- 混淆矩阵：${JSON.stringify(rq2.confusion)}。`);
   if (rq2.by_arm) lines.push(`- 分臂语义有效率：diff=${rq2.by_arm.diff.semantic_validity}，nodiff=${rq2.by_arm.nodiff.semantic_validity}。`);
   return lines.concat(['']);
 }
@@ -32,16 +33,18 @@ export function renderRq2Section(rq2) {
 export function renderRq3Section(rq3) {
   const lines = ['## RQ3'];
   if (!rq3.n) {
-    lines.push('- 已构建 ReproBreak 盲评样本，但尚未完成有效双标注评分。');
+    lines.push('- 已构建 ReproBreak 盲评样本，但尚未完成有效的一致性评分。');
     return lines.concat(['']);
   }
-  lines.push(`- 已从 ReproBreak 无泄漏评估样本中完成双人盲评（n=${rq3.n}）。`);
-  lines.push(`- 人工一致性 Cohen's κ=${rq3.human_kappa.kappa}。`);
-  lines.push(`- 模型标签对人工金标的 accuracy=${rq3.model_accuracy}，κ=${rq3.model_kappa.kappa}。`);
+  lines.push(`- 已从 ReproBreak 无泄漏评估样本中完成现行预标注-人工一致性评估（n=${rq3.n}，第一列来源：${rq3.first_source || 'b-majority'}）。`);
+  lines.push(`- 人工一致率 Po=${rq3.po}。`);
+  if (rq3.confusion) lines.push(`- 混淆矩阵：${JSON.stringify(rq3.confusion)}。`);
+  lines.push(`- 逐条分歧：${(rq3.disagreements || []).length} 条。`);
+  lines.push('- 按既定口径，RQ3 预标注为常量 STRUCTURAL_ONLY（Pe 退化），**不报 κ**；只报 Po、混淆矩阵与逐条分歧，避免数值虚高或误用。');
   return lines.concat(['']);
 }
 
-const lines = ['# RQ2/RQ3 kappa 回填模板', ''];
+const lines = ['# RQ2/RQ3 一致性回填模板（RQ3 按口径不报 κ）', ''];
 
 if (exists(rq2Path)) lines.push(...renderRq2Section(readJson(rq2Path)));
 if (exists(rq3Path)) lines.push(...renderRq3Section(readJson(rq3Path)));

@@ -1,0 +1,540 @@
+[
+  {
+    "gap_id": "x01",
+    "route": "/settings",
+    "arms": {
+      "diff": {
+        "old": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "settings-title",
+            "killed": true
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "settings-compact",
+            "killed": true
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "settings-status",
+            "killed": true
+          }
+        ],
+        "new5": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "settings-title",
+            "killed": true
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Settings",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "aria-label",
+            "token": "Compact mode",
+            "killed": false
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<span>",
+            "killed": true
+          },
+          {
+            "class": "logic",
+            "kind": "三元分支对调",
+            "token": "",
+            "killed": true
+          }
+        ]
+      },
+      "nodiff": {
+        "old": [],
+        "new5": []
+      }
+    }
+  },
+  {
+    "gap_id": "x02",
+    "route": "/feedback",
+    "arms": {
+      "diff": {
+        "old": [
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Feedback",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Rating",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Good",
+            "killed": false
+          }
+        ],
+        "new5": [
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Feedback",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "aria-label",
+            "token": "Rating",
+            "killed": false
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<p>",
+            "killed": true
+          },
+          {
+            "class": "logic",
+            "kind": "忽略用户选择，固定返回 Good",
+            "token": "",
+            "killed": true
+          }
+        ]
+      },
+      "nodiff": {
+        "old": [],
+        "new5": []
+      }
+    }
+  },
+  {
+    "gap_id": "x03",
+    "route": "/inbox",
+    "arms": {
+      "diff": {
+        "old": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "inbox-title",
+            "killed": true
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "inbox-filter",
+            "killed": true
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "inbox-list",
+            "killed": true
+          }
+        ],
+        "new5": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "inbox-title",
+            "killed": true
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Inbox",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "placeholder",
+            "token": "filter messages",
+            "killed": false
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<ul>",
+            "killed": true
+          },
+          {
+            "class": "logic",
+            "kind": "includes → startsWith（过滤语义改变）",
+            "token": "",
+            "killed": true
+          }
+        ]
+      },
+      "nodiff": {
+        "old": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "inbox-title",
+            "killed": false
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "inbox-filter",
+            "killed": false
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "inbox-list",
+            "killed": false
+          }
+        ],
+        "new5": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "inbox-title",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Inbox",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "placeholder",
+            "token": "filter messages",
+            "killed": false
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<ul>",
+            "killed": false
+          },
+          {
+            "class": "logic",
+            "kind": "includes → startsWith（过滤语义改变）",
+            "token": "",
+            "killed": false
+          }
+        ]
+      }
+    }
+  },
+  {
+    "gap_id": "x04",
+    "route": "/checkout",
+    "arms": {
+      "diff": {
+        "old": [
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Checkout",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Quantity",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Calculate total",
+            "killed": false
+          }
+        ],
+        "new5": [
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Checkout",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "aria-label",
+            "token": "Quantity",
+            "killed": false
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<p>",
+            "killed": true
+          },
+          {
+            "class": "logic",
+            "kind": "边界 >=3 → >3",
+            "token": "",
+            "killed": true
+          }
+        ]
+      },
+      "nodiff": {
+        "old": [],
+        "new5": []
+      }
+    }
+  },
+  {
+    "gap_id": "x05",
+    "route": "/help",
+    "arms": {
+      "diff": {
+        "old": [
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Help Center",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Show contact details",
+            "killed": false
+          }
+        ],
+        "new5": [
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Help Center",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "aria-label",
+            "token": "Contact details",
+            "killed": false
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<p>",
+            "killed": true
+          },
+          {
+            "class": "logic",
+            "kind": "toggle → 强制保持隐藏",
+            "token": "",
+            "killed": true
+          }
+        ]
+      },
+      "nodiff": {
+        "old": [],
+        "new5": []
+      }
+    }
+  },
+  {
+    "gap_id": "c03",
+    "route": "/coupon",
+    "arms": {
+      "diff": {
+        "old": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "coupon-title",
+            "killed": false
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "coupon-code",
+            "killed": true
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "coupon-apply",
+            "killed": true
+          }
+        ],
+        "new5": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "coupon-title",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Coupon",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "disable",
+            "token": "button",
+            "killed": true
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<span>",
+            "killed": true
+          },
+          {
+            "class": "logic",
+            "kind": "三元分支对调",
+            "token": "",
+            "killed": true
+          }
+        ]
+      },
+      "nodiff": {
+        "old": [],
+        "new5": []
+      }
+    }
+  },
+  {
+    "gap_id": "c13",
+    "route": "/wishlist",
+    "arms": {
+      "diff": {
+        "old": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "wishlist-title",
+            "killed": false
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "wishlist-add",
+            "killed": true
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "wishlist-count",
+            "killed": true
+          }
+        ],
+        "new5": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "wishlist-title",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "Wishlist",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "disable",
+            "token": "button",
+            "killed": true
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<span>",
+            "killed": true
+          },
+          {
+            "class": "logic",
+            "kind": "n++ → n+=2",
+            "token": "",
+            "killed": true
+          }
+        ]
+      },
+      "nodiff": {
+        "old": [],
+        "new5": []
+      }
+    }
+  },
+  {
+    "gap_id": "c19",
+    "route": "/faq",
+    "arms": {
+      "diff": {
+        "old": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "faq-title",
+            "killed": false
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "faq-toggle",
+            "killed": true
+          },
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "faq-body",
+            "killed": true
+          }
+        ],
+        "new5": [
+          {
+            "class": "testid",
+            "kind": "rename",
+            "token": "faq-title",
+            "killed": false
+          },
+          {
+            "class": "text",
+            "kind": "append",
+            "token": "FAQ",
+            "killed": false
+          },
+          {
+            "class": "attribute",
+            "kind": "disable",
+            "token": "button",
+            "killed": true
+          },
+          {
+            "class": "structure",
+            "kind": "remove",
+            "token": "<p>",
+            "killed": true
+          },
+          {
+            "class": "logic",
+            "kind": "toggle → 强制保持隐藏",
+            "token": "",
+            "killed": true
+          }
+        ]
+      },
+      "nodiff": {
+        "old": [],
+        "new5": []
+      }
+    }
+  }
+]

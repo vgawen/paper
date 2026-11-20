@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-11-08T11:30:22.541Z",
+  "batch": "expansion_20261108_rq3",
+  "n": 40,
+  "main_n": 40,
+  "sample_per_repo": 10,
+  "skip_per_repo": 10,
+  "repo_pool_sizes": {
+    "ghiscoding/angular-slickgrid": 245,
+    "tryghost/koenig": 78,
+    "nasa/openmct": 46,
+    "microsoft/playwright": 45
+  },
+  "expansion_repo_distribution": {
+    "ghiscoding/angular-slickgrid": 10,
+    "microsoft/playwright": 10,
+    "nasa/openmct": 10,
+    "tryghost/koenig": 10
+  },
+  "expansion_framework": {
+    "cypress": 10,
+    "playwright": 30
+  },
+  "expansion_locator_family": {
+    "cy.get / cy.contains": 10,
+    "locator": 7,
+    "getByTestId": 2,
+    "getByRole": 15,
+    "getByText-like": 1,
+    "css / $": 5
+  },
+  "expansion_app_signal": {
+    "app_files>0": 37,
+    "app_files=0": 3
+  },
+  "semantic_anchor_same_as_new_locator": 7,
+  "expansion_triage_distribution": {
+    "STRUCTURAL_ONLY": 38,
+    "SUSPECTED_REGRESSION": 2
+  },
+  "expansion_triage_by_repo": {
+    "ghiscoding/angular-slickgrid": {
+      "STRUCTURAL_ONLY": 10
+    },
+    "microsoft/playwright": {
+      "STRUCTURAL_ONLY": 8,
+      "SUSPECTED_REGRESSION": 2
+    },
+    "nasa/openmct": {
+      "STRUCTURAL_ONLY": 10
+    },
+    "tryghost/koenig": {
+      "STRUCTURAL_ONLY": 10
+    }
+  },
+  "main_model_distribution": {
+    "STRUCTURAL_ONLY": 40
+  },
+  "main_human_b_masked_distribution": {
+    "STRUCTURAL_ONLY": 40,
+    "EXPECTATION_CHANGE": 0,
+    "SUSPECTED_REGRESSION": 0
+  },
+  "overlap_with_main": 0,
+  "main_table_sha256": "755a8c08a9e65014ec623c555192d540b77b4c355edb051deb0158c4f54ed8d2",
+  "main_unblind_sha256": "da39473115fc034916132c8a983b792be0b753642cce4239b053beea524b304e"
+}

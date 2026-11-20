@@ -1,0 +1,1522 @@
+{
+  "generated_at": "2026-11-08T11:53:35.947Z",
+  "provider": "deepseek",
+  "batch": "expansion_20261108/gaps",
+  "sample_sizes": {
+    "old_operators": {
+      "n": 8,
+      "gaps": [
+        "x01",
+        "x02",
+        "x03",
+        "x04",
+        "x05",
+        "c03",
+        "c13",
+        "c19"
+      ],
+      "definition": "testid 重命名 + 可见文本追加 MUT，每缺口最多 3 个（与主实验一致）"
+    },
+    "new5_operators": {
+      "n": 8,
+      "gaps": [
+        "x01",
+        "x02",
+        "x03",
+        "x04",
+        "x05",
+        "c03",
+        "c13",
+        "c19"
+      ],
+      "definition": "5 类算子：testid / 文本 / 属性-可访问性 / 结构-可见性 / 条件逻辑-状态，每缺口 4–5 个"
+    },
+    "main_experiment": {
+      "n": 3,
+      "gaps": [
+        "c03",
+        "c13",
+        "c19"
+      ],
+      "note": "主表 n=3 未改动；本批次 c03/c13/c19 为重跑结果，仅用于扩展表"
+    }
+  },
+  "main_reference_do_not_merge": {
+    "diff": {
+      "n": 3,
+      "execRate": 1,
+      "relRate": 1,
+      "mutKillMean": 0.6667,
+      "changeSensRate": 1,
+      "semanticAutoRate": 1
+    },
+    "nodiff": {
+      "n": 3,
+      "execRate": 0.3333,
+      "relRate": 0,
+      "mutKillMean": 0.2222,
+      "changeSensRate": 0.3333,
+      "semanticAutoRate": 0.3333
+    }
+  },
+  "summary": {
+    "old": {
+      "diff": {
+        "n": 8,
+        "execRate": 1,
+        "relRate": 1,
+        "mutKillMean": 0.5,
+        "changeSensRate": 1,
+        "semanticAutoRate": 0.625
+      },
+      "nodiff": {
+        "n": 8,
+        "execRate": 0.125,
+        "relRate": 0,
+        "mutKillMean": 0,
+        "changeSensRate": 0,
+        "semanticAutoRate": 0
+      }
+    },
+    "new5": {
+      "diff": {
+        "n": 8,
+        "execRate": 1,
+        "relRate": 1,
+        "mutKillMean": 0.5625,
+        "changeSensRate": 1,
+        "semanticAutoRate": 1
+      },
+      "nodiff": {
+        "n": 8,
+        "execRate": 0.125,
+        "relRate": 0,
+        "mutKillMean": 0,
+        "changeSensRate": 0,
+        "semanticAutoRate": 0
+      }
+    }
+  },
+  "new5_by_class": {
+    "testid": {
+      "injected": 6,
+      "killed": 2,
+      "killRate": 0.3333
+    },
+    "text": {
+      "injected": 9,
+      "killed": 0,
+      "killRate": 0
+    },
+    "attribute": {
+      "injected": 9,
+      "killed": 3,
+      "killRate": 0.3333
+    },
+    "structure": {
+      "injected": 9,
+      "killed": 8,
+      "killRate": 0.8889
+    },
+    "logic": {
+      "injected": 9,
+      "killed": 8,
+      "killRate": 0.8889
+    }
+  },
+  "gaps": [
+    {
+      "gap_id": "x01",
+      "tag": "x01",
+      "source_commit": "ad010ee",
+      "prev_tag": "x00",
+      "route": "/settings",
+      "route_type": "设置开关（settings toggle）",
+      "interaction": "点击复选框（change 事件）",
+      "signal_density": "data-testid 富集",
+      "gap_rel": "app/public/src/settings.js",
+      "gap_cov_file": "src/settings.js",
+      "origin": "扩展历史新缺口",
+      "expected_affected": [],
+      "rq1_reference": {
+        "gap_id": "x01",
+        "route": "/settings",
+        "tag": "x01",
+        "prev_tag": "x00",
+        "changed_files": [
+          "src/main.js",
+          "src/settings.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_x01.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('settings compact mode updates status', async ({ page }) => {\n  await page.goto('/#/settings');\n\n  await expect(page.getByTestId('settings-title')).toBeVisible();\n\n  const compactCheckbox = page.getByTestId('settings-compact');\n  const status = page.getByTestId('settings-status');\n\n  await expect(status).toBeVisible();\n  await expect(status).toHaveText('Compact mode off');\n\n  await compactCheckbox.check();\n\n  await expect(compactCheckbox).toBeChecked();\n  await expect(status).toBeVisible();\n  await expect(status).toHaveText('Compact mode on');\n});\n",
+          "reused_main_spec": false,
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_x01.spec.ts > settings compact mode updates status",
+          "old": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "settings-title",
+                "killed": true
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "settings-compact",
+                "killed": true
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "settings-status",
+                "killed": true
+              }
+            ],
+            "injected": 3,
+            "killed": 3,
+            "mutation_score": 1,
+            "by_class": {
+              "testid": {
+                "injected": 3,
+                "killed": 3
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "settings-title",
+                "killed": true
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Settings",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "aria-label",
+                "token": "Compact mode",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<span>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "三元分支对调",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 3,
+            "mutation_score": 0.6,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 1
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto_old": true,
+          "semantic_auto_new5": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_x01.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('user can add a product to the cart and view it', async ({ page }) => {\n  await page.goto('/#/');\n\n  // Home page should render with product cards\n  const productCards = page.locator('[data-testid=\"product-card\"], .product-card, mat-card');\n  await expect(productCards.first()).toBeVisible();\n\n  // Add the first visible product to the cart\n  const addToCartButton = page\n    .getByRole('button', { name: /add to cart|add to basket|add/i })\n    .first();\n  await expect(addToCartButton).toBeVisible();\n  await addToCartButton.click();\n\n  // Navigate to the cart and verify the item is present\n  await page.goto('/#/cart');\n\n  await expect(page.getByRole('heading', { name: /cart|basket/i })).toBeVisible();\n  await expect(\n    page.locator('[data-testid=\"cart-item\"], .cart-item, mat-list-item, tr').first()\n  ).toBeVisible();\n});\n",
+          "reused_main_spec": false,
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x01.spec.ts > user can add a product to the cart and view it",
+          "old": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "new5": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": false
+        }
+      }
+    },
+    {
+      "gap_id": "x02",
+      "tag": "x02",
+      "source_commit": "32443f2",
+      "prev_tag": "x01",
+      "route": "/feedback",
+      "route_type": "表单提交（form submit）",
+      "interaction": "选择下拉项 + 填写文本域 + 点击提交",
+      "signal_density": "仅可见文本 / role / aria（无 data-testid）",
+      "gap_rel": "app/public/src/feedback.js",
+      "gap_cov_file": "src/feedback.js",
+      "origin": "扩展历史新缺口",
+      "expected_affected": [],
+      "rq1_reference": {
+        "gap_id": "x02",
+        "route": "/feedback",
+        "tag": "x02",
+        "prev_tag": "x01",
+        "changed_files": [
+          "src/feedback.js",
+          "src/main.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_x02.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('submitting feedback shows a visible confirmation', async ({ page }) => {\n  await page.goto('/#/feedback');\n\n  await page.getByLabel('Rating').selectOption('Bad');\n  await page.getByLabel('Comment').fill('The checkout flow was confusing.');\n  await page.getByRole('button', { name: 'Send feedback' }).click();\n\n  await expect(page.getByRole('status')).toBeVisible();\n  await expect(page.getByRole('status')).toHaveText('Thanks, Bad');\n});\n",
+          "reused_main_spec": false,
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_x02.spec.ts > submitting feedback shows a visible confirmation",
+          "old": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Feedback",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Rating",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Good",
+                "killed": false
+              }
+            ],
+            "injected": 3,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {
+              "text": {
+                "injected": 3,
+                "killed": 0
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Feedback",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "aria-label",
+                "token": "Rating",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "忽略用户选择，固定返回 Good",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 4,
+            "killed": 2,
+            "mutation_score": 0.5,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_x02.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('smoke: browse products and add one to the cart', async ({ page }) => {\n  // Load the product listing\n  await page.goto('/#/');\n  await expect(page).toHaveURL(/#\\/$/);\n  await expect(page.locator('body')).toBeVisible();\n\n  // A product should expose an \"Add to cart\" action\n  const addToCart = page.getByRole('button', { name: /add to cart/i });\n  await expect(addToCart.first()).toBeVisible({ timeout: 10_000 });\n\n  // Add the first product to the cart\n  await addToCart.first().click();\n\n  // Navigate to the cart and confirm the item persisted\n  await page.goto('/#/cart');\n  await expect(page).toHaveURL(/#\\/cart/);\n  await expect(page.getByRole('heading', { name: /cart/i })).toBeVisible();\n  await expect(page.getByText(/your cart is empty|cart is empty/i)).toHaveCount(0);\n});\n",
+          "reused_main_spec": false,
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x02.spec.ts > smoke: browse products and add one to the cart",
+          "old": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "new5": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": false
+        }
+      }
+    },
+    {
+      "gap_id": "x03",
+      "tag": "x03",
+      "source_commit": "d49da8d",
+      "prev_tag": "x02",
+      "route": "/inbox",
+      "route_type": "列表筛选（list filter）",
+      "interaction": "在输入框中键入过滤词（input 事件）",
+      "signal_density": "testid 容器 + 可见文本列表项",
+      "gap_rel": "app/public/src/inbox.js",
+      "gap_cov_file": "src/inbox.js",
+      "origin": "扩展历史新缺口",
+      "expected_affected": [],
+      "rq1_reference": {
+        "gap_id": "x03",
+        "route": "/inbox",
+        "tag": "x03",
+        "prev_tag": "x02",
+        "changed_files": [
+          "src/inbox.js",
+          "src/main.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_x03.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('inbox filter narrows the message list', async ({ page }) => {\n  await page.goto('/#/inbox');\n\n  await expect(page.getByTestId('inbox-title')).toBeVisible();\n\n  const list = page.getByTestId('inbox-list');\n  const items = list.getByRole('listitem');\n  await expect(items).toHaveCount(3);\n\n  const filter = page.getByTestId('inbox-filter');\n  await filter.fill('order');\n\n  await expect(items).toHaveCount(1);\n  await expect(items.first()).toHaveText('Your order shipped');\n  await expect(list.getByText('Welcome aboard')).toHaveCount(0);\n  await expect(list.getByText('Weekly digest')).toHaveCount(0);\n\n  await filter.fill('');\n  await expect(items).toHaveCount(3);\n  await expect(list.getByText('Welcome aboard')).toBeVisible();\n});\n",
+          "reused_main_spec": false,
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_x03.spec.ts > inbox filter narrows the message list",
+          "old": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "inbox-title",
+                "killed": true
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "inbox-filter",
+                "killed": true
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "inbox-list",
+                "killed": true
+              }
+            ],
+            "injected": 3,
+            "killed": 3,
+            "mutation_score": 1,
+            "by_class": {
+              "testid": {
+                "injected": 3,
+                "killed": 3
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "inbox-title",
+                "killed": true
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Inbox",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "placeholder",
+                "token": "filter messages",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<ul>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "includes → startsWith（过滤语义改变）",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 3,
+            "mutation_score": 0.6,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 1
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto_old": true,
+          "semantic_auto_new5": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_x03.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('smoke: home page loads and cart route is reachable', async ({ page }) => {\n  // Step 1: load the app root\n  const response = await page.goto('/#/');\n  expect(response, 'document response should exist').not.toBeNull();\n  expect(response!.status(), 'document should respond with 2xx').toBeLessThan(400);\n\n  await expect(page).toHaveURL(/#\\/$/);\n\n  // Step 2: the main application shell is rendered\n  const main = page.locator('main, [role=\"main\"]').first();\n  await expect(main).toBeVisible();\n  await expect(main).not.toBeEmpty();\n\n  // Step 3: somewhere meaningful — the cart page\n  await page.goto('/#/cart');\n  await expect(page).toHaveURL(/#\\/cart$/);\n  await expect(main).toBeVisible();\n\n  // A cart page should expose either its heading or its empty-state copy\n  const cartContent = page\n    .getByRole('heading', { name: /cart/i })\n    .or(page.getByText(/cart is empty|your cart is empty|no items/i))\n    .first();\n  await expect(cartContent).toBeVisible();\n\n  // Step 4: back to home to confirm routing round-trips cleanly\n  await page.goto('/#/');\n  await expect(page).toHaveURL(/#\\/$/);\n  await expect(main).toBeVisible();\n});\n",
+          "reused_main_spec": false,
+          "executable": true,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x03.spec.ts > smoke: home page loads and cart route is reachable",
+          "old": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "inbox-title",
+                "killed": false
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "inbox-filter",
+                "killed": false
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "inbox-list",
+                "killed": false
+              }
+            ],
+            "injected": 3,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {
+              "testid": {
+                "injected": 3,
+                "killed": 0
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "inbox-title",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Inbox",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "placeholder",
+                "token": "filter messages",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<ul>",
+                "killed": false
+              },
+              {
+                "class": "logic",
+                "kind": "includes → startsWith（过滤语义改变）",
+                "token": "",
+                "killed": false
+              }
+            ],
+            "injected": 5,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 0
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 0
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 0
+              }
+            }
+          },
+          "change_sensitive": false,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": false
+        }
+      }
+    },
+    {
+      "gap_id": "x04",
+      "tag": "x04",
+      "source_commit": "9b0884b",
+      "prev_tag": "x03",
+      "route": "/checkout",
+      "route_type": "条件逻辑 / 边界（conditional logic）",
+      "interaction": "填写数量 + 点击计算（阈值分支）",
+      "signal_density": "仅 role / aria / 可见文本（无 data-testid）",
+      "gap_rel": "app/public/src/checkout.js",
+      "gap_cov_file": "src/checkout.js",
+      "origin": "扩展历史新缺口",
+      "expected_affected": [],
+      "rq1_reference": {
+        "gap_id": "x04",
+        "route": "/checkout",
+        "tag": "x04",
+        "prev_tag": "x03",
+        "changed_files": [
+          "src/checkout.js",
+          "src/main.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_x04.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('checkout calculates total and free shipping for 3+ items', async ({ page }) => {\n  await page.goto('/#/checkout');\n\n  await expect(page.getByRole('heading', { name: 'Checkout' })).toBeVisible();\n\n  const qty = page.getByLabel('Quantity');\n  await qty.fill('3');\n  await page.getByRole('button', { name: 'Calculate total' }).click();\n\n  await expect(page.getByRole('status')).toHaveText(\n    'Total $30.00, free shipping'\n  );\n});\n",
+          "reused_main_spec": false,
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_x04.spec.ts > checkout calculates total and free shipping for 3+ items",
+          "old": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Checkout",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Quantity",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Calculate total",
+                "killed": false
+              }
+            ],
+            "injected": 3,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {
+              "text": {
+                "injected": 3,
+                "killed": 0
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Checkout",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "aria-label",
+                "token": "Quantity",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "边界 >=3 → >3",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 4,
+            "killed": 2,
+            "mutation_score": 0.5,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_x04.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('user can add a product to the cart and view it', async ({ page }) => {\n  // 1. Load the home page\n  await page.goto('/#/');\n\n  // Home page renders with a heading\n  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();\n\n  // 2. Products are listed on the home page\n  const productCards = page\n    .locator('[data-testid^=\"product-\"], .product-card, .product')\n    .filter({ visible: true });\n  await expect(productCards.first()).toBeVisible();\n\n  // 3. Add the first product to the cart\n  const addToCartButton = page\n    .getByRole('button', { name: /add to cart/i })\n    .first();\n  await expect(addToCartButton).toBeVisible();\n  await addToCartButton.click();\n\n  // 4. Navigate to the cart page\n  await page.goto('/#/cart');\n\n  // Cart page is displayed\n  await expect(page.getByRole('heading', { name: /cart/i })).toBeVisible();\n\n  // 5. The added product appears in the cart\n  const cartItems = page.locator(\n    '[data-testid=\"cart-item\"], [data-testid^=\"cart-item-\"], .cart-item, .cart-line-item',\n  );\n  await expect(cartItems.first()).toBeVisible();\n});\n",
+          "reused_main_spec": false,
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x04.spec.ts > user can add a product to the cart and view it",
+          "old": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "new5": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": false
+        }
+      }
+    },
+    {
+      "gap_id": "x05",
+      "tag": "x05",
+      "source_commit": "eb57c55",
+      "prev_tag": "x04",
+      "route": "/help",
+      "route_type": "可展开详情（expandable detail）",
+      "interaction": "点击按钮切换详情可见性",
+      "signal_density": "仅可见文本 + aria-label（无 data-testid）",
+      "gap_rel": "app/public/src/help.js",
+      "gap_cov_file": "src/help.js",
+      "origin": "扩展历史新缺口",
+      "expected_affected": [],
+      "rq1_reference": {
+        "gap_id": "x05",
+        "route": "/help",
+        "tag": "x05",
+        "prev_tag": "x04",
+        "changed_files": [
+          "src/help.js",
+          "src/main.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_x05.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('help center reveals contact details', async ({ page }) => {\n  await page.goto('/#/help');\n\n  await expect(page.getByRole('heading', { name: 'Help Center' })).toBeVisible();\n\n  const contactButton = page.getByRole('button', { name: 'Contact details' });\n  await expect(page.getByText('Email support@example.com')).toBeHidden();\n\n  await contactButton.click();\n\n  await expect(page.getByText('Email support@example.com')).toBeVisible();\n});\n",
+          "reused_main_spec": false,
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_x05.spec.ts > help center reveals contact details",
+          "old": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Help Center",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Show contact details",
+                "killed": false
+              }
+            ],
+            "injected": 2,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {
+              "text": {
+                "injected": 2,
+                "killed": 0
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Help Center",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "aria-label",
+                "token": "Contact details",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "toggle → 强制保持隐藏",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 4,
+            "killed": 2,
+            "mutation_score": 0.5,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_x05.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('smoke: user can add a product to the cart and see it there', async ({ page }) => {\n  // Load the home page\n  await page.goto('/#/');\n\n  // The app should have rendered a titled page with a visible body\n  await expect(page).toHaveTitle(/.+/);\n  await expect(page.locator('body')).toBeVisible();\n\n  // Open the first product shown on the home page\n  const firstProduct = page.getByRole('link', { name: /product|item|details/i }).first();\n  await expect(firstProduct).toBeVisible();\n  await firstProduct.click();\n\n  // On the product detail page, add the product to the cart\n  const addToCart = page.getByRole('button', { name: /add(?:\\s+to\\s+cart)?/i }).first();\n  await expect(addToCart).toBeVisible();\n  await addToCart.click();\n\n  // Navigate to the cart and confirm the page renders with content\n  await page.goto('/#/cart');\n  await expect(page.locator('body')).toBeVisible();\n  await expect(page.getByText(/cart/i).first()).toBeVisible();\n});\n",
+          "reused_main_spec": false,
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x05.spec.ts > smoke: user can add a product to the cart and see it there",
+          "old": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "new5": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": false
+        }
+      }
+    },
+    {
+      "gap_id": "c03",
+      "tag": "c03",
+      "source_commit": null,
+      "prev_tag": "c02",
+      "route": "/coupon",
+      "route_type": null,
+      "interaction": null,
+      "signal_density": null,
+      "gap_rel": "app/public/src/coupon.js",
+      "gap_cov_file": "src/coupon.js",
+      "origin": "主实验缺口（扩展批次内重跑，不替换主表）",
+      "expected_affected": null,
+      "rq1_reference": null,
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_c03.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('coupon route applies correct discount and shows invalid code', async ({ page }) => {\n  await page.goto('/#/coupon');\n\n  const codeInput = page.getByTestId('coupon-code');\n  const applyButton = page.getByTestId('coupon-apply');\n  const message = page.getByTestId('coupon-msg');\n\n  // Valid coupon\n  await codeInput.fill('SAVE10');\n  await applyButton.click();\n  await expect(message).toHaveText('10% off');\n\n  // Invalid coupon\n  await codeInput.fill('WRONG');\n  await applyButton.click();\n  await expect(message).toHaveText('invalid');\n});\n",
+          "reused_main_spec": true,
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_c03.spec.ts > coupon route applies correct discount and shows invalid code",
+          "old": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "coupon-title",
+                "killed": false
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "coupon-code",
+                "killed": true
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "coupon-apply",
+                "killed": true
+              }
+            ],
+            "injected": 3,
+            "killed": 2,
+            "mutation_score": 0.6667,
+            "by_class": {
+              "testid": {
+                "injected": 3,
+                "killed": 2
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "coupon-title",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Coupon",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "disable",
+                "token": "button",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<span>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "三元分支对调",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 3,
+            "mutation_score": 0.6,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 0
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 1
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto_old": true,
+          "semantic_auto_new5": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_c03.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('smoke test: navigate to cart', async ({ page }) => {\n  await page.goto('/#/');\n  // Homepage should have a header\n  await expect(page.getByRole('heading', { name: /Welcome/i })).toBeVisible();\n  // Click on cart link\n  await page.getByRole('link', { name: /Cart/i }).click();\n  // Verify we are on the cart page\n  await expect(page).toHaveURL(/\\/cart/);\n  // Cart page should have a heading or content\n  await expect(page.getByText(/Cart/i)).toBeVisible();\n});\n",
+          "reused_main_spec": true,
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_c03.spec.ts > smoke test: navigate to cart",
+          "old": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "new5": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": false
+        }
+      }
+    },
+    {
+      "gap_id": "c13",
+      "tag": "c13",
+      "source_commit": null,
+      "prev_tag": "c12",
+      "route": "/wishlist",
+      "route_type": null,
+      "interaction": null,
+      "signal_density": null,
+      "gap_rel": "app/public/src/wishlist.js",
+      "gap_cov_file": "src/wishlist.js",
+      "origin": "主实验缺口（扩展批次内重跑，不替换主表）",
+      "expected_affected": null,
+      "rq1_reference": null,
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_c13.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('should increment wishlist count on button click', async ({ page }) => {\n  await page.goto('/#/wishlist');\n\n  // Verify initial count is 0\n  const countLocator = page.getByTestId('wishlist-count');\n  await expect(countLocator).toHaveText('0');\n\n  // Click the \"Save\" button\n  const addButton = page.getByTestId('wishlist-add');\n  await addButton.click();\n\n  // Assert count incremented to 1\n  await expect(countLocator).toHaveText('1');\n});\n",
+          "reused_main_spec": true,
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_c13.spec.ts > should increment wishlist count on button click",
+          "old": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "wishlist-title",
+                "killed": false
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "wishlist-add",
+                "killed": true
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "wishlist-count",
+                "killed": true
+              }
+            ],
+            "injected": 3,
+            "killed": 2,
+            "mutation_score": 0.6667,
+            "by_class": {
+              "testid": {
+                "injected": 3,
+                "killed": 2
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "wishlist-title",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "Wishlist",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "disable",
+                "token": "button",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<span>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "n++ → n+=2",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 3,
+            "mutation_score": 0.6,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 0
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 1
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto_old": true,
+          "semantic_auto_new5": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_c13.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('home page loads and displays product list', async ({ page }) => {\n  await page.goto('/#/');\n  // Verify the page has loaded by checking for a heading or product items\n  await expect(page.locator('h1')).toContainText('Products');\n  // Expect at least one product card to be visible\n  await expect(page.locator('.product-item')).not.toHaveCount(0);\n});\n",
+          "reused_main_spec": true,
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_c13.spec.ts > home page loads and displays product list",
+          "old": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "new5": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": false
+        }
+      }
+    },
+    {
+      "gap_id": "c19",
+      "tag": "c19",
+      "source_commit": null,
+      "prev_tag": "c18",
+      "route": "/faq",
+      "route_type": null,
+      "interaction": null,
+      "signal_density": null,
+      "gap_rel": "app/public/src/faq.js",
+      "gap_cov_file": "src/faq.js",
+      "origin": "主实验缺口（扩展批次内重跑，不替换主表）",
+      "expected_affected": null,
+      "rq1_reference": null,
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_c19.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('FAQ toggle shows answer', async ({ page }) => {\n  await page.goto('/#/faq');\n  await page.locator('[data-testid=\"faq-toggle\"]').click();\n  await expect(page.locator('[data-testid=\"faq-body\"]')).toBeVisible();\n});\n",
+          "reused_main_spec": true,
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_c19.spec.ts > FAQ toggle shows answer",
+          "old": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "faq-title",
+                "killed": false
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "faq-toggle",
+                "killed": true
+              },
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "faq-body",
+                "killed": true
+              }
+            ],
+            "injected": 3,
+            "killed": 2,
+            "mutation_score": 0.6667,
+            "by_class": {
+              "testid": {
+                "injected": 3,
+                "killed": 2
+              }
+            }
+          },
+          "new5": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename",
+                "token": "faq-title",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "append",
+                "token": "FAQ",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "disable",
+                "token": "button",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "toggle → 强制保持隐藏",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 3,
+            "mutation_score": 0.6,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 0
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 1
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto_old": true,
+          "semantic_auto_new5": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_c19.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('Smoke test: Login, add item to cart, verify in cart', async ({ page }) => {\n  // Navigate to the app (login page)\n  await page.goto('/#/');\n\n  // Perform login as standard_user\n  await page.fill('[data-test=\"username\"]', 'standard_user');\n  await page.fill('[data-test=\"password\"]', 'secret_sauce');\n  await page.click('[data-test=\"login-button\"]');\n\n  // Verify inventory page is displayed\n  await expect(page.locator('.inventory_list')).toBeVisible();\n\n  // Add \"Sauce Labs Backpack\" to the cart\n  await page.click('[data-test=\"add-to-cart-sauce-labs-backpack\"]');\n\n  // Verify cart badge shows 1 item\n  await expect(page.locator('.shopping_cart_badge')).toHaveText('1');\n\n  // Navigate to the cart page\n  await page.goto('/#/cart');\n\n  // Verify the item appears in the cart\n  await expect(page.locator('.cart_item')).toHaveCount(1);\n});\n",
+          "reused_main_spec": true,
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_c19.spec.ts > Smoke test: Login, add item to cart, verify in cart",
+          "old": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "new5": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto_old": false,
+          "semantic_auto_new5": false
+        }
+      }
+    }
+  ],
+  "old_operator_fix": {
+    "applied_at": "2026-11-08T11:57:21.637Z",
+    "reason": "首轮旧算子集把缺口 id 误当 k，未按主实验 k=3 截断；本文件中的 old 结果已按 k=3 重跑（复用同一生成用例），new5 结果未变。"
+  }
+}

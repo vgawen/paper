@@ -1,0 +1,73 @@
+{
+  "generated_at": "2026-11-08T13:08:22.500Z",
+  "scope": "新增缺口生成用例盲评包（包内全部文件）",
+  "protocol": "B（第一列三次多数票；本包仅第二列；不一致第三人仲裁）",
+  "forbidden_token_list": [
+    "nodiff",
+    "diff 臂",
+    "diff arm",
+    "arm=",
+    "y01",
+    "y02",
+    "y03",
+    "y04",
+    "y05",
+    "x01",
+    "x02",
+    "x03",
+    "x04",
+    "x05",
+    "new10",
+    "stage3",
+    "主实验",
+    "semantic_auto",
+    "change_sensitive",
+    "mutation",
+    "变异杀伤",
+    "executable-rate",
+    "0.8438",
+    "0.7792",
+    "0.5625",
+    "50/59",
+    "25/31",
+    "kappa",
+    "κ",
+    "unblind",
+    "rationale",
+    "预标注"
+  ],
+  "records": [
+    {
+      "file": "ANNOTATOR_INSTRUCTIONS.md",
+      "forbidden_hits": [],
+      "pass": true
+    },
+    {
+      "file": "COVERAGE_REPORT.md",
+      "forbidden_hits": [],
+      "pass": true
+    },
+    {
+      "file": "rq2_fill_template.csv",
+      "forbidden_hits": [],
+      "pass": true
+    },
+    {
+      "file": "rq2_worksheet.md",
+      "forbidden_hits": [],
+      "pass": true
+    },
+    {
+      "file": "rq2_worksheet.md:field-check",
+      "forbidden_hits": [],
+      "pass": true,
+      "detail": {
+        "expected_fields": 5,
+        "actual_fields": 5,
+        "expected_sections": 5,
+        "actual_sections": 5
+      }
+    }
+  ],
+  "pass": true
+}

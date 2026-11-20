@@ -1,0 +1,204 @@
+{
+  "batch": "expansion_20261108/gaps",
+  "created_at": "2026-11-08T11:42:21.672Z",
+  "stage": "阶段三：受控缺口扩样 3 → 8",
+  "inclusion_rule": "扩展历史中所有“新增路由且无测试”的 commit 全部纳入（x01–x05，无结果驱动筛选）",
+  "extension_history": "subject/work_exp（独立 git 仓，从 subject/base 复制，不追加到主 24 过渡历史）",
+  "main_history_untouched": {
+    "worktree": "subject/work（未创建/未修改；本次实验不依赖其可写副本）",
+    "manifest": "subject/history/manifest.json（只读引用，未写入）",
+    "main_gaps_reference": [
+      {
+        "tag": "c03",
+        "route": "/coupon",
+        "manifest_commit": "0ddfb1a",
+        "desc": "add /coupon route, no test"
+      },
+      {
+        "tag": "c13",
+        "route": "/wishlist",
+        "manifest_commit": "0938e31",
+        "desc": "add /wishlist route, no test"
+      },
+      {
+        "tag": "c19",
+        "route": "/faq",
+        "manifest_commit": "e345769",
+        "desc": "add /faq route, no test"
+      }
+    ]
+  },
+  "base": {
+    "tag": "x00",
+    "commit": "09df7e5",
+    "source": "subject/base（主 manifest c00 的同源副本，主 manifest 记录 d78b464）",
+    "app_source_sha256": {
+      "app/public/src/cart.js": "e3a5244943a7d6a55ceb5389cf73c161838cbef715ffb07e60e649804e45f1d9",
+      "app/public/src/home.js": "c57aa21b1af8c9c0ad46e0ba40b497a367cb412a87b2164e100f63a338bc926c",
+      "app/public/src/login.js": "da02cf19215d58ce0eb1721e953fc37a40e6eb18f93afe9d78979b41abd64615",
+      "app/public/src/main.js": "05ded04c7f17c50404d7a8df69b0778c5852a54cf5fae11bcfb2d2a638f7583b",
+      "app/public/src/orders.js": "d4bd158f633d1f9e4d9762b8f80996867f7859aa9eb5bf458581c2dd19080ae9",
+      "app/public/src/profile.js": "4820725129437556bac9dde07ba5e770464ad6a637e8fd8dbc2014ed483e0857",
+      "app/public/src/search.js": "118ecb7a6687bfac7bf3398e24f5a8bd6cde7a8b61326ff83ec7ed2390ccf907",
+      "app/public/src/util.js": "4ec8f7802b2bee6b94eaa2594f85fdb652495744f35ffede5d271b37fb69ceeb"
+    }
+  },
+  "gaps": [
+    {
+      "gap_id": "x01",
+      "route": "/settings",
+      "source_file": "app/public/src/settings.js",
+      "route_type": "设置开关（settings toggle）",
+      "interaction": "点击复选框（change 事件）",
+      "signal_density": "data-testid 富集",
+      "data_testids": [
+        "settings-title",
+        "settings-compact",
+        "settings-status"
+      ],
+      "aria_signals": [
+        "aria-label=\"Compact mode\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 6 个 spec 均不导航到 /settings，预期覆盖映射为空",
+      "pre_expectation": {
+        "diff": "可执行且 change-relevant；变异杀伤预期较高（testid/文本/逻辑均可杀）",
+        "nodiff": "可能可执行但不指向 /settings，预期 change-relevant=false"
+      },
+      "code": "export function render(root){\n  root.innerHTML=`<section><h1 data-testid=\"settings-title\">Settings</h1>\n  <label><input type=\"checkbox\" data-testid=\"settings-compact\" aria-label=\"Compact mode\"/> Compact mode</label>\n  <span data-testid=\"settings-status\">Compact mode off</span></section>`;\n  const box=root.querySelector('[data-testid=\"settings-compact\"]');\n  const status=root.querySelector('[data-testid=\"settings-status\"]');\n  box.addEventListener('change',()=>{\n    status.textContent=box.checked?'Compact mode on':'Compact mode off';\n  });\n}\n",
+      "tag": "x01",
+      "parent_tag": "x00",
+      "source_commit": "ad010ee",
+      "changed_files": [
+        "app/public/src/settings.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "787c2d7944871b9931d2076a1ba0e98715f416146c02b9ad8c8fadad5d64bfde",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    },
+    {
+      "gap_id": "x02",
+      "route": "/feedback",
+      "source_file": "app/public/src/feedback.js",
+      "route_type": "表单提交（form submit）",
+      "interaction": "选择下拉项 + 填写文本域 + 点击提交",
+      "signal_density": "仅可见文本 / role / aria（无 data-testid）",
+      "data_testids": [],
+      "aria_signals": [
+        "aria-label=\"Rating\"",
+        "aria-label=\"Comment\"",
+        "role=\"status\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 spec 不覆盖；无 testid，覆盖映射仍为空",
+      "pre_expectation": {
+        "diff": "可执行概率中等（依赖 LLM 从角色/标签定位）；change-relevant 应成立",
+        "nodiff": "可能可执行但指向既有路由，预期 change-relevant=false"
+      },
+      "code": "export function render(root){\n  root.innerHTML=`<section><h1>Feedback</h1>\n  <label for=\"fb-rating\">Rating</label>\n  <select id=\"fb-rating\" name=\"rating\" aria-label=\"Rating\"><option>Good</option><option>Bad</option></select>\n  <label for=\"fb-comment\">Comment</label>\n  <textarea id=\"fb-comment\" name=\"comment\" aria-label=\"Comment\"></textarea>\n  <button type=\"button\">Send feedback</button>\n  <p role=\"status\"></p></section>`;\n  const rating=root.querySelector('#fb-rating');\n  const btn=root.querySelector('button');\n  const msg=root.querySelector('[role=\"status\"]');\n  btn.addEventListener('click',()=>{msg.textContent=`Thanks, ${rating.value}`;});\n}\n",
+      "tag": "x02",
+      "parent_tag": "x01",
+      "source_commit": "32443f2",
+      "changed_files": [
+        "app/public/src/feedback.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "728caa1d6842fa4b127b50e2bd760dd862854ce6a1458af3baa9cc42adf07356",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    },
+    {
+      "gap_id": "x03",
+      "route": "/inbox",
+      "source_file": "app/public/src/inbox.js",
+      "route_type": "列表筛选（list filter）",
+      "interaction": "在输入框中键入过滤词（input 事件）",
+      "signal_density": "testid 容器 + 可见文本列表项",
+      "data_testids": [
+        "inbox-title",
+        "inbox-filter",
+        "inbox-list"
+      ],
+      "aria_signals": [
+        "placeholder=\"filter messages\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 spec 不覆盖 /inbox",
+      "pre_expectation": {
+        "diff": "可执行且 change-relevant；文本/属性算子预期可杀，逻辑算子（includes→startsWith）可杀",
+        "nodiff": "可能可执行但指向既有路由，预期 change-relevant=false"
+      },
+      "code": "const MESSAGES=['Welcome aboard','Your order shipped','Weekly digest'];\nexport function render(root){\n  root.innerHTML=`<section><h1 data-testid=\"inbox-title\">Inbox</h1>\n  <input data-testid=\"inbox-filter\" placeholder=\"filter messages\"/>\n  <ul data-testid=\"inbox-list\">${MESSAGES.map(m=>`<li>${m}</li>`).join('')}</ul></section>`;\n  const input=root.querySelector('[data-testid=\"inbox-filter\"]');\n  const list=root.querySelector('[data-testid=\"inbox-list\"]');\n  input.addEventListener('input',()=>{\n    const q=input.value.toLowerCase();\n    list.innerHTML=MESSAGES.filter(m=>m.toLowerCase().includes(q)).map(m=>`<li>${m}</li>`).join('');\n  });\n}\n",
+      "tag": "x03",
+      "parent_tag": "x02",
+      "source_commit": "d49da8d",
+      "changed_files": [
+        "app/public/src/inbox.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "b5d0f90acbc607a4dbcdb71ae66008ac5f187b51edac69f0a6e2adb92eac4893",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    },
+    {
+      "gap_id": "x04",
+      "route": "/checkout",
+      "source_file": "app/public/src/checkout.js",
+      "route_type": "条件逻辑 / 边界（conditional logic）",
+      "interaction": "填写数量 + 点击计算（阈值分支）",
+      "signal_density": "仅 role / aria / 可见文本（无 data-testid）",
+      "data_testids": [],
+      "aria_signals": [
+        "aria-label=\"Quantity\"",
+        "role=\"status\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 spec 不覆盖；无 testid",
+      "pre_expectation": {
+        "diff": "可执行概率中等；逻辑算子（>=3 → >3）只有断言边界时才会被杀死",
+        "nodiff": "可能可执行但指向既有路由，预期 change-relevant=false"
+      },
+      "code": "export function render(root){\n  root.innerHTML=`<section><h1>Checkout</h1>\n  <label for=\"qty\">Quantity</label>\n  <input id=\"qty\" type=\"number\" aria-label=\"Quantity\" value=\"1\" min=\"1\"/>\n  <button type=\"button\">Calculate total</button>\n  <p role=\"status\">Total $10.00, shipping $5.00</p></section>`;\n  const qty=root.querySelector('#qty');\n  const btn=root.querySelector('button');\n  const out=root.querySelector('[role=\"status\"]');\n  btn.addEventListener('click',()=>{\n    const n=Math.max(1, Number(qty.value)||1);\n    const total=n*1000;\n    out.textContent=`Total $${(total/100).toFixed(2)}, ${n>=3?'free shipping':'shipping $5.00'}`;\n  });\n}\n",
+      "tag": "x04",
+      "parent_tag": "x03",
+      "source_commit": "9b0884b",
+      "changed_files": [
+        "app/public/src/checkout.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "ae3b58d5e07507a8a799d8f2d2fa6821c2f56290092e210b87b3400605355da6",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    },
+    {
+      "gap_id": "x05",
+      "route": "/help",
+      "source_file": "app/public/src/help.js",
+      "route_type": "可展开详情（expandable detail）",
+      "interaction": "点击按钮切换详情可见性",
+      "signal_density": "仅可见文本 + aria-label（无 data-testid）",
+      "data_testids": [],
+      "aria_signals": [
+        "aria-label=\"Contact details\""
+      ],
+      "expected_affected": [],
+      "expected_affected_rationale": "新增路由，既有 spec 不覆盖；无 testid",
+      "pre_expectation": {
+        "diff": "可执行概率中等；结构算子（初始隐藏→可见）与逻辑算子（切换失效）可杀",
+        "nodiff": "可能可执行但指向已有路由，预期 change-relevant=false"
+      },
+      "code": "export function render(root){\n  root.innerHTML=`<section><h1>Help Center</h1>\n  <button type=\"button\" aria-label=\"Contact details\">Show contact details</button>\n  <p hidden>Email support@example.com</p></section>`;\n  const btn=root.querySelector('button');\n  const details=root.querySelector('p');\n  btn.addEventListener('click',()=>{details.hidden=!details.hidden;});\n}\n",
+      "tag": "x05",
+      "parent_tag": "x04",
+      "source_commit": "eb57c55",
+      "changed_files": [
+        "app/public/src/help.js",
+        "app/public/src/main.js"
+      ],
+      "source_file_sha256": "abb98d6c0f9c6ff133e5ed1de18d1237d798ea6cc4e343957f966d416fb0ffa9",
+      "no_test_added": true,
+      "registered_before_experiment": true
+    }
+  ]
+}

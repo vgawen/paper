@@ -1,0 +1,113 @@
+下面是一条真实项目中因 locator 断裂而失效的测试，以及本次失效的已知信息。
+材料以 `--- BEGIN CASE ---` 与 `--- END CASE ---` 之间实际给出的内容为准；不要假设未给出的材料存在。
+请判断这次失效属于哪种过时类型。
+
+标签定义：
+- STRUCTURAL_ONLY：测试意图不变，只是 locator / DOM 结构 / 文案锚点 / 测试 API 迁移导致旧定位器失效。
+- EXPECTATION_CHANGE：断言目标或业务预期发生了实质变化，旧断言在新版本中已不应按原样成立。
+- SUSPECTED_REGRESSION：改动看起来可能改变了用户可见行为，且无法排除新版本存在真实回归。
+
+材料（标注者可见内容的原文）：
+--- BEGIN CASE ---
+## rb024 — nasa/openmct (playwright)
+
+- 测试文件：`e2e/tests/functional/plugins/lad/lad.e2e.spec.js` 第 210 行
+- 旧定位器：`page.getByRole('cell', { name: 'Timestamp' }))`
+- 旧测试行：`await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();`
+- 新定位器：`page.getByRole('cell', { name: 'Type', exact: true }))`
+- Commit：Provide `renderWhenVisible` to LadTableSets (#7384)
+- Commit 说明：* Provide renderWhenVisible for LadTables
+  
+  * fix open in new tab
+  
+  * add test for open in new tab
+  
+  * fix test to include renderWhenVisible
+  
+  * refactor test
+  
+  * fix tests
+  
+  * fix tests
+  
+  * having timing issues now
+  ---
+   .../numericData.e2e.spec.js                   | 13 +++-
+   .../functional/plugins/lad/lad.e2e.spec.js    | 52 +++++++--------
+   .../functional/plugins/lad/ladSet.e2e.spec.js | 66 +++++++++++++++++++
+   src/plugins/LADTable/LadTableSetView.js       |  5 +-
+   src/plugins/LADTable/components/LadRow.vue    | 15 +++--
+   .../components/LadTableConfiguration.vue      |  3 +
+   src/plugins/LADTable/pluginSpec.js            |  2 +-
+   .../TelemetryFrame.vue                        | 12 ++--
+   8 files changed, 127 insertions(+), 41 deletions(-)
+   create mode 100644 e2e/tests/functional/plugins/lad/ladSet.e2e.spec.js
+- 应用源码改动文件（5）：src/plugins/LADTable/LadTableSetView.js, src/plugins/LADTable/components/LadRow.vue, src/plugins/LADTable/components/LadTableConfiguration.vue, src/plugins/LADTable/pluginSpec.js, src/plugins/inspectorDataVisualization/TelemetryFrame.vue
+
+### 断言级测试 diff（未遮蔽）
+
+> 断言增删：+22 / -22；来源：compare_cache。
+
+```diff
+@@ -56,9 +56,9 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();
+@@ -66,10 +66,10 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeHidden();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();
+@@ -78,10 +78,10 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeHidden();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();
+@@ -90,9 +90,9 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeHidden();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();
+@@ -103,9 +103,9 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeHidden();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();
+@@ -117,10 +117,10 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();
+@@ -132,8 +132,8 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();
+@@ -146,11 +146,11 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();
+@@ -161,9 +161,9 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();
+@@ -185,9 +185,9 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();
+@@ -206,8 +206,8 @@ test.describe('Testing LAD table configuration', () => {
+-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();
+-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();
++    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();
+```
+
+---
+--- END CASE ---
+
+只输出一个 JSON 对象，不要代码围栏、不要额外解释：
+{"label":"STRUCTURAL_ONLY|EXPECTATION_CHANGE|SUSPECTED_REGRESSION","reason":"不超过 80 字的中文理由，指出材料中的具体证据"}

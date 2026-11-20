@@ -1,0 +1,3071 @@
+{
+  "rule": "mask mechanical addressing paths only (CSS/id/class/data-*/xpath/nth/first/last/page.$ selector strings/path fragments); keep semantic anchors (getByRole role+name, getByText-like text, filter hasText, assertion values/matchers).",
+  "contexts": [
+    {
+      "case_id": "rbx001",
+      "rb_id": "1450",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 0}px;\"] > .slick-cell:nth(3)",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx002",
+      "rb_id": "1451",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 0}px;\"] > .slick-cell:nth(5)",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx003",
+      "rb_id": "1453",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 2}px;\"] > .slick-cell:nth(0)",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx004",
+      "rb_id": "1454",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 0}px;\"] > .slick-cell:nth(7)",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx005",
+      "rb_id": "1455",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 1}px;\"] > .slick-cell:nth(7)",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx006",
+      "rb_id": "1456",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 2}px;\"] > .slick-cell:nth(7)",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx007",
+      "rb_id": "1457",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 3}px;\"] > .slick-cell:nth(7)",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx008",
+      "rb_id": "1482",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 1}px;\"] > .slick-cell:nth(0)",
+            "reason": "未识别出定位 API，按整段选择器路径处理",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx009",
+      "rb_id": "1483",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": ".slick-header-menu .slick-menu-command-list",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "slick-header-menu",
+              "slick-menu-command-list"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-header-menu",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-header-menu",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-menu-command-list",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-menu-command-list",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx010",
+      "rb_id": "1489",
+      "repo": "ghiscoding/angular-slickgrid",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[style=\"top: ${GRID_ROW_HEIGHT * 0}px;\"] > .slick-cell:nth(1)",
+            "reason": "get 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "style",
+              "GRID_ROW_HEIGHT",
+              "slick-cell"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "GRID_ROW_HEIGHT",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "style",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "slick-cell",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx011",
+      "rb_id": "5403",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "tab",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Metadata",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "tabpanel",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 1
+          },
+          {
+            "kind": "name",
+            "value": "Console",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 1
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [
+          ".locator('"
+        ],
+        "path_hits": 0,
+        "pass": true,
+        "string_literal_false_positives": {
+          "note": "原命中全部位于断言期望值字符串内，属于允许可见的语义锚；剥离字符串后的代码级复核通过。",
+          "original_locator_syntax_hits": [
+            ".locator('"
+          ]
+        },
+        "locator_syntax_hits_in_code": []
+      }
+    },
+    {
+      "case_id": "rbx012",
+      "rb_id": "5407",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "testid",
+            "value": "stack-trace-list",
+            "reason": "getByTestId 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "stack-trace-list"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "stack-trace-list",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "stack-trace-list",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [
+          ".locator('",
+          ".locator('"
+        ],
+        "path_hits": 0,
+        "pass": true,
+        "string_literal_false_positives": {
+          "note": "原命中全部位于断言期望值字符串内，属于允许可见的语义锚；剥离字符串后的代码级复核通过。",
+          "original_locator_syntax_hits": [
+            ".locator('",
+            ".locator('"
+          ]
+        },
+        "locator_syntax_hits_in_code": []
+      }
+    },
+    {
+      "case_id": "rbx013",
+      "rb_id": "5408",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": ".browser-frame-address-bar",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "browser-frame-address-bar"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "browser-frame-address-bar",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "browser-frame-address-bar",
+                "where": "context_excluding_old",
+                "hits": 2
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "browser-frame-address-bar",
+                "where": "context_excluding_old",
+                "hits": 2
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx014",
+      "rb_id": "5410",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "testid",
+            "value": "stack-trace",
+            "reason": "getByTestId 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "stack-trace"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 10
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "stack-trace",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "stack-trace",
+                "where": "context_excluding_old",
+                "hits": 10
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 10
+              },
+              {
+                "mode": "token",
+                "token": "stack-trace",
+                "where": "context_excluding_old",
+                "hits": 10
+              }
+            ],
+            "visible_in_old_input": true
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [
+          ".locator('"
+        ],
+        "path_hits": 0,
+        "pass": true,
+        "string_literal_false_positives": {
+          "note": "原命中全部位于断言期望值字符串内，属于允许可见的语义锚；剥离字符串后的代码级复核通过。",
+          "original_locator_syntax_hits": [
+            ".locator('"
+          ]
+        },
+        "locator_syntax_hits_in_code": []
+      }
+    },
+    {
+      "case_id": "rbx015",
+      "rb_id": "5609",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "treeitem",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx016",
+      "rb_id": "5658",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "treeitem",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "d.test.ts",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx017",
+      "rb_id": "5660",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "treeitem",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx018",
+      "rb_id": "5661",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "treeitem",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx019",
+      "rb_id": "5663",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "treeitem",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx020",
+      "rb_id": "5678",
+      "repo": "microsoft/playwright",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx021",
+      "rb_id": "3320",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "button",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "OK",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx022",
+      "rb_id": "3321",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "button",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "OK",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx023",
+      "rb_id": "3457",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "getByLabel",
+            "value": "lad value",
+            "reason": "getByLabel 的文本是断言目标的语义内容，按协议允许可见",
+            "count": 2
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx024",
+      "rb_id": "3466",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "getByLabel",
+            "value": "lad value",
+            "reason": "getByLabel 的文本是断言目标的语义内容，按协议允许可见",
+            "count": 2
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx025",
+      "rb_id": "3467",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "getByLabel",
+            "value": "lad value",
+            "reason": "getByLabel 的文本是断言目标的语义内容，按协议允许可见",
+            "count": 2
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx026",
+      "rb_id": "3468",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "getByLabel",
+            "value": "lad value",
+            "reason": "getByLabel 的文本是断言目标的语义内容，按协议允许可见",
+            "count": 2
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx027",
+      "rb_id": "3469",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "button",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Ok",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "role",
+            "value": "columnheader",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 88
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Units",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WATCH",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit WARNING",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit DISTRESS",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit CRITICAL",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "name",
+            "value": "Limit SEVERE",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 11
+          },
+          {
+            "kind": "getByLabel",
+            "value": "lad value",
+            "reason": "getByLabel 的文本是断言目标的语义内容，按协议允许可见",
+            "count": 2
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx028",
+      "rb_id": "3485",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 44
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx029",
+      "rb_id": "3486",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 44
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx030",
+      "rb_id": "3487",
+      "repo": "nasa/openmct",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议保留"
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议保留"
+          }
+        ],
+        "semantic_anchors_visible": [
+          {
+            "kind": "role",
+            "value": "cell",
+            "reason": "getByRole 的 role 说明目标元素的语义类型（是什么），按协议允许可见",
+            "count": 44
+          },
+          {
+            "kind": "name",
+            "value": "Timestamp",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          },
+          {
+            "kind": "name",
+            "value": "Type",
+            "reason": "getByRole 的 name 是可访问名称，说明断言对象是什么，按协议允许可见",
+            "count": 22
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx031",
+      "rb_id": "614",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[data-kg-card-toolbar=\"html\"] [data-testid=\"edit-html\"]",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "data-kg-card-toolbar",
+              "html",
+              "data-testid",
+              "edit-html"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-card-toolbar",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-card-toolbar",
+                "where": "context_excluding_old",
+                "hits": 2
+              },
+              {
+                "mode": "token",
+                "token": "html",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "html",
+                "where": "context_excluding_old",
+                "hits": 12
+              },
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "context_excluding_old",
+                "hits": 38
+              },
+              {
+                "mode": "token",
+                "token": "edit-html",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "edit-html",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "data-kg-card-toolbar",
+                "where": "context_excluding_old",
+                "hits": 2
+              },
+              {
+                "mode": "token",
+                "token": "html",
+                "where": "context_excluding_old",
+                "hits": 12
+              },
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "context_excluding_old",
+                "hits": 38
+              },
+              {
+                "mode": "token",
+                "token": "edit-html",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [
+          ".getByTestId('",
+          ".getByTestId('",
+          ".getByTestId('",
+          ".locator('",
+          ".locator('",
+          ".getByTestId('",
+          ".locator('",
+          ".locator('",
+          ".locator('",
+          ".locator('"
+        ],
+        "path_hits": 0,
+        "pass": true,
+        "string_literal_false_positives": {
+          "note": "原命中全部位于断言期望值字符串内，属于允许可见的语义锚；剥离字符串后的代码级复核通过。",
+          "original_locator_syntax_hits": [
+            ".getByTestId('",
+            ".getByTestId('",
+            ".getByTestId('",
+            ".locator('",
+            ".locator('",
+            ".getByTestId('",
+            ".locator('",
+            ".locator('",
+            ".locator('",
+            ".locator('"
+          ]
+        },
+        "locator_syntax_hits_in_code": []
+      }
+    },
+    {
+      "case_id": "rbx032",
+      "rb_id": "664",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[data-kg-plus-menu]",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "data-kg-plus-menu"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-plus-menu",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-plus-menu",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [],
+            "visible_in_old_input": true
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx033",
+      "rb_id": "720",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[data-kg-cardmenu-selected=\"true\"]",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "data-kg-cardmenu-selected"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-cardmenu-selected",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-cardmenu-selected",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [],
+            "visible_in_old_input": true
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [
+          {
+            "kind": "hasText",
+            "value": "snippet",
+            "reason": "filter 的文本锚点说明断言对象内容，按协议允许可见",
+            "count": 1
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx034",
+      "rb_id": "723",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[data-kg-cardmenu-selected=\"true\"]",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "data-kg-cardmenu-selected"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-cardmenu-selected",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-cardmenu-selected",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [],
+            "visible_in_old_input": true
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [
+          {
+            "kind": "hasText",
+            "value": "snippet",
+            "reason": "filter 的文本锚点说明断言对象内容，按协议允许可见",
+            "count": 1
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx035",
+      "rb_id": "748",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[data-kg-card=\"markdown\"] .cm-image",
+            "reason": "waitForSelector 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "data-kg-card",
+              "markdown",
+              "cm-image"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-card",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-card",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "markdown",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "markdown",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "cm-image",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "cm-image",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "markdown",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx036",
+      "rb_id": "749",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[data-kg-cardmenu-selected=\"true\"]",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "data-kg-cardmenu-selected"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-cardmenu-selected",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-kg-cardmenu-selected",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [],
+            "visible_in_old_input": true
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [
+          {
+            "kind": "hasText",
+            "value": "snippet",
+            "reason": "filter 的文本锚点说明断言对象内容，按协议允许可见",
+            "count": 1
+          }
+        ],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx037",
+      "rb_id": "751",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[data-testid=\"signup-card-container\"] [data-testid=\"media-upload-filled\"] img",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "data-testid",
+              "signup-card-container",
+              "media-upload-filled"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "context_excluding_old",
+                "hits": 3
+              },
+              {
+                "mode": "token",
+                "token": "signup-card-container",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "signup-card-container",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "media-upload-filled",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "media-upload-filled",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "context_excluding_old",
+                "hits": 3
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 2,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx038",
+      "rb_id": "752",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": "[data-testid=\"signup-card-container\"] [data-testid=\"media-upload-filled\"] img",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "data-testid",
+              "signup-card-container",
+              "media-upload-filled"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "context_excluding_old",
+                "hits": 3
+              },
+              {
+                "mode": "token",
+                "token": "signup-card-container",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "signup-card-container",
+                "where": "context_excluding_old",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "media-upload-filled",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "media-upload-filled",
+                "where": "context_excluding_old",
+                "hits": 0
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "token",
+                "token": "data-testid",
+                "where": "context_excluding_old",
+                "hits": 3
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 8,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx039",
+      "rb_id": "758",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "selector",
+            "value": ".koenig-lexical-heading",
+            "reason": "locator 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "koenig-lexical-heading"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 4
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "koenig-lexical-heading",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "koenig-lexical-heading",
+                "where": "context_excluding_old",
+                "hits": 9
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 4
+              },
+              {
+                "mode": "token",
+                "token": "koenig-lexical-heading",
+                "where": "context_excluding_old",
+                "hits": 9
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    },
+    {
+      "case_id": "rbx040",
+      "rb_id": "768",
+      "repo": "tryghost/koenig",
+      "status": "ok",
+      "redaction_status": "pass",
+      "verification": {
+        "rule": "mask_mechanical_paths_keep_semantic_anchors",
+        "mechanical_checks": [
+          {
+            "kind": "testid",
+            "value": "media-upload-placeholder",
+            "reason": "getByTestId 的首参是寻址路径（CSS/id/class/data-* /xpath），按协议遮蔽",
+            "tokens": [
+              "media-upload-placeholder"
+            ],
+            "checks": [
+              {
+                "mode": "exact",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "whitespace_normalized",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "media-upload-placeholder",
+                "where": "redacted_assertion_diff",
+                "hits": 0
+              },
+              {
+                "mode": "token",
+                "token": "media-upload-placeholder",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "leaked": false,
+            "context_occurrences": [
+              {
+                "mode": "exact",
+                "where": "context_excluding_old",
+                "hits": 1
+              },
+              {
+                "mode": "token",
+                "token": "media-upload-placeholder",
+                "where": "context_excluding_old",
+                "hits": 1
+              }
+            ],
+            "visible_in_old_input": false
+          }
+        ],
+        "mechanical_leaks": [],
+        "semantic_anchors_in_locator": [],
+        "semantic_anchors_visible": [],
+        "new_test_line_hits": [],
+        "new_test_line_already_in_old": 0,
+        "locator_syntax_hits": [],
+        "path_hits": 0,
+        "pass": true
+      }
+    }
+  ]
+}

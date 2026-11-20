@@ -2,8 +2,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   srcLeaf, cdpUrlToLeafRel, mapLeafRelToRepoRel, rewriteSpecImport, rewriteImportFrom,
-  relImportPath, covFixtureSource, covWrapFixtureSource,
+  relImportPath, covFixtureSource, covFixtureSourceUrlRoot, covFixtureSourceMulti, covWrapFixtureSource,
 } from '../src/covinject.mjs';
+
+// Turn a regex literal embedded in generated fixture source into a RegExp.
+const literal = (s) => new Function(`return ${s}`)();
 
 test('srcLeaf returns last path segment', () => {
   assert.equal(srcLeaf('src'), 'src');
@@ -67,4 +70,51 @@ test('covFixtureSource embeds leaf regex and overrides test', () => {
   assert.match(src, /export \* from '@playwright\/test'/);
   assert.match(src, /export const test = base\.extend/);
   assert.match(src, /src\\\//); // leaf baked into RE
+});
+
+test('covFixtureSourceUrlRoot maps root-relative URLs and skips vite ids', () => {
+  const src = covFixtureSourceUrlRoot('apps/examples/src', '../fixtures/fixtures', true);
+  assert.match(src, /@id\\\//); // vite optimized ids excluded
+  assert.match(src, /files.add\('apps\/examples\/src\/' \+ m\[1\]\)/);
+  assert.match(src, /import appDefault from '\.\.\/fixtures\/fixtures'/);
+  assert.match(src, /export default test/);
+});
+
+test('covFixtureSourceMulti attributes dev root and /@fs/ workspace sources', () => {
+  const src = covFixtureSourceMulti({
+    urlRoot: 'apps/examples/src',
+    fsRoots: ['packages/tldraw/src'],
+    repoAbs: '/repo/root',
+    appImport: '../fixtures/fixtures',
+    defaultExport: true,
+  });
+  assert.match(src, /import appDefault from '\.\.\/fixtures\/fixtures'/);
+  assert.match(src, /export \* from '@playwright\/test'/);
+  assert.match(src, /export default test/);
+  assert.match(src, /rel = 'apps\/examples\/src\/' \+ m\[1\]/);
+  assert.match(src, /const FS: Array<\[string, string\]>/);
+  assert.match(src, /'\/@fs\/repo\/root\/packages\/tldraw\/src\/'/);
+
+  const reRoot = literal(src.match(/const RE_ROOT = (\/[^;]+?\/);/)[1]);
+
+  // dev-server root -> repo-relative example-app path
+  const m0 = 'http://localhost:5420/misc/EndToEndApi.ts?t=1'.match(reRoot);
+  assert.equal('apps/examples/src/' + m0[1], 'apps/examples/src/misc/EndToEndApi.ts');
+
+  // Vite emits /@fs/<abs>; Unix abs paths make /@fs//<abs> also possible; the
+  // fixture collapses repeated slashes then matches the string prefix.
+  const fsPrefix = '/@fs/repo/root/packages/tldraw/src/';
+  for (const u of [
+    'http://localhost:5420/@fs/repo/root/packages/tldraw/src/editor/Editor.tsx?import',
+    'http://localhost:5420/@fs//repo/root/packages/tldraw/src/editor/Editor.tsx',
+  ]) {
+    const norm = u.split(/[?#]/)[0].replace(/\/{2,}/g, '/');
+    const i = norm.indexOf(fsPrefix);
+    assert.ok(i >= 0, u);
+    assert.equal('packages/tldraw/src/' + norm.slice(i + fsPrefix.length), 'packages/tldraw/src/editor/Editor.tsx');
+  }
+  // /@fs/ URLs are never attributed to the app root; other packages stay out.
+  assert.equal('http://localhost:5420/@fs//repo/root/packages/tldraw/src/x.ts'.match(reRoot), null);
+  assert.equal('http://localhost:5420/@fs//repo/root/packages/other/src/x.ts'.indexOf(fsPrefix), -1);
+  assert.equal('http://localhost:5420/node_modules/x/index.js'.match(reRoot), null);
 });

@@ -1,0 +1,921 @@
+{
+  "generated_at": "2026-11-08T12:35:47.051Z",
+  "environment": {
+    "playwright": "1.54.0",
+    "chromium": "1181"
+  },
+  "summary": {
+    "v1": {
+      "diff": {
+        "n": 8,
+        "execRate": 1,
+        "relRate": 1,
+        "mutKillMean": 0.5625,
+        "changeSensRate": 1,
+        "semanticAutoRate": 1
+      },
+      "nodiff": {
+        "n": 8,
+        "execRate": 0.125,
+        "relRate": 0,
+        "mutKillMean": 0,
+        "changeSensRate": 0,
+        "semanticAutoRate": 0
+      }
+    },
+    "v2": {
+      "diff": {
+        "n": 8,
+        "execRate": 1,
+        "relRate": 1,
+        "mutKillMean": 0.7792,
+        "changeSensRate": 1,
+        "semanticAutoRate": 1
+      },
+      "nodiff": {
+        "n": 8,
+        "execRate": 0.125,
+        "relRate": 0,
+        "mutKillMean": 0,
+        "changeSensRate": 0,
+        "semanticAutoRate": 0
+      }
+    }
+  },
+  "by_class": {
+    "v1": {
+      "diff": {
+        "testid": {
+          "injected": 5,
+          "killed": 2
+        },
+        "text": {
+          "injected": 8,
+          "killed": 0
+        },
+        "attribute": {
+          "injected": 8,
+          "killed": 3
+        },
+        "structure": {
+          "injected": 8,
+          "killed": 8
+        },
+        "logic": {
+          "injected": 8,
+          "killed": 8
+        }
+      },
+      "nodiff": {
+        "testid": {
+          "injected": 1,
+          "killed": 0
+        },
+        "text": {
+          "injected": 1,
+          "killed": 0
+        },
+        "attribute": {
+          "injected": 1,
+          "killed": 0
+        },
+        "structure": {
+          "injected": 1,
+          "killed": 0
+        },
+        "logic": {
+          "injected": 1,
+          "killed": 0
+        }
+      }
+    },
+    "v2": {
+      "diff": {
+        "testid": {
+          "injected": 5,
+          "killed": 2
+        },
+        "text": {
+          "injected": 8,
+          "killed": 7
+        },
+        "attribute": {
+          "injected": 17,
+          "killed": 11
+        },
+        "structure": {
+          "injected": 8,
+          "killed": 8
+        },
+        "logic": {
+          "injected": 8,
+          "killed": 8
+        }
+      },
+      "nodiff": {
+        "testid": {
+          "injected": 1,
+          "killed": 0
+        },
+        "text": {
+          "injected": 1,
+          "killed": 0
+        },
+        "attribute": {
+          "injected": 1,
+          "killed": 0
+        },
+        "structure": {
+          "injected": 1,
+          "killed": 0
+        },
+        "logic": {
+          "injected": 1,
+          "killed": 0
+        }
+      }
+    }
+  },
+  "gaps": [
+    {
+      "gap_id": "x01",
+      "route": "/settings",
+      "prev_tag": "x00",
+      "tag": "x01",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_x01.spec.ts > settings compact mode updates status",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "settings-title",
+                "killed": true
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "Compact mode off",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Compact mode",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<span>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "三元分支对调",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 4,
+            "mutation_score": 0.8,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 1
+              },
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x01.spec.ts > user can add a product to the cart and view it",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "x02",
+      "route": "/feedback",
+      "prev_tag": "x01",
+      "tag": "x02",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_x02.spec.ts > submitting feedback shows a visible confirmation",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "Thanks, ",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Rating",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Comment",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "role-change",
+                "token": "role=status",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Send feedback</button>",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "忽略用户选择，固定返回 Good",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 7,
+            "killed": 7,
+            "mutation_score": 1,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 4,
+                "killed": 4
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x02.spec.ts > smoke: browse products and add one to the cart",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "x03",
+      "route": "/inbox",
+      "prev_tag": "x02",
+      "tag": "x03",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_x03.spec.ts > inbox filter narrows the message list",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "inbox-title",
+                "killed": true
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "'Welcome aboard'",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "placeholder-replace",
+                "token": "filter messages",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<ul>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "includes → startsWith",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 4,
+            "mutation_score": 0.8,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 1
+              },
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": true,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x03.spec.ts > smoke: home page loads and cart route is reachable",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "inbox-title",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "'Welcome aboard'",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "placeholder-replace",
+                "token": "filter messages",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<ul>",
+                "killed": false
+              },
+              {
+                "class": "logic",
+                "kind": "includes → startsWith",
+                "token": "",
+                "killed": false
+              }
+            ],
+            "injected": 5,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 0
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 0
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 0
+              }
+            }
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "x04",
+      "route": "/checkout",
+      "prev_tag": "x03",
+      "tag": "x04",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_x04.spec.ts > checkout calculates total and free shipping for 3+ items",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "out.textContent=`Total $",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Quantity",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "role-change",
+                "token": "role=status",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Calculate total</button>",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "边界 >=3 → >3",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 6,
+            "killed": 6,
+            "mutation_score": 1,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 3,
+                "killed": 3
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x04.spec.ts > user can add a product to the cart and view it",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "x05",
+      "route": "/help",
+      "prev_tag": "x04",
+      "tag": "x05",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_x05.spec.ts > help center reveals contact details",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "Email support@example.com",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "aria-replace",
+                "token": "Contact details",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Show contact details</button>",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "toggle → 强制保持隐藏",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 4,
+            "mutation_score": 0.8,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 2,
+                "killed": 1
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_x05.spec.ts > smoke: user can add a product to the cart and see it there",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "c03",
+      "route": "/coupon",
+      "prev_tag": "c02",
+      "tag": "c03",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_c03.spec.ts > coupon route applies correct discount and shows invalid code",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "coupon-title",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "'10% off'",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Apply</button>",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "disable-button",
+                "token": "button",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<span>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "三元分支对调",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 6,
+            "killed": 4,
+            "mutation_score": 0.6667,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 0
+              },
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 2,
+                "killed": 1
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_c03.spec.ts > smoke test: navigate to cart",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "c13",
+      "route": "/wishlist",
+      "prev_tag": "c12",
+      "tag": "c13",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_c13.spec.ts > should increment wishlist count on button click",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "wishlist-title",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "data-testid=\"wishlist-count\">0<",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Save</button>",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "disable-button",
+                "token": "button",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<span>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "n++ → n+=2",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 6,
+            "killed": 4,
+            "mutation_score": 0.6667,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 0
+              },
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 2,
+                "killed": 1
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_c13.spec.ts > home page loads and displays product list",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "c19",
+      "route": "/faq",
+      "prev_tag": "c18",
+      "tag": "c19",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_c19.spec.ts > FAQ toggle shows answer",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "faq-title",
+                "killed": false
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "Use the demo.",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Show answer</button>",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "disable-button",
+                "token": "button",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "toggle → 强制保持隐藏",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 6,
+            "killed": 3,
+            "mutation_score": 0.5,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 0
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 2,
+                "killed": 1
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_c19.spec.ts > Smoke test: Login, add item to cart, verify in cart",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    }
+  ]
+}

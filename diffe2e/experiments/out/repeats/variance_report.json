@@ -1,0 +1,4670 @@
+{
+  "generated_at": "2026-11-08T06:49:37.911Z",
+  "conditions": {
+    "masked": {
+      "condition": "masked",
+      "runs": [
+        {
+          "run": 1,
+          "file": "experiments/out/annotator1_masked.json",
+          "failures": 0
+        },
+        {
+          "run": 2,
+          "file": "experiments/out/repeats/masked_run2.json",
+          "started_at": "2026-11-08T06:37:28.815Z",
+          "finished_at": "2026-11-08T06:41:41.188Z",
+          "failures": 0
+        },
+        {
+          "run": 3,
+          "file": "experiments/out/repeats/masked_run3.json",
+          "started_at": "2026-11-08T06:43:19.124Z",
+          "finished_at": "2026-11-08T06:46:57.057Z",
+          "failures": 0
+        }
+      ],
+      "families": {
+        "rq2": {
+          "n": 30,
+          "runs_available": [
+            1,
+            2,
+            3
+          ],
+          "per_run_distribution": [
+            {
+              "run": 1,
+              "file": "experiments/out/annotator1_masked.json",
+              "distribution": {
+                "n": 29,
+                "y": 1
+              },
+              "failures": 0
+            },
+            {
+              "run": 2,
+              "file": "experiments/out/repeats/masked_run2.json",
+              "distribution": {
+                "n": 28,
+                "y": 2
+              },
+              "failures": 0
+            },
+            {
+              "run": 3,
+              "file": "experiments/out/repeats/masked_run3.json",
+              "distribution": {
+                "n": 28,
+                "y": 2
+              },
+              "failures": 0
+            }
+          ],
+          "per_run_usage": [
+            {
+              "run": 1,
+              "prompt_tokens": 43025,
+              "completion_tokens": 6851,
+              "reasoning_tokens": 5385,
+              "budgets": "2000",
+              "escalations": []
+            },
+            {
+              "run": 2,
+              "prompt_tokens": 43025,
+              "completion_tokens": 5273,
+              "reasoning_tokens": 3775,
+              "budgets": "2000",
+              "escalations": []
+            },
+            {
+              "run": 3,
+              "prompt_tokens": 43025,
+              "completion_tokens": 6196,
+              "reasoning_tokens": 4712,
+              "budgets": "2000",
+              "escalations": []
+            }
+          ],
+          "stability": {
+            "3/3": 29,
+            "2/3": 1,
+            "1/3": 0
+          },
+          "unstable": [
+            {
+              "case_id": "rq2_023",
+              "labels": [
+                "n",
+                "y",
+                "y"
+              ],
+              "reasons": [
+                "测试仅访问首页并检查 reportcardname 可见/填充，未设置或断言 showTitle 条件下标题隐藏及 Rename 菜单变化，无法关联本次变更行为。",
+                "变更新增 showTitle 控制 ReportCardName 是否渲染；测试打开应用后定位 reportcardname，填写并断言其值，直接操作了变更涉及的标题元素。",
+                "变更将 ReportCardName 包在 showTitle 条件中；测试定位并编辑 [tag=\"reportcardname\"] 且断言值，直接关联标题组件行为。"
+              ],
+              "consistency": "2/3",
+              "distinct_labels": 2,
+              "majority": "y",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 3004,
+                "has_app_diff": true,
+                "app_diff_hunks": 3,
+                "spec_lines": 9,
+                "material_lines": 93,
+                "prompt_length": 3511
+              }
+            }
+          ],
+          "flips_vs_run1": [
+            {
+              "run": 2,
+              "flips": [
+                {
+                  "case_id": "rq2_023",
+                  "from": "n",
+                  "to": "y",
+                  "reason": "变更新增 showTitle 控制 ReportCardName 是否渲染；测试打开应用后定位 reportcardname，填写并断言其值，直接操作了变更涉及的标题元素。"
+                }
+              ]
+            },
+            {
+              "run": 3,
+              "flips": [
+                {
+                  "case_id": "rq2_023",
+                  "from": "n",
+                  "to": "y",
+                  "reason": "变更将 ReportCardName 包在 showTitle 条件中；测试定位并编辑 [tag=\"reportcardname\"] 且断言值，直接关联标题组件行为。"
+                }
+              ]
+            }
+          ],
+          "majority_distribution": {
+            "n": 28,
+            "y": 2
+          },
+          "majority_ties": [],
+          "majority_vs_run1": [
+            {
+              "case_id": "rq2_023",
+              "run1": "n",
+              "majority": "y",
+              "sequence": [
+                "n",
+                "y",
+                "y"
+              ]
+            }
+          ],
+          "observations": {
+            "unstable_count": 1,
+            "stable_prompt_length_median": 3168,
+            "unstable_prompt_length_median": 3511,
+            "stable_material_length_median": 2661,
+            "unstable_material_length_median": 3004,
+            "groups": [
+              "actual_desktop"
+            ],
+            "details": [
+              {
+                "case_id": "rq2_023",
+                "sequence": [
+                  "n",
+                  "y",
+                  "y"
+                ],
+                "material": "应用diff有、spec 9 行"
+              }
+            ]
+          },
+          "cases": [
+            {
+              "case_id": "rq2_001",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅填充泛化 inputcell、点击 button，并断言 sheetnameprovider/customcell；未操作或断言 TransactionsTable 的拆分交易及 makeChild 生成子交易行为，无法建立变更关联。",
+                "测试仅填充通用 inputcell、点击 button，并断言 sheetnameprovider/customcell；未涉及变更的 splitTransaction/makeChild、临时交易拆分或交易表行为。",
+                "测试仅填充inputcell、点击button并断言sheetnameprovider和customcell可见，未操作或断言TransactionsTable中splitTransaction/makeChild相关的拆分交易行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1850,
+                "has_app_diff": true,
+                "app_diff_hunks": 2,
+                "spec_lines": 15,
+                "material_lines": 55,
+                "prompt_length": 2357
+              }
+            },
+            {
+              "case_id": "rq2_002",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅打开首页并断言 budget-header 与 Budget 文本可见，是通用冒烟检查；未操作或断言 TransactionsTable 中 splitTransaction 新增 makeChild 子交易拆分行为。",
+                "用例仅打开首页并断言 budget-header 和文本 Budget，属于通用冒烟检查；未涉及 TransactionsTable 中 splitTransaction/makeChild 的拆分交易行为或相关 UI。",
+                "测试仅打开首页并断言budget-header和Budget文本，未操作或断言TransactionsTable的拆分交易及makeChild相关行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1734,
+                "has_app_diff": true,
+                "app_diff_hunks": 2,
+                "spec_lines": 10,
+                "material_lines": 50,
+                "prompt_length": 2241
+              }
+            },
+            {
+              "case_id": "rq2_003",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅用 page.setContent 注入静态标签并断言 ±，未打开应用或渲染 SchedulesTable，无法证明实际执行/断言变更组件行为。",
+                "测试用 page.setContent 注入自造 HTML 标签（cell、view、field），未打开应用或渲染 SchedulesTable；虽断言“±”，但与真实日程金额单元格及本次变更无直接关联。",
+                "测试仅用 page.setContent 构造自定义标签并操作，未打开应用或渲染 SchedulesTable；虽查找“±”，但与变更的金额显示逻辑无直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 4430,
+                "has_app_diff": true,
+                "app_diff_hunks": 4,
+                "spec_lines": 37,
+                "material_lines": 145,
+                "prompt_length": 4937
+              }
+            },
+            {
+              "case_id": "rq2_004",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试只操作 Add Expense 并断言预算摘要和支出行金额，未访问 schedules 页面，也未断言变更涉及的 ~/± 计划金额显示，无法建立关联。",
+                "测试只添加支出并断言预算汇总，未访问 schedules 页面，也未操作或断言变更涉及的 ~、±、Approximately 等金额显示行为。",
+                "变更在 schedules/SchedulesTable.tsx 的日程金额单元格（~、±、金额文案）；测试仅添加支出并校验预算汇总，未访问日程表或断言相关 UI/行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 4909,
+                "has_app_diff": true,
+                "app_diff_hunks": 4,
+                "spec_lines": 37,
+                "material_lines": 145,
+                "prompt_length": 5416
+              }
+            },
+            {
+              "case_id": "rq2_005",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅断言 body 可见，未打开或操作 SelectLinkedAccountsModal，也未断言 requisitionId 默认值变更相关行为，无法建立与本次变更的直接关联。",
+                "用例仅断言 body 可见，未打开或操作 SelectLinkedAccountsModal，未涉及 requisitionId 默认值变更，无法建立与本次变更的关联。",
+                "变更仅为 SelectLinkedAccountsModal 的 requisitionId 默认值调整；生成用例只断言 body 可见，未访问或操作该弹窗及相关行为，无法建立与变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1062,
+                "has_app_diff": true,
+                "app_diff_hunks": 1,
+                "spec_lines": 5,
+                "material_lines": 34,
+                "prompt_length": 1569
+              }
+            },
+            {
+              "case_id": "rq2_006",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更仅涉及 SelectLinkedAccountsModal 的 requisitionId 默认值；测试只打开首页 '/#/' 并断言 body 可见与 URL，未操作或断言该模态框及相关行为。",
+                "变更仅是 SelectLinkedAccountsModal 的 requisitionId 默认值移除；测试只打开首页 /#/ 并断言 body 可见与 URL，未涉及该弹窗或其行为，无法建立关联。",
+                "用例仅打开首页并断言 body 可见与 URL，未涉及 SelectLinkedAccountsModal 组件或 requisitionId 默认值变更，无法建立关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1109,
+                "has_app_diff": true,
+                "app_diff_hunks": 1,
+                "spec_lines": 7,
+                "material_lines": 36,
+                "prompt_length": 1616
+              }
+            },
+            {
+              "case_id": "rq2_007",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "diff仅将RuleEditor的onSave默认值由undefined改为必填；测试只操作条件/动作列表并断言可见文本，未涉及保存或onSave行为。",
+                "变更仅移除 RuleEditor 的 onSave 默认值；测试虽操作规则条件并断言列表，但未触发保存或断言 onSave 相关行为，无法建立与本次变更的直接关联。",
+                "变更仅移除 RuleEditor 的 onSave 默认值，测试只操作条件列表并断言文本和动作列表可见，未涉及保存回调或该变更行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2361,
+                "has_app_diff": true,
+                "app_diff_hunks": 1,
+                "spec_lines": 33,
+                "material_lines": 62,
+                "prompt_length": 2868
+              }
+            },
+            {
+              "case_id": "rq2_008",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅打开首页并断言“Budget”标题可见，未涉及变更文件 RuleEditor 的 onSave 属性或规则编辑器行为，无法建立关联。",
+                "测试仅打开首页并断言 Budget 标题可见，未进入规则编辑器页面，也未操作或断言 RuleEditor 的 onSave 相关行为，无法建立与本次变更的关联。",
+                "用例仅打开首页并断言 Budget 标题可见，未操作或断言 RuleEditor.tsx 中变更的 onSave 默认参数行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1051,
+                "has_app_diff": true,
+                "app_diff_hunks": 1,
+                "spec_lines": 7,
+                "material_lines": 36,
+                "prompt_length": 1558
+              }
+            },
+            {
+              "case_id": "rq2_009",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅访问 '/'，断言通用 button、label、input、select，未定位或操作变更新增的 formula-show-title 开关及 Show title 行为，无法建立直接关联。",
+                "用例只访问根路径，断言 mobilepageheader、button、input 等通用元素，未涉及 Formula.tsx 新增的 Show title 开关（formula-show-title）或 showTitle 行为，无法建立与变更的直接关联。",
+                "测试仅访问 '/' 并用通用标签定位元素，未操作或断言变更新增的 Formula.tsx 中“Show title:”标签及 id 为 formula-show-title 的 Toggle，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 5096,
+                "has_app_diff": true,
+                "app_diff_hunks": 8,
+                "spec_lines": 49,
+                "material_lines": 150,
+                "prompt_length": 5603
+              }
+            },
+            {
+              "case_id": "rq2_010",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试只操作商品列表、加入购物车并检查购物车项，未涉及 Formula 组件或新增的 Show title 开关，无法建立与本次变更的关联。",
+                "变更是 Formula.tsx 新增“Show title”开关与 showTitle 状态，测试仅操作商品列表、加入购物车并检查购物车条目，未涉及该报表公式页面或该开关，无法建立关联。",
+                "测试只访问首页和购物车页，操作 product-item、add-to-cart、cart-item，未涉及 Formula.tsx 新增的“Show title”开关（formula-show-title）或其保存行为，与变更无关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 3829,
+                "has_app_diff": true,
+                "app_diff_hunks": 8,
+                "spec_lines": 18,
+                "material_lines": 119,
+                "prompt_length": 4336
+              }
+            },
+            {
+              "case_id": "rq2_011",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试未打开格式设置页或定位 numberFormat 下拉，仅泛泛遍历所有 select 并断言值非空；注释也假设已在正确页面，无法建立与本次 dispatch 保存 numberFormat 变更的直接关联。",
+                "用例未导航到 Format 设置页，仅用通用 label/select 选择器遍历页面，未定位 numberFormat 下拉或断言保存偏好行为，无法建立与本次变更的直接关联。",
+                "测试未导航到格式设置页，仅泛泛操作所有 select 并检查 value 非空，未定位 numberFormat 选择器，也未断言其 onChange 保存偏好行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 6687,
+                "has_app_diff": true,
+                "app_diff_hunks": 4,
+                "spec_lines": 84,
+                "material_lines": 143,
+                "prompt_length": 7194
+              }
+            },
+            {
+              "case_id": "rq2_012",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅访问首页并断言 #root 可见和标题匹配，未操作或断言 Format.tsx 中变更的 numberFormat 下拉框及 saveSyncedPrefs 保存行为，无法建立与本次变更的直接关联。",
+                "测试仅打开首页并断言 #root 可见及标题，未进入 Format 设置，也未操作或断言变更涉及的 numberFormat Select 与 saveSyncedPrefs 行为。",
+                "测试仅打开首页并断言 #root 可见和标题含 Actual，未进入设置页，也未操作或断言本次变更涉及的 numberFormat 下拉框及其保存行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2757,
+                "has_app_diff": true,
+                "app_diff_hunks": 4,
+                "spec_lines": 13,
+                "material_lines": 72,
+                "prompt_length": 3264
+              }
+            },
+            {
+              "case_id": "rq2_013",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更只涉及Overview.tsx中formula-card的最小宽高计算，而测试仅打开首页、断言mobilepageheader可见并点击3个button，未涉及报表组件或formula-card，无法建立关联。",
+                "用例仅访问首页，断言 mobilepageheader 可见及 3 个按钮并点击；未涉及变更中 formula-card 的 getWidgetMinHeight/getWidgetMinWidth 逻辑或 reports 组件。",
+                "测试仅访问首页、检查并点击通用button及mobilepageheader，未操作或断言变更涉及的reports/Overview、formula-card或widget最小宽高逻辑，无法建立关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1704,
+                "has_app_diff": true,
+                "app_diff_hunks": 2,
+                "spec_lines": 17,
+                "material_lines": 61,
+                "prompt_length": 2211
+              }
+            },
+            {
+              "case_id": "rq2_014",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅打开 /#/accounts 并断言 .accounts-table 可见，未涉及变更文件 Overview.tsx 中的 formula-card 最小高度/宽度逻辑。",
+                "变更位于 reports/Overview.tsx 的仪表盘小组件最小宽高逻辑（新增 formula-card 分支），而用例仅访问 /#/accounts 并断言 .accounts-table 可见，未涉及报告仪表盘或 formula-card 元素，无法建立关联。",
+                "测试仅访问 /#/accounts 并断言 .accounts-table 可见；变更是 reports/Overview.tsx 中 formula-card 最小宽高逻辑，二者无直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1412,
+                "has_app_diff": true,
+                "app_diff_hunks": 2,
+                "spec_lines": 6,
+                "material_lines": 50,
+                "prompt_length": 1919
+              }
+            },
+            {
+              "case_id": "rq2_015",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅访问'/'并泛泛操作label、input、button，未进入设置页，也未断言defaultCurrencyCode或货币功能开关相关行为，与本次变更无直接关联。",
+                "测试仅访问'/'并对泛化label、input、button操作，未进入设置页，未涉及currency开关或defaultCurrencyCode保存行为，无法关联本次变更。",
+                "用例仅打开首页并操作通用 label/input/button，未进入设置页，也未涉及 defaultCurrencyCode 或 currency 开关变更行为，无法建立与本次变更的关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2756,
+                "has_app_diff": true,
+                "app_diff_hunks": 3,
+                "spec_lines": 26,
+                "material_lines": 76,
+                "prompt_length": 3263
+              }
+            },
+            {
+              "case_id": "rq2_016",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅访问 /#/budget 并断言预算表、标题和账户余额；未进入设置页，未操作或断言 defaultCurrencyCode 相关行为，与本次设置页变更无直接关联。",
+                "用例只访问/#/budget并断言预算表、标题和账户余额；变更涉及Settings中defaultCurrencyCode的保存逻辑，测试未打开设置页或操作该偏好，无法建立关联。",
+                "用例仅访问预算页并断言预算表格、Budget 标题和账户余额，未涉及设置页、货币功能标志或 defaultCurrencyCode 的保存行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2545,
+                "has_app_diff": true,
+                "app_diff_hunks": 3,
+                "spec_lines": 18,
+                "material_lines": 68,
+                "prompt_length": 3052
+              }
+            },
+            {
+              "case_id": "rq2_017",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅断言 page.locator('body') 可见，属于与变更元素无关的泛泛检查；未打开账户页面，也未涉及 AccountSyncCheck 的同步失败状态、isAccountFailedSync 或错误提示等具体行为。",
+                "测试仅断言 body 可见，未操作或断言 AccountSyncCheck 中与失败同步状态、错误提示等变更直接相关的 UI 或行为。",
+                "测试仅断言 page.locator('body') 可见，属泛泛检查；未操作或断言 AccountSyncCheck 的 isAccountFailedSync 判断、失败同步错误展示等变更行为，无法建立关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2003,
+                "has_app_diff": true,
+                "app_diff_hunks": 2,
+                "spec_lines": 5,
+                "material_lines": 60,
+                "prompt_length": 2510
+              }
+            },
+            {
+              "case_id": "rq2_018",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅打开首页，断言标题和 sidebar；未操作或断言 AccountSyncCheck 的同步失败状态、错误获取或相关 UI，无法建立与本次变更的关联。",
+                "测试仅打开首页并断言标题与 sidebar 可见，未操作或断言 AccountSyncCheck 的失败同步状态及错误回退逻辑，无法建立与本次变更的直接关联。",
+                "测试仅打开首页并断言标题和侧边栏可见，未进入账户页，也未操作或断言 AccountSyncCheck 的同步失败状态与重新授权 UI，无法建立与变更的关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2180,
+                "has_app_diff": true,
+                "app_diff_hunks": 2,
+                "spec_lines": 9,
+                "material_lines": 64,
+                "prompt_length": 2687
+              }
+            },
+            {
+              "case_id": "rq2_019",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅访问 '/' 并断言 locator('functiontooltip') 可见，未操作或断言变更涉及的自动完成弹层样式、滚轮/鼠标事件转发、悬停高亮或函数集合/提示文案，无法建立与本次变更的直接关联。",
+                "测试仅打开首页并断言 locator('functiontooltip') 可见；变更文件改动的是公式编辑器自动完成弹窗、样式与指针处理，材料中无证据表明该元素与此次变更相关。",
+                "用例仅访问根页面并断言locator('functiontooltip')可见，未操作公式编辑器、自动补全弹层或断言本次变更涉及的具体样式/交互。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 19147,
+                "has_app_diff": true,
+                "app_diff_hunks": 25,
+                "spec_lines": 6,
+                "material_lines": 563,
+                "prompt_length": 19654
+              }
+            },
+            {
+              "case_id": "rq2_020",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例只访问首页并断言 h1 可见，未涉及公式编辑器、自动补全弹窗或指针事件等本次变更的 UI，无法建立关联。",
+                "变更涉及公式编辑器的函数分类集合、自动补全弹窗主题与指针事件处理；测试仅访问首页并断言 h1 可见，未打开公式编辑器或操作补全列表，无法建立关联。",
+                "用例仅访问首页并断言 h1 可见，未涉及公式编辑器自动补全弹层、样式或指针事件，与 codeMirror-excelLanguage.tsx 的变更无直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 19146,
+                "has_app_diff": true,
+                "app_diff_hunks": 25,
+                "spec_lines": 6,
+                "material_lines": 563,
+                "prompt_length": 19653
+              }
+            },
+            {
+              "case_id": "rq2_021",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更涉及 FormulaResult 多行换行字号及 span 换行样式；测试仅断言 body 可见，未操作或断言该组件相关行为。",
+                "变更涉及 FormulaResult 的多行字体计算及 span 的 whiteSpace/textAlign 样式；测试仅断言 body 可见，未操作或断言该组件及行为，无法建立关联。",
+                "测试仅断言 page.locator('body') 可见，未打开报表页或操作/断言 FormulaResult 的字体大小、换行样式等变更行为，无法建立关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2213,
+                "has_app_diff": true,
+                "app_diff_hunks": 2,
+                "spec_lines": 5,
+                "material_lines": 61,
+                "prompt_length": 2720
+              }
+            },
+            {
+              "case_id": "rq2_022",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试只访问首页并添加购物车、断言购物车条目，未操作或断言报表 FormulaResult 的多行字号/换行行为，与本次变更无直接关联。",
+                "变更涉及 FormulaResult 报表公式结果的换行、字体大小和 span 样式；测试只做加入购物车并断言购物车条目数量，未操作或断言 FormulaResult 相关 UI 或行为。",
+                "测试仅点击“Add to Cart”并检查购物车数量，未操作或断言 FormulaResult 的公式结果、多行文本或字体缩放行为，与变更无直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2661,
+                "has_app_diff": true,
+                "app_diff_hunks": 2,
+                "spec_lines": 18,
+                "material_lines": 74,
+                "prompt_length": 3168
+              }
+            },
+            {
+              "case_id": "rq2_023",
+              "labels": [
+                "n",
+                "y",
+                "y"
+              ],
+              "reasons": [
+                "测试仅访问首页并检查 reportcardname 可见/填充，未设置或断言 showTitle 条件下标题隐藏及 Rename 菜单变化，无法关联本次变更行为。",
+                "变更新增 showTitle 控制 ReportCardName 是否渲染；测试打开应用后定位 reportcardname，填写并断言其值，直接操作了变更涉及的标题元素。",
+                "变更将 ReportCardName 包在 showTitle 条件中；测试定位并编辑 [tag=\"reportcardname\"] 且断言值，直接关联标题组件行为。"
+              ],
+              "consistency": "2/3",
+              "distinct_labels": 2,
+              "majority": "y",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 3004,
+                "has_app_diff": true,
+                "app_diff_hunks": 3,
+                "spec_lines": 9,
+                "material_lines": 93,
+                "prompt_length": 3511
+              }
+            },
+            {
+              "case_id": "rq2_024",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例只打开首页并断言 #root、Budget 链接和 h1 标题，属于泛泛冒烟检查；未涉及 FormulaCard 的 showTitle、重命名菜单或标题显示行为，无法建立与本次变更的直接关联。",
+                "用例仅打开首页并断言 #root、Budget 链接和 h1 为 budget，未进入 reports/formula 或操作/断言 FormulaCard 的 showTitle、标题及 Rename 菜单变更。",
+                "测试仅打开根路由并断言 #root、Budget 链接和 h1，未涉及 FormulaCard 的 showTitle、标题显示或 Rename 菜单，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 3134,
+                "has_app_diff": true,
+                "app_diff_hunks": 3,
+                "spec_lines": 11,
+                "material_lines": 95,
+                "prompt_length": 3641
+              }
+            },
+            {
+              "case_id": "rq2_025",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更仅将分类自动补全的过滤逻辑替换为 filterCategorySuggestions；测试只点击 split-transaction-button 并断言对话框可见，未操作或断言分类自动补全过滤行为，无法建立直接关联。",
+                "变更涉及 CategoryAutocomplete 的 filterSuggestions 改为 filterCategorySuggestions；测试仅点击 split-transaction-button 并断言 split-transaction-dialog，未操作或断言分类自动完成过滤行为。",
+                "变更涉及 CategoryAutocomplete 的分类建议过滤逻辑替换；测试仅点击 split-transaction-button 并断言 split-transaction-dialog 可见，未操作或断言分类自动补全过滤行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 3432,
+                "has_app_diff": true,
+                "app_diff_hunks": 5,
+                "spec_lines": 17,
+                "material_lines": 101,
+                "prompt_length": 3939
+              }
+            },
+            {
+              "case_id": "rq2_026",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅导航到预算页、点击Budget并断言budget-table可见，未操作或断言CategoryAutocomplete的分类筛选行为，无法建立与本次变更的直接关联。",
+                "测试仅打开根页、点击侧栏 Budget、断言 budget-table 可见，未操作或断言 CategoryAutocomplete 的分类自动完成筛选行为，与本次提取 filterCategorySuggestions 的变更无直接关联。",
+                "变更涉及 CategoryAutocomplete 的分类建议过滤逻辑，但用例仅打开预算页并断言 budget-table 可见，未操作分类自动补全或断言其筛选行为，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 3342,
+                "has_app_diff": true,
+                "app_diff_hunks": 5,
+                "spec_lines": 18,
+                "material_lines": 102,
+                "prompt_length": 3849
+              }
+            },
+            {
+              "case_id": "rq2_027",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "生成测试仅断言 body 可见，未点击 add-split-button 或操作拆分相关 UI/行为，与本次变更（移除拆分按钮点击、拆分初始为空）无直接关联。",
+                "生成用例只断言 page 的 body 可见，未打开或操作交易表、分屏及 add-split-button 相关 UI，无法建立与本次变更的直接关联。",
+                "生成用例仅用 expect(page.locator('body')).toBeVisible() 做泛泛可见性断言，未操作或断言 diff 涉及的 add-split-button 及拆分明细行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1262,
+                "has_app_diff": true,
+                "app_diff_hunks": 1,
+                "spec_lines": 5,
+                "material_lines": 37,
+                "prompt_length": 1769
+              }
+            },
+            {
+              "case_id": "rq2_028",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "生成测试只访问首页预算页并检查预算元素和URL，未操作或断言变更涉及的 TransactionsTable 拆分行为及 add-split-button 相关逻辑。",
+                "测试仅打开首页并断言 budget 内容可见及 hash 路由，未操作或断言交易表、拆分、debit 字段等本次变更相关行为。",
+                "用例只打开首页并断言预算表格/URL可见，未操作或断言变更涉及的 add-split-button 或“两个空分割”行为，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1682,
+                "has_app_diff": true,
+                "app_diff_hunks": 1,
+                "spec_lines": 16,
+                "material_lines": 48,
+                "prompt_length": 2189
+              }
+            },
+            {
+              "case_id": "rq2_029",
+              "labels": [
+                "y",
+                "y",
+                "y"
+              ],
+              "reasons": [
+                "测试在 / 定位并点击 popover trigger，断言 popover 可见，直接对应 diff 新增的 Popover.Trigger/Popover.Content 行为；选择器不精确但仍建立了关联。",
+                "用例访问 /，点击 popover.trigger 并断言 popover 可见，直接对应 Preset.svelte 新增的 Popover.Trigger/Popover.Content 行为；选择器细节不一致不影响关联。",
+                "测试打开首页并定位、点击 popoverTrigger，断言 popover 可见；变更在 Preset.svelte 新增 Popover 下拉选择行为，直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "y",
+              "majority_tie": false,
+              "features": {
+                "project": "mermaid_live",
+                "material_length": 4782,
+                "has_app_diff": true,
+                "app_diff_hunks": 3,
+                "spec_lines": 21,
+                "material_lines": 143,
+                "prompt_length": 5289
+              }
+            },
+            {
+              "case_id": "rq2_030",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅打开首页、检查默认 Mermaid 代码和预览 SVG；未操作或断言变更涉及的 Sample Diagrams 按钮、下拉菜单及示例加载行为。",
+                "测试仅打开首页并断言默认编辑器含“graph TD”、预览有 SVG，未操作或断言变更涉及的 Sample Diagrams 按钮、示例下拉或 loadSampleDiagram。",
+                "用例仅访问首页并断言默认图（graph TD、#preview svg）渲染，未操作或断言变更引入的 Sample Diagrams 按钮、下拉 Popover、示例标题或 loadSampleDiagram 行为，无法建立与 Preset.svelte 变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "mermaid_live",
+                "material_length": 4777,
+                "has_app_diff": true,
+                "app_diff_hunks": 3,
+                "spec_lines": 15,
+                "material_lines": 137,
+                "prompt_length": 5284
+              }
+            }
+          ]
+        },
+        "rq3": {
+          "n": 40,
+          "runs_available": [
+            1,
+            2,
+            3
+          ],
+          "per_run_distribution": [
+            {
+              "run": 1,
+              "file": "experiments/out/annotator1_masked.json",
+              "distribution": {
+                "STRUCTURAL_ONLY": 40
+              },
+              "failures": 0
+            },
+            {
+              "run": 2,
+              "file": "experiments/out/repeats/masked_run2.json",
+              "distribution": {
+                "STRUCTURAL_ONLY": 40
+              },
+              "failures": 0
+            },
+            {
+              "run": 3,
+              "file": "experiments/out/repeats/masked_run3.json",
+              "distribution": {
+                "STRUCTURAL_ONLY": 40
+              },
+              "failures": 0
+            }
+          ],
+          "per_run_usage": [
+            {
+              "run": 1,
+              "prompt_tokens": 356167,
+              "completion_tokens": 23852,
+              "reasoning_tokens": 21286,
+              "budgets": "2000",
+              "escalations": []
+            },
+            {
+              "run": 2,
+              "prompt_tokens": 356167,
+              "completion_tokens": 26002,
+              "reasoning_tokens": 23450,
+              "budgets": "4000,2000",
+              "escalations": [
+                "rb001@4000"
+              ]
+            },
+            {
+              "run": 3,
+              "prompt_tokens": 356167,
+              "completion_tokens": 21781,
+              "reasoning_tokens": 19146,
+              "budgets": "2000",
+              "escalations": []
+            }
+          ],
+          "stability": {
+            "3/3": 40,
+            "2/3": 0,
+            "1/3": 0
+          },
+          "unstable": [],
+          "flips_vs_run1": [
+            {
+              "run": 2,
+              "flips": []
+            },
+            {
+              "run": 3,
+              "flips": []
+            }
+          ],
+          "majority_distribution": {
+            "STRUCTURAL_ONLY": 40
+          },
+          "majority_ties": [],
+          "majority_vs_run1": [],
+          "observations": {
+            "unstable_count": 0,
+            "stable_prompt_length_median": 26065,
+            "unstable_prompt_length_median": null,
+            "stable_material_length_median": 25352,
+            "unstable_material_length_median": null,
+            "groups": [],
+            "details": []
+          },
+          "cases": [
+            {
+              "case_id": "rb001",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交为 HeaderMenu 新增子菜单并将 items 改为 commandItems，改变菜单 DOM/定位锚点；断言 diff 为 +0/-0，Task 994 等期望未变，属定位器失效。",
+                "旧断言仍为“Sort Descending”和“Task 994”，业务期望未变；提交升级菜单库并新增子菜单、将菜单项改为 commandItems，导致 .slick-header-menu / nth-of-type 定位失效。",
+                "断言值仍为 'Task 994'，断言增删 +0/-0，排序意图未变；commit 新增子菜单并升级 Slickgrid-Universal，旧 `.slick-header-menu` 定位器/DOM 结构失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 20914,
+                "material_lines": 420,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 15,
+                "assertion_diff_lines": 222,
+                "assertion_plus": 189,
+                "assertion_minus": 33,
+                "commit_chars": 170,
+                "prompt_length": 21627
+              }
+            },
+            {
+              "case_id": "rb002",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言级 diff 仅 locator 变为 LOCATOR_CHANGED，Task 2、Task 2222、25、2009-01-22 等断言值均未变；commit 为 Slickgrid-Universal v4 重大迁移，属 DOM/API 迁移导致旧定位器失效。",
+                "断言值与 matcher 全部未变（Task 2/2222、25、2009-01-22 等），diff 仅显示 LOCATOR_REDACTED→CHANGED；commit 为 Slickgrid-Universal v4.0 大版本迁移，源码改动均为 API/DOM 迁移，无业务期望变更证据。",
+                "旧定位器 `[style=\"top:...\"] > .slick-cell:nth(2)` 被替换，测试断言值如 'Task 2'、'Task 2222'、'25'、'2009-01-22' 及 matcher 均未变；提交为 v4 迁移，定位方式改变明确。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 50601,
+                "material_lines": 981,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 51314
+              }
+            },
+            {
+              "case_id": "rb003",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言级diff显示仅定位器替换，断言值（Task 2222、25、2009-01-22等）完全未变；commit为Slickgrid-Universal v4大版本迁移，旧行style锚点失效，属DOM结构/测试API迁移。",
+                "测试 diff 中 'Task 2'、'Task 2222'、'25'、'2009-01-22' 等断言值均未变，仅定位器由 LOCATOR_REDACTED 变为 LOCATOR_CHANGED；材料说明是 Slickgrid-Universal v4.0 大版本迁移，属定位器/API 结构变化。",
+                "Commit 为 Slickgrid-Universal v4 迁移，测试 diff 仅 locator 变更，断言值 Task 2222、25、2009-01-22 等均未变；源码改动主要是 Formatters.icon、SlickEventHandler 等 API/DOM 迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 50601,
+                "material_lines": 981,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 51314
+              }
+            },
+            {
+              "case_id": "rb004",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言值如'25'、'Task 2222'、'2009-01-22'均未变，仅定位器由LOCATOR_REDACTED改为LOCATOR_CHANGED；commit为Slickgrid-Universal v4大版本迁移，源码含SlickEventHandler、SlickDataView等API迁移，属定位/DOM结构变化导致旧locator失效。",
+                "旧定位器依赖行内 style 与 nth-cell，v4 迁移后 DOM 结构变化；断言 diff 中 Task 2222、25、2009-01-22 等期望值均未变，仅 locator 被替换。",
+                "旧定位器依赖内联 style top 与 .slick-cell:nth()，v4.0 大版本迁移改变 DOM/API；断言 diff 中 '25'、'Task 2222'、'2009-01-22' 等期望值均未变，仅 LOCATOR 更新。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 50601,
+                "material_lines": 981,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 51314
+              }
+            },
+            {
+              "case_id": "rb005",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧定位器依赖内联 style 的 top 与 nth-cell，commit 为 Slickgrid-Universal v4 迁移；断言 diff 中仅 LOCATOR 变化，'25'、'Task 2222'、'2009-01-22' 等期望值均未变，支持仅定位器失效。",
+                "断言 diff 仅将 LOCATOR_REDACTED 改为 LOCATOR_CHANGED，所有 should('contain',…) 的断言值与 matcher 均未变；commit 为 Slickgrid-Universal v4 迁移，旧 style/nth 定位器随 DOM/API 变化断裂。",
+                "断言值未变（Task 2222、25、2009-01-22 等），测试 diff 仅见 LOCATOR_REDACTED 改为 LOCATOR_CHANGED；旧定位器依赖 style/top 与 nth 结构，在 Slickgrid-Universal v4 迁移中失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 50601,
+                "material_lines": 981,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 51314
+              }
+            },
+            {
+              "case_id": "rb006",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言值均未变（如 Task 2222、25、2009-01-22），仅 locator 由 REDACTED 改为 CHANGED；v4 迁移移除全局 Slick 并改动 DOM/CSS，导致旧 style/slick-cell 定位失效。",
+                "断言级 diff 仅定位器由 REDACTED 变为 CHANGED，所有断言值如 Task 2222、25、2009-01-22 均未变；提交为 Slickgrid-Universal v4 迁移，属 locator/DOM 结构失效。",
+                "测试 diff 仅 cy.get 定位器变化，断言值如 'Task 2222'、'25'、'2009-01-22' 均未变；commit 为 Slickgrid-Universal v4 迁移，源码多为 SlickEventHandler、SlickGlobalEditorLock 等 API/DOM 迁移证据。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 50601,
+                "material_lines": 981,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 51314
+              }
+            },
+            {
+              "case_id": "rb007",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言 diff 中 `2009-01-22`、`Task 2222` 等期望值均未变，仅 locator 由 REDACTED 改为 CHANGED；commit 为 Slickgrid v4 迁移，源码可见 Slick API/事件绑定迁移，符合定位器失效。",
+                "断言值如'2009-01-22'、'Task 2222'前后未变，测试diff仅显示cy.get定位器被替换；提交为Slickgrid v4迁移，属locator/DOM结构变化。",
+                "Commit 为迁移到 Slickgrid-Universal v4.0 major；断言 diff 中 'Task 2222'、'25'、'2009-01-22' 等断言值均未变，仅定位器由旧 style top 选择器改为 LOCATOR_CHANGED，符合 DOM/定位方式变化导致旧 locator 失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 50601,
+                "material_lines": 981,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 51314
+              }
+            },
+            {
+              "case_id": "rb008",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "测试 diff 仅定位器变化，断言值如 'Task 2'、'25'、'2009-01-22' 均未变；commit 为 Slickgrid-Universal v4 大版本迁移，旧定位器依赖内联 style 的 DOM 结构，属定位锚点失效。",
+                "断言 diff 中 'Task 2'、'25'、'2009-01-22' 等期望值均未变，仅定位器由 REDACTED 改为 CHANGED；commit 为 Slickgrid-Universal v4.0 大版本迁移，应用源码大量 API/DOM 结构变动，属定位器失效。",
+                "断言 diff 中 'Task 2222'、'25'、'2009-01-22' 等期望值均未变，仅 LOCATOR_REDACTED→LOCATOR_CHANGED；commit 为 Slickgrid-Universal v4.0 major 迁移，属定位器/DOM 锚点失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 50601,
+                "material_lines": 981,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 51314
+              }
+            },
+            {
+              "case_id": "rb009",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "v4 大版本迁移，旧定位器依赖内联 style 与 nth-cell；断言 diff 仅 locator 变化，'Mass Update All Records'、'Belgium'、'51' 等期望值未变，源码为 API/包升级。",
+                "测试 diff 仅 locator 从 REDACTED 变为 CHANGED，断言值如 'All 501 records selected'、'Belgium' 未变；commit 为 Slickgrid-Universal v4 迁移，属 DOM/locator 断裂。",
+                "Commit 为迁移 Slickgrid-Universal v4.0 大版本，旧定位器依赖行 top 样式与 slick-cell 结构；测试 diff 仅 locator 变更，'51'、'Straightforward'、'Belgium' 等断言值未变，故属定位/API 迁移失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 56880,
+                "material_lines": 1059,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 57593
+              }
+            },
+            {
+              "case_id": "rb010",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言仍为 should('be.checked')，测试意图未变；diff 仅将三处 locator 替换为新定位方式，且 commit 是 Slickgrid-Universal v4.0 大版本迁移，属 DOM 定位失效。",
+                "断言级 diff 仅定位器改为 LOCATOR_CHANGED，三条断言仍均为 .should('be.checked')，断言值与目标未变；提交为 Slickgrid-Universal v4 大版本迁移，旧 style/top DOM 定位方式随结构/API 变化失效。",
+                "断言 diff 仅为定位器替换（+3/-3），.should('be.checked') 期望值未变；commit 为升级 Slickgrid-Universal v4 大版本，属 DOM 定位锚点失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 45082,
+                "material_lines": 884,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 65,
+                "assertion_diff_lines": 271,
+                "assertion_plus": 122,
+                "assertion_minus": 149,
+                "commit_chars": 60,
+                "prompt_length": 45795
+              }
+            },
+            {
+              "case_id": "rb011",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧测试仍调用 window.builtinSetTimeout，源码删除了该全局函数并迁移为 builtins.setTimeout；断言增删为 0，测试意图与断言值未变，仅测试 API 迁移导致旧调用失效。",
+                "提交将 window.builtinSetTimeout 等内置 API 迁移为 builtins，旧测试仍用被删除的全局 API；断言级 diff 为 +0/-0，期望未变。",
+                "断言增删为0，测试意图和错误信息断言未变；应用 diff 移除了测试使用的 window.builtinSetTimeout，改为 builtins/ensureBuiltins，属测试 API 迁移导致旧定位代码失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 116777,
+                "material_lines": 2350,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 146,
+                "assertion_diff_lines": 1007,
+                "assertion_plus": 549,
+                "assertion_minus": 458,
+                "commit_chars": 24,
+                "prompt_length": 117490
+              }
+            },
+            {
+              "case_id": "rb012",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言 diff 为 +0/-0，旧断言值未变；源码 treeView.tsx 将扁平 visibleItems 改为嵌套 TreeItemHeader/group，role=treeitem 的 DOM 结构变化导致 page.getByRole('treeitem') 断裂。",
+                "断言级 diff 为 +0/-0，旧断言未变；源码仅重构 treeView.tsx 的树结构及 role/title 承载，属 DOM 结构变化致旧 getByRole('treeitem') 失效。",
+                "断言增删为 +0/-0，旧断言保持不变；源码仅重构 treeView 的 role=treeitem、title 与嵌套结构，属 DOM 结构变化导致旧定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 23353,
+                "material_lines": 632,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 14,
+                "assertion_diff_lines": 300,
+                "assertion_plus": 190,
+                "assertion_minus": 110,
+                "commit_chars": 39,
+                "prompt_length": 24066
+              }
+            },
+            {
+              "case_id": "rb013",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码将 ListView 改为 TreeView，条目角色由 listitem 变为 treeitem，旧 getByRole('listitem') 因此失效；断言级 diff 为 +0/-0，测试意图与断言值未变。",
+                "提交把列表迁移为树组件，treeView.tsx 中新条目 role 为 'treeitem'，旧定位器仍用 getByRole('listitem')；断言级 diff 为 +0/-0，测试意图与断言值未变。",
+                "源码将 ListView 改为 TreeView，条目角色由 listitem 变为 treeitem；断言级 diff 为 +0/-0，旧断言值未变，仅旧定位器 getByRole('listitem') 失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 25724,
+                "material_lines": 751,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 16,
+                "assertion_diff_lines": 406,
+                "assertion_plus": 303,
+                "assertion_minus": 103,
+                "commit_chars": 39,
+                "prompt_length": 26437
+              }
+            },
+            {
+              "case_id": "rb014",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言级 diff 为 +0/-0 且旧断言保持不变；源码仅重构 TreeView，将 role='treeitem' 移到新的递归节点并新增 aria-label/title，属于 locator/DOM 结构迁移。",
+                "源码把 role='treeitem' 从列表外层移到 TreeItemHeader 并改为嵌套树；断言 diff 为 +0/-0，dumpTestTree 期望未变，故仅定位/DOM 结构失效。",
+                "断言级 diff 为 +0/-0，dumpTestTree 期望值未变；源码仅重构 treeView 结构并将 title/aria-label 迁移到 treeitem，属定位器与 DOM 结构变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 24945,
+                "material_lines": 661,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 14,
+                "assertion_diff_lines": 300,
+                "assertion_plus": 190,
+                "assertion_minus": 110,
+                "commit_chars": 39,
+                "prompt_length": 25658
+              }
+            },
+            {
+              "case_id": "rb015",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言级diff为+0/-0，旧断言未变；源码treeView.tsx重构了role='treeitem'的DOM层级与嵌套结构，导致旧定位器getByRole('treeitem')失效。",
+                "断言 diff 为 +0/-0，旧期望树未变；提交仅重排 treeView DOM 并迁移 role/title 等锚点，导致旧 getByRole('treeitem') 定位失效。",
+                "断言级 diff 为 +0/-0，旧断言未变；源码重写 treeView.tsx 的 role/title/DOM 结构并调整 toolbarButton 的 aria-label，导致 page.getByRole('treeitem') 定位失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 24979,
+                "material_lines": 661,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 14,
+                "assertion_diff_lines": 300,
+                "assertion_plus": 190,
+                "assertion_minus": 110,
+                "commit_chars": 39,
+                "prompt_length": 25692
+              }
+            },
+            {
+              "case_id": "rb016",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交将 ListView 改为 TreeView，新条目使用 role='treeitem'，旧 getByRole('listitem') 因此失效；断言级 diff 为 +0/-0，旧断言未变，属定位器/DOM 结构变化。",
+                "源码将列表改为树结构，新增 role='treeitem'，旧定位器 getByRole('listitem') 失效；断言级 diff 为 +0/-0，说明断言未变。",
+                "commit 将 ListView 改为 TreeView，源码新增 role='treeitem'，旧 page.getByRole('listitem') 因 DOM role 变化失效；断言 +0/-0 未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 22308,
+                "material_lines": 614,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 16,
+                "assertion_diff_lines": 406,
+                "assertion_plus": 303,
+                "assertion_minus": 103,
+                "commit_chars": 39,
+                "prompt_length": 23021
+              }
+            },
+            {
+              "case_id": "rb017",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交将 listView 改为 treeView，旧定位器 getByRole('listitem') 失效；断言级 diff 为 +0/-0，断言目标与期望值未变，仅 DOM/定位结构变化。",
+                "源码把列表改为树，新增 role='tree' 和 role='treeitem'；旧 locator 使用 getByRole('listitem')，DOM 角色变化导致定位失效；断言级 diff 为 +0/-0，期望值未变。",
+                "提交把 ListView 换成新 TreeView：treeView.tsx 新增 role='tree'/'treeitem' 条目，ui-mode-list-item 类改名为 ui-mode-tree-item，旧 getByRole('listitem') 因此失效；断言级 diff 为 +0/-0，dumpTestTree 期望值未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 27316,
+                "material_lines": 780,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 16,
+                "assertion_diff_lines": 406,
+                "assertion_plus": 303,
+                "assertion_minus": 103,
+                "commit_chars": 39,
+                "prompt_length": 28029
+              }
+            },
+            {
+              "case_id": "rb018",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交“implement tree w/o list”将 ListView 改为 TreeView，新增 role='treeitem' 替代旧 listitem；断言级 diff 为 +0/-0，旧断言未变，仅定位器因 DOM 结构变化失效。",
+                "提交将 ListView 重构为 TreeView，源码新增 role='treeitem' 树结构；旧定位器 getByRole('listitem') 因此失效，且断言 diff 为 +0/-0 未变。",
+                "Commit 将 ListView 改为 TreeView，源码新增 role='treeitem'，旧定位器仍用 getByRole('listitem')；断言 diff 为 +0/-0，断言值与目标未变，仅定位角色失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 27350,
+                "material_lines": 780,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 16,
+                "assertion_diff_lines": 406,
+                "assertion_plus": 303,
+                "assertion_minus": 103,
+                "commit_chars": 39,
+                "prompt_length": 28063
+              }
+            },
+            {
+              "case_id": "rb019",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交将列表实现改为树结构，源码新增 role='treeitem'，旧定位器依赖的 listitem 因而失效；断言级 diff 显示 +0/-0，断言值未变。",
+                "源码将 ListView 改为 TreeView，旧定位器 getByRole('listitem') 因 DOM 结构/role 变化失效；断言级 diff 为 +0/-0，旧断言保持不变。",
+                "提交将 listView 改为 treeView，节点 role 由 listitem 变为 treeitem，导致旧定位器失效；断言 diff 为 +0/-0，dumpTestTree 期望未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 27356,
+                "material_lines": 780,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 16,
+                "assertion_diff_lines": 406,
+                "assertion_plus": 303,
+                "assertion_minus": 103,
+                "commit_chars": 39,
+                "prompt_length": 28069
+              }
+            },
+            {
+              "case_id": "rb020",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码将 ListView 改为 TreeView，新节点 role 变为 treeitem，旧 getByRole('listitem') 因此失效；断言增删为 0，测试意图与期望未变。",
+                "源码将 ListView 改为 TreeView，条目 role 变为 treeitem，旧 getByRole('listitem') 定位失效；断言级 diff 为 +0/-0，dumpTestTree 期望值未变。",
+                "源码将列表改为树视图，渲染元素角色由 listitem 变为 treeitem，导致旧定位器 getByRole('listitem') 失效；断言级 diff 为 +0/-0，测试意图与断言值未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 26646,
+                "material_lines": 780,
+                "has_full_old_block": true,
+                "old_block_lines": 0,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 16,
+                "assertion_diff_lines": 406,
+                "assertion_plus": 303,
+                "assertion_minus": 103,
+                "commit_chars": 39,
+                "prompt_length": 27359
+              }
+            },
+            {
+              "case_id": "rb021",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧断言用 getByRole('cell') 定位表头，新断言改为 columnheader；源码改动仅给 th 增加 scope=\"col\" 并调整 a11y 属性，未改列显示/隐藏逻辑，断言可见性语义未变，且 commit 明确为 update broken locator。",
+                "源码 LadTable.vue 给表头 th 加 scope=\"col\"，旧测试却用 getByRole('cell') 定位表头；测试 diff 仅将 cell 改为 columnheader 并更新列名，可见/隐藏断言意图未变。",
+                "Commit 明示“fix: update broken locator”；源码仅给 LAD 表头/单元格加 scope 等语义属性，测试仍断言各列可见/隐藏，仅把 cell 改为 columnheader 并更新文案锚点 WATCH→Limit WATCH。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 64197,
+                "material_lines": 1322,
+                "has_full_old_block": true,
+                "old_block_lines": 109,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 45,
+                "assertion_diff_lines": 226,
+                "assertion_plus": 132,
+                "assertion_minus": 94,
+                "commit_chars": 64,
+                "prompt_length": 64910
+              }
+            },
+            {
+              "case_id": "rb022",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码只给单元格新增 aria-label=\"lad type\" 等，导致原模糊名称定位产生歧义；断言仍为 Type/Timestamp 列可见/隐藏，仅改为 exact:true，期望值未变。",
+                "应用源码给 LAD 单元格新增 aria-label（如 \"lad type\"），旧 getByRole(cell,name:'Type') 的可访问名称锚点失效；测试仅加 exact:true 调整定位，Type 可见性断言及业务意图未变。",
+                "断言 diff 仅给 getByRole 的 name 加 exact:true，Timestamp/Type 可见性期望未变；源码 LadRow.vue 新增 aria-label 改变单元格可访问名称，属定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 17540,
+                "material_lines": 330,
+                "has_full_old_block": true,
+                "old_block_lines": 109,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 6,
+                "assertion_diff_lines": 47,
+                "assertion_plus": 28,
+                "assertion_minus": 19,
+                "commit_chars": 51,
+                "prompt_length": 18253
+              }
+            },
+            {
+              "case_id": "rb023",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码为数据单元格新增 aria-label=\"lad type\"/\"lad timestamp\"，旧 name 非精确匹配会误命中多单元格；测试仅加 exact:true 消除歧义，可见/隐藏断言未变。",
+                "旧测试仍断言 Type 列可见/隐藏；diff 仅将 name:'Type' 改为 name:'Type', exact:true，源码改动为 td 增 aria-label，属定位/DOM 变化，非期望变化。",
+                "断言仅给 cell 名称 'Type'/'Timestamp' 增加 exact:true，可见/隐藏期望未变；源码 LadRow 新增 aria-label 改变可访问名称锚点，属定位器适配，非业务断言变更。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 12506,
+                "material_lines": 254,
+                "has_full_old_block": true,
+                "old_block_lines": 38,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 6,
+                "assertion_diff_lines": 47,
+                "assertion_plus": 28,
+                "assertion_minus": 19,
+                "commit_chars": 51,
+                "prompt_length": 13219
+              }
+            },
+            {
+              "case_id": "rb024",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码在 LadRow.vue 为 td 新增 aria-label（如 lad timestamp），使旧 getByRole('cell',{name:'Timestamp'}) 的可访问名称匹配失效；测试仅加 exact:true，可见/隐藏断言与目标未变。",
+                "源码为单元格新增 aria-label=\"lad timestamp\" 等，使旧 locator 按 name 子串匹配到多个 cell；测试 diff 仅加 exact:true，Timestamp/Type 的可见/隐藏断言目标与期望值未变。",
+                "断言仅给 Timestamp/Type 的 role cell 匹配加 exact:true，可见性期望未变；源码在 LadRow.vue 的 td 新增 aria-label，改变可访问名称，导致旧非精确 locator 失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 12511,
+                "material_lines": 254,
+                "has_full_old_block": true,
+                "old_block_lines": 38,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 6,
+                "assertion_diff_lines": 47,
+                "assertion_plus": 28,
+                "assertion_minus": 19,
+                "commit_chars": 51,
+                "prompt_length": 13224
+              }
+            },
+            {
+              "case_id": "rb025",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言级 diff 为 +0/-0，完整测试块中的 autoscale 范围断言未变；提交说明明确为“fix: update broken locator”，且测试重构涉及 locator/a11y 迁移，失效仅由旧定位器失效导致。",
+                "断言级 diff 为 +0/-0，旧测试的 Y 轴刻度断言未变；commit 说明明确“update broken locator”，失效仅涉及等待保存横幅的 CSS 定位器，未显示业务期望变化。",
+                "失效点是 `.c-message-banner__message` 定位器；提交说明含“fix: update broken locator”，且断言级 diff 为 +0/-0，旧断言未变，属定位器/测试 API 迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 43963,
+                "material_lines": 1106,
+                "has_full_old_block": true,
+                "old_block_lines": 75,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 45,
+                "assertion_diff_lines": 226,
+                "assertion_plus": 132,
+                "assertion_minus": 94,
+                "commit_chars": 64,
+                "prompt_length": 44676
+              }
+            },
+            {
+              "case_id": "rb026",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "Commit说明明确“fix: update broken locator”，旧失效点为CSS定位器等待横幅detached；断言级diff为+0/-0，测试意图与断言值未变，属定位器/DOM锚点迁移。",
+                "材料已说明该测试因 locator 断裂失效；断言级 diff 为 +0/-0，旧断言未变；commit 说明含“fix: update broken locator”及大量 locator 更新，仅等待 banner detached 的 CSS 定位失效。",
+                "断言级 diff 为 +0/-0，旧断言未变；commit 说明明确含“fix: update broken locator”，失效点为等待 Save Banner 消失的旧定位器，属 locator 断裂。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 43986,
+                "material_lines": 1106,
+                "has_full_old_block": true,
+                "old_block_lines": 75,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 45,
+                "assertion_diff_lines": 226,
+                "assertion_plus": 132,
+                "assertion_minus": 94,
+                "commit_chars": 64,
+                "prompt_length": 44699
+              }
+            },
+            {
+              "case_id": "rb027",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "Commit 明确注明“update broken locator”；测试仅改断言写法（toHaveCount 等等价形式），limit line 可见性期望未变；应用改动主要是 aria/role 等定位锚点调整。",
+                "Commit 说明为 fix: update broken locator；断言 diff 仅将 count().toBe 改为 toHaveCount 并改定位器，图例数量等断言值未变，符合定位/API 迁移。",
+                "commit 明确写着“fix: update broken locator”并大量更新 locator；断言 diff 仅将 count 改为 toHaveCount/toBeAttached，期望值与目标未变；源码 plot 改动为 aria/文案，旧 .js-limit-area 失效属定位迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 43785,
+                "material_lines": 1068,
+                "has_full_old_block": true,
+                "old_block_lines": 36,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 45,
+                "assertion_diff_lines": 226,
+                "assertion_plus": 132,
+                "assertion_minus": 94,
+                "commit_chars": 64,
+                "prompt_length": 44498
+              }
+            },
+            {
+              "case_id": "rb028",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码在 .gl-plot-label 与 .plot-series-color-swatch 间新增容器 div，导致旧直接子选择器失效；断言 diff 为 +0/-0，期望颜色值未变。",
+                "源码在 .gl-plot-label 与 .plot-series-color-swatch 之间新增容器 div，导致原直接子代定位器失效；测试 diff 显示断言未变，仍校验同一背景色，仅定位结构变化。",
+                "源码在 .gl-plot-label 与 .plot-series-color-swatch 间新增 .gl-plot-y-label-swatch-container，导致旧直接子代定位器失效；断言值仍为 rgb(255, 166, 61)，测试断言无增删。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 3727,
+                "material_lines": 115,
+                "has_full_old_block": true,
+                "old_block_lines": 19,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 3,
+                "assertion_diff_lines": 28,
+                "assertion_plus": 17,
+                "assertion_minus": 11,
+                "commit_chars": 60,
+                "prompt_length": 4440
+              }
+            },
+            {
+              "case_id": "rb029",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "应用源码将对话框按钮文案由'OK'统一改为'Ok'（FormProperties.vue、MctPlot.vue 等），旧 locator 的 name:'OK' 随之失效；断言级 diff 为 +0/-0，'Fixed Timespan' 断言与测试意图未变，仅文案锚点变化。",
+                "源码将默认按钮文案由'OK'改为'Ok'，提交说明为update broken locator，断言级diff无改动，测试意图与断言值未变，仅定位文案锚点失效。",
+                "源码多处将按钮 label 从 'OK' 改为 'Ok'（如 FormProperties.vue、MctPlot.vue），旧定位器仍按 'OK' exact 匹配；测试断言 'Fixed Timespan' 未变，属文案锚点迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 42115,
+                "material_lines": 1038,
+                "has_full_old_block": true,
+                "old_block_lines": 21,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 45,
+                "assertion_diff_lines": 226,
+                "assertion_plus": 132,
+                "assertion_minus": 94,
+                "commit_chars": 64,
+                "prompt_length": 42828
+              }
+            },
+            {
+              "case_id": "rb030",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码将按钮 title 从 'More options' 改为 'More actions'（BrowseBar/TelemetryFrame 等），测试断言与目标未变，仅文案定位器断裂。",
+                "源码将按钮 title 从“More options”改为“More actions”，旧定位器基于该文案失效；断言 diff 为 +0/-0，测试意图和断言值未变，仅定位锚点变化。",
+                "旧定位器用 title=\"More options\"，源码将多处同名 title 改为 \"More actions\"；断言 diff 为 +0/-0，测试仍断言 plotPixelSize > 0，意图与断言值未变，仅文案锚点失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 17896,
+                "material_lines": 447,
+                "has_full_old_block": true,
+                "old_block_lines": 8,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 22,
+                "assertion_diff_lines": 136,
+                "assertion_plus": 94,
+                "assertion_minus": 42,
+                "commit_chars": 56,
+                "prompt_length": 18609
+              }
+            },
+            {
+              "case_id": "rb031",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交说明为Playwright迁移，测试diff将page.$改为page.locator并调整matcher，断言仍检查浮动工具栏有无；应用源码仅改测试/构建配置，未改工具栏行为。",
+                "Commit 明确为 vitest 迁移到 Playwright；diff 仅将 page.$ 改为 locator/toHaveCount，toolbar 出现/消失的断言意图与值未变，应用源码无业务改动，属测试 API 迁移。",
+                "Commit 说明为迁移至 Playwright，断言由 page.$ 改为 page.locator，仅测试 API 迁移；toHaveCount(0) 等价于原 toBeNull，工具栏出现/消失意图未变，应用源码无行为改动。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 16937,
+                "material_lines": 386,
+                "has_full_old_block": true,
+                "old_block_lines": 124,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 5,
+                "assertion_diff_lines": 77,
+                "assertion_plus": 66,
+                "assertion_minus": 11,
+                "commit_chars": 30,
+                "prompt_length": 17650
+              }
+            },
+            {
+              "case_id": "rb032",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "Commit 为 vitest→Playwright e2e 迁移，断言由 page.$ 改为 page.locator/toHaveCount，仍检查工具栏存在/消失；应用源码仅配置依赖变更，无业务行为改动，故属测试 API/定位迁移。",
+                "Commit 明确为 vitest→playwright 迁移，断言由 page.$ 改为 page.locator，仅定位/API 变化，期望仍为非空/空；应用源码无相关 UI 改动。",
+                "Commit 为 vitest→playwright 迁移，断言由 page.$/toBeNull 改为 page.locator/toHaveCount(0)，仍检查同一 data-kg-floating-toolbar 的存在与移除，应用源码无行为改动，属测试 API/定位迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 11258,
+                "material_lines": 236,
+                "has_full_old_block": true,
+                "old_block_lines": 10,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 5,
+                "assertion_diff_lines": 77,
+                "assertion_plus": 66,
+                "assertion_minus": 11,
+                "commit_chars": 30,
+                "prompt_length": 11971
+              }
+            },
+            {
+              "case_id": "rb033",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "仅断言中的 locator 变更，toBeVisible 与“卡片可见”意图未变；无应用源码改动，commit 说明为规避 flaky 的测试定位调整。",
+                "提交仅改测试，无应用源码 diff；diff 仅改 toBeVisible 的 locator，断言值未变。说明称因 plus 菜单遮挡 flaky 而换 markdown card，属定位/稳定性调整。",
+                "仅改测试定位器：可见性断言由旧卡片锚点改为markdown卡片锚点，无应用源码改动，断言仍为toBeVisible，测试意图（点击加号退出编辑模式）未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 2061,
+                "material_lines": 57,
+                "has_full_old_block": true,
+                "old_block_lines": 20,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 2,
+                "assertion_plus": 1,
+                "assertion_minus": 1,
+                "commit_chars": 51,
+                "prompt_length": 2774
+              }
+            },
+            {
+              "case_id": "rb034",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交为“Migration to playwright”；diff 将 page.$ 改为 page.locator，并将 toBeNull 等改为等价的 toHaveCount(0)，断言目标与期望未变；应用源码仅测试配置/依赖，无行为改动。",
+                "材料显示这是 vitest 迁移到 Playwright，断言由 page.$ 改为 page.locator、toBeNull 改为 toHaveCount(0)，菜单存在/不存在的语义未变；源码改动仅测试与构建配置，无业务代码变更。",
+                "提交为 Playwright 迁移，测试 diff 仅把 page.$ 改为 page.locator，并将 null 断言改为 toHaveCount(0)，菜单存在性断言未变；应用源码未涉及用户行为改动。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 21428,
+                "material_lines": 470,
+                "has_full_old_block": true,
+                "old_block_lines": 19,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 5,
+                "assertion_diff_lines": 77,
+                "assertion_plus": 66,
+                "assertion_minus": 11,
+                "commit_chars": 30,
+                "prompt_length": 22141
+              }
+            },
+            {
+              "case_id": "rb035",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "无应用源码改动；测试仍为插入 snippet 并断言音频卡数量不变，仅将泛化的选中项定位改为等待含 'snippet' 文本的菜单项，属定位锚点修复。",
+                "无应用源码改动；提交明确修复菜单竞态，仅将等待任意选中项改为等待含 'snippet' 文本的菜单项，最终断言仍为 toHaveCount(2)，意图未变。",
+                "Commit说明将等待任意选中项改为等待正确菜单项文本，以修复未过滤菜单闪现的flaky；应用源码零改动，测试意图未变，仅定位锚点由selected改为hasText 'snippet'。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 3177,
+                "material_lines": 74,
+                "has_full_old_block": true,
+                "old_block_lines": 16,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 1,
+                "assertion_plus": 1,
+                "assertion_minus": 0,
+                "commit_chars": 77,
+                "prompt_length": 3890
+              }
+            },
+            {
+              "case_id": "rb036",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "仅将 data-testid 从 audio-caption 改为 audio-title，测试断言值仍为 'Audio sample 1'、toBeVisible 及 readOnly，未变业务期望。",
+                "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试同步替换定位器；断言值仍为 'Audio sample'、'Audio sample 1'，可见性与 readOnly 检查未变，属于定位锚点迁移。",
+                "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试断言值仍为 Audio sample、Audio sample 1 及 readOnly，未变，属定位锚点更新。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 3945,
+                "material_lines": 85,
+                "has_full_old_block": true,
+                "old_block_lines": 10,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 1,
+                "assertion_diff_lines": 4,
+                "assertion_plus": 2,
+                "assertion_minus": 2,
+                "commit_chars": 66,
+                "prompt_length": 4658
+              }
+            },
+            {
+              "case_id": "rb037",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试 diff 仅替换定位器；断言值如 'Audio sample' 和 readOnly 属性均未变，属定位锚点失效。",
+                "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试断言值仍为 Audio sample 等且目标未变，仅定位器随 testid 重命名更新。",
+                "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试 diff 只替换定位器；断言值 'Audio sample'、可见性及 readOnly 断言均未变，属于定位方式迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 3911,
+                "material_lines": 84,
+                "has_full_old_block": true,
+                "old_block_lines": 9,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 1,
+                "assertion_diff_lines": 4,
+                "assertion_plus": 2,
+                "assertion_minus": 2,
+                "commit_chars": 66,
+                "prompt_length": 4624
+              }
+            },
+            {
+              "case_id": "rb038",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "源码 diff 仅把 data-testid 从 audio-caption 改为 audio-title；测试 diff 只同步替换定位器，断言值 'Audio sample'、readOnly 等均未变，属纯定位锚点迁移。",
+                "源码仅将 data-testid 从 audio-caption 改为 audio-title，断言值如 'Audio sample' 未变，测试同步替换定位器，属于定位锚点重命名。",
+                "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试同步替换定位器；断言值['Audio sample','Audio sample 1']、可见性和 readOnly 均未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 4410,
+                "material_lines": 95,
+                "has_full_old_block": true,
+                "old_block_lines": 18,
+                "has_app_source_diff": true,
+                "app_diff_hunks": 1,
+                "assertion_diff_lines": 4,
+                "assertion_plus": 2,
+                "assertion_minus": 2,
+                "commit_chars": 66,
+                "prompt_length": 5123
+              }
+            },
+            {
+              "case_id": "rb039",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "应用源码无改动，最终断言 toHaveCount(2) 未变；仅将等待任意选中菜单项改为等待含 'snippet' 的菜单项可见，属定位/等待方式调整。",
+                "应用源码无改动；提交说明为修复菜单竞态，仅把等待任意选中项改为等待含'snippet'文本的菜单项，最终断言bookmark数量2未变，属于定位/等待方式调整。",
+                "仅将等待定位器从任意选中项改为按文本'snippet'定位；最终断言仍统计bookmark数量为2，且无应用源码改动，属定位/等待方式迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 3254,
+                "material_lines": 75,
+                "has_full_old_block": true,
+                "old_block_lines": 17,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 1,
+                "assertion_plus": 1,
+                "assertion_minus": 0,
+                "commit_chars": 77,
+                "prompt_length": 3967
+              }
+            },
+            {
+              "case_id": "rb040",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交仅改测试，用带hasText:'snippet'的可见性等待替换旧选中项等待，属定位/等待方式调整；无应用diff，最终toHaveCount(2)未变。",
+                "提交说明明确是修复 flaky，将等待任意 selected 项改为等待文本 'snippet' 的菜单项；无应用源码改动，最终 toHaveCount(2) 断言未变。",
+                "无应用源码改动；commit 说明仅把“任意选中项”等待改为等待正确菜单项文本，断言目标仍是 snippet 菜单项可见，意图未变，属定位方式变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 3250,
+                "material_lines": 75,
+                "has_full_old_block": true,
+                "old_block_lines": 17,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 1,
+                "assertion_plus": 1,
+                "assertion_minus": 0,
+                "commit_chars": 77,
+                "prompt_length": 3963
+              }
+            }
+          ]
+        }
+      }
+    },
+    "condA": {
+      "condition": "condA",
+      "runs": [
+        {
+          "run": 1,
+          "file": "experiments/out/annotator1_condA.json",
+          "failures": 0
+        },
+        {
+          "run": 2,
+          "file": "experiments/out/repeats/condA_run2.json",
+          "started_at": "2026-11-08T06:37:29.750Z",
+          "finished_at": "2026-11-08T06:41:33.642Z",
+          "failures": 0
+        },
+        {
+          "run": 3,
+          "file": "experiments/out/repeats/condA_run3.json",
+          "started_at": "2026-11-08T06:43:19.585Z",
+          "finished_at": "2026-11-08T06:47:07.537Z",
+          "failures": 0
+        }
+      ],
+      "families": {
+        "rq2": {
+          "n": 30,
+          "runs_available": [
+            1,
+            2,
+            3
+          ],
+          "per_run_distribution": [
+            {
+              "run": 1,
+              "file": "experiments/out/annotator1_condA.json",
+              "distribution": {
+                "n": 29,
+                "y": 1
+              },
+              "failures": 0
+            },
+            {
+              "run": 2,
+              "file": "experiments/out/repeats/condA_run2.json",
+              "distribution": {
+                "n": 29,
+                "y": 1
+              },
+              "failures": 0
+            },
+            {
+              "run": 3,
+              "file": "experiments/out/repeats/condA_run3.json",
+              "distribution": {
+                "n": 28,
+                "y": 2
+              },
+              "failures": 0
+            }
+          ],
+          "per_run_usage": [
+            {
+              "run": 1,
+              "prompt_tokens": 18097,
+              "completion_tokens": 5182,
+              "reasoning_tokens": 3721,
+              "budgets": "2000",
+              "escalations": []
+            },
+            {
+              "run": 2,
+              "prompt_tokens": 18097,
+              "completion_tokens": 5486,
+              "reasoning_tokens": 4022,
+              "budgets": "2000",
+              "escalations": []
+            },
+            {
+              "run": 3,
+              "prompt_tokens": 18097,
+              "completion_tokens": 6770,
+              "reasoning_tokens": 5326,
+              "budgets": "2000",
+              "escalations": []
+            }
+          ],
+          "stability": {
+            "3/3": 29,
+            "2/3": 1,
+            "1/3": 0
+          },
+          "unstable": [
+            {
+              "case_id": "rq2_019",
+              "labels": [
+                "n",
+                "n",
+                "y"
+              ],
+              "reasons": [
+                "用例仅打开/并断言通用 locator 'functiontooltip' 可见，未操作或断言变更文件 codeMirror-excelLanguage.tsx 涉及的公式编辑器/Excel 语言行为。",
+                "用例仅打开首页并断言 functiontooltip 可见，未涉及变更文件对应的公式编辑器或 codeMirror 行为，材料中无法建立与本次变更的直接关联。",
+                "测试打开应用根页面，并断言 functiontooltip 可见；该元素与变更文件 formula/codeMirror-excelLanguage.tsx 的公式语言功能直接相关，能建立关联。"
+              ],
+              "consistency": "2/3",
+              "distinct_labels": 2,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 418,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 6,
+                "material_lines": 17,
+                "prompt_length": 925
+              }
+            }
+          ],
+          "flips_vs_run1": [
+            {
+              "run": 2,
+              "flips": []
+            },
+            {
+              "run": 3,
+              "flips": [
+                {
+                  "case_id": "rq2_019",
+                  "from": "n",
+                  "to": "y",
+                  "reason": "测试打开应用根页面，并断言 functiontooltip 可见；该元素与变更文件 formula/codeMirror-excelLanguage.tsx 的公式语言功能直接相关，能建立关联。"
+                }
+              ]
+            }
+          ],
+          "majority_distribution": {
+            "n": 29,
+            "y": 1
+          },
+          "majority_ties": [],
+          "majority_vs_run1": [],
+          "observations": {
+            "unstable_count": 1,
+            "stable_prompt_length_median": 1239,
+            "unstable_prompt_length_median": 925,
+            "stable_material_length_median": 732,
+            "unstable_material_length_median": 418,
+            "groups": [
+              "actual_desktop"
+            ],
+            "details": [
+              {
+                "case_id": "rq2_019",
+                "sequence": [
+                  "n",
+                  "n",
+                  "y"
+                ],
+                "material": "应用diff无、spec 6 行"
+              }
+            ]
+          },
+          "cases": [
+            {
+              "case_id": "rq2_001",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更材料仅给出文件路径，未说明具体 UI 或行为；测试操作 inputcell/button 并断言 sheetnameprovider/customcell，无法建立与 TransactionsTable 变更的直接关联。",
+                "用例仅泛化操作 inputcell/button 并断言 sheetnameprovider、customcell，未体现与 TransactionsTable.tsx 变更的具体 UI 或行为关联。",
+                "测试只用inputcell、button、customcell等泛化选择器，并断言sheetnameprovider，未体现与TransactionsTable.tsx变更元素或行为的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 732,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 15,
+                "material_lines": 26,
+                "prompt_length": 1239
+              }
+            },
+            {
+              "case_id": "rq2_002",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更涉及TransactionsTable.tsx，用例仅访问首页并断言budget-header与Budget文本，未操作或断言交易表格相关UI，无法建立与变更的直接关联。",
+                "用例仅打开首页并断言 budget-header 可见及“Budget”文本，未操作或断言 TransactionsTable.tsx 中的交易表格，无法建立与本次变更的直接关联。",
+                "变更文件为 TransactionsTable.tsx（交易表格），但用例仅打开 '/#/' 并断言 budget-header 与文本 Budget 可见，未操作或断言交易表格相关 UI/行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 616,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 10,
+                "material_lines": 21,
+                "prompt_length": 1123
+              }
+            },
+            {
+              "case_id": "rq2_003",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅用 page.setContent 自造 cell、view、field 等占位 DOM，未打开应用，也未操作或断言 SchedulesTable.tsx 中与本次调度表变更相关的具体 UI/行为。",
+                "用例仅用 page.setContent 构造通用标签并断言其可见/填充，未打开应用，也未涉及 SchedulesTable.tsx 或日程表相关 UI/行为，无法建立与本次变更的直接关联。",
+                "用例仅用page.setContent构造cell、view、financialtext等静态元素，未打开应用，也未操作或断言SchedulesTable中本次变更的具体UI或行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1224,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 37,
+                "material_lines": 48,
+                "prompt_length": 1731
+              }
+            },
+            {
+              "case_id": "rq2_004",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更文件为 schedules/SchedulesTable.tsx，测试只操作 Add Expense、支出表格和 Budget Summary，未涉及 schedules 表格或相关行为，无法建立与本次变更的直接关联。",
+                "变更上下文为 SchedulesTable.tsx，但用例仅操作 Add Expense、预算表和 total-spent，未涉及任何 schedules 表格元素或行为，无法建立与本次变更的关联。",
+                "测试仅操作 Add Expense、费用表格和 Budget Summary，未访问或断言变更文件 SchedulesTable.tsx 涉及的 schedules 表格行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1703,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 37,
+                "material_lines": 48,
+                "prompt_length": 2210
+              }
+            },
+            {
+              "case_id": "rq2_005",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅断言 page.locator('body') 可见，未打开或操作 SelectLinkedAccountsModal，也未断言其任何具体 UI 或行为，无法建立与变更的直接关联。",
+                "用例仅断言 page.locator('body') 可见，未打开或操作 SelectLinkedAccountsModal 相关 UI，无法建立与变更的直接关联。",
+                "用例仅断言 page.locator('body') 可见，属泛泛可访问性检查，未打开或操作 SelectLinkedAccountsModal，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 412,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 5,
+                "material_lines": 16,
+                "prompt_length": 919
+              }
+            },
+            {
+              "case_id": "rq2_006",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更涉及 SelectLinkedAccountsModal.tsx 模态框，但用例仅打开首页并断言 body 可见及 URL，未操作或断言该模态框相关 UI 或行为。",
+                "用例只打开首页并断言 body 可见与 URL，未操作或断言变更文件 SelectLinkedAccountsModal.tsx 涉及的关联账户选择弹窗，无法建立与本次变更的直接关联。",
+                "生成测试仅打开主页面并断言 body 可见及 URL，未涉及变更文件 SelectLinkedAccountsModal.tsx 中的关联账户选择弹窗或其行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 459,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 7,
+                "material_lines": 18,
+                "prompt_length": 966
+              }
+            },
+            {
+              "case_id": "rq2_007",
+              "labels": [
+                "y",
+                "y",
+                "y"
+              ],
+              "reasons": [
+                "用例打开 '/'，操作 conditions-op，填写 condition-list 的条件字段/操作符/值，并断言 action-split-list、action-list 可见，直接覆盖 RuleEditor 的条件与动作 UI。",
+                "用例打开应用并操作规则编辑器中的 conditions-op、condition-list 及 action-list 等 UI，直接覆盖 RuleEditor.tsx 变更涉及的规则条件/动作编辑行为。",
+                "用例操作并断言了 rules/RuleEditor.tsx 相关的规则编辑器 UI：conditions-op、condition-list 条件行及 action-list/action-split-list，直接覆盖本次变更元素。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "y",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1799,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 33,
+                "material_lines": 44,
+                "prompt_length": 2306
+              }
+            },
+            {
+              "case_id": "rq2_008",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅打开首页并断言 Budget 标题，未涉及变更文件 RuleEditor.tsx 中的规则编辑器 UI 或行为，无法建立与本次变更的直接关联。",
+                "变更涉及 rules/RuleEditor.tsx 规则编辑器，而用例仅打开预算首页并断言 h1 \"Budget\" 可见，未操作或断言规则编辑器相关 UI，无法建立与变更的直接关联。",
+                "变更文件是规则编辑器 RuleEditor.tsx，但测试仅打开首页并断言“Budget”标题可见，未操作或断言规则编辑器相关 UI 或行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 489,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 7,
+                "material_lines": 18,
+                "prompt_length": 996
+              }
+            },
+            {
+              "case_id": "rq2_009",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更为 Formula.tsx，测试仅访问 '/' 并用 mobilepageheader、button 等通用标签选择器断言，未涉及 Formula 或报表相关具体 UI/行为。",
+                "用例只访问根页面 '/'，操作的是通用 button/input/select 等元素，未导航到报表或 Formula 组件，也未断言公式相关 UI/行为，无法建立与变更的直接关联。",
+                "用例仅访问“/”并用通用标签选择器检查页头、按钮、输入框等，未涉及 reports/Formula.tsx 或公式报表的具体 UI/行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 2059,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 49,
+                "material_lines": 60,
+                "prompt_length": 2566
+              }
+            },
+            {
+              "case_id": "rq2_010",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更涉及 reports/reports/Formula.tsx 报表公式组件，而用例仅访问首页、加购并检查购物车条目，操作对象与变更元素完全无关，无法建立关联。",
+                "用例仅操作首页商品并验证购物车项，未涉及变更文件 Formula.tsx 中的报表公式 UI 或行为，无法建立直接关联。",
+                "变更文件为报表模块的 Formula.tsx，但用例只操作商品列表加购并断言购物车条目，未涉及任何报表或公式相关 UI/行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 792,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 18,
+                "material_lines": 29,
+                "prompt_length": 1299
+              }
+            },
+            {
+              "case_id": "rq2_011",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例未实际打开应用（goto 被注释），只用 label/select/column 泛化选择器并假设 #new-ui，未定位或断言 Format.tsx 中具体变更元素，无法建立关联。",
+                "用例未实际打开设置页（goto 被注释），仅用通用 label/select 选择器操作，未定位或断言 Format.tsx 中具体的格式设置 UI/行为，无法建立与本次变更的直接关联。",
+                "测试未导航到Format设置页，仅用泛化的label/select/column选择器断言任意元素可见及select可操作，无法与Format.tsx变更的具体UI建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 4560,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 84,
+                "material_lines": 95,
+                "prompt_length": 5067
+              }
+            },
+            {
+              "case_id": "rq2_012",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅访问首页 '/#/'，只断言 #root 可见和标题 /Actual/，未进入设置页或操作/断言 Format.tsx 涉及的格式化 UI 与行为。",
+                "用例仅打开首页根路径，断言 #root 可见和标题匹配 Actual，未进入设置页，也未操作或断言 Format.tsx 中变更涉及的任何 UI 或行为，无法建立关联。",
+                "用例仅打开首页并断言 #root 可见和标题匹配 Actual，未访问设置页或操作/断言 Format.tsx 变更涉及的 UI 或行为，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 630,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 13,
+                "material_lines": 24,
+                "prompt_length": 1137
+              }
+            },
+            {
+              "case_id": "rq2_013",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例只访问 '/'，断言 mobilepageheader 可见并点击通用 button，未操作或断言 reports/Overview.tsx 中变更涉及的报表 UI 或行为，无法建立关联。",
+                "用例仅访问首页并断言mobilepageheader可见、按钮数量为3，未操作或断言reports/Overview.tsx变更涉及的报表UI或行为，无法建立直接关联。",
+                "测试仅访问首页，断言mobilepageheader可见和三个按钮，并逐个点击，未涉及变更文件Overview.tsx中的报表概览UI或行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 701,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 17,
+                "material_lines": 28,
+                "prompt_length": 1208
+              }
+            },
+            {
+              "case_id": "rq2_014",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更涉及 reports/Overview.tsx，但用例仅访问 /#/accounts 并断言 .accounts-table 可见，未操作或断言报表概览相关 UI 或行为，无法建立与本次变更的直接关联。",
+                "用例仅打开/#/accounts并断言.accounts-table可见；变更文件是reports/Overview.tsx，未操作或断言该报表概览相关UI/行为，无法建立直接关联。",
+                "测试仅访问 /#/accounts 并断言 .accounts-table 可见，未操作或断言变更文件 reports/Overview.tsx 涉及的报表概览 UI 或行为，无法建立关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 409,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 6,
+                "material_lines": 17,
+                "prompt_length": 916
+              }
+            },
+            {
+              "case_id": "rq2_015",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例只访问 '/'，用通用 label/input/button 选择器并假设点击后清空输入，未定位或断言 settings/index.tsx 变更涉及的具体 UI 或行为。",
+                "用例仅访问根路径/，使用通用label、input、button定位并假设点击后清空输入，未涉及settings/index.tsx变更的具体设置UI或行为，无法建立直接关联。",
+                "用例仅打开首页，用 label/input/button 等通用选择器做可见性、输入和清空断言，未定位设置页或变更引入的具体 UI/行为，无法建立与 settings/index.tsx 变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 1117,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 26,
+                "material_lines": 37,
+                "prompt_length": 1624
+              }
+            },
+            {
+              "case_id": "rq2_016",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅打开 /#/budget，断言 budget-table、h1 的 Budget 文案和 account-balance；变更文件为 settings/index.tsx，未涉及或断言设置页面相关 UI/行为。",
+                "用例仅访问 /#/budget，断言 budget-table、h1 含 Budget 和 account-balance，均属预算页元素；未打开或断言变更文件 settings/index.tsx 涉及的设置页 UI 或行为，无法建立关联。",
+                "变更为 settings/index.tsx 设置组件，而用例只打开 /#/budget、断言 budget-table、h1 含 Budget 及 account-balance，均与设置页面及本次变更无关。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 906,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 18,
+                "material_lines": 29,
+                "prompt_length": 1413
+              }
+            },
+            {
+              "case_id": "rq2_017",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅断言body可见，未操作或断言AccountSyncCheck.tsx变更涉及的同步检查具体UI或行为，无法建立与本次变更的直接关联。",
+                "测试仅断言 page.locator('body') 可见，未打开或断言 AccountSyncCheck.tsx 变更涉及的任何具体 UI 或行为，无法建立与本次变更的关联。",
+                "用例仅断言body可见，未操作或断言AccountSyncCheck.tsx变更涉及的具体UI或行为，无法建立关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 389,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 5,
+                "material_lines": 16,
+                "prompt_length": 896
+              }
+            },
+            {
+              "case_id": "rq2_018",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅打开首页、断言标题含 Actual 和 sidebar 可见，未操作或断言变更文件 AccountSyncCheck.tsx 涉及的具体 UI 或行为，无法建立与本次变更的直接关联。",
+                "用例仅打开首页断言标题含 Actual 和 sidebar 可见，未涉及变更文件 AccountSyncCheck.tsx 的账户同步检查 UI 或行为，无法建立关联。",
+                "用例仅打开根路径并断言页面标题与 sidebar 可见，未涉及变更文件 AccountSyncCheck.tsx 的任何具体 UI 或行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 566,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 9,
+                "material_lines": 20,
+                "prompt_length": 1073
+              }
+            },
+            {
+              "case_id": "rq2_019",
+              "labels": [
+                "n",
+                "n",
+                "y"
+              ],
+              "reasons": [
+                "用例仅打开/并断言通用 locator 'functiontooltip' 可见，未操作或断言变更文件 codeMirror-excelLanguage.tsx 涉及的公式编辑器/Excel 语言行为。",
+                "用例仅打开首页并断言 functiontooltip 可见，未涉及变更文件对应的公式编辑器或 codeMirror 行为，材料中无法建立与本次变更的直接关联。",
+                "测试打开应用根页面，并断言 functiontooltip 可见；该元素与变更文件 formula/codeMirror-excelLanguage.tsx 的公式语言功能直接相关，能建立关联。"
+              ],
+              "consistency": "2/3",
+              "distinct_labels": 2,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 418,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 6,
+                "material_lines": 17,
+                "prompt_length": 925
+              }
+            },
+            {
+              "case_id": "rq2_020",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更文件是公式编辑器 codeMirror-excelLanguage.tsx，而用例仅访问首页并断言 h1 可见，未涉及公式编辑器或其行为，无法建立关联。",
+                "用例仅访问首页并断言 h1 可见，属通用冒烟检查；未操作或断言变更文件 codeMirror-excelLanguage.tsx 涉及的公式编辑器行为，无法建立关联。",
+                "用例仅访问首页并断言 h1 可见，属通用冒烟检查；变更文件为 formula/codeMirror-excelLanguage.tsx，材料中无任何操作或断言涉及该公式编辑器行为，无法建立关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 417,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 6,
+                "material_lines": 17,
+                "prompt_length": 924
+              }
+            },
+            {
+              "case_id": "rq2_021",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅断言 page.locator('body') 可见，未操作或断言 FormulaResult.tsx 变更涉及的报表公式结果 UI/行为，无法建立与本次变更的直接关联。",
+                "用例仅断言 page.locator('body') 可见，未打开具体页面，也未操作或断言 FormulaResult.tsx 变更涉及的任何 UI 或行为，无法建立关联。",
+                "用例仅断言 page.locator('body') 可见，属泛泛检查，未操作或断言 FormulaResult.tsx 变更涉及的公式结果 UI 或行为，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 378,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 5,
+                "material_lines": 16,
+                "prompt_length": 885
+              }
+            },
+            {
+              "case_id": "rq2_022",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅访问首页和购物车，操作 Add to Cart 并断言购物车数量；未涉及变更文件 FormulaResult.tsx 的报表公式结果 UI 或行为，无法建立关联。",
+                "用例仅打开首页、点击“Add to Cart”并断言购物车条目数量，未操作或断言 reports/FormulaResult.tsx 相关的公式结果组件或行为。",
+                "用例只访问首页、点击“Add to Cart”并断言购物车条目数，完全未涉及变更文件 FormulaResult.tsx 的报表公式结果 UI 或行为，无法建立关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 826,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 18,
+                "material_lines": 29,
+                "prompt_length": 1333
+              }
+            },
+            {
+              "case_id": "rq2_023",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "材料仅表明变更文件为 FormulaCard.tsx，测试只访问首页并操作 reportcardname 输入框；无证据显示该元素属于 FormulaCard 或涉及变更引入/改变的行为。",
+                "变更文件为FormulaCard.tsx，用例仅操作[tag=\"reportcardname\"]并断言其值，材料未表明该元素属于FormulaCard或受此次变更影响。",
+                "用例仅打开/并操作 reportcardname 元素，材料未表明该元素或行为属于 FormulaCard.tsx 的变更，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 601,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 9,
+                "material_lines": 20,
+                "prompt_length": 1108
+              }
+            },
+            {
+              "case_id": "rq2_024",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅打开首页 /#/，断言 #root 可见、budget 链接与 h1 含 budget，均为通用冒烟检查，未操作或断言 FormulaCard.tsx 的报表公式卡 UI 或行为。",
+                "用例仅做首页加载烟雾测试，检查 #root、Budget 链接和 h1，未操作或断言 FormulaCard.tsx 相关的报表公式卡片 UI 或行为。",
+                "测试仅访问根路由并断言 #root、Budget 链接和 budget 标题，未操作或断言变更文件 FormulaCard.tsx 涉及的公式卡片 UI 或行为。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 731,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 11,
+                "material_lines": 22,
+                "prompt_length": 1238
+              }
+            },
+            {
+              "case_id": "rq2_025",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "变更文件为CategoryAutocomplete.tsx，但测试仅点击split-transaction-button并断言split-transaction-dialog，未涉及分类自动完成组件或其行为，无法建立直接关联。",
+                "测试仅操作并断言 split-transaction-button 与 split-transaction-dialog，未涉及变更文件 CategoryAutocomplete.tsx，材料中无法建立与本次变更的直接关联。",
+                "用例仅操作 split-transaction-button 并断言 split-transaction-dialog，未涉及 CategoryAutocomplete.tsx 的自动完成组件或相关行为，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 906,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 17,
+                "material_lines": 28,
+                "prompt_length": 1413
+              }
+            },
+            {
+              "case_id": "rq2_026",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅导航到预算页、验证URL和budget-table可见，未操作或断言变更文件CategoryAutocomplete.tsx涉及的自动完成UI或行为，无法建立关联。",
+                "用例仅打开预算页并断言URL和budget-table可见，未操作或断言变更文件CategoryAutocomplete涉及的组件与行为，无法建立直接关联。",
+                "测试仅打开首页、点击 Budget、断言 URL 与 budget-table 可见，未操作或断言 CategoryAutocomplete 组件及其自动补全行为，无法建立与变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 816,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 18,
+                "material_lines": 29,
+                "prompt_length": 1323
+              }
+            },
+            {
+              "case_id": "rq2_027",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "用例仅断言 body 可见，未打开或操作 TransactionsTable 变更涉及的 UI 或行为，无法建立与本次变更的直接关联。",
+                "用例仅断言 page.locator('body') 可见，未操作或断言变更文件 TransactionsTable 涉及的交易表格 UI 或行为，无法建立与本次变更的直接关联。",
+                "用例仅断言 page.locator('body') 可见，未操作或断言 TransactionsTable.test.tsx 变更涉及的具体 UI 或行为，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 415,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 5,
+                "material_lines": 16,
+                "prompt_length": 922
+              }
+            },
+            {
+              "case_id": "rq2_028",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试只访问根路由并断言预算页面通用容器和URL，未涉及变更文件TransactionsTable或交易表相关行为，无法建立与本次变更的直接关联。",
+                "用例仅打开首页，断言通用的 .budget-table/.budget-header/.budget-overview 可见及 URL 含 #/，未操作或断言变更文件 TransactionsTable 相关的交易表格具体 UI 或行为，无法建立与本次变更的直接关联。",
+                "用例仅打开首页并断言预算页通用元素(.budget-table/.budget-header/.budget-overview)和URL，未操作或断言变更所在的交易表格TransactionsTable，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "actual_desktop",
+                "material_length": 835,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 16,
+                "material_lines": 27,
+                "prompt_length": 1342
+              }
+            },
+            {
+              "case_id": "rq2_029",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试只访问/并点击card内popover.trigger、断言popover可见；材料未说明Preset.svelte变更涉及popover或card，无法建立直接关联。",
+                "变更材料仅给出 Preset.svelte 路径，未说明变更的具体 UI/行为；测试操作的是 card 与 popover，无法据此建立与本次变更的直接关联。",
+                "材料仅给出变更文件Preset.svelte，未说明其变更涉及card或popover；用例只访问/并测试card内popover触发，无法建立与本次变更的直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "mermaid_live",
+                "material_length": 883,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 21,
+                "material_lines": 32,
+                "prompt_length": 1390
+              }
+            },
+            {
+              "case_id": "rq2_030",
+              "labels": [
+                "n",
+                "n",
+                "n"
+              ],
+              "reasons": [
+                "测试仅做通用冒烟检查：加载页面、断言编辑器含 graph TD、预览区有 SVG；未提及或操作 Preset.svelte 的预设组件及相关 UI/行为，无法建立与本次变更的直接关联。",
+                "材料仅给出变更文件Preset.svelte，未说明具体UI/行为；用例只加载页面并泛泛检查CodeMirror默认代码和预览SVG，无法建立与Preset变更的直接关联。",
+                "用例只做页面加载、CodeMirror默认内容和通用预览SVG检查，未操作或断言Preset.svelte变更涉及的具体Preset界面或行为，无法建立直接关联。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "n",
+              "majority_tie": false,
+              "features": {
+                "project": "mermaid_live",
+                "material_length": 878,
+                "has_app_diff": false,
+                "app_diff_hunks": 0,
+                "spec_lines": 15,
+                "material_lines": 26,
+                "prompt_length": 1385
+              }
+            }
+          ]
+        },
+        "rq3": {
+          "n": 40,
+          "runs_available": [
+            1,
+            2,
+            3
+          ],
+          "per_run_distribution": [
+            {
+              "run": 1,
+              "file": "experiments/out/annotator1_condA.json",
+              "distribution": {
+                "STRUCTURAL_ONLY": 37,
+                "EXPECTATION_CHANGE": 3
+              },
+              "failures": 0
+            },
+            {
+              "run": 2,
+              "file": "experiments/out/repeats/condA_run2.json",
+              "distribution": {
+                "STRUCTURAL_ONLY": 38,
+                "EXPECTATION_CHANGE": 2
+              },
+              "failures": 0
+            },
+            {
+              "run": 3,
+              "file": "experiments/out/repeats/condA_run3.json",
+              "distribution": {
+                "STRUCTURAL_ONLY": 38,
+                "EXPECTATION_CHANGE": 2
+              },
+              "failures": 0
+            }
+          ],
+          "per_run_usage": [
+            {
+              "run": 1,
+              "prompt_tokens": 86587,
+              "completion_tokens": 15869,
+              "reasoning_tokens": 13500,
+              "budgets": "2000,4000",
+              "escalations": [
+                "rb021@4000",
+                "rb033@4000",
+                "rb039@4000"
+              ]
+            },
+            {
+              "run": 2,
+              "prompt_tokens": 86587,
+              "completion_tokens": 20543,
+              "reasoning_tokens": 18137,
+              "budgets": "2000,4000",
+              "escalations": [
+                "rb031@4000",
+                "rb035@4000",
+                "rb039@4000"
+              ]
+            },
+            {
+              "run": 3,
+              "prompt_tokens": 86587,
+              "completion_tokens": 16880,
+              "reasoning_tokens": 14389,
+              "budgets": "2000,4000",
+              "escalations": [
+                "rb003@4000",
+                "rb021@4000",
+                "rb033@4000"
+              ]
+            }
+          ],
+          "stability": {
+            "3/3": 39,
+            "2/3": 1,
+            "1/3": 0
+          },
+          "unstable": [
+            {
+              "case_id": "rb040",
+              "labels": [
+                "EXPECTATION_CHANGE",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "新断言新增 filter({hasText:'snippet'})，从等待任意选中菜单项变为要求选中项文本为 snippet；Commit 也说明改为等待正确菜单项文本，断言目标实质变化。",
+                "应用源码无改动；Commit 说明为修复 flaky 竞态，将等待任意选中项改为等待 hasText 'snippet' 的菜单项，断言目标仍是该项可见，属定位器/测试 API 稳定性调整。",
+                "Commit 说明是修 snippet 菜单竞态，改为等待正确菜单项文本；源码改动为0，新 diff 仅将 waitForSelector 换成 locator+hasText 再 toBeVisible，可见性断言未变。"
+              ],
+              "consistency": "2/3",
+              "distinct_labels": 2,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 2450,
+                "material_lines": 46,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 1,
+                "assertion_plus": 1,
+                "assertion_minus": 0,
+                "commit_chars": 77,
+                "prompt_length": 3163
+              }
+            }
+          ],
+          "flips_vs_run1": [
+            {
+              "run": 2,
+              "flips": [
+                {
+                  "case_id": "rb040",
+                  "from": "EXPECTATION_CHANGE",
+                  "to": "STRUCTURAL_ONLY",
+                  "reason": "应用源码无改动；Commit 说明为修复 flaky 竞态，将等待任意选中项改为等待 hasText 'snippet' 的菜单项，断言目标仍是该项可见，属定位器/测试 API 稳定性调整。"
+                }
+              ]
+            },
+            {
+              "run": 3,
+              "flips": [
+                {
+                  "case_id": "rb040",
+                  "from": "EXPECTATION_CHANGE",
+                  "to": "STRUCTURAL_ONLY",
+                  "reason": "Commit 说明是修 snippet 菜单竞态，改为等待正确菜单项文本；源码改动为0，新 diff 仅将 waitForSelector 换成 locator+hasText 再 toBeVisible，可见性断言未变。"
+                }
+              ]
+            }
+          ],
+          "majority_distribution": {
+            "STRUCTURAL_ONLY": 38,
+            "EXPECTATION_CHANGE": 2
+          },
+          "majority_ties": [],
+          "majority_vs_run1": [
+            {
+              "case_id": "rb040",
+              "run1": "EXPECTATION_CHANGE",
+              "majority": "STRUCTURAL_ONLY",
+              "sequence": [
+                "EXPECTATION_CHANGE",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ]
+            }
+          ],
+          "observations": {
+            "unstable_count": 1,
+            "stable_prompt_length_median": 5907,
+            "unstable_prompt_length_median": 3163,
+            "stable_material_length_median": 5194,
+            "unstable_material_length_median": 2450,
+            "groups": [
+              "tryghost/koenig"
+            ],
+            "details": [
+              {
+                "case_id": "rb040",
+                "sequence": [
+                  "EXPECTATION_CHANGE",
+                  "STRUCTURAL_ONLY",
+                  "STRUCTURAL_ONLY"
+                ],
+                "material": "旧块无、应用diff无、断言diff 1 行"
+              }
+            ]
+          },
+          "cases": [
+            {
+              "case_id": "rb001",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言增删为+0/-0，旧定位器仅扩展为菜单子元素 `.slick-menu-command-list`；提交说明新增 sub-menus 改变 DOM 层级，未显示断言值变化。",
+                "断言增删为+0/-0，仅定位器从菜单根改为菜单内命令列表；提交说明新增子菜单，属DOM结构调整导致旧定位器失效。",
+                "旧定位器改为更具体的子菜单命令列表，commit 因新增子菜单改变 DOM 结构；断言增删 +0/-0，断言值未变，仅定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 2146,
+                "material_lines": 42,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 170,
+                "prompt_length": 2859
+              }
+            },
+            {
+              "case_id": "rb002",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧/新定位器仅改变 style 属性中的空格和分号（top:${...}px → top: ${...}px;），断言仍为相同的 'Task 2'、'Task 2222'、'25'、'2009-01-22'，属于定位器/DOM 样式锚点失效。",
+                "diff仅将style属性定位器从`top:...px`改为`top: ...px;`，所有should('contain', ...)断言值均未变，属定位器格式变化导致的失效。",
+                "diff 中仅定位器的 style 属性格式由 `top:Npx` 改为 `top: Npx;`，断言值 'Task 2'、'Task 2222'、'25'、'2009-01-22' 均未变，属 DOM 锚点变化导致旧定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 5898,
+                "material_lines": 83,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 60,
+                "prompt_length": 6611
+              }
+            },
+            {
+              "case_id": "rb003",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言值与 nth 索引均未变（Task 2、Task 2222、25、2009-01-22），仅内联 style 的空格和分号格式变化导致旧定位器失效，属于定位器/DOM 锚点迁移。",
+                "diff 仅把 style 定位写法改为带空格和分号，断言值 Task 2、Task 2222、25、2009-01-22 均未变，属定位器失效。",
+                "仅定位器中的 style 属性格式从 `top:...px` 变为 `top: ...px;`，DOM 内联样式锚点失效；断言内容仍为 Task 2、Task 2222、25、2009-01-22，未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 5898,
+                "material_lines": 83,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 60,
+                "prompt_length": 6611
+              }
+            },
+            {
+              "case_id": "rb004",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧/新定位器仅 style 的空格与分号不同，断言值 Task 2222、25、2009-01-22 均未变，属定位器适配。",
+                "diff 仅把定位器 style 从 `top:${...}px` 改为 `top: ${...}px;`，即空格加分号；断言值 Task 2/Task 2222/25/2009-01-22 与目标单元格 nth(2)(3)(4)(6) 均未变，属 DOM 样式锚点变化。",
+                "断言值（Task 2、Task 2222、25、2009-01-22）及目标列均未变，diff 仅把行定位的 style 从 top:...px 改为 top: ...px; （补空格与分号），属定位器/样式锚点格式变化导致的旧定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 5870,
+                "material_lines": 83,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 60,
+                "prompt_length": 6583
+              }
+            },
+            {
+              "case_id": "rb005",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "仅定位器从 `[style=\"top:${...}px\"]` 改为带空格和分号的 `[style=\"top: ${...}px;\"]`，断言值仍为 contain '25' 等，未变。",
+                "测试 diff 仅将定位器由 top:...px 改为 top: ...px;，断言值如 '25' 未变，属于 DOM/style 定位锚点变化。",
+                "旧/新定位器仅 style 属性空格和分号格式不同，对应 should('contain','25') 断言值未变，属于 DOM 锚点迁移导致定位器更新。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 5886,
+                "material_lines": 83,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 60,
+                "prompt_length": 6599
+              }
+            },
+            {
+              "case_id": "rb006",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "仅定位器从 top:${...}px 改为 top: ${...}px;，断言值 Task 2、Task 2222、25、2009-01-22 均未变，属 DOM/style 锚点变化。",
+                "断言值（Task 2222、25、2009-01-22）及点击目标均未变，仅定位器的 style 由 `top:...px` 改为 `top: ...px;`，属 DOM 样式锚点变化导致旧定位器失效。",
+                "定位器仅由 `top:${...}px` 改为 `top: ${...}px;`（新增空格和分号），断言值 Task 2222、25、2009-01-22 及点击目标均未变，属 DOM 样式锚点变化导致旧定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 5870,
+                "material_lines": 83,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 60,
+                "prompt_length": 6583
+              }
+            },
+            {
+              "case_id": "rb007",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "定位器仅由 `top:${...}px` 改为 `top: ${...}px;`，属 style 属性文案格式变化；diff 中断言值和目标均未变，仍为 Task 2、Task 2222、25、2009-01-22。",
+                "diff 仅将定位器中的 style 字符串由 `top:${...}px` 改为 `top: ${...}px;`（新增空格与分号），所有断言值 'Task 2'、'Task 2222'、'25'、'2009-01-22' 均未变，属 Slickgrid-Universal 升级导致的 DOM 属性格式变化。",
+                "新旧定位器仅 inline style 格式由 `top:...px` 变为 `top: ...px;`，断言值仍为 Task 2、Task 2222、25、2009-01-22 未变，属 DOM 锚点变化导致旧定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 5870,
+                "material_lines": 83,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 60,
+                "prompt_length": 6583
+              }
+            },
+            {
+              "case_id": "rb008",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言值均未变（Task 2、Task 2222、25、2009-01-22），仅定位器 style 字符串由无空格/无分号改为带空格和分号，属于文案/DOM 锚点变化导致旧定位器失效。",
+                "diff 中仅定位器的 style 字符串由 `top:...px` 改为 `top: ...px;`（增空格和分号），所有 `should('contain', ...)` 的期望值如 '2009-01-22' 均未变，属于定位锚点/格式变化导致的旧定位器失效。",
+                "旧/新定位器仅将 style 的 top 值由无空格无分号改为带空格和分号，属于 DOM 样式锚点变化；断言值 Task 2、Task 2222、25、2009-01-22 均未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 5894,
+                "material_lines": 83,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 60,
+                "prompt_length": 6607
+              }
+            },
+            {
+              "case_id": "rb009",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "测试仅将定位器中 style 属性由 `top:...px` 改为 `top: ...px;`，断言值、matcher 与目标均未变，属文案/DOM 锚点变化导致旧定位器失效。",
+                "断言值与 matcher 均未变（如 '22 days'、'51'、'Belgium'），仅定位器中的 style 属性字符串由无空格无分号改为带空格分号，属 DOM/定位锚点变化。",
+                "diff 中所有断言值（如 '22 days'、'5'、'51'、'Belgium'）与 matcher 均未变，仅定位器中的 style 字符串由 `top:${...}px` 改写为 `top: ${...}px;`（冒号后加空格、末尾加分号），属于 v4 迁移导致 DOM 样式序列化格式变化，因此是纯定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 13317,
+                "material_lines": 150,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 74,
+                "assertion_plus": 37,
+                "assertion_minus": 37,
+                "commit_chars": 60,
+                "prompt_length": 14030
+              }
+            },
+            {
+              "case_id": "rb010",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "diff中仅定位器的 style 写法由 `top:${...}px` 改为 `top: ${...}px;`，即空格和分号变化；三处断言仍为 should('be.checked')，行索引 3/4/1 未变。",
+                "断言均为 should('be.checked')，仅 style 选择器格式由 top:${...}px 改为 top: ${...}px;，断言行号与检查目标未变。",
+                "diff 仅将定位器样式字符串由 `top:${...}px` 改为 `top: ${...}px;`（增加空格与分号），断言行 `.should('be.checked')` 与行号乘数均未变，属定位锚点格式变化导致的旧 locator 失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "ghiscoding/angular-slickgrid",
+                "material_length": 5559,
+                "material_lines": 79,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 6,
+                "assertion_plus": 3,
+                "assertion_minus": 3,
+                "commit_chars": 60,
+                "prompt_length": 6272
+              }
+            },
+            {
+              "case_id": "rb011",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "测试仅将 window.builtinSetTimeout 改为 window.builtins.setTimeout，断言增删为 +0/-0，commit 为 builtins 迁移，未见期望业务结果变化。",
+                "仅将旧调用 window.builtinSetTimeout 迁移为 window.builtins.setTimeout；断言增删为 +0/-0，提交为 builtins 重构，无业务期望变化证据。",
+                "定位器由 window.builtinSetTimeout 迁移为 window.builtins.setTimeout（builtins 重构），属测试 API 变化；断言 diff 为 +0/-0，断言值与目标未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 5911,
+                "material_lines": 80,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 24,
+                "prompt_length": 6624
+              }
+            },
+            {
+              "case_id": "rb012",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言增删为0，仅定位器由 filter hasText 改为 name 属性；commit 重构 treeView/tree 结构，属DOM与定位方式变化，测试意图和断言值未变。",
+                "仅将 treeitem 的 filter({hasText:'passes'}) 改为按 name:'passes' 定位；断言 diff 为 +0/-0，未见断言值或目标变化，属树组件改造导致的定位方式迁移。",
+                "测试仅将 treeitem 的 filter hasText 改为 name 参数定位，断言增删为 +0/-0；提交为实现 tree 结构，属定位方式/组件结构变化，断言值未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1488,
+                "material_lines": 32,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2201
+              }
+            },
+            {
+              "case_id": "rb013",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言级 diff 为 +0/-0，测试意图与断言值未变；仅因 listView 改为 treeView，定位角色由 listitem 迁移为 treeitem。",
+                "旧定位器由 getByRole('listitem') 改为 treeitem，commit 为“implement tree w/o list”，且断言级 diff 为 +0/-0、未改动断言，说明仅是 DOM 角色锚点迁移导致定位器失效。",
+                "定位器由 listitem 改为 treeitem，提交说明为用树组件替换列表；断言 diff 为 +0/-0，未改断言值或目标，属 DOM 结构变化导致的定位器失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1883,
+                "material_lines": 38,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2596
+              }
+            },
+            {
+              "case_id": "rb014",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧定位器用 filter({hasText}) 加 getByTitle('Watch')，新定位器改为 getByRole('treeitem',{name:'b.test.ts'})；断言增删为0，commit 重构 treeView，属定位方式随 DOM 结构变化。",
+                "断言增删为+0/-0，commit 主要重写 treeView 等 UI 结构；改动是将 filter(hasText)+getByTitle 定位换为 getByRole(name)，未见断言值或业务期望变化。",
+                "断言增删为+0/-0，commit 在重构 treeView；仅将 filter+getByTitle 定位器改为 role name，未改断言值或业务目标。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1501,
+                "material_lines": 32,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2214
+              }
+            },
+            {
+              "case_id": "rb015",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言级 diff 为 +0/-0，未改断言值；仅因 treeView 重构将旧 filter/getByTitle 定位改为 getByRole name 定位，属于定位器迁移。",
+                "断言增删为+0/-0；仅定位器从 treeitem 的 filter hasText 改为 role name，且提交为 tree 组件重构，属 DOM/定位方式变化。",
+                "断言增删为0，测试目标仍为c.test.ts；Commit实现tree w/o list并改动treeView，旧filter定位改为role+name定位，属DOM/定位器结构变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1501,
+                "material_lines": 32,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2214
+              }
+            },
+            {
+              "case_id": "rb016",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "定位器由 getByRole('listitem') 改为 'treeitem'，commit 为实现 tree 替换 list，且断言增删 +0/-0，说明仅 DOM 角色锚点变化，断言未变。",
+                "旧定位器由 listitem 改为 treeitem，commit 为列表改树；断言级 diff 无增删，测试意图与断言未变，仅 DOM 角色定位迁移。",
+                "旧定位器由 listitem 改为 treeitem，commit 是将 list 实现迁移为 tree；断言增删为0，表明断言值与目标未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1889,
+                "material_lines": 38,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2602
+              }
+            },
+            {
+              "case_id": "rb017",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交将列表实现改为树，定位器由 listitem 迁移为 treeitem；断言增删为0，hunk 内无断言级改动，符合仅定位/DOM 结构变化。",
+                "仅定位器由 listitem 改为 treeitem，断言级 diff 为 +0/-0，且提交说明与源码改动显示列表组件改为树组件，属 DOM 结构迁移。",
+                "仅定位器由 listitem 改为 treeitem；测试 diff 显示断言增删为 +0/-0，commit 为把 list 改为 tree，属 DOM/定位方式变化，断言值未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1893,
+                "material_lines": 38,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2606
+              }
+            },
+            {
+              "case_id": "rb018",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "定位器由 listitem 改为 treeitem，提交为“implement tree w/o list”，DOM 结构迁移；断言级 diff 为 +0/-0，断言未变。",
+                "定位器由 listitem 改为 treeitem，提交以 tree 替代 list；断言级 diff 为 +0/-0，未见期望值或断言目标变化，属 DOM 结构迁移导致旧定位失效。",
+                "提交将列表改为树，定位器由 listitem 改为 treeitem；断言增删 +0/-0，hunk 内无断言改动，属定位器/DOM 结构变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1893,
+                "material_lines": 38,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2606
+              }
+            },
+            {
+              "case_id": "rb019",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧定位器由 listitem 改为 treeitem，提交为“implement tree w/o list”，且断言增删为 +0/-0，说明仅是 DOM/定位结构变化，断言未变。",
+                "断言增删为0，仅定位器由listitem改为treeitem；提交将列表改为树组件，属DOM角色变化导致旧定位器失效。",
+                "旧定位器由 listitem 改为 treeitem，commit 为实现 tree 替换 list，且断言增删为 0，未见断言值变化，属 DOM 结构/锚点迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1893,
+                "material_lines": 38,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2606
+              }
+            },
+            {
+              "case_id": "rb020",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "仅定位器由 listitem 改为 treeitem，配套 commit 是 treeView 重构；断言增删为 0，且无断言级改动，测试意图与断言值未变。",
+                "仅将 getByRole('listitem') 改为 treeitem，因提交“implement tree w/o list”涉及 treeView 等 DOM 组件；断言增删为 0，测试意图与断言值未变。",
+                "Commit 将列表实现改为树（gridView/listView 删改、新增 treeView），定位器由 listitem 改为 treeitem；断言增删为 +0/-0，测试意图与断言值未变，仅文案/DOM 结构锚点失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "microsoft/playwright",
+                "material_length": 1893,
+                "material_lines": 38,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 39,
+                "prompt_length": 2606
+              }
+            },
+            {
+              "case_id": "rb021",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言 diff 显示仅将 cell 定位改为 columnheader，文案锚点由 WATCH 等改为 Limit WATCH，visible/hidden 断言值与列显隐意图未变；commit 亦说明为修复失效 locator。",
+                "diff显示仅将cell改为columnheader，并同步表头可访问名称（WATCH→Limit WATCH），toBeVisible/Hidden及列显隐目标未变；commit也说明是修复坏locator。",
+                "diff显示断言由cell统一改为columnheader，列名改为Limit WATCH等，但各列可见/隐藏模式一一对应未变；commit说明为update broken locator，属定位器与文案锚点更新。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 29562,
+                "material_lines": 536,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 176,
+                "assertion_plus": 88,
+                "assertion_minus": 88,
+                "commit_chars": 64,
+                "prompt_length": 30275
+              }
+            },
+            {
+              "case_id": "rb022",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "测试行仅将 locator 从 name:'Type' 改为 name:'Type', exact:true，断言仍为 toBeVisible，断言值和目标未变，属于定位方式调整。",
+                "断言仍为 toBeVisible/toBeHidden，仅给 locator 的 name 加 exact:true，期望值和测试意图未变，属于定位器精确匹配调整。",
+                "diff 仅将 getByRole 的 cell 定位由 name:'Type' 改为 name:'Type', exact:true，断言仍为 toBeVisible/toBeHidden，断言目标与期望值未变，属定位器精确化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 6086,
+                "material_lines": 98,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 44,
+                "assertion_plus": 22,
+                "assertion_minus": 22,
+                "commit_chars": 51,
+                "prompt_length": 6799
+              }
+            },
+            {
+              "case_id": "rb023",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧/新仅定位器增加 exact:true，所有断言仍为 toBeVisible/toBeHidden，期望值和断言目标未变，属于定位器适配。",
+                "diff 仅将 getByRole 的 name 匹配加 exact:true，Type/Timestamp 的 toBeVisible/toBeHidden 断言未变，属定位器收紧，未见期望业务结果变化。",
+                "diff 仅将 getByRole 的 name 'Type' 增加 exact:true，可见/隐藏断言及目标均未变，属于定位器精确化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 6086,
+                "material_lines": 98,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 44,
+                "assertion_plus": 22,
+                "assertion_minus": 22,
+                "commit_chars": 51,
+                "prompt_length": 6799
+              }
+            },
+            {
+              "case_id": "rb024",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "断言目标与可见/隐藏期望未变，diff仅给 getByRole 的 name 加上 exact:true，属定位器精度调整。",
+                "断言目标(Timestamp/Type单元格)与toBeVisible/toBeHidden期望均未变，diff仅在getByRole定位器上加exact:true收紧文本匹配以修复定位，属定位器锚点失效。",
+                "断言 diff 显示仅给 role name 加 exact:true（Timestamp/Type），toBeVisible/toBeHidden 与断言目标单元格均未变，属定位器收紧导致的失效。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 6096,
+                "material_lines": 98,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 44,
+                "assertion_plus": 22,
+                "assertion_minus": 22,
+                "commit_chars": 51,
+                "prompt_length": 6809
+              }
+            },
+            {
+              "case_id": "rb025",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "同一选择器 .c-message-banner__message 仅由 waitForSelector 改为 locator，属测试 API 迁移；断言增删为 +0/-0，未显示期望变化。",
+                "旧行为 page.waitForSelector，新行为 page.locator，CSS 选择器 '.c-message-banner__message' 未变；断言级 diff +0/-0，无期望值或目标变化，属测试 API 迁移。",
+                "定位器字符串未变，仅将 page.waitForSelector 改为 page.locator（测试 API 迁移）；断言级 diff 为 +0/-0，提交说明为 update broken locator，无证据显示期望值或断言目标变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 13948,
+                "material_lines": 356,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 64,
+                "prompt_length": 14661
+              }
+            },
+            {
+              "case_id": "rb026",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧、新定位器同为 `.c-message-banner__message`，仅 waitForSelector 改 page.locator，属测试 API 迁移；断言增删 +0/-0 且 hunk 未改断言，commit 称为 fix broken locator。",
+                "旧 waitForSelector 改为 page.locator；断言增删为+0/-0，hunk 未改断言级代码；commit 说明为更新断裂 locator，属定位/测试 API 迁移。",
+                "新旧定位器均为 `.c-message-banner__message`，仅由 waitForSelector 改为 locator；断言增删为 0，commit 说明明确为 update broken locator，无业务期望变化证据。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 14001,
+                "material_lines": 356,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 64,
+                "prompt_length": 14714
+              }
+            },
+            {
+              "case_id": "rb027",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧 `.js-limit-area` 选择器仍用于新 `page.locator`，仅等待/断言 API 改为 `toBeAttached`；`.c-plot-limit-line` 仍期望数量 0，业务断言未变。",
+                "旧等待改为同名 .js-limit-area 的 toBeAttached，.c-plot-limit-line 仍断言数量为 0，仅定位器/测试 API 迁移，断言值未变。",
+                "旧 waitForSelector('.js-limit-area',{state:'attached'}) 改为 locator+toBeAttached，锚点未变；limit-line count=0 断言值未变，commit 也标注 update broken locator。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 14406,
+                "material_lines": 362,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 5,
+                "assertion_plus": 3,
+                "assertion_minus": 2,
+                "commit_chars": 64,
+                "prompt_length": 15119
+              }
+            },
+            {
+              "case_id": "rb028",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "定位器从 .gl-plot-label 改为 .gl-plot-y-label-swatch-container，断言增删为 +0/-0，commit 说明含 test: fix locator，属 DOM 结构变化导致旧定位器失效。",
+                "定位器由 .gl-plot-label 改为 .gl-plot-y-label-swatch-container，仅 DOM 结构变化；断言级 diff 为 +0/-0，提交说明含 test: fix locator，未显示断言值或业务目标改变。",
+                "断言增删为+0/-0，且仅定位器由 .gl-plot-label 改为 .gl-plot-y-label-swatch-container，commit 说明含 test: fix locator，表明是 DOM 锚点变化而非断言期望变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 1016,
+                "material_lines": 30,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 60,
+                "prompt_length": 1729
+              }
+            },
+            {
+              "case_id": "rb029",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "定位器仅将按钮 name 从 'OK' 改为 'Ok'，断言增删为 +0/-0；commit 明示“fix: update broken locator”且统一使用 'Ok' 文案，属于文案锚点失效。",
+                "断言增删 +0/-0，无断言级改动；仅定位器 name 由 'OK' 改为 'Ok'，commit 说明明确为统一 'Ok' 文案的定位器修复，属文案锚点导致的定位失效。",
+                "仅按钮文案锚点由'OK'改为'Ok'，断言增删为+0/-0；提交说明明确为统一'Ok'并修复失效定位器，意图与断言目标未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 13984,
+                "material_lines": 356,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 64,
+                "prompt_length": 14697
+              }
+            },
+            {
+              "case_id": "rb030",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "旧定位器由 title=\"More options\" 改为 title=\"More actions\"，仅文案锚点变化；断言增删为 0，hunk 内未改动断言级代码，测试意图与断言未变。",
+                "仅定位器标题锚点由 More options 改为 More actions；断言增删为 +0/-0，hunk 内未改动断言代码，意图与断言值未变。",
+                "仅定位器从 [title=\"More options\"] 改为 [title=\"More actions\"]，属文案锚点变化；断言级 diff 为 +0/-0，未显示期望值或断言目标变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "nasa/openmct",
+                "material_length": 4149,
+                "material_lines": 66,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 0,
+                "assertion_plus": 0,
+                "assertion_minus": 0,
+                "commit_chars": 56,
+                "prompt_length": 4862
+              }
+            },
+            {
+              "case_id": "rb031",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "提交明确为迁移到 Playwright；选择器 [data-kg-floating-toolbar] 未变，断言目标仍是工具栏有无，仅 page.$ 改为 page.locator、toBeNull 改为等价的 toHaveCount(0)。",
+                "提交为 vitest 迁移到 Playwright，旧 page.$ 改为 page.locator；浮层存在/不存在的断言目标未变，toBeNull 改为 toHaveCount(0) 语义等价，且应用源码无功能改动。",
+                "本次提交明确为 Playwright 迁移，旧定位器 page.$ 改为 page.locator，选择器仍为 [data-kg-floating-toolbar]；仅断言不存在方式由 toBeNull 改为等价的 toHaveCount(0)，断言目标与期望未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 5194,
+                "material_lines": 87,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 30,
+                "prompt_length": 5907
+              }
+            },
+            {
+              "case_id": "rb032",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "Commit 为迁移到 Playwright，定位由 page.$ 改为 page.locator，断言 toBeNull 改为 toHaveCount(0)，仍表示工具条不存在；应用源码无行为改动。",
+                "提交为 Migration to playwright；仅将 page.$ 改为 page.locator，仍断言 [data-kg-floating-toolbar] 不存在（toBeNull→toHaveCount(0)），属测试 API 迁移。",
+                "Commit 为迁移到 Playwright，仅将 page.$ 改为 page.locator，选择器仍为 [data-kg-floating-toolbar]；断言目标仍为工具栏不存在（count 0），业务期望未变，且应用源码未改。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 5194,
+                "material_lines": 87,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 10,
+                "assertion_plus": 5,
+                "assertion_minus": 5,
+                "commit_chars": 30,
+                "prompt_length": 5907
+              }
+            },
+            {
+              "case_id": "rb033",
+              "labels": [
+                "EXPECTATION_CHANGE",
+                "EXPECTATION_CHANGE",
+                "EXPECTATION_CHANGE"
+              ],
+              "reasons": [
+                "diff 显示旧断言定位 markdown 卡，新断言改为 codeblock 卡，虽仍为 toBeVisible，但断言目标卡类型已实质改变；无源码改动。",
+                "diff 把断言目标从 data-kg-card=\"markdown\" 改为 \"codeblock\"，检查的卡片类型发生实质变化；且无应用源码改动，不是同一元素的定位迁移。",
+                "断言目标由markdown卡片改为codeblock卡片（data-kg-card值变更），期望可见的对象实质改变，并非同一目标仅定位方式迁移；toBeVisible虽未变，但目标元素不同。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "EXPECTATION_CHANGE",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 1026,
+                "material_lines": 26,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 2,
+                "assertion_plus": 1,
+                "assertion_minus": 1,
+                "commit_chars": 51,
+                "prompt_length": 1739
+              }
+            },
+            {
+              "case_id": "rb034",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "同一选择器 [data-kg-plus-menu] 未变，仅将 page.$ 迁移为 page.locator，并把 toBeNull 改为等价的 toHaveCount(0)，Commit 明确为 Playwright 迁移，断言目标未变。",
+                "Commit 明确为 vitest 迁移到 playwright；定位选择器未变，仅 page.$ 改为 page.locator，toBeNull 改为 toHaveCount(0)，断言目标仍是加号菜单的有无。",
+                "Commit 说明为从 vitest 迁移到 playwright runner，旧 page.$ 改为 page.locator，toBeNull 改为 toHaveCount(0) 属测试 API 迁移，断言目标与存在性期望未变。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 6696,
+                "material_lines": 107,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 28,
+                "assertion_plus": 14,
+                "assertion_minus": 14,
+                "commit_chars": 30,
+                "prompt_length": 7409
+              }
+            },
+            {
+              "case_id": "rb035",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "仅测试定位/等待方式改为带 hasText:'snippet' 过滤的 locator，断言仍为可见；应用源码改动为0，提交说明为修复 flaky 菜单竞态，无业务期望变化。",
+                "提交说明是修复flaky E2E；仅将waitForSelector改为locator+expect并加hasText='snippet'过滤正确菜单项，应用源码0改动，业务期望未变。",
+                "应用源码改动为0；commit说明系修复等待竞态，仅把waitForSelector改为locator加hasText筛选并断言可见，属定位/测试API调整，未显示业务期望变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 2429,
+                "material_lines": 46,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 1,
+                "assertion_plus": 1,
+                "assertion_minus": 0,
+                "commit_chars": 77,
+                "prompt_length": 3142
+              }
+            },
+            {
+              "case_id": "rb036",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "仅将旧 testid audio-caption 换为 audio-title，断言值仍为 'Audio sample 1'，commit 说明为改名以防未来混淆，未见业务期望变化。",
+                "测试仅将定位器从 audio-caption 改为 audio-title，断言值仍为 'Audio sample 1'、'Audio sample'，commit 说明为 testid 重命名，未见业务期望变化。",
+                "仅将定位器 testid 从 audio-caption 改为 audio-title，断言值仍为 'Audio sample'、'Audio sample 1'，提交说明仅为更准确命名，属定位/锚点变化而非期望变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 2817,
+                "material_lines": 50,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 20,
+                "assertion_plus": 10,
+                "assertion_minus": 10,
+                "commit_chars": 66,
+                "prompt_length": 3530
+              }
+            },
+            {
+              "case_id": "rb037",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "测试 diff 仅将 getByTestId('audio-caption') 替换为 'audio-title'，断言值 'Audio sample' 等未变；提交说明为重命名 testid 以免混淆。",
+                "diff 仅将 getByTestId('audio-caption') 改为 'audio-title'，断言值如 'Audio sample'、'Audio sample 1' 及 visible/readOnly 均未变，提交说明为重命名 testid。",
+                "Commit 说明将 audio-caption testid 改名为 audio-title，测试仅同步替换定位器；断言值和 readOnly 期望均未变，属定位锚点迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 2800,
+                "material_lines": 50,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 20,
+                "assertion_plus": 10,
+                "assertion_minus": 10,
+                "commit_chars": 66,
+                "prompt_length": 3513
+              }
+            },
+            {
+              "case_id": "rb038",
+              "labels": [
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "仅将 audio-caption 测试 ID 更名为 audio-title；可见性、inputValue 值及 readOnly 断言均未变，Commit 说明也是重命名测试 ID，符合定位器/锚点迁移。",
+                "证据显示仅将 testid 从 audio-caption 重命名为 audio-title；断言值如 'Audio sample'、'Audio sample 1' 及 readOnly 断言均未变，commit 说明为更准确命名，属定位器/文案锚点迁移。",
+                "仅将 getByTestId('audio-caption') 改为 'audio-title'，断言值 'Audio sample'、可见性和 readOnly 均未变；源码同步重命名 testid，属定位器/锚点迁移。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 2800,
+                "material_lines": 50,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 20,
+                "assertion_plus": 10,
+                "assertion_minus": 10,
+                "commit_chars": 66,
+                "prompt_length": 3513
+              }
+            },
+            {
+              "case_id": "rb039",
+              "labels": [
+                "EXPECTATION_CHANGE",
+                "EXPECTATION_CHANGE",
+                "EXPECTATION_CHANGE"
+              ],
+              "reasons": [
+                "提交说明明确改为等待正确菜单项文本而非任意选中项；diff 新增 filter({hasText:'snippet'}) 与 toBeVisible，断言目标/匹配方式实质变化，非单纯定位器迁移。",
+                "diff 新增 filter({hasText:'snippet'})，将等待任意 selected 项改为特定 snippet 菜单项，断言目标实质变化；且应用源码改动为 0，不是回归。",
+                "旧断言仅等待任意选中项，新断言增加 filter({hasText:'snippet'})，要求特定菜单项文本；commit 说明改为等待正确菜单项文本而非任何选中项，断言目标实质变化。"
+              ],
+              "consistency": "3/3",
+              "distinct_labels": 1,
+              "majority": "EXPECTATION_CHANGE",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 2466,
+                "material_lines": 46,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 1,
+                "assertion_plus": 1,
+                "assertion_minus": 0,
+                "commit_chars": 77,
+                "prompt_length": 3179
+              }
+            },
+            {
+              "case_id": "rb040",
+              "labels": [
+                "EXPECTATION_CHANGE",
+                "STRUCTURAL_ONLY",
+                "STRUCTURAL_ONLY"
+              ],
+              "reasons": [
+                "新断言新增 filter({hasText:'snippet'})，从等待任意选中菜单项变为要求选中项文本为 snippet；Commit 也说明改为等待正确菜单项文本，断言目标实质变化。",
+                "应用源码无改动；Commit 说明为修复 flaky 竞态，将等待任意选中项改为等待 hasText 'snippet' 的菜单项，断言目标仍是该项可见，属定位器/测试 API 稳定性调整。",
+                "Commit 说明是修 snippet 菜单竞态，改为等待正确菜单项文本；源码改动为0，新 diff 仅将 waitForSelector 换成 locator+hasText 再 toBeVisible，可见性断言未变。"
+              ],
+              "consistency": "2/3",
+              "distinct_labels": 2,
+              "majority": "STRUCTURAL_ONLY",
+              "majority_tie": false,
+              "features": {
+                "repo": "tryghost/koenig",
+                "material_length": 2450,
+                "material_lines": 46,
+                "has_full_old_block": false,
+                "old_block_lines": 0,
+                "has_app_source_diff": false,
+                "app_diff_hunks": 0,
+                "assertion_diff_lines": 1,
+                "assertion_plus": 1,
+                "assertion_minus": 0,
+                "commit_chars": 77,
+                "prompt_length": 3163
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

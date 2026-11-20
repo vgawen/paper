@@ -1,0 +1,2494 @@
+{
+  "schema": "annotator1_repeat/v1",
+  "condition": "aligned_information",
+  "repeat_of": "experiments/out/annotator1_masked.json",
+  "run_index": 3,
+  "note": "同材料、同 prompt、同模型与参数，仅重复采样以量化运行波动；不覆盖正式结果。",
+  "provider": "deepseek",
+  "model": "deepseek-v4-flash",
+  "temperature": 0,
+  "max_tokens": 2000,
+  "budget_ladder": [
+    2000,
+    4000,
+    8000
+  ],
+  "retries": 3,
+  "system_prompt_sha256": "098bb4b8d73f60b1a82783f1cf8b4d03cf28d508db6eb07519a128a5ef36af82",
+  "key_source": "env-file:/Users/dd/gdb/paper/.env",
+  "started_at": "2026-11-08T06:43:19.124Z",
+  "finished_at": "2026-11-08T06:46:57.057Z",
+  "input_files": [
+    {
+      "path": "experiments/out/annotation_packet/rq2_worksheet.md",
+      "sha256": "aedd6d702a86203c3c4e9d86bd81de463c3ad3ab9b7c7f449e0d32ab9fa5a965"
+    },
+    {
+      "path": "experiments/out/annotation_packet/rq3_context.md",
+      "sha256": "b844e296aabcb7aff95bd5a45db3e508898797a167fdffee03b6ac5a541f3058"
+    }
+  ],
+  "failures_list": [],
+  "rq2": {
+    "n": 30,
+    "failures": 0,
+    "rows": {
+      "rq2_001": {
+        "case_id": "rq2_001",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅填充inputcell、点击button并断言sheetnameprovider和customcell可见，未操作或断言TransactionsTable中splitTransaction/makeChild相关的拆分交易行为，无法建立与本次变更的直接关联。",
+        "prompt_sha256": "eadcfe5861211b9d9eaa2a79afb37fa753f76c1b522d9641ec74b92528faa151",
+        "prompt_length": 2357,
+        "material_length": 1850,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅填充inputcell、点击button并断言sheetnameprovider和customcell可见，未操作或断言TransactionsTable中splitTransaction/makeChild相关的拆分交易行为，无法建立与本次变更的直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 838,
+          "completion_tokens": 205,
+          "total_tokens": 1043,
+          "prompt_tokens_details": {
+            "cached_tokens": 640
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 153
+          },
+          "prompt_cache_hit_tokens": 640,
+          "prompt_cache_miss_tokens": 198
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 205,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_002": {
+        "case_id": "rq2_002",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅打开首页并断言budget-header和Budget文本，未操作或断言TransactionsTable的拆分交易及makeChild相关行为，无法建立与本次变更的直接关联。",
+        "prompt_sha256": "1fb6a5852e990eca588518c29791c188ba0c2473b61ae764199d672b1e843803",
+        "prompt_length": 2241,
+        "material_length": 1734,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅打开首页并断言budget-header和Budget文本，未操作或断言TransactionsTable的拆分交易及makeChild相关行为，无法建立与本次变更的直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 819,
+          "completion_tokens": 114,
+          "total_tokens": 933,
+          "prompt_tokens_details": {
+            "cached_tokens": 640
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 69
+          },
+          "prompt_cache_hit_tokens": 640,
+          "prompt_cache_miss_tokens": 179
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 114,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_003": {
+        "case_id": "rq2_003",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅用 page.setContent 构造自定义标签并操作，未打开应用或渲染 SchedulesTable；虽查找“±”，但与变更的金额显示逻辑无直接关联。",
+        "prompt_sha256": "d0d80e6bbbc1d24bc4c1f482b3f6acb9ef1f1e7c9cd2080d07b1e5af5de21ef5",
+        "prompt_length": 4937,
+        "material_length": 4430,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅用 page.setContent 构造自定义标签并操作，未打开应用或渲染 SchedulesTable；虽查找“±”，但与变更的金额显示逻辑无直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 1560,
+          "completion_tokens": 200,
+          "total_tokens": 1760,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 154
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 152
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 200,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_004": {
+        "case_id": "rq2_004",
+        "status": "ok",
+        "label": "n",
+        "reason": "变更在 schedules/SchedulesTable.tsx 的日程金额单元格（~、±、金额文案）；测试仅添加支出并校验预算汇总，未访问日程表或断言相关 UI/行为。",
+        "prompt_sha256": "db2370e6616751db42c2297a00c1641741d62f7c99cec643475f3370f7f84e56",
+        "prompt_length": 5416,
+        "material_length": 4909,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"变更在 schedules/SchedulesTable.tsx 的日程金额单元格（~、±、金额文案）；测试仅添加支出并校验预算汇总，未访问日程表或断言相关 UI/行为。\"}",
+        "usage": {
+          "prompt_tokens": 1710,
+          "completion_tokens": 213,
+          "total_tokens": 1923,
+          "prompt_tokens_details": {
+            "cached_tokens": 1536
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 163
+          },
+          "prompt_cache_hit_tokens": 1536,
+          "prompt_cache_miss_tokens": 174
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 213,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_005": {
+        "case_id": "rq2_005",
+        "status": "ok",
+        "label": "n",
+        "reason": "变更仅为 SelectLinkedAccountsModal 的 requisitionId 默认值调整；生成用例只断言 body 可见，未访问或操作该弹窗及相关行为，无法建立与变更的直接关联。",
+        "prompt_sha256": "3fc75610be3bdb3f733838d3ae9f624bc0b4886265f8c4ad26461ced6bec8848",
+        "prompt_length": 1569,
+        "material_length": 1062,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"变更仅为 SelectLinkedAccountsModal 的 requisitionId 默认值调整；生成用例只断言 body 可见，未访问或操作该弹窗及相关行为，无法建立与变更的直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 654,
+          "completion_tokens": 87,
+          "total_tokens": 741,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 37
+          },
+          "prompt_cache_hit_tokens": 512,
+          "prompt_cache_miss_tokens": 142
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 87,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_006": {
+        "case_id": "rq2_006",
+        "status": "ok",
+        "label": "n",
+        "reason": "用例仅打开首页并断言 body 可见与 URL，未涉及 SelectLinkedAccountsModal 组件或 requisitionId 默认值变更，无法建立关联。",
+        "prompt_sha256": "659d96412d55868873b8320b50491bde6d1c8fb98ce726a858a627d6b1c01338",
+        "prompt_length": 1616,
+        "material_length": 1109,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"用例仅打开首页并断言 body 可见与 URL，未涉及 SelectLinkedAccountsModal 组件或 requisitionId 默认值变更，无法建立关联。\"}",
+        "usage": {
+          "prompt_tokens": 671,
+          "completion_tokens": 69,
+          "total_tokens": 740,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 27
+          },
+          "prompt_cache_hit_tokens": 512,
+          "prompt_cache_miss_tokens": 159
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 69,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_007": {
+        "case_id": "rq2_007",
+        "status": "ok",
+        "label": "n",
+        "reason": "变更仅移除 RuleEditor 的 onSave 默认值，测试只操作条件列表并断言文本和动作列表可见，未涉及保存回调或该变更行为。",
+        "prompt_sha256": "fe779eac61da5c1ef897a4592c5770562f6c3ef03aa80ecbae6335b60159b336",
+        "prompt_length": 2868,
+        "material_length": 2361,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"变更仅移除 RuleEditor 的 onSave 默认值，测试只操作条件列表并断言文本和动作列表可见，未涉及保存回调或该变更行为。\"}",
+        "usage": {
+          "prompt_tokens": 1003,
+          "completion_tokens": 364,
+          "total_tokens": 1367,
+          "prompt_tokens_details": {
+            "cached_tokens": 768
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 320
+          },
+          "prompt_cache_hit_tokens": 768,
+          "prompt_cache_miss_tokens": 235
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 364,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_008": {
+        "case_id": "rq2_008",
+        "status": "ok",
+        "label": "n",
+        "reason": "用例仅打开首页并断言 Budget 标题可见，未操作或断言 RuleEditor.tsx 中变更的 onSave 默认参数行为，无法建立与本次变更的直接关联。",
+        "prompt_sha256": "bde08eea504fffe3c898b224c2be24707b3edebd4211fc888583b7edc61a9105",
+        "prompt_length": 1558,
+        "material_length": 1051,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"用例仅打开首页并断言 Budget 标题可见，未操作或断言 RuleEditor.tsx 中变更的 onSave 默认参数行为，无法建立与本次变更的直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 685,
+          "completion_tokens": 136,
+          "total_tokens": 821,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 89
+          },
+          "prompt_cache_hit_tokens": 512,
+          "prompt_cache_miss_tokens": 173
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 136,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_009": {
+        "case_id": "rq2_009",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅访问 '/' 并用通用标签定位元素，未操作或断言变更新增的 Formula.tsx 中“Show title:”标签及 id 为 formula-show-title 的 Toggle，无法建立直接关联。",
+        "prompt_sha256": "6f09a852442d611174a0ecf003bed6f0db6f99965f6d35fc3770473e9dc66677",
+        "prompt_length": 5603,
+        "material_length": 5096,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅访问 '/' 并用通用标签定位元素，未操作或断言变更新增的 Formula.tsx 中“Show title:”标签及 id 为 formula-show-title 的 Toggle，无法建立直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 1591,
+          "completion_tokens": 234,
+          "total_tokens": 1825,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 179
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 183
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 234,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_010": {
+        "case_id": "rq2_010",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试只访问首页和购物车页，操作 product-item、add-to-cart、cart-item，未涉及 Formula.tsx 新增的“Show title”开关（formula-show-title）或其保存行为，与变更无关联。",
+        "prompt_sha256": "ff47bc191375d7ebba91b5f0dc54add01bd7ccc913417156348c39bf354125ec",
+        "prompt_length": 4336,
+        "material_length": 3829,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试只访问首页和购物车页，操作 product-item、add-to-cart、cart-item，未涉及 Formula.tsx 新增的“Show title”开关（formula-show-title）或其保存行为，与变更无关联。\"}",
+        "usage": {
+          "prompt_tokens": 1318,
+          "completion_tokens": 137,
+          "total_tokens": 1455,
+          "prompt_tokens_details": {
+            "cached_tokens": 1152
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 79
+          },
+          "prompt_cache_hit_tokens": 1152,
+          "prompt_cache_miss_tokens": 166
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 137,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_011": {
+        "case_id": "rq2_011",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试未导航到格式设置页，仅泛泛操作所有 select 并检查 value 非空，未定位 numberFormat 选择器，也未断言其 onChange 保存偏好行为，无法建立与本次变更的直接关联。",
+        "prompt_sha256": "79fa49a7e56677c1fd679f189c44f28646df0e6c8f20384462463b678e0b414b",
+        "prompt_length": 7194,
+        "material_length": 6687,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试未导航到格式设置页，仅泛泛操作所有 select 并检查 value 非空，未定位 numberFormat 选择器，也未断言其 onChange 保存偏好行为，无法建立与本次变更的直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 2030,
+          "completion_tokens": 420,
+          "total_tokens": 2450,
+          "prompt_tokens_details": {
+            "cached_tokens": 1792
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 364
+          },
+          "prompt_cache_hit_tokens": 1792,
+          "prompt_cache_miss_tokens": 238
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 420,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_012": {
+        "case_id": "rq2_012",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅打开首页并断言 #root 可见和标题含 Actual，未进入设置页，也未操作或断言本次变更涉及的 numberFormat 下拉框及其保存行为。",
+        "prompt_sha256": "c98b2b41e9db775694fe8f49274b8a17937cb056e231e71f8032b059a2d92fcb",
+        "prompt_length": 3264,
+        "material_length": 2757,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅打开首页并断言 #root 可见和标题含 Actual，未进入设置页，也未操作或断言本次变更涉及的 numberFormat 下拉框及其保存行为。\"}",
+        "usage": {
+          "prompt_tokens": 1099,
+          "completion_tokens": 103,
+          "total_tokens": 1202,
+          "prompt_tokens_details": {
+            "cached_tokens": 896
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 58
+          },
+          "prompt_cache_hit_tokens": 896,
+          "prompt_cache_miss_tokens": 203
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 103,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_013": {
+        "case_id": "rq2_013",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅访问首页、检查并点击通用button及mobilepageheader，未操作或断言变更涉及的reports/Overview、formula-card或widget最小宽高逻辑，无法建立关联。",
+        "prompt_sha256": "657a963844176fabd3f0575cd7bbb55d15235b1ffc85d6a639d3286a013d3be4",
+        "prompt_length": 2211,
+        "material_length": 1704,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅访问首页、检查并点击通用button及mobilepageheader，未操作或断言变更涉及的reports/Overview、formula-card或widget最小宽高逻辑，无法建立关联。\"}",
+        "usage": {
+          "prompt_tokens": 853,
+          "completion_tokens": 200,
+          "total_tokens": 1053,
+          "prompt_tokens_details": {
+            "cached_tokens": 640
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 151
+          },
+          "prompt_cache_hit_tokens": 640,
+          "prompt_cache_miss_tokens": 213
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 200,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_014": {
+        "case_id": "rq2_014",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅访问 /#/accounts 并断言 .accounts-table 可见；变更是 reports/Overview.tsx 中 formula-card 最小宽高逻辑，二者无直接关联。",
+        "prompt_sha256": "28f82fa5e3a1c9462db5f67589119591bf12b3965d88593173e9e6d0870b32c4",
+        "prompt_length": 1919,
+        "material_length": 1412,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅访问 /#/accounts 并断言 .accounts-table 可见；变更是 reports/Overview.tsx 中 formula-card 最小宽高逻辑，二者无直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 772,
+          "completion_tokens": 186,
+          "total_tokens": 958,
+          "prompt_tokens_details": {
+            "cached_tokens": 638
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 139
+          },
+          "prompt_cache_hit_tokens": 638,
+          "prompt_cache_miss_tokens": 134
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 186,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_015": {
+        "case_id": "rq2_015",
+        "status": "ok",
+        "label": "n",
+        "reason": "用例仅打开首页并操作通用 label/input/button，未进入设置页，也未涉及 defaultCurrencyCode 或 currency 开关变更行为，无法建立与本次变更的关联。",
+        "prompt_sha256": "69f686ee6c080dc5783bff81fc97e04abd693c7091b7a5053e7cc1994e4ecee1",
+        "prompt_length": 3263,
+        "material_length": 2756,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"用例仅打开首页并操作通用 label/input/button，未进入设置页，也未涉及 defaultCurrencyCode 或 currency 开关变更行为，无法建立与本次变更的关联。\"}",
+        "usage": {
+          "prompt_tokens": 1073,
+          "completion_tokens": 171,
+          "total_tokens": 1244,
+          "prompt_tokens_details": {
+            "cached_tokens": 896
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 123
+          },
+          "prompt_cache_hit_tokens": 896,
+          "prompt_cache_miss_tokens": 177
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 171,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_016": {
+        "case_id": "rq2_016",
+        "status": "ok",
+        "label": "n",
+        "reason": "用例仅访问预算页并断言预算表格、Budget 标题和账户余额，未涉及设置页、货币功能标志或 defaultCurrencyCode 的保存行为。",
+        "prompt_sha256": "7ea4b5433f26806ff1857aa4b0ab9104a0e8b8fb72f375a42b59343fec93bbbf",
+        "prompt_length": 3052,
+        "material_length": 2545,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"用例仅访问预算页并断言预算表格、Budget 标题和账户余额，未涉及设置页、货币功能标志或 defaultCurrencyCode 的保存行为。\"}",
+        "usage": {
+          "prompt_tokens": 1030,
+          "completion_tokens": 128,
+          "total_tokens": 1158,
+          "prompt_tokens_details": {
+            "cached_tokens": 896
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 85
+          },
+          "prompt_cache_hit_tokens": 896,
+          "prompt_cache_miss_tokens": 134
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 128,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_017": {
+        "case_id": "rq2_017",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅断言 page.locator('body') 可见，属泛泛检查；未操作或断言 AccountSyncCheck 的 isAccountFailedSync 判断、失败同步错误展示等变更行为，无法建立关联。",
+        "prompt_sha256": "55e7ad3b4a3f0ecc5bac8e335fd465bc2d8fac58d86d5cb04dbf9887aaa7a59e",
+        "prompt_length": 2510,
+        "material_length": 2003,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅断言 page.locator('body') 可见，属泛泛检查；未操作或断言 AccountSyncCheck 的 isAccountFailedSync 判断、失败同步错误展示等变更行为，无法建立关联。\"}",
+        "usage": {
+          "prompt_tokens": 910,
+          "completion_tokens": 72,
+          "total_tokens": 982,
+          "prompt_tokens_details": {
+            "cached_tokens": 768
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 18
+          },
+          "prompt_cache_hit_tokens": 768,
+          "prompt_cache_miss_tokens": 142
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 72,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_018": {
+        "case_id": "rq2_018",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅打开首页并断言标题和侧边栏可见，未进入账户页，也未操作或断言 AccountSyncCheck 的同步失败状态与重新授权 UI，无法建立与变更的关联。",
+        "prompt_sha256": "9935c9ddf6904da841309d64dbe4d655d74ce6c52f71cea2053f9d8579bc98f2",
+        "prompt_length": 2687,
+        "material_length": 2180,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅打开首页并断言标题和侧边栏可见，未进入账户页，也未操作或断言 AccountSyncCheck 的同步失败状态与重新授权 UI，无法建立与变更的关联。\"}",
+        "usage": {
+          "prompt_tokens": 954,
+          "completion_tokens": 176,
+          "total_tokens": 1130,
+          "prompt_tokens_details": {
+            "cached_tokens": 768
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 125
+          },
+          "prompt_cache_hit_tokens": 768,
+          "prompt_cache_miss_tokens": 186
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 176,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_019": {
+        "case_id": "rq2_019",
+        "status": "ok",
+        "label": "n",
+        "reason": "用例仅访问根页面并断言locator('functiontooltip')可见，未操作公式编辑器、自动补全弹层或断言本次变更涉及的具体样式/交互。",
+        "prompt_sha256": "2c9862cf7ed395ccd39555600aa384336f317ebc0869d5ca43b5a997b5012259",
+        "prompt_length": 19654,
+        "material_length": 19147,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"用例仅访问根页面并断言locator('functiontooltip')可见，未操作公式编辑器、自动补全弹层或断言本次变更涉及的具体样式/交互。\"}",
+        "usage": {
+          "prompt_tokens": 5917,
+          "completion_tokens": 424,
+          "total_tokens": 6341,
+          "prompt_tokens_details": {
+            "cached_tokens": 5760
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 379
+          },
+          "prompt_cache_hit_tokens": 5760,
+          "prompt_cache_miss_tokens": 157
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 424,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_020": {
+        "case_id": "rq2_020",
+        "status": "ok",
+        "label": "n",
+        "reason": "用例仅访问首页并断言 h1 可见，未涉及公式编辑器自动补全弹层、样式或指针事件，与 codeMirror-excelLanguage.tsx 的变更无直接关联。",
+        "prompt_sha256": "352b572f4e8a8422eb83c40be030d5a58bc72d4bcf5b9c34851854bd1533e218",
+        "prompt_length": 19653,
+        "material_length": 19146,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"用例仅访问首页并断言 h1 可见，未涉及公式编辑器自动补全弹层、样式或指针事件，与 codeMirror-excelLanguage.tsx 的变更无直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 5921,
+          "completion_tokens": 94,
+          "total_tokens": 6015,
+          "prompt_tokens_details": {
+            "cached_tokens": 5760
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 43
+          },
+          "prompt_cache_hit_tokens": 5760,
+          "prompt_cache_miss_tokens": 161
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 94,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_021": {
+        "case_id": "rq2_021",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅断言 page.locator('body') 可见，未打开报表页或操作/断言 FormulaResult 的字体大小、换行样式等变更行为，无法建立关联。",
+        "prompt_sha256": "b073c9fcc9b38cdb180fc9349eafe08338ea46fbf4dcb8ae4be260d9526ea5cb",
+        "prompt_length": 2720,
+        "material_length": 2213,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅断言 page.locator('body') 可见，未打开报表页或操作/断言 FormulaResult 的字体大小、换行样式等变更行为，无法建立关联。\"}",
+        "usage": {
+          "prompt_tokens": 931,
+          "completion_tokens": 148,
+          "total_tokens": 1079,
+          "prompt_tokens_details": {
+            "cached_tokens": 768
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 101
+          },
+          "prompt_cache_hit_tokens": 768,
+          "prompt_cache_miss_tokens": 163
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 148,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_022": {
+        "case_id": "rq2_022",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅点击“Add to Cart”并检查购物车数量，未操作或断言 FormulaResult 的公式结果、多行文本或字体缩放行为，与变更无直接关联。",
+        "prompt_sha256": "af537675e30da34be3fcf8cfd6fa901fbbd7941b3c9152cf1d8b4e9f23d68041",
+        "prompt_length": 3168,
+        "material_length": 2661,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅点击“Add to Cart”并检查购物车数量，未操作或断言 FormulaResult 的公式结果、多行文本或字体缩放行为，与变更无直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 1061,
+          "completion_tokens": 245,
+          "total_tokens": 1306,
+          "prompt_tokens_details": {
+            "cached_tokens": 896
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 197
+          },
+          "prompt_cache_hit_tokens": 896,
+          "prompt_cache_miss_tokens": 165
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 245,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_023": {
+        "case_id": "rq2_023",
+        "status": "ok",
+        "label": "y",
+        "reason": "变更将 ReportCardName 包在 showTitle 条件中；测试定位并编辑 [tag=\"reportcardname\"] 且断言值，直接关联标题组件行为。",
+        "prompt_sha256": "80b1a3c511ed2986a141fc2b085fd7c7e27447bcd3ab800516de152c70fb7fc9",
+        "prompt_length": 3511,
+        "material_length": 3004,
+        "raw_output": "{\"label\":\"y\",\"reason\":\"变更将 ReportCardName 包在 showTitle 条件中；测试定位并编辑 [tag=\\\"reportcardname\\\"] 且断言值，直接关联标题组件行为。\"}",
+        "usage": {
+          "prompt_tokens": 1137,
+          "completion_tokens": 346,
+          "total_tokens": 1483,
+          "prompt_tokens_details": {
+            "cached_tokens": 896
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 300
+          },
+          "prompt_cache_hit_tokens": 896,
+          "prompt_cache_miss_tokens": 241
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 346,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_024": {
+        "case_id": "rq2_024",
+        "status": "ok",
+        "label": "n",
+        "reason": "测试仅打开根路由并断言 #root、Budget 链接和 h1，未涉及 FormulaCard 的 showTitle、标题显示或 Rename 菜单，无法建立与本次变更的直接关联。",
+        "prompt_sha256": "3d786e778190889e4d2ea0a22f0df4e3fdd347bc8210dffda50501ce99e9c62d",
+        "prompt_length": 3641,
+        "material_length": 3134,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"测试仅打开根路由并断言 #root、Budget 链接和 h1，未涉及 FormulaCard 的 showTitle、标题显示或 Rename 菜单，无法建立与本次变更的直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 1176,
+          "completion_tokens": 195,
+          "total_tokens": 1371,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 144
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 152
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 195,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_025": {
+        "case_id": "rq2_025",
+        "status": "ok",
+        "label": "n",
+        "reason": "变更涉及 CategoryAutocomplete 的分类建议过滤逻辑替换；测试仅点击 split-transaction-button 并断言 split-transaction-dialog 可见，未操作或断言分类自动补全过滤行为。",
+        "prompt_sha256": "dcdc80961d640f4083db6d327ff6c82ecd50eecd1183925ce44a65939ca1bf33",
+        "prompt_length": 3939,
+        "material_length": 3432,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"变更涉及 CategoryAutocomplete 的分类建议过滤逻辑替换；测试仅点击 split-transaction-button 并断言 split-transaction-dialog 可见，未操作或断言分类自动补全过滤行为。\"}",
+        "usage": {
+          "prompt_tokens": 1245,
+          "completion_tokens": 222,
+          "total_tokens": 1467,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 172
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 221
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 222,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_026": {
+        "case_id": "rq2_026",
+        "status": "ok",
+        "label": "n",
+        "reason": "变更涉及 CategoryAutocomplete 的分类建议过滤逻辑，但用例仅打开预算页并断言 budget-table 可见，未操作分类自动补全或断言其筛选行为，无法建立直接关联。",
+        "prompt_sha256": "11a7b7b8394d1bef404f8081d08332964a8fcd87664078a65c2bc1e7ec5516d3",
+        "prompt_length": 3849,
+        "material_length": 3342,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"变更涉及 CategoryAutocomplete 的分类建议过滤逻辑，但用例仅打开预算页并断言 budget-table 可见，未操作分类自动补全或断言其筛选行为，无法建立直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 1244,
+          "completion_tokens": 114,
+          "total_tokens": 1358,
+          "prompt_tokens_details": {
+            "cached_tokens": 1024
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 64
+          },
+          "prompt_cache_hit_tokens": 1024,
+          "prompt_cache_miss_tokens": 220
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 114,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_027": {
+        "case_id": "rq2_027",
+        "status": "ok",
+        "label": "n",
+        "reason": "生成用例仅用 expect(page.locator('body')).toBeVisible() 做泛泛可见性断言，未操作或断言 diff 涉及的 add-split-button 及拆分明细行为，无法建立与本次变更的直接关联。",
+        "prompt_sha256": "33e3b993df8c8195fc73d771172b292322c51434f086316dc662e97e8be08aa3",
+        "prompt_length": 1769,
+        "material_length": 1262,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"生成用例仅用 expect(page.locator('body')).toBeVisible() 做泛泛可见性断言，未操作或断言 diff 涉及的 add-split-button 及拆分明细行为，无法建立与本次变更的直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 699,
+          "completion_tokens": 150,
+          "total_tokens": 849,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 93
+          },
+          "prompt_cache_hit_tokens": 512,
+          "prompt_cache_miss_tokens": 187
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 150,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_028": {
+        "case_id": "rq2_028",
+        "status": "ok",
+        "label": "n",
+        "reason": "用例只打开首页并断言预算表格/URL可见，未操作或断言变更涉及的 add-split-button 或“两个空分割”行为，无法建立直接关联。",
+        "prompt_sha256": "382a1d75c1ca095cc0c3db16c3d9ba9dc9e0c35e98259f390484747cbfb67208",
+        "prompt_length": 2189,
+        "material_length": 1682,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"用例只打开首页并断言预算表格/URL可见，未操作或断言变更涉及的 add-split-button 或“两个空分割”行为，无法建立直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 808,
+          "completion_tokens": 197,
+          "total_tokens": 1005,
+          "prompt_tokens_details": {
+            "cached_tokens": 640
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 152
+          },
+          "prompt_cache_hit_tokens": 640,
+          "prompt_cache_miss_tokens": 168
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 197,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_029": {
+        "case_id": "rq2_029",
+        "status": "ok",
+        "label": "y",
+        "reason": "测试打开首页并定位、点击 popoverTrigger，断言 popover 可见；变更在 Preset.svelte 新增 Popover 下拉选择行为，直接关联。",
+        "prompt_sha256": "cc3c2372fd27089c75346c6f69a5e4654c023d4e10293f156d63144be6f85b7f",
+        "prompt_length": 5289,
+        "material_length": 4782,
+        "raw_output": "{\"label\":\"y\",\"reason\":\"测试打开首页并定位、点击 popoverTrigger，断言 popover 可见；变更在 Preset.svelte 新增 Popover 下拉选择行为，直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 1654,
+          "completion_tokens": 691,
+          "total_tokens": 2345,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 646
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 246
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 691,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rq2_030": {
+        "case_id": "rq2_030",
+        "status": "ok",
+        "label": "n",
+        "reason": "用例仅访问首页并断言默认图（graph TD、#preview svg）渲染，未操作或断言变更引入的 Sample Diagrams 按钮、下拉 Popover、示例标题或 loadSampleDiagram 行为，无法建立与 Preset.svelte 变更的直接关联。",
+        "prompt_sha256": "196911bc917001b2ac8e8af1e7f8f427c80542b1a58c7977687da85fc8d857b4",
+        "prompt_length": 5284,
+        "material_length": 4777,
+        "raw_output": "{\"label\":\"n\",\"reason\":\"用例仅访问首页并断言默认图（graph TD、#preview svg）渲染，未操作或断言变更引入的 Sample Diagrams 按钮、下拉 Popover、示例标题或 loadSampleDiagram 行为，无法建立与 Preset.svelte 变更的直接关联。\"}",
+        "usage": {
+          "prompt_tokens": 1662,
+          "completion_tokens": 155,
+          "total_tokens": 1817,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 88
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 254
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 155,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      }
+    }
+  },
+  "rq3": {
+    "n": 40,
+    "failures": 0,
+    "rows": {
+      "rb001": {
+        "case_id": "rb001",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言值仍为 'Task 994'，断言增删 +0/-0，排序意图未变；commit 新增子菜单并升级 Slickgrid-Universal，旧 `.slick-header-menu` 定位器/DOM 结构失效。",
+        "prompt_sha256": "b63a6776ef7aecffdbb8b9c7a2db940b11fb86cf29879cc4764441518ccfb050",
+        "prompt_length": 21627,
+        "material_length": 20914,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言值仍为 'Task 994'，断言增删 +0/-0，排序意图未变；commit 新增子菜单并升级 Slickgrid-Universal，旧 `.slick-header-menu` 定位器/DOM 结构失效。\"}",
+        "usage": {
+          "prompt_tokens": 6093,
+          "completion_tokens": 1709,
+          "total_tokens": 7802,
+          "prompt_tokens_details": {
+            "cached_tokens": 5888
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1645
+          },
+          "prompt_cache_hit_tokens": 5888,
+          "prompt_cache_miss_tokens": 205
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 1709,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb002": {
+        "case_id": "rb002",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "旧定位器 `[style=\"top:...\"] > .slick-cell:nth(2)` 被替换，测试断言值如 'Task 2'、'Task 2222'、'25'、'2009-01-22' 及 matcher 均未变；提交为 v4 迁移，定位方式改变明确。",
+        "prompt_sha256": "8730727475bd0b2ebefae4995e636282137cdd040a3f0b600d9ef8d223224e2b",
+        "prompt_length": 51314,
+        "material_length": 50601,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器 `[style=\\\"top:...\\\"] > .slick-cell:nth(2)` 被替换，测试断言值如 'Task 2'、'Task 2222'、'25'、'2009-01-22' 及 matcher 均未变；提交为 v4 迁移，定位方式改变明确。\"}",
+        "usage": {
+          "prompt_tokens": 14672,
+          "completion_tokens": 595,
+          "total_tokens": 15267,
+          "prompt_tokens_details": {
+            "cached_tokens": 14464
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 507
+          },
+          "prompt_cache_hit_tokens": 14464,
+          "prompt_cache_miss_tokens": 208
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 595,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb003": {
+        "case_id": "rb003",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "Commit 为 Slickgrid-Universal v4 迁移，测试 diff 仅 locator 变更，断言值 Task 2222、25、2009-01-22 等均未变；源码改动主要是 Formatters.icon、SlickEventHandler 等 API/DOM 迁移。",
+        "prompt_sha256": "7085c0fe7bdc2186faf1f5f9d3285573c496f1749a150dd5a145c50909aabd27",
+        "prompt_length": 51314,
+        "material_length": 50601,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 为 Slickgrid-Universal v4 迁移，测试 diff 仅 locator 变更，断言值 Task 2222、25、2009-01-22 等均未变；源码改动主要是 Formatters.icon、SlickEventHandler 等 API/DOM 迁移。\"}",
+        "usage": {
+          "prompt_tokens": 14672,
+          "completion_tokens": 835,
+          "total_tokens": 15507,
+          "prompt_tokens_details": {
+            "cached_tokens": 14464
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 762
+          },
+          "prompt_cache_hit_tokens": 14464,
+          "prompt_cache_miss_tokens": 208
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 835,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb004": {
+        "case_id": "rb004",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "旧定位器依赖内联 style top 与 .slick-cell:nth()，v4.0 大版本迁移改变 DOM/API；断言 diff 中 '25'、'Task 2222'、'2009-01-22' 等期望值均未变，仅 LOCATOR 更新。",
+        "prompt_sha256": "c86010de6620504cbb1368e6d793455a9bcc2dc467982473cc74fd2ad0901549",
+        "prompt_length": 51314,
+        "material_length": 50601,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器依赖内联 style top 与 .slick-cell:nth()，v4.0 大版本迁移改变 DOM/API；断言 diff 中 '25'、'Task 2222'、'2009-01-22' 等期望值均未变，仅 LOCATOR 更新。\"}",
+        "usage": {
+          "prompt_tokens": 14672,
+          "completion_tokens": 1447,
+          "total_tokens": 16119,
+          "prompt_tokens_details": {
+            "cached_tokens": 14464
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1367
+          },
+          "prompt_cache_hit_tokens": 14464,
+          "prompt_cache_miss_tokens": 208
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 1447,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb005": {
+        "case_id": "rb005",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言值未变（Task 2222、25、2009-01-22 等），测试 diff 仅见 LOCATOR_REDACTED 改为 LOCATOR_CHANGED；旧定位器依赖 style/top 与 nth 结构，在 Slickgrid-Universal v4 迁移中失效。",
+        "prompt_sha256": "9d0972560d17621f045a739a415ce34e28ca032eaad846dc720b5559c3295616",
+        "prompt_length": 51314,
+        "material_length": 50601,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言值未变（Task 2222、25、2009-01-22 等），测试 diff 仅见 LOCATOR_REDACTED 改为 LOCATOR_CHANGED；旧定位器依赖 style/top 与 nth 结构，在 Slickgrid-Universal v4 迁移中失效。\"}",
+        "usage": {
+          "prompt_tokens": 14672,
+          "completion_tokens": 601,
+          "total_tokens": 15273,
+          "prompt_tokens_details": {
+            "cached_tokens": 14464
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 523
+          },
+          "prompt_cache_hit_tokens": 14464,
+          "prompt_cache_miss_tokens": 208
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 601,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb006": {
+        "case_id": "rb006",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "测试 diff 仅 cy.get 定位器变化，断言值如 'Task 2222'、'25'、'2009-01-22' 均未变；commit 为 Slickgrid-Universal v4 迁移，源码多为 SlickEventHandler、SlickGlobalEditorLock 等 API/DOM 迁移证据。",
+        "prompt_sha256": "f064811d00daf5bf83e2ba8060f648347d37d458764857d27783ff6ab349cd12",
+        "prompt_length": 51314,
+        "material_length": 50601,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"测试 diff 仅 cy.get 定位器变化，断言值如 'Task 2222'、'25'、'2009-01-22' 均未变；commit 为 Slickgrid-Universal v4 迁移，源码多为 SlickEventHandler、SlickGlobalEditorLock 等 API/DOM 迁移证据。\"}",
+        "usage": {
+          "prompt_tokens": 14672,
+          "completion_tokens": 419,
+          "total_tokens": 15091,
+          "prompt_tokens_details": {
+            "cached_tokens": 14464
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 336
+          },
+          "prompt_cache_hit_tokens": 14464,
+          "prompt_cache_miss_tokens": 208
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 419,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb007": {
+        "case_id": "rb007",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "Commit 为迁移到 Slickgrid-Universal v4.0 major；断言 diff 中 'Task 2222'、'25'、'2009-01-22' 等断言值均未变，仅定位器由旧 style top 选择器改为 LOCATOR_CHANGED，符合 DOM/定位方式变化导致旧 locator 失效。",
+        "prompt_sha256": "26eb7612aaf16bc58505d46370ca9dd995425b1b1d4f9ec1ffdf3d78a61bd0bb",
+        "prompt_length": 51314,
+        "material_length": 50601,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 为迁移到 Slickgrid-Universal v4.0 major；断言 diff 中 'Task 2222'、'25'、'2009-01-22' 等断言值均未变，仅定位器由旧 style top 选择器改为 LOCATOR_CHANGED，符合 DOM/定位方式变化导致旧 locator 失效。\"}",
+        "usage": {
+          "prompt_tokens": 14672,
+          "completion_tokens": 725,
+          "total_tokens": 15397,
+          "prompt_tokens_details": {
+            "cached_tokens": 14464
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 636
+          },
+          "prompt_cache_hit_tokens": 14464,
+          "prompt_cache_miss_tokens": 208
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 725,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb008": {
+        "case_id": "rb008",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言 diff 中 'Task 2222'、'25'、'2009-01-22' 等期望值均未变，仅 LOCATOR_REDACTED→LOCATOR_CHANGED；commit 为 Slickgrid-Universal v4.0 major 迁移，属定位器/DOM 锚点失效。",
+        "prompt_sha256": "dc088b6a961bced2d90fc69f233b491a0b77733023936101099a4cafe83b5341",
+        "prompt_length": 51314,
+        "material_length": 50601,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言 diff 中 'Task 2222'、'25'、'2009-01-22' 等期望值均未变，仅 LOCATOR_REDACTED→LOCATOR_CHANGED；commit 为 Slickgrid-Universal v4.0 major 迁移，属定位器/DOM 锚点失效。\"}",
+        "usage": {
+          "prompt_tokens": 14672,
+          "completion_tokens": 912,
+          "total_tokens": 15584,
+          "prompt_tokens_details": {
+            "cached_tokens": 14464
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 829
+          },
+          "prompt_cache_hit_tokens": 14464,
+          "prompt_cache_miss_tokens": 208
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 912,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb009": {
+        "case_id": "rb009",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "Commit 为迁移 Slickgrid-Universal v4.0 大版本，旧定位器依赖行 top 样式与 slick-cell 结构；测试 diff 仅 locator 变更，'51'、'Straightforward'、'Belgium' 等断言值未变，故属定位/API 迁移失效。",
+        "prompt_sha256": "1f95be724785e53209d21d5affd44a448d615aa9edc4e0a7a91bff1e3bb9f8b4",
+        "prompt_length": 57593,
+        "material_length": 56880,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 为迁移 Slickgrid-Universal v4.0 大版本，旧定位器依赖行 top 样式与 slick-cell 结构；测试 diff 仅 locator 变更，'51'、'Straightforward'、'Belgium' 等断言值未变，故属定位/API 迁移失效。\"}",
+        "usage": {
+          "prompt_tokens": 16564,
+          "completion_tokens": 559,
+          "total_tokens": 17123,
+          "prompt_tokens_details": {
+            "cached_tokens": 16384
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 477
+          },
+          "prompt_cache_hit_tokens": 16384,
+          "prompt_cache_miss_tokens": 180
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 559,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb010": {
+        "case_id": "rb010",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言 diff 仅为定位器替换（+3/-3），.should('be.checked') 期望值未变；commit 为升级 Slickgrid-Universal v4 大版本，属 DOM 定位锚点失效。",
+        "prompt_sha256": "e2aa7d86351e91af32206681d3aecb9b7ba9f09222aa1b13a28344cc638a90de",
+        "prompt_length": 45795,
+        "material_length": 45082,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言 diff 仅为定位器替换（+3/-3），.should('be.checked') 期望值未变；commit 为升级 Slickgrid-Universal v4 大版本，属 DOM 定位锚点失效。\"}",
+        "usage": {
+          "prompt_tokens": 12691,
+          "completion_tokens": 192,
+          "total_tokens": 12883,
+          "prompt_tokens_details": {
+            "cached_tokens": 12544
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 131
+          },
+          "prompt_cache_hit_tokens": 12544,
+          "prompt_cache_miss_tokens": 147
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 192,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb011": {
+        "case_id": "rb011",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言增删为0，测试意图和错误信息断言未变；应用 diff 移除了测试使用的 window.builtinSetTimeout，改为 builtins/ensureBuiltins，属测试 API 迁移导致旧定位代码失效。",
+        "prompt_sha256": "4cf155ebc960d5cca78b6e17e5f629386ff63d027eff7bc33732f8371c89265f",
+        "prompt_length": 117490,
+        "material_length": 116777,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言增删为0，测试意图和错误信息断言未变；应用 diff 移除了测试使用的 window.builtinSetTimeout，改为 builtins/ensureBuiltins，属测试 API 迁移导致旧定位代码失效。\"}",
+        "usage": {
+          "prompt_tokens": 30857,
+          "completion_tokens": 571,
+          "total_tokens": 31428,
+          "prompt_tokens_details": {
+            "cached_tokens": 30720
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 511
+          },
+          "prompt_cache_hit_tokens": 30720,
+          "prompt_cache_miss_tokens": 137
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 571,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb012": {
+        "case_id": "rb012",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言增删为 +0/-0，旧断言保持不变；源码仅重构 treeView 的 role=treeitem、title 与嵌套结构，属 DOM 结构变化导致旧定位器失效。",
+        "prompt_sha256": "b81cd017bb45bbf8e08587e03c80a3a8040c4cf3e00eafe376c907231c1e35ca",
+        "prompt_length": 24066,
+        "material_length": 23353,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言增删为 +0/-0，旧断言保持不变；源码仅重构 treeView 的 role=treeitem、title 与嵌套结构，属 DOM 结构变化导致旧定位器失效。\"}",
+        "usage": {
+          "prompt_tokens": 6883,
+          "completion_tokens": 618,
+          "total_tokens": 7501,
+          "prompt_tokens_details": {
+            "cached_tokens": 6656
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 564
+          },
+          "prompt_cache_hit_tokens": 6656,
+          "prompt_cache_miss_tokens": 227
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 618,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb013": {
+        "case_id": "rb013",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "源码将 ListView 改为 TreeView，条目角色由 listitem 变为 treeitem；断言级 diff 为 +0/-0，旧断言值未变，仅旧定位器 getByRole('listitem') 失效。",
+        "prompt_sha256": "79b1d161f5b0a790c82f63b49bbd24bc278c457be6691a3954581ba6e44bed60",
+        "prompt_length": 26437,
+        "material_length": 25724,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"源码将 ListView 改为 TreeView，条目角色由 listitem 变为 treeitem；断言级 diff 为 +0/-0，旧断言值未变，仅旧定位器 getByRole('listitem') 失效。\"}",
+        "usage": {
+          "prompt_tokens": 7766,
+          "completion_tokens": 547,
+          "total_tokens": 8313,
+          "prompt_tokens_details": {
+            "cached_tokens": 7552
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 486
+          },
+          "prompt_cache_hit_tokens": 7552,
+          "prompt_cache_miss_tokens": 214
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 547,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb014": {
+        "case_id": "rb014",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言级 diff 为 +0/-0，dumpTestTree 期望值未变；源码仅重构 treeView 结构并将 title/aria-label 迁移到 treeitem，属定位器与 DOM 结构变化。",
+        "prompt_sha256": "ec009f80195cb0234797d70df22127e218b12168acfe4f2b67773b79c77c365d",
+        "prompt_length": 25658,
+        "material_length": 24945,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言级 diff 为 +0/-0，dumpTestTree 期望值未变；源码仅重构 treeView 结构并将 title/aria-label 迁移到 treeitem，属定位器与 DOM 结构变化。\"}",
+        "usage": {
+          "prompt_tokens": 7442,
+          "completion_tokens": 531,
+          "total_tokens": 7973,
+          "prompt_tokens_details": {
+            "cached_tokens": 7296
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 473
+          },
+          "prompt_cache_hit_tokens": 7296,
+          "prompt_cache_miss_tokens": 146
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 531,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb015": {
+        "case_id": "rb015",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言级 diff 为 +0/-0，旧断言未变；源码重写 treeView.tsx 的 role/title/DOM 结构并调整 toolbarButton 的 aria-label，导致 page.getByRole('treeitem') 定位失效。",
+        "prompt_sha256": "84742c8f904407616ba6825adea65ea0c302957c251a17310da92dcfc43fd237",
+        "prompt_length": 25692,
+        "material_length": 24979,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言级 diff 为 +0/-0，旧断言未变；源码重写 treeView.tsx 的 role/title/DOM 结构并调整 toolbarButton 的 aria-label，导致 page.getByRole('treeitem') 定位失效。\"}",
+        "usage": {
+          "prompt_tokens": 7449,
+          "completion_tokens": 452,
+          "total_tokens": 7901,
+          "prompt_tokens_details": {
+            "cached_tokens": 7296
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 387
+          },
+          "prompt_cache_hit_tokens": 7296,
+          "prompt_cache_miss_tokens": 153
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 452,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb016": {
+        "case_id": "rb016",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "commit 将 ListView 改为 TreeView，源码新增 role='treeitem'，旧 page.getByRole('listitem') 因 DOM role 变化失效；断言 +0/-0 未变。",
+        "prompt_sha256": "22ce17f9b7083074ffb3c1faf867d06c484d6fb4f106279a6c7f8fe2e0101b1d",
+        "prompt_length": 23021,
+        "material_length": 22308,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"commit 将 ListView 改为 TreeView，源码新增 role='treeitem'，旧 page.getByRole('listitem') 因 DOM role 变化失效；断言 +0/-0 未变。\"}",
+        "usage": {
+          "prompt_tokens": 6776,
+          "completion_tokens": 513,
+          "total_tokens": 7289,
+          "prompt_tokens_details": {
+            "cached_tokens": 6528
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 457
+          },
+          "prompt_cache_hit_tokens": 6528,
+          "prompt_cache_miss_tokens": 248
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 513,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb017": {
+        "case_id": "rb017",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "提交把 ListView 换成新 TreeView：treeView.tsx 新增 role='tree'/'treeitem' 条目，ui-mode-list-item 类改名为 ui-mode-tree-item，旧 getByRole('listitem') 因此失效；断言级 diff 为 +0/-0，dumpTestTree 期望值未变。",
+        "prompt_sha256": "264acc96238dd230f9bfc670ae2d5222316a23f1f4e32c8e91a2283e255759d6",
+        "prompt_length": 28029,
+        "material_length": 27316,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"提交把 ListView 换成新 TreeView：treeView.tsx 新增 role='tree'/'treeitem' 条目，ui-mode-list-item 类改名为 ui-mode-tree-item，旧 getByRole('listitem') 因此失效；断言级 diff 为 +0/-0，dumpTestTree 期望值未变。\"}",
+        "usage": {
+          "prompt_tokens": 8325,
+          "completion_tokens": 270,
+          "total_tokens": 8595,
+          "prompt_tokens_details": {
+            "cached_tokens": 8191
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 187
+          },
+          "prompt_cache_hit_tokens": 8191,
+          "prompt_cache_miss_tokens": 134
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 270,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb018": {
+        "case_id": "rb018",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "Commit 将 ListView 改为 TreeView，源码新增 role='treeitem'，旧定位器仍用 getByRole('listitem')；断言 diff 为 +0/-0，断言值与目标未变，仅定位角色失效。",
+        "prompt_sha256": "80f516801b521e122ebd678eff917e64513c738d5fb15b9454134250adeb39c4",
+        "prompt_length": 28063,
+        "material_length": 27350,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 将 ListView 改为 TreeView，源码新增 role='treeitem'，旧定位器仍用 getByRole('listitem')；断言 diff 为 +0/-0，断言值与目标未变，仅定位角色失效。\"}",
+        "usage": {
+          "prompt_tokens": 8332,
+          "completion_tokens": 289,
+          "total_tokens": 8621,
+          "prompt_tokens_details": {
+            "cached_tokens": 8192
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 226
+          },
+          "prompt_cache_hit_tokens": 8192,
+          "prompt_cache_miss_tokens": 140
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 289,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb019": {
+        "case_id": "rb019",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "提交将 listView 改为 treeView，节点 role 由 listitem 变为 treeitem，导致旧定位器失效；断言 diff 为 +0/-0，dumpTestTree 期望未变。",
+        "prompt_sha256": "0a4711647976ca5457bbd8b7915f5aed0f2cda983144e5ba22122c1fc9457e35",
+        "prompt_length": 28069,
+        "material_length": 27356,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"提交将 listView 改为 treeView，节点 role 由 listitem 变为 treeitem，导致旧定位器失效；断言 diff 为 +0/-0，dumpTestTree 期望未变。\"}",
+        "usage": {
+          "prompt_tokens": 8333,
+          "completion_tokens": 293,
+          "total_tokens": 8626,
+          "prompt_tokens_details": {
+            "cached_tokens": 8192
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 238
+          },
+          "prompt_cache_hit_tokens": 8192,
+          "prompt_cache_miss_tokens": 141
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 293,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb020": {
+        "case_id": "rb020",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "源码将列表改为树视图，渲染元素角色由 listitem 变为 treeitem，导致旧定位器 getByRole('listitem') 失效；断言级 diff 为 +0/-0，测试意图与断言值未变。",
+        "prompt_sha256": "c055b9564425ac5ad0d5a30ea721d4ca844b2c039fc540f21334ed940f8c9282",
+        "prompt_length": 27359,
+        "material_length": 26646,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"源码将列表改为树视图，渲染元素角色由 listitem 变为 treeitem，导致旧定位器 getByRole('listitem') 失效；断言级 diff 为 +0/-0，测试意图与断言值未变。\"}",
+        "usage": {
+          "prompt_tokens": 8103,
+          "completion_tokens": 300,
+          "total_tokens": 8403,
+          "prompt_tokens_details": {
+            "cached_tokens": 7936
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 238
+          },
+          "prompt_cache_hit_tokens": 7936,
+          "prompt_cache_miss_tokens": 167
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 300,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb021": {
+        "case_id": "rb021",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "Commit 明示“fix: update broken locator”；源码仅给 LAD 表头/单元格加 scope 等语义属性，测试仍断言各列可见/隐藏，仅把 cell 改为 columnheader 并更新文案锚点 WATCH→Limit WATCH。",
+        "prompt_sha256": "19a7be8e92f5993fa5a8a8d1ff1f9870f46770221b38e0c1d0648201771cc8fb",
+        "prompt_length": 64910,
+        "material_length": 64197,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 明示“fix: update broken locator”；源码仅给 LAD 表头/单元格加 scope 等语义属性，测试仍断言各列可见/隐藏，仅把 cell 改为 columnheader 并更新文案锚点 WATCH→Limit WATCH。\"}",
+        "usage": {
+          "prompt_tokens": 18954,
+          "completion_tokens": 764,
+          "total_tokens": 19718,
+          "prompt_tokens_details": {
+            "cached_tokens": 18816
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 694
+          },
+          "prompt_cache_hit_tokens": 18816,
+          "prompt_cache_miss_tokens": 138
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 764,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb022": {
+        "case_id": "rb022",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言 diff 仅给 getByRole 的 name 加 exact:true，Timestamp/Type 可见性期望未变；源码 LadRow.vue 新增 aria-label 改变单元格可访问名称，属定位器失效。",
+        "prompt_sha256": "ab0c8d37f1ef50d1250bc41de0167722b84e6eebf989c0a1a71dd8c702a50f48",
+        "prompt_length": 18253,
+        "material_length": 17540,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言 diff 仅给 getByRole 的 name 加 exact:true，Timestamp/Type 可见性期望未变；源码 LadRow.vue 新增 aria-label 改变单元格可访问名称，属定位器失效。\"}",
+        "usage": {
+          "prompt_tokens": 5456,
+          "completion_tokens": 1216,
+          "total_tokens": 6672,
+          "prompt_tokens_details": {
+            "cached_tokens": 5248
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1156
+          },
+          "prompt_cache_hit_tokens": 5248,
+          "prompt_cache_miss_tokens": 208
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 1216,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb023": {
+        "case_id": "rb023",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言仅给 cell 名称 'Type'/'Timestamp' 增加 exact:true，可见/隐藏期望未变；源码 LadRow 新增 aria-label 改变可访问名称锚点，属定位器适配，非业务断言变更。",
+        "prompt_sha256": "227b9527b6f46a667a2cb2398e4a1013e78d164cf88b977eb936c3892127aec4",
+        "prompt_length": 13219,
+        "material_length": 12506,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言仅给 cell 名称 'Type'/'Timestamp' 增加 exact:true，可见/隐藏期望未变；源码 LadRow 新增 aria-label 改变可访问名称锚点，属定位器适配，非业务断言变更。\"}",
+        "usage": {
+          "prompt_tokens": 4019,
+          "completion_tokens": 385,
+          "total_tokens": 4404,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 323
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 179
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 385,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb024": {
+        "case_id": "rb024",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言仅给 Timestamp/Type 的 role cell 匹配加 exact:true，可见性期望未变；源码在 LadRow.vue 的 td 新增 aria-label，改变可访问名称，导致旧非精确 locator 失效。",
+        "prompt_sha256": "7ce4478ac8f63e1e4da9986ee847d81ca3871bb17bf4608b4aefc27d808c468c",
+        "prompt_length": 13224,
+        "material_length": 12511,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言仅给 Timestamp/Type 的 role cell 匹配加 exact:true，可见性期望未变；源码在 LadRow.vue 的 td 新增 aria-label，改变可访问名称，导致旧非精确 locator 失效。\"}",
+        "usage": {
+          "prompt_tokens": 4019,
+          "completion_tokens": 449,
+          "total_tokens": 4468,
+          "prompt_tokens_details": {
+            "cached_tokens": 3840
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 385
+          },
+          "prompt_cache_hit_tokens": 3840,
+          "prompt_cache_miss_tokens": 179
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 449,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb025": {
+        "case_id": "rb025",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "失效点是 `.c-message-banner__message` 定位器；提交说明含“fix: update broken locator”，且断言级 diff 为 +0/-0，旧断言未变，属定位器/测试 API 迁移。",
+        "prompt_sha256": "ed389d813602d61d56f4ab3f8c4b42b2fa7749fdb1372199e9b84cc0a936ff80",
+        "prompt_length": 44676,
+        "material_length": 43963,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"失效点是 `.c-message-banner__message` 定位器；提交说明含“fix: update broken locator”，且断言级 diff 为 +0/-0，旧断言未变，属定位器/测试 API 迁移。\"}",
+        "usage": {
+          "prompt_tokens": 13207,
+          "completion_tokens": 599,
+          "total_tokens": 13806,
+          "prompt_tokens_details": {
+            "cached_tokens": 13056
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 536
+          },
+          "prompt_cache_hit_tokens": 13056,
+          "prompt_cache_miss_tokens": 151
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 599,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb026": {
+        "case_id": "rb026",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "断言级 diff 为 +0/-0，旧断言未变；commit 说明明确含“fix: update broken locator”，失效点为等待 Save Banner 消失的旧定位器，属 locator 断裂。",
+        "prompt_sha256": "d72588b1c2c02ca873af12c494f39181b6c79854bc0f43164e3c795a2d018eee",
+        "prompt_length": 44699,
+        "material_length": 43986,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"断言级 diff 为 +0/-0，旧断言未变；commit 说明明确含“fix: update broken locator”，失效点为等待 Save Banner 消失的旧定位器，属 locator 断裂。\"}",
+        "usage": {
+          "prompt_tokens": 13215,
+          "completion_tokens": 459,
+          "total_tokens": 13674,
+          "prompt_tokens_details": {
+            "cached_tokens": 13056
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 401
+          },
+          "prompt_cache_hit_tokens": 13056,
+          "prompt_cache_miss_tokens": 159
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 459,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb027": {
+        "case_id": "rb027",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "commit 明确写着“fix: update broken locator”并大量更新 locator；断言 diff 仅将 count 改为 toHaveCount/toBeAttached，期望值与目标未变；源码 plot 改动为 aria/文案，旧 .js-limit-area 失效属定位迁移。",
+        "prompt_sha256": "3106b74eb534080e6783b46e12ac94105441f27426add9e5987b36e7eb3c2f65",
+        "prompt_length": 44498,
+        "material_length": 43785,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"commit 明确写着“fix: update broken locator”并大量更新 locator；断言 diff 仅将 count 改为 toHaveCount/toBeAttached，期望值与目标未变；源码 plot 改动为 aria/文案，旧 .js-limit-area 失效属定位迁移。\"}",
+        "usage": {
+          "prompt_tokens": 13139,
+          "completion_tokens": 1293,
+          "total_tokens": 14432,
+          "prompt_tokens_details": {
+            "cached_tokens": 12928
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 1220
+          },
+          "prompt_cache_hit_tokens": 12928,
+          "prompt_cache_miss_tokens": 211
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 1293,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb028": {
+        "case_id": "rb028",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "源码在 .gl-plot-label 与 .plot-series-color-swatch 间新增 .gl-plot-y-label-swatch-container，导致旧直接子代定位器失效；断言值仍为 rgb(255, 166, 61)，测试断言无增删。",
+        "prompt_sha256": "869794c374dc616f303df84ac7508fba91687dbca5cd0a784664e4ec1c45bf44",
+        "prompt_length": 4440,
+        "material_length": 3727,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"源码在 .gl-plot-label 与 .plot-series-color-swatch 间新增 .gl-plot-y-label-swatch-container，导致旧直接子代定位器失效；断言值仍为 rgb(255, 166, 61)，测试断言无增删。\"}",
+        "usage": {
+          "prompt_tokens": 1539,
+          "completion_tokens": 235,
+          "total_tokens": 1774,
+          "prompt_tokens_details": {
+            "cached_tokens": 1405
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 166
+          },
+          "prompt_cache_hit_tokens": 1405,
+          "prompt_cache_miss_tokens": 134
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 235,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb029": {
+        "case_id": "rb029",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "源码多处将按钮 label 从 'OK' 改为 'Ok'（如 FormProperties.vue、MctPlot.vue），旧定位器仍按 'OK' exact 匹配；测试断言 'Fixed Timespan' 未变，属文案锚点迁移。",
+        "prompt_sha256": "0ece4ade299eacc0091ef24e05634b8744b86e77ba439f5ce6fb72e63c05bbc6",
+        "prompt_length": 42828,
+        "material_length": 42115,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"源码多处将按钮 label 从 'OK' 改为 'Ok'（如 FormProperties.vue、MctPlot.vue），旧定位器仍按 'OK' exact 匹配；测试断言 'Fixed Timespan' 未变，属文案锚点迁移。\"}",
+        "usage": {
+          "prompt_tokens": 12625,
+          "completion_tokens": 368,
+          "total_tokens": 12993,
+          "prompt_tokens_details": {
+            "cached_tokens": 12416
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 299
+          },
+          "prompt_cache_hit_tokens": 12416,
+          "prompt_cache_miss_tokens": 209
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 368,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb030": {
+        "case_id": "rb030",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "旧定位器用 title=\"More options\"，源码将多处同名 title 改为 \"More actions\"；断言 diff 为 +0/-0，测试仍断言 plotPixelSize > 0，意图与断言值未变，仅文案锚点失效。",
+        "prompt_sha256": "f7452b5f1d706e33e3e0b5fa210c4b6311380a81aa671827c569117b5dbf6397",
+        "prompt_length": 18609,
+        "material_length": 17896,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"旧定位器用 title=\\\"More options\\\"，源码将多处同名 title 改为 \\\"More actions\\\"；断言 diff 为 +0/-0，测试仍断言 plotPixelSize > 0，意图与断言值未变，仅文案锚点失效。\"}",
+        "usage": {
+          "prompt_tokens": 5816,
+          "completion_tokens": 384,
+          "total_tokens": 6200,
+          "prompt_tokens_details": {
+            "cached_tokens": 5632
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 318
+          },
+          "prompt_cache_hit_tokens": 5632,
+          "prompt_cache_miss_tokens": 184
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 384,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb031": {
+        "case_id": "rb031",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "Commit 说明为迁移至 Playwright，断言由 page.$ 改为 page.locator，仅测试 API 迁移；toHaveCount(0) 等价于原 toBeNull，工具栏出现/消失意图未变，应用源码无行为改动。",
+        "prompt_sha256": "bf4ab8a64ad3f93ff5414f1dcede91cab29e2e88c3005a2cab91931a78658383",
+        "prompt_length": 17650,
+        "material_length": 16937,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 说明为迁移至 Playwright，断言由 page.$ 改为 page.locator，仅测试 API 迁移；toHaveCount(0) 等价于原 toBeNull，工具栏出现/消失意图未变，应用源码无行为改动。\"}",
+        "usage": {
+          "prompt_tokens": 5281,
+          "completion_tokens": 314,
+          "total_tokens": 5595,
+          "prompt_tokens_details": {
+            "cached_tokens": 5120
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 249
+          },
+          "prompt_cache_hit_tokens": 5120,
+          "prompt_cache_miss_tokens": 161
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 314,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb032": {
+        "case_id": "rb032",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "Commit 为 vitest→playwright 迁移，断言由 page.$/toBeNull 改为 page.locator/toHaveCount(0)，仍检查同一 data-kg-floating-toolbar 的存在与移除，应用源码无行为改动，属测试 API/定位迁移。",
+        "prompt_sha256": "2d09a9105b7bbbd69ea30151018b408de98df355fafd5eb0dd43634babfd3c1e",
+        "prompt_length": 11971,
+        "material_length": 11258,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit 为 vitest→playwright 迁移，断言由 page.$/toBeNull 改为 page.locator/toHaveCount(0)，仍检查同一 data-kg-floating-toolbar 的存在与移除，应用源码无行为改动，属测试 API/定位迁移。\"}",
+        "usage": {
+          "prompt_tokens": 3933,
+          "completion_tokens": 542,
+          "total_tokens": 4475,
+          "prompt_tokens_details": {
+            "cached_tokens": 3712
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 472
+          },
+          "prompt_cache_hit_tokens": 3712,
+          "prompt_cache_miss_tokens": 221
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 542,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb033": {
+        "case_id": "rb033",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "仅改测试定位器：可见性断言由旧卡片锚点改为markdown卡片锚点，无应用源码改动，断言仍为toBeVisible，测试意图（点击加号退出编辑模式）未变。",
+        "prompt_sha256": "224442539614e266717ddf097d0b079f13e48551fc4d085486be5ba7c42d450c",
+        "prompt_length": 2774,
+        "material_length": 2061,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"仅改测试定位器：可见性断言由旧卡片锚点改为markdown卡片锚点，无应用源码改动，断言仍为toBeVisible，测试意图（点击加号退出编辑模式）未变。\"}",
+        "usage": {
+          "prompt_tokens": 1013,
+          "completion_tokens": 502,
+          "total_tokens": 1515,
+          "prompt_tokens_details": {
+            "cached_tokens": 768
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 445
+          },
+          "prompt_cache_hit_tokens": 768,
+          "prompt_cache_miss_tokens": 245
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 502,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb034": {
+        "case_id": "rb034",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "提交为 Playwright 迁移，测试 diff 仅把 page.$ 改为 page.locator，并将 null 断言改为 toHaveCount(0)，菜单存在性断言未变；应用源码未涉及用户行为改动。",
+        "prompt_sha256": "db399028c1b58e237486428b890d22b525070078cd681a4955f9a007c0081ae4",
+        "prompt_length": 22141,
+        "material_length": 21428,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"提交为 Playwright 迁移，测试 diff 仅把 page.$ 改为 page.locator，并将 null 断言改为 toHaveCount(0)，菜单存在性断言未变；应用源码未涉及用户行为改动。\"}",
+        "usage": {
+          "prompt_tokens": 6618,
+          "completion_tokens": 443,
+          "total_tokens": 7061,
+          "prompt_tokens_details": {
+            "cached_tokens": 6400
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 385
+          },
+          "prompt_cache_hit_tokens": 6400,
+          "prompt_cache_miss_tokens": 218
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 443,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb035": {
+        "case_id": "rb035",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "Commit说明将等待任意选中项改为等待正确菜单项文本，以修复未过滤菜单闪现的flaky；应用源码零改动，测试意图未变，仅定位锚点由selected改为hasText 'snippet'。",
+        "prompt_sha256": "af2076d68fafb837244fcab9a9575801330bf9aa4b1d54d4d68b626050125a39",
+        "prompt_length": 3890,
+        "material_length": 3177,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"Commit说明将等待任意选中项改为等待正确菜单项文本，以修复未过滤菜单闪现的flaky；应用源码零改动，测试意图未变，仅定位锚点由selected改为hasText 'snippet'。\"}",
+        "usage": {
+          "prompt_tokens": 1384,
+          "completion_tokens": 417,
+          "total_tokens": 1801,
+          "prompt_tokens_details": {
+            "cached_tokens": 1152
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 357
+          },
+          "prompt_cache_hit_tokens": 1152,
+          "prompt_cache_miss_tokens": 232
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 417,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb036": {
+        "case_id": "rb036",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试断言值仍为 Audio sample、Audio sample 1 及 readOnly，未变，属定位锚点更新。",
+        "prompt_sha256": "0ab82e29ce421180d15ba204117be44d8b6f7635f3838f23cee0e331852b8a47",
+        "prompt_length": 4658,
+        "material_length": 3945,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"源码仅将 data-testid 从 audio-caption 改为 audio-title，测试断言值仍为 Audio sample、Audio sample 1 及 readOnly，未变，属定位锚点更新。\"}",
+        "usage": {
+          "prompt_tokens": 1567,
+          "completion_tokens": 188,
+          "total_tokens": 1755,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 134
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 159
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 188,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb037": {
+        "case_id": "rb037",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试 diff 只替换定位器；断言值 'Audio sample'、可见性及 readOnly 断言均未变，属于定位方式迁移。",
+        "prompt_sha256": "e6a17c3269b619529ed5551e0bcdf7e0c9fe36d153cfb8435bc5aa0b5b5c2a9b",
+        "prompt_length": 4624,
+        "material_length": 3911,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"源码仅将 data-testid 从 audio-caption 改为 audio-title，测试 diff 只替换定位器；断言值 'Audio sample'、可见性及 readOnly 断言均未变，属于定位方式迁移。\"}",
+        "usage": {
+          "prompt_tokens": 1558,
+          "completion_tokens": 216,
+          "total_tokens": 1774,
+          "prompt_tokens_details": {
+            "cached_tokens": 1408
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 157
+          },
+          "prompt_cache_hit_tokens": 1408,
+          "prompt_cache_miss_tokens": 150
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 216,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb038": {
+        "case_id": "rb038",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "源码仅将 data-testid 从 audio-caption 改为 audio-title，测试同步替换定位器；断言值['Audio sample','Audio sample 1']、可见性和 readOnly 均未变。",
+        "prompt_sha256": "2241711715dcc27bb6281bbe7a85804ac3c1a36fdce196424fc996a7c3272f80",
+        "prompt_length": 5123,
+        "material_length": 4410,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"源码仅将 data-testid 从 audio-caption 改为 audio-title，测试同步替换定位器；断言值['Audio sample','Audio sample 1']、可见性和 readOnly 均未变。\"}",
+        "usage": {
+          "prompt_tokens": 1691,
+          "completion_tokens": 166,
+          "total_tokens": 1857,
+          "prompt_tokens_details": {
+            "cached_tokens": 1536
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 111
+          },
+          "prompt_cache_hit_tokens": 1536,
+          "prompt_cache_miss_tokens": 155
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 166,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb039": {
+        "case_id": "rb039",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "仅将等待定位器从任意选中项改为按文本'snippet'定位；最终断言仍统计bookmark数量为2，且无应用源码改动，属定位/等待方式迁移。",
+        "prompt_sha256": "00c8b39f6547f4bb6d90900e7e72469be3f2ed690adc48ff9fe1f368ac6d70ca",
+        "prompt_length": 3967,
+        "material_length": 3254,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"仅将等待定位器从任意选中项改为按文本'snippet'定位；最终断言仍统计bookmark数量为2，且无应用源码改动，属定位/等待方式迁移。\"}",
+        "usage": {
+          "prompt_tokens": 1407,
+          "completion_tokens": 258,
+          "total_tokens": 1665,
+          "prompt_tokens_details": {
+            "cached_tokens": 1152
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 206
+          },
+          "prompt_cache_hit_tokens": 1152,
+          "prompt_cache_miss_tokens": 255
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 258,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      },
+      "rb040": {
+        "case_id": "rb040",
+        "status": "ok",
+        "label": "STRUCTURAL_ONLY",
+        "reason": "无应用源码改动；commit 说明仅把“任意选中项”等待改为等待正确菜单项文本，断言目标仍是 snippet 菜单项可见，意图未变，属定位方式变化。",
+        "prompt_sha256": "d808339655796a6011f95af02faefe96360459ca7af78eeb8c2cec88c061f893",
+        "prompt_length": 3963,
+        "material_length": 3250,
+        "raw_output": "{\"label\":\"STRUCTURAL_ONLY\",\"reason\":\"无应用源码改动；commit 说明仅把“任意选中项”等待改为等待正确菜单项文本，断言目标仍是 snippet 菜单项可见，意图未变，属定位方式变化。\"}",
+        "usage": {
+          "prompt_tokens": 1408,
+          "completion_tokens": 205,
+          "total_tokens": 1613,
+          "prompt_tokens_details": {
+            "cached_tokens": 1152
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 152
+          },
+          "prompt_cache_hit_tokens": 1152,
+          "prompt_cache_miss_tokens": 256
+        },
+        "attempts": 1,
+        "budget_used": 2000,
+        "finish_reason": "stop",
+        "budgets_tried": [
+          {
+            "max_tokens": 2000,
+            "finish_reason": "stop",
+            "completion_tokens": 205,
+            "ok": true,
+            "why": "ok"
+          }
+        ]
+      }
+    }
+  }
+}

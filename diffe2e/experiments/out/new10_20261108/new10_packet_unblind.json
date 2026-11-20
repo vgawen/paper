@@ -1,0 +1,32 @@
+[
+  {
+    "case_id": "nb001",
+    "gap_id": "y01",
+    "route": "/notifications",
+    "tag": "y01"
+  },
+  {
+    "case_id": "nb002",
+    "gap_id": "y02",
+    "route": "/survey",
+    "tag": "y02"
+  },
+  {
+    "case_id": "nb003",
+    "gap_id": "y03",
+    "route": "/downloads",
+    "tag": "y03"
+  },
+  {
+    "case_id": "nb004",
+    "gap_id": "y04",
+    "route": "/support",
+    "tag": "y04"
+  },
+  {
+    "case_id": "nb005",
+    "gap_id": "y05",
+    "route": "/reports",
+    "tag": "y05"
+  }
+]

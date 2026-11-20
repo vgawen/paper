@@ -1,0 +1,771 @@
+{
+  "generated_at": "2026-11-08T12:45:41.040Z",
+  "started_at": "2026-11-08T12:45:41.032Z",
+  "provider": "deepseek",
+  "environment": {
+    "playwright": "1.54.0",
+    "chromium": "1181"
+  },
+  "manifest_sha256": "f6927d288343b2936c1bfef0c5eb6c764520877b53f2fdea027526881c0812f8",
+  "gaps": [
+    {
+      "gap_id": "y01",
+      "route": "/notifications",
+      "prev_tag": "x05",
+      "tag": "y01",
+      "source_commit": "180af2b",
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_diff_y01.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('notifications toggle enables alerts and updates status', async ({ page }) => {\n  await page.goto('/#/notifications');\n\n  await expect(page.getByTestId('notif-title')).toBeVisible();\n\n  const toggle = page.getByTestId('notif-toggle');\n  const status = page.getByTestId('notif-status');\n\n  await expect(status).toHaveText('Alerts disabled');\n\n  await toggle.check();\n\n  await expect(status).toHaveText('Alerts enabled');\n  await expect(status).toBeVisible();\n});\n",
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_y01.spec.ts > notifications toggle enables alerts and updates status",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "notif-title",
+                "killed": true
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "Alerts disabled",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Enable alerts",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<span>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "三元分支对调",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 5,
+            "killed": 4,
+            "mutation_score": 0.8,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 1
+              },
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 1,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_y01.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('shopper can add a product from the catalog and see it in the cart', async ({ page }) => {\n  // Start on the catalog/home route.\n  await page.goto('/#/');\n\n  // The catalog should render at least one product with an \"Add to cart\" action.\n  const addToCart = page.getByRole('button', { name: /add to cart/i }).first();\n  await expect(addToCart).toBeVisible();\n\n  await addToCart.click();\n\n  // Navigate to the cart route and confirm the added product is present.\n  await page.goto('/#/cart');\n\n  await expect(page.getByRole('heading', { name: /cart/i })).toBeVisible();\n\n  // A cart line item should now exist with a remove action, and checkout should be available.\n  await expect(page.getByRole('button', { name: /remove|delete/i }).first()).toBeVisible();\n\n  const checkout = page\n    .getByRole('button', { name: /checkout/i })\n    .or(page.getByRole('link', { name: /checkout/i }));\n  await expect(checkout).toBeVisible();\n});\n",
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_y01.spec.ts > shopper can add a product from the catalog and see it in the cart",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y02",
+      "route": "/survey",
+      "prev_tag": "y01",
+      "tag": "y02",
+      "source_commit": "7990e05",
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_diff_y02.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('survey records the selected favorite color', async ({ page }) => {\n  await page.goto('/#/survey');\n\n  await page.getByLabel('Favorite color').selectOption({ label: 'Blue' });\n  await page.getByLabel('Note').fill('A short note');\n  await page.getByRole('button', { name: 'Submit survey' }).click();\n\n  const status = page.getByRole('status');\n  await expect(status).toBeVisible();\n  await expect(status).toHaveText('Recorded Blue choice');\n});\n",
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_y02.spec.ts > survey records the selected favorite color",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "msg.textContent=`Recorded ${",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Favorite color",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Note",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "role-change",
+                "token": "role=status",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Submit survey</button>",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "忽略用户选择，固定返回 Red",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 7,
+            "killed": 7,
+            "mutation_score": 1,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 4,
+                "killed": 4
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_y02.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('smoke: product list renders and cart route is reachable', async ({ page }) => {\n  const pageErrors: string[] = [];\n  page.on('pageerror', (error) => pageErrors.push(error.message));\n\n  // Land on the app's home route.\n  await page.goto('/#/');\n  await expect(page).toHaveURL(/#\\/$/);\n\n  // The app shell should mount and render a heading.\n  await expect(page.getByRole('heading').first()).toBeVisible();\n\n  // A product listing should be present on the home page.\n  const products = page.locator('[data-testid=\"product\"], .product-card, article');\n  await expect(products.first()).toBeVisible();\n\n  // Add the first product to the cart.\n  await products\n    .first()\n    .getByRole('button', { name: /add to cart|add/i })\n    .click();\n\n  // Navigate to the cart via the hash route.\n  await page.goto('/#/cart');\n  await expect(page).toHaveURL(/#\\/cart$/);\n  await expect(page.getByRole('heading', { name: /cart/i })).toBeVisible();\n\n  // The product just added should show up in the cart.\n  const cartItems = page.locator('[data-testid=\"cart-item\"], .cart-item, [data-testid=\"line-item\"]');\n  await expect(cartItems.first()).toBeVisible();\n\n  // No uncaught runtime errors during the flow.\n  expect(pageErrors).toEqual([]);\n});\n",
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_y02.spec.ts > smoke: product list renders and cart route is reachable",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y03",
+      "route": "/downloads",
+      "prev_tag": "y02",
+      "tag": "y03",
+      "source_commit": "e9634c0",
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_diff_y03.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('downloads route clears the file list', async ({ page }) => {\n  await page.goto('/#/downloads');\n\n  await expect(page.getByTestId('downloads-title')).toBeVisible();\n\n  const list = page.getByTestId('downloads-list');\n  await expect(list.getByRole('listitem')).toHaveCount(3);\n\n  await page.getByRole('button', { name: 'Clear list' }).click();\n\n  await expect(list.getByRole('listitem')).toHaveCount(0);\n  await expect(page.getByTestId('downloads-count')).toHaveText('0 files');\n});\n",
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_y03.spec.ts > downloads route clears the file list",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "downloads-title",
+                "killed": true
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": ">3 files<",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Clear list</button>",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "disable-button",
+                "token": "button",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<span>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "清空后计数不回零（0 files → 1 files）",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 6,
+            "killed": 5,
+            "mutation_score": 0.8333,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 1
+              },
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 2,
+                "killed": 2
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_y03.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('smoke: browse products, add one to the cart, and see it in the cart', async ({ page }) => {\n  await page.goto('/#/');\n\n  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();\n\n  const productLinks = page.locator('a[href*=\"#/product/\"]');\n  await expect(productLinks.first()).toBeVisible();\n  expect(await productLinks.count()).toBeGreaterThan(0);\n\n  const productName = (await productLinks.first().innerText()).trim();\n  expect(productName.length).toBeGreaterThan(0);\n\n  await productLinks.first().click();\n  await expect(page).toHaveURL(/#\\/product\\//);\n\n  const addToCart = page.getByRole('button', { name: /add to cart/i });\n  await expect(addToCart).toBeVisible();\n  await addToCart.click();\n\n  await page.goto('/#/cart');\n\n  await expect(page.getByRole('heading', { name: /cart/i })).toBeVisible();\n  await expect(page.getByText(productName, { exact: false }).first()).toBeVisible();\n});\n",
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_y03.spec.ts > smoke: browse products, add one to the cart, and see it in the cart",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y04",
+      "route": "/support",
+      "prev_tag": "y03",
+      "tag": "y04",
+      "source_commit": "be0b2dd",
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_diff_y04.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('support route checks message length', async ({ page }) => {\n  await page.goto('/#/support');\n\n  await page.getByLabel('Message').fill('This support message is long enough.');\n  await page.getByRole('button', { name: 'Check message' }).click();\n\n  const status = page.getByRole('status');\n  await expect(status).toBeVisible();\n  await expect(status).toHaveText('Message long enough');\n});\n",
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_y04.spec.ts > support route checks message length",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "Waiting for input",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Message",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "role-change",
+                "token": "role=status",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Check message</button>",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "阈值分支对调（>=20 的长短文案互换）",
+                "token": "",
+                "killed": true
+              }
+            ],
+            "injected": 6,
+            "killed": 5,
+            "mutation_score": 0.8333,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 3,
+                "killed": 3
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 1
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_y04.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('smoke: home page loads and cart is reachable', async ({ page }) => {\n  // Land on the app's home route.\n  await page.goto('/#/');\n  await expect(page).toHaveURL(/#\\/?$/);\n  await expect(page.locator('body')).toBeVisible();\n\n  // The app shell should render something meaningful (a heading or main landmark).\n  const main = page.locator('main, [role=\"main\"]').first();\n  const hasMain = (await main.count()) > 0;\n  if (hasMain) {\n    await expect(main).toBeVisible();\n  } else {\n    await expect(page.getByRole('heading').first()).toBeVisible();\n  }\n\n  // Navigate to the cart route via the hash router.\n  await page.goto('/#/cart');\n  await expect(page).toHaveURL(/#\\/cart\\/?$/);\n  await expect(page.locator('body')).toBeVisible();\n\n  // The cart route should render a cart container or heading, not a blank page.\n  const cartRegion = page\n    .locator('main, [role=\"main\"], [data-testid*=\"cart\" i], .cart, #cart')\n    .first();\n  if ((await cartRegion.count()) > 0) {\n    await expect(cartRegion).toBeVisible();\n  } else {\n    await expect(page.getByRole('heading', { name: /cart/i }).first()).toBeVisible();\n  }\n});\n",
+          "executable": true,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_y04.spec.ts > smoke: home page loads and cart is reachable",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": "Waiting for input",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Message",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "role-change",
+                "token": "role=status",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Check message</button>",
+                "killed": false
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<p>",
+                "killed": false
+              },
+              {
+                "class": "logic",
+                "kind": "阈值分支对调（>=20 的长短文案互换）",
+                "token": "",
+                "killed": false
+              }
+            ],
+            "injected": 6,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {
+              "text": {
+                "injected": 1,
+                "killed": 0
+              },
+              "attribute": {
+                "injected": 3,
+                "killed": 0
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 0
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 0
+              }
+            }
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y05",
+      "route": "/reports",
+      "prev_tag": "y04",
+      "tag": "y05",
+      "source_commit": "b702e90",
+      "arms": {
+        "diff": {
+          "spec_file": "_gen_diff_y05.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('generates a report for the selected period', async ({ page }) => {\n  await page.goto('/#/reports');\n\n  await expect(page.getByTestId('reports-title')).toBeVisible();\n  await expect(page.getByTestId('reports-status')).toHaveText('No report');\n\n  await page.getByRole('button', { name: 'Generate report' }).click();\n\n  await expect(page.getByTestId('reports-status')).toBeVisible();\n  await expect(page.getByTestId('reports-status')).toHaveText('Report for Week: 12 rows');\n});\n",
+          "executable": true,
+          "change_relevant": true,
+          "gen_id": "_gen_diff_y05.spec.ts > generates a report for the selected period",
+          "new5_v2": {
+            "mutants": [
+              {
+                "class": "testid",
+                "kind": "rename-first",
+                "token": "reports-title",
+                "killed": true
+              },
+              {
+                "class": "text",
+                "kind": "result-text-replace",
+                "token": ">No report<",
+                "killed": true
+              },
+              {
+                "class": "attribute",
+                "kind": "label+aria-replace",
+                "token": "Period",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "role-change",
+                "token": "role=status",
+                "killed": false
+              },
+              {
+                "class": "attribute",
+                "kind": "button-name-replace",
+                "token": ">Generate report</button>",
+                "killed": true
+              },
+              {
+                "class": "structure",
+                "kind": "remove-result-container",
+                "token": "<p>",
+                "killed": true
+              },
+              {
+                "class": "logic",
+                "kind": "忽略周期选择，固定返回 Week",
+                "token": "",
+                "killed": false
+              }
+            ],
+            "injected": 7,
+            "killed": 4,
+            "mutation_score": 0.5714,
+            "by_class": {
+              "testid": {
+                "injected": 1,
+                "killed": 1
+              },
+              "text": {
+                "injected": 1,
+                "killed": 1
+              },
+              "attribute": {
+                "injected": 3,
+                "killed": 1
+              },
+              "structure": {
+                "injected": 1,
+                "killed": 1
+              },
+              "logic": {
+                "injected": 1,
+                "killed": 0
+              }
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "spec_file": "_gen_nodiff_y05.spec.ts",
+          "spec": "import { test, expect } from './fixtures';\n\ntest('smoke: browse products, add one to the cart, and see it in the cart', async ({ page }) => {\n  await page.goto('/#/');\n\n  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();\n\n  const products = page.getByRole('article');\n  await expect(products.first()).toBeVisible();\n  expect(await products.count()).toBeGreaterThan(0);\n\n  const addToCart = products\n    .first()\n    .getByRole('button', { name: /add to cart|^add$/i });\n  await expect(addToCart).toBeVisible();\n  await addToCart.click();\n\n  await page.goto('/#/cart');\n  await expect(page).toHaveURL(/#\\/cart/);\n  await expect(page.getByRole('heading', { name: /cart/i })).toBeVisible();\n\n  const removeButton = page.getByRole('button', { name: /remove|delete|trash/i }).first();\n  await expect(removeButton).toBeVisible();\n});\n",
+          "executable": false,
+          "change_relevant": false,
+          "gen_id": "_gen_nodiff_y05.spec.ts > smoke: browse products, add one to the cart, and see it in the cart",
+          "new5_v2": {
+            "mutants": [],
+            "injected": 0,
+            "killed": 0,
+            "mutation_score": 0,
+            "by_class": {}
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    }
+  ],
+  "rq1": {
+    "generated_at": "2026-11-08T13:02:33.655Z",
+    "gaps": [
+      {
+        "gap_id": "y01",
+        "tag": "y01",
+        "parent_tag": "x05",
+        "changed_files": [
+          "src/main.js",
+          "src/notifications.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      {
+        "gap_id": "y02",
+        "tag": "y02",
+        "parent_tag": "y01",
+        "changed_files": [
+          "src/main.js",
+          "src/survey.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      {
+        "gap_id": "y03",
+        "tag": "y03",
+        "parent_tag": "y02",
+        "changed_files": [
+          "src/downloads.js",
+          "src/main.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      {
+        "gap_id": "y04",
+        "tag": "y04",
+        "parent_tag": "y03",
+        "changed_files": [
+          "src/main.js",
+          "src/support.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      },
+      {
+        "gap_id": "y05",
+        "tag": "y05",
+        "parent_tag": "y04",
+        "changed_files": [
+          "src/main.js",
+          "src/reports.js"
+        ],
+        "full_suite": 6,
+        "baseline_failed": [],
+        "affected_existing_specs": [],
+        "coverage": {
+          "cart.spec.ts > cart adds an item and updates count and total": [
+            "src/cart.js",
+            "src/main.js",
+            "src/util.js"
+          ],
+          "home.spec.ts > home shows welcome title": [
+            "src/home.js",
+            "src/main.js"
+          ],
+          "login.spec.ts > login greets the user after submit": [
+            "src/login.js",
+            "src/main.js"
+          ],
+          "orders.spec.ts > orders lists prior orders with totals": [
+            "src/main.js",
+            "src/orders.js",
+            "src/util.js"
+          ],
+          "profile.spec.ts > profile edits the name": [
+            "src/main.js",
+            "src/profile.js"
+          ],
+          "search.spec.ts > search filters items by query": [
+            "src/main.js",
+            "src/search.js"
+          ]
+        },
+        "expected_affected": []
+      }
+    ],
+    "note": "首轮受残留 _gen_*.spec.ts 污染后重跑；tests/ 仅含 6 个既有 spec"
+  },
+  "rq1_fixed_at": "2026-11-08T13:02:43.761Z"
+}

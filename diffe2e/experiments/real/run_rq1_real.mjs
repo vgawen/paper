@@ -87,20 +87,40 @@ async function main() {
   const maxN = parseInt(process.argv[3] || '15', 10);
   const adapter = loadAdapter(adapterFile);
   fs.mkdirSync(OUT, { recursive: true });
+  // adapters may declare several source roots (example app + engine package
+  // loaded through Vite /@fs/); fall back to the single srcGlob.
+  const srcGlobs = adapter.srcGlobs && adapter.srcGlobs.length ? adapter.srcGlobs : [adapter.srcGlob];
 
   // pick commits that touched srcGlob, newest first, then chronological pairs
-  const log = gitIn(adapter.repoAbs, `log --format=%H -n 400 -- ${adapter.srcGlob}`).trim().split('\n').filter(Boolean);
+  const log = gitIn(adapter.repoAbs, `log --format=%H -n ${adapter.historyLimit || 400} -- ${srcGlobs.join(' ')}`).trim().split('\n').filter(Boolean);
   const shas = log.slice(0, maxN + 1).reverse(); // oldest..newest
   const rows = [];
   const skips = [];
+  const jsonlPath = path.join(OUT, `${adapter.name}_rq1.jsonl`);
+  const skipsPath = path.join(OUT, `${adapter.name}_rq1_skips.json`);
+  fs.writeFileSync(jsonlPath, ''); // truncate; rows are flushed per transition
+  const flushSkips = () => fs.writeFileSync(skipsPath, JSON.stringify(skips, null, 2));
+
+  // Reuse node_modules when the lockfile is unchanged: a frozen-lockfile install
+  // depends only on the lock, so re-installing per commit mostly burns time.
+  let installedLock = null;
+  const lockHash = (ref) => { try { return gitIn(adapter.repoAbs, `rev-parse ${ref}:pnpm-lock.yaml`).trim(); } catch { return ''; } };
+  const ensureInstall = (ref) => {
+    const want = lockHash(ref);
+    if (want && installedLock === want) return true;
+    const ok = installLive(adapter);
+    if (ok) installedLock = want || null;
+    return ok;
+  };
+
   for (let i = 1; i < shas.length; i++) {
     const prev = shas[i - 1], sha = shas[i];
-    const changed = changedSrcFiles(adapter.repoAbs, prev, sha, adapter.srcGlob);
+    const changed = changedSrcFiles(adapter.repoAbs, prev, sha, srcGlobs);
     if (!changed.length) continue;
     try {
     // --- V_old: checkout, install (best-effort), full suite w/ coverage ---
     checkoutSha(adapter.repoAbs, prev);
-    if (!installLive(adapter)) { skip(skips, prev, sha, 'install_failed_vold'); continue; }
+    if (!ensureInstall(prev)) { skip(skips, prev, sha, 'install_failed_vold'); flushSkips(); continue; }
     injectCdpCoverage(adapter); // re-inject after checkout reverts tracked specs
     const voldRun = runSuiteLive(adapter);
     const voldCov = loadCovLive(adapter, voldRun.covAbs);
@@ -108,17 +128,17 @@ async function main() {
 
     // --- V_new: checkout, install, full suite w/ coverage ---
     checkoutSha(adapter.repoAbs, sha);
-    if (!installLive(adapter)) { skip(skips, prev, sha, 'install_failed_vnew'); continue; }
+    if (!ensureInstall(sha)) { skip(skips, prev, sha, 'install_failed_vnew'); flushSkips(); continue; }
     injectCdpCoverage(adapter);
     const vnewRun = runSuiteLive(adapter);
     const vnewCov = loadCovLive(adapter, vnewRun.covAbs);
 
     // --- stability gate ---
     const voldTests = Object.keys(voldCov), vnewTests = Object.keys(vnewCov);
-    if (voldTests.length === 0) { skip(skips, prev, sha, 'empty_cov_vold'); continue; }
-    if (vnewTests.length === 0) { skip(skips, prev, sha, 'empty_cov_vnew'); continue; }
+    if (voldTests.length === 0) { skip(skips, prev, sha, 'empty_cov_vold'); flushSkips(); continue; }
+    if (vnewTests.length === 0) { skip(skips, prev, sha, 'empty_cov_vnew'); flushSkips(); continue; }
     const survived = voldTests.filter((t) => vnewTests.includes(t)).length;
-    if (survived / voldTests.length < 0.5) { skip(skips, prev, sha, `unstable_testset(${survived}/${voldTests.length})`); continue; }
+    if (survived / voldTests.length < 0.5) { skip(skips, prev, sha, `unstable_testset(${survived}/${voldTests.length})`); flushSkips(); continue; }
 
     // map UI signals to tests by source reference (read spec sources at sha)
     const testSources = {};
@@ -130,18 +150,22 @@ async function main() {
     const uiSelected = selectByDomDiff(ui, testSources);
 
     const r = computeTransition({ covVold: voldCov, covVnew: vnewCov, changed, uiSelected });
-    rows.push({ prev, sha, changed, ui_signals: ui, vold_tests: voldTests.length, vnew_tests: vnewTests.length,
-      metrics: r.metrics, selected: r.methods.dual, affected: r.affected });
-    console.log(`${sha.slice(0, 8)} changed=${changed.length} cov=${r.metrics.coverage_only.selected_count} ui=${r.metrics.uidiff_only.selected_count} dual Safe=${r.metrics.dual.Safety} Prec=${r.metrics.dual.Precision}`);
+    const row = { prev, sha, changed, changed_fs_roots: changed.filter((f) => srcGlobs.slice(1).some((g) => f.startsWith(g))),
+      ui_signals: ui, vold_tests: voldTests.length, vnew_tests: vnewTests.length,
+      metrics: r.metrics, selected: r.methods.dual, affected: r.affected };
+    rows.push(row);
+    fs.appendFileSync(jsonlPath, JSON.stringify(row) + '\n'); // survive interruption
+    console.log(`${sha.slice(0, 8)} changed=${changed.length} (fs=${row.changed_fs_roots.length}) cov=${r.metrics.coverage_only.selected_count} ui=${r.metrics.uidiff_only.selected_count} dual Safe=${r.metrics.dual.Safety} Prec=${r.metrics.dual.Precision}`);
     } catch (e) {
       skip(skips, prev, sha, `error:${String(e.message || e).split('\n')[0].slice(0, 80)}`);
+      flushSkips();
       try { gitIn(adapter.repoAbs, 'checkout -f -q HEAD'); } catch { /* best effort */ }
     }
   }
 
   const base = path.join(OUT, adapter.name);
-  fs.writeFileSync(`${base}_rq1.jsonl`, rows.map((r) => JSON.stringify(r)).join('\n') + '\n');
-  fs.writeFileSync(`${base}_rq1_skips.json`, JSON.stringify(skips, null, 2));
+  fs.writeFileSync(jsonlPath, rows.map((r) => JSON.stringify(r)).join('\n') + (rows.length ? '\n' : ''));
+  flushSkips();
   console.log(`\nincluded ${rows.length} stable transitions; skipped ${skips.length} (see ${adapter.name}_rq1_skips.json)`);
   const mean = (k, m) => rows.length ? +(rows.reduce((s, r) => s + r.metrics[m][k], 0) / rows.length).toFixed(4) : 0;
   const summary = {};

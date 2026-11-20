@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { selectByGenericCoverage, toRepoRel } from '../../pipeline/src/covpath.mjs';
 import { buildAffected } from '../../pipeline/src/oracle.mjs';
 import { selectionMetrics } from '../../pipeline/src/metrics.mjs';
-import { srcLeaf, mapLeafRelToRepoRel, rewriteImportFrom, relImportPath, covFixtureSource, covWrapFixtureSource } from '../../pipeline/src/covinject.mjs';
+import { srcLeaf, mapLeafRelToRepoRel, rewriteImportFrom, relImportPath, covFixtureSource, covFixtureSourceUrlRoot, covFixtureSourceMulti, covWrapFixtureSource } from '../../pipeline/src/covinject.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 
@@ -81,22 +81,43 @@ export function injectCdpCoverage(adapter) {
   // source is fixtureImport (default '@playwright/test', or a custom './test').
   const newpage = adapter.injectMode === 'newpage';
   const appImport = adapter.fixtureImport || (newpage ? './fixtures' : '@playwright/test');
-  fs.writeFileSync(fixtureAbs, newpage ? covWrapFixtureSource(leaf, appImport) : covFixtureSource(leaf, appImport));
+  // multi mode: dev-server root (urlRoot) + workspace sources served via Vite
+  // /@fs/<repoAbs>/<fsRoot>/... (adapter.fsRoots), both emitted repo-relative.
+  const fixtureSrc = newpage
+    ? covWrapFixtureSource(leaf, appImport)
+    : adapter.injectUrlRoot && adapter.fsRoots && adapter.fsRoots.length
+      ? covFixtureSourceMulti({
+        urlRoot: adapter.injectUrlRoot,
+        fsRoots: adapter.fsRoots,
+        repoAbs: adapter.repoAbs,
+        appImport,
+        defaultExport: !!adapter.fixtureDefaultExport,
+      })
+      : adapter.injectUrlRoot
+        ? covFixtureSourceUrlRoot(adapter.injectUrlRoot, appImport, !!adapter.fixtureDefaultExport)
+        : covFixtureSource(leaf, appImport, !!adapter.fixtureDefaultExport);
+  fs.writeFileSync(fixtureAbs, fixtureSrc);
   const specRoot = path.join(adapter.runAbs, adapter.specGlob || injectDir);
+  // 需要改写的导入源：默认只改 fixtureImport；某些项目的 spec 混用
+  // '@playwright/test' 直接导入 test，此时也要改写到覆盖夹具（adapter.rewriteFrom）。
+  const fromSpecs = adapter.rewriteFrom || [appImport];
   let n = 0;
   for (const f of walkSpecs(specRoot)) {
     if (f === fixtureAbs) continue;
     const relTo = relImportPath(f, fixtureAbs);
-    const { code, changed } = rewriteImportFrom(fs.readFileSync(f, 'utf8'), [appImport], relTo);
+    const { code, changed } = rewriteImportFrom(fs.readFileSync(f, 'utf8'), fromSpecs, relTo);
     if (changed) { fs.writeFileSync(f, code); n++; }
   }
   return n;
 }
 
+// srcGlob may be a single pathspec or a list (adapter.srcGlobs) covering several
+// source roots, e.g. the example app plus an engine package loaded via /@fs/.
 export function changedSrcFiles(repo, prev, sha, srcGlob) {
-  const diff = gitIn(repo, `diff ${prev} ${sha} -- ${srcGlob}`);
+  const globs = Array.isArray(srcGlob) ? srcGlob : [srcGlob];
+  const diff = gitIn(repo, `diff ${prev} ${sha} -- ${globs.join(' ')}`);
   const files = [...diff.matchAll(/^\+\+\+ b\/(.+)$/gm)].map((m) => m[1]);
-  return [...new Set(files.filter((f) => f.startsWith(srcGlob)))];
+  return [...new Set(files.filter((f) => globs.some((g) => f.startsWith(g)) && f !== '/dev/null'))];
 }
 
 export function runSuiteLive(adapter, spec = '') {
@@ -127,7 +148,7 @@ export function loadCovLive(adapter, covAbs) {
     } else {
       // injected CDP coverage already writes LEAF-relative paths -> re-attach
       // the srcGlob prefix so they share the git-diff namespace.
-      map[o.test] = (o.files || []).map((p) => injected ? mapLeafRelToRepoRel(p, adapter.srcGlob) : toRepoRel(p, adapter.repoAbs));
+      map[o.test] = (o.files || []).map((p) => (injected && !adapter.injectUrlRoot) ? mapLeafRelToRepoRel(p, adapter.srcGlob) : toRepoRel(p, adapter.repoAbs));
     }
   }
   return map;

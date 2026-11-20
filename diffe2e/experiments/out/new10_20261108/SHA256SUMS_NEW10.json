@@ -1,0 +1,11 @@
+{
+  "manifest_expansion_v2.json": "f6927d288343b2936c1bfef0c5eb6c764520877b53f2fdea027526881c0812f8",
+  "rq1_new10.json": "86f5a7449ca87700366e149dc2d8d07ec1c84802213dae17a29d24ab239fe5f5",
+  "rq2_new10_results.json": "745b96f0b54bc39d686502cc17a42ad4017a482f29a21acf6c73ce6cc8d855b3",
+  "rq2_new10_combined.json": "9a228c6b585b855498a6b30a7919efdf2f9f13e7d88e752182c85829233b0fe6",
+  "rq2_new10_table.md": "245b1a4f31bb01fb9c325fbf6f7fb003ea4412b4d1306ad5cf69b891a5f00430",
+  "run_new10_v2.mjs": "35ff5dd6dcefe891f1530e7c2b7fc9bcf13b6777f7d8a6bf417cdd62235317dc",
+  "build_work_exp_v2.mjs": "f1be63a76cd7fca20171e8e5cc6bfb514bd8fa0e28e72b5343bc7c5ece607061",
+  "work_exp_v2.bundle": "81e392ae6c2ad0c75ae6991821de5c7742a81cc0f860647dd4109cec2c07d8c9",
+  "llm_usage.jsonl": "1b9d01b571c3119cdd358222bf2379372a5d5060082ec29a446ec1b99ede588f"
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "annotator1_masked_manifest/v1",
+  "status": "ok",
+  "provider": "deepseek",
+  "model": "deepseek-v4-flash",
+  "endpoint": "https://api.deepseek.com/chat/completions",
+  "system_prompt": "你是软件测试研究者，正在对一批“变更后的测试用例”做独立预标注。\n只依据用户消息中给出的材料判断；不要使用外部知识，也不要猜测材料之外的信息。\n理由必须引用材料中的具体证据；材料是否充分、以及保守项如何选取，按各研究问题的判定规则处理。",
+  "temperature": 0,
+  "max_tokens": 2000,
+  "budget_ladder": [
+    2000,
+    4000,
+    8000
+  ],
+  "retries": 3,
+  "key_source": "env:DEEPSEEK_API_KEY",
+  "started_at": "2026-11-08T06:22:38.578Z",
+  "finished_at": "2026-11-08T06:27:06.788Z",
+  "failures_list": [],
+  "rq2": {
+    "n": 30,
+    "failures": 0
+  },
+  "rq3": {
+    "n": 40,
+    "failures": 0
+  },
+  "input_files": [
+    {
+      "path": "experiments/out/annotation_packet/rq2_worksheet.md",
+      "sha256": "aedd6d702a86203c3c4e9d86bd81de463c3ad3ab9b7c7f449e0d32ab9fa5a965"
+    },
+    {
+      "path": "experiments/out/annotation_packet/rq3_context.md",
+      "sha256": "b844e296aabcb7aff95bd5a45db3e508898797a167fdffee03b6ac5a541f3058"
+    }
+  ]
+}

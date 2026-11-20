@@ -1,0 +1,132 @@
+{
+  "rq2": {
+    "name": "RQ2（二分类：y/n）",
+    "n_main": 30,
+    "paired": 30,
+    "agree": 26,
+    "flips": 4,
+    "directions": {
+      "y→n": 4
+    },
+    "matrix": {
+      "y": {
+        "y": 1,
+        "n": 4
+      },
+      "n": {
+        "y": 0,
+        "n": 25
+      }
+    },
+    "missing_orig": 0,
+    "missing_masked": 0,
+    "invalid": 0,
+    "human_labeled": 0,
+    "flips_list": [
+      {
+        "case_id": "rq2_007",
+        "route": "actual_desktop:packages/desktop-client/src/components/rules/RuleEditor.tsx",
+        "gap_file": "packages/desktop-client/src/components/rules/RuleEditor.tsx",
+        "orig_label": "y",
+        "masked_label": "n",
+        "reason": "diff仅将RuleEditor的onSave默认值由undefined改为必填；测试只操作条件/动作列表并断言可见文本，未涉及保存或onSave行为。"
+      },
+      {
+        "case_id": "rq2_019",
+        "route": "actual_desktop:packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx",
+        "gap_file": "packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx",
+        "orig_label": "y",
+        "masked_label": "n",
+        "reason": "测试仅访问 '/' 并断言 locator('functiontooltip') 可见，未操作或断言变更涉及的自动完成弹层样式、滚轮/鼠标事件转发、悬停高亮或函数集合/提示文案，无法建立与本次变更的直接关联。"
+      },
+      {
+        "case_id": "rq2_023",
+        "route": "actual_desktop:packages/desktop-client/src/components/reports/reports/FormulaCard.tsx",
+        "gap_file": "packages/desktop-client/src/components/reports/reports/FormulaCard.tsx",
+        "orig_label": "y",
+        "masked_label": "n",
+        "reason": "测试仅访问首页并检查 reportcardname 可见/填充，未设置或断言 showTitle 条件下标题隐藏及 Rename 菜单变化，无法关联本次变更行为。"
+      },
+      {
+        "case_id": "rq2_025",
+        "route": "actual_desktop:packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx",
+        "gap_file": "packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx",
+        "orig_label": "y",
+        "masked_label": "n",
+        "reason": "变更仅将分类自动补全的过滤逻辑替换为 filterCategorySuggestions；测试只点击 split-transaction-button 并断言对话框可见，未操作或断言分类自动补全过滤行为，无法建立直接关联。"
+      }
+    ],
+    "failures_list": []
+  },
+  "rq3": {
+    "name": "RQ3（三分类：SO/EC/SR）",
+    "n_main": 40,
+    "paired": 40,
+    "agree": 37,
+    "flips": 3,
+    "directions": {
+      "SUSPECTED_REGRESSION→STRUCTURAL_ONLY": 1,
+      "EXPECTATION_CHANGE→STRUCTURAL_ONLY": 2
+    },
+    "matrix": {
+      "STRUCTURAL_ONLY": {
+        "STRUCTURAL_ONLY": 37,
+        "EXPECTATION_CHANGE": 0,
+        "SUSPECTED_REGRESSION": 0
+      },
+      "EXPECTATION_CHANGE": {
+        "STRUCTURAL_ONLY": 2,
+        "EXPECTATION_CHANGE": 0,
+        "SUSPECTED_REGRESSION": 0
+      },
+      "SUSPECTED_REGRESSION": {
+        "STRUCTURAL_ONLY": 1,
+        "EXPECTATION_CHANGE": 0,
+        "SUSPECTED_REGRESSION": 0
+      }
+    },
+    "missing_orig": 0,
+    "missing_masked": 0,
+    "invalid": 0,
+    "human_labeled": 0,
+    "flips_list": [
+      {
+        "case_id": "rb021",
+        "rb_id": "3458",
+        "repo": "nasa/openmct",
+        "test_file_path": "e2e/tests/functional/plugins/lad/lad.e2e.spec.js",
+        "line_no": "71",
+        "orig_label": "SUSPECTED_REGRESSION",
+        "masked_label": "STRUCTURAL_ONLY",
+        "reason": "旧断言用 getByRole('cell') 定位表头，新断言改为 columnheader；源码改动仅给 th 增加 scope=\"col\" 并调整 a11y 属性，未改列显示/隐藏逻辑，断言可见性语义未变，且 commit 明确为 update broken locator。"
+      },
+      {
+        "case_id": "rb024",
+        "rb_id": "3489",
+        "repo": "nasa/openmct",
+        "test_file_path": "e2e/tests/functional/plugins/lad/lad.e2e.spec.js",
+        "line_no": "210",
+        "orig_label": "EXPECTATION_CHANGE",
+        "masked_label": "STRUCTURAL_ONLY",
+        "reason": "源码在 LadRow.vue 为 td 新增 aria-label（如 lad timestamp），使旧 getByRole('cell',{name:'Timestamp'}) 的可访问名称匹配失效；测试仅加 exact:true，可见/隐藏断言与目标未变。"
+      },
+      {
+        "case_id": "rb033",
+        "rb_id": "621",
+        "repo": "tryghost/koenig",
+        "test_file_path": "packages/koenig-lexical/test/e2e/plus-button.test.js",
+        "line_no": "385",
+        "orig_label": "EXPECTATION_CHANGE",
+        "masked_label": "STRUCTURAL_ONLY",
+        "reason": "仅断言中的 locator 变更，toBeVisible 与“卡片可见”意图未变；无应用源码改动，commit 说明为规避 flaky 的测试定位调整。"
+      }
+    ],
+    "failures_list": []
+  },
+  "redo_params": {
+    "provider": "deepseek",
+    "model": "deepseek-v4-flash",
+    "temperature": 0,
+    "condition": "aligned_information"
+  }
+}

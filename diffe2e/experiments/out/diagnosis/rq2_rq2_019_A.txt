@@ -1,0 +1,31 @@
+下面是一条真实项目中由变更生成/待复核的 Playwright 用例，以及本次变更的已知信息。
+材料以 `--- BEGIN CASE ---` 与 `--- END CASE ---` 之间实际给出的内容为准；不要假设未给出的材料存在。
+请判断该用例是否满足：打开应用并实际执行/断言了这次变更引入或改变的 UI 或行为。
+
+判定规则：
+- y：用例确实触达并验证了这次变更引入/改变的行为；即使文案或选择器细节不完全一致，也算 y。
+- n：用例只验证了变更无关的既有行为、只做泛泛的页面可访问性检查，或断言无法区分新旧版本。
+
+材料（标注者可见内容的原文）：
+--- BEGIN CASE ---
+## rq2_019
+
+- 变更上下文：`actual_desktop:packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx`
+- 变更文件：`packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx`
+
+### 生成出来的测试
+
+```ts
+import { test, expect } from './fixtures';
+
+test('functiontooltip is visible', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('functiontooltip')).toBeVisible();
+});
+```
+
+---
+--- END CASE ---
+
+只输出一个 JSON 对象，不要代码围栏、不要额外解释：
+{"label":"y|n","reason":"不超过 80 字的中文理由，指出材料中的具体证据"}

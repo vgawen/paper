@@ -3,7 +3,7 @@
 | arm | n | executable | change-relevant | mutation-kill (mean) | change-sensitive | semantic-valid (auto) |
 |---|---|---|---|---|---|---|
 | diff | 3 | 1 | 1 | 0.6667 | 1 | 1 |
-| nodiff | 3 | 0.3333 | 0 | 0.2222 | 0.3333 | 0.3333 |
+| nodiff | 3 | 0 | 0 | 0 | 0 | 0 |
 
 - **automatic semantic validity** = executable ∧ change-sensitive (pass V_new, fail V_old) ∧ kills ≥1 injected new-behavior mutant. Objective, no human needed.
 - mutation-kill (mean) = mean over specs of killed/injected mutants on the gap source (testId renames + visible-text edits).

@@ -1,0 +1,62 @@
+[
+  {
+    "case_id": "c0",
+    "tag": "c03",
+    "arm": null,
+    "executable": true,
+    "change_relevant": true,
+    "mutants": 3,
+    "killed": 2,
+    "change_sensitive": true
+  },
+  {
+    "case_id": "c1",
+    "tag": "c03",
+    "arm": null,
+    "executable": false,
+    "change_relevant": false,
+    "mutants": 0,
+    "killed": 0,
+    "change_sensitive": false
+  },
+  {
+    "case_id": "c2",
+    "tag": "c13",
+    "arm": null,
+    "executable": true,
+    "change_relevant": true,
+    "mutants": 3,
+    "killed": 2,
+    "change_sensitive": true
+  },
+  {
+    "case_id": "c3",
+    "tag": "c13",
+    "arm": null,
+    "executable": false,
+    "change_relevant": false,
+    "mutants": 0,
+    "killed": 0,
+    "change_sensitive": false
+  },
+  {
+    "case_id": "c4",
+    "tag": "c19",
+    "arm": null,
+    "executable": true,
+    "change_relevant": true,
+    "mutants": 3,
+    "killed": 2,
+    "change_sensitive": true
+  },
+  {
+    "case_id": "c5",
+    "tag": "c19",
+    "arm": null,
+    "executable": false,
+    "change_relevant": false,
+    "mutants": 0,
+    "killed": 0,
+    "change_sensitive": false
+  }
+]

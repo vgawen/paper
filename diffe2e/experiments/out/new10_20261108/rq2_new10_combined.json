@@ -1,0 +1,625 @@
+{
+  "generated_at": "2026-11-08T13:02:43.763Z",
+  "sample": {
+    "n": 10,
+    "gaps": [
+      "x01",
+      "x02",
+      "x03",
+      "x04",
+      "x05",
+      "y01",
+      "y02",
+      "y03",
+      "y04",
+      "y05"
+    ],
+    "composition": {
+      "stage3_v2_reused": [
+        "x01",
+        "x02",
+        "x03",
+        "x04",
+        "x05"
+      ],
+      "new10": [
+        "y01",
+        "y02",
+        "y03",
+        "y04",
+        "y05"
+      ]
+    },
+    "excluded": {
+      "main_n3": [
+        "c03",
+        "c13",
+        "c19"
+      ],
+      "reason": "主表 n=3 未改动，不属于扩样 10 缺口表"
+    }
+  },
+  "environment": {
+    "playwright": "1.54.0",
+    "chromium": "1181"
+  },
+  "operator_set": "v2 五类算子（testid / 文本 / 属性-可访问性 / 结构-可见性 / 条件逻辑-状态）",
+  "summary": {
+    "diff": {
+      "n": 10,
+      "execRate": 1,
+      "relRate": 1,
+      "mutKillMean": 0.8438,
+      "changeSensRate": 1,
+      "semanticAutoRate": 1,
+      "injectedTotal": 59,
+      "killedTotal": 50
+    },
+    "nodiff": {
+      "n": 10,
+      "execRate": 0.2,
+      "relRate": 0,
+      "mutKillMean": 0,
+      "changeSensRate": 0,
+      "semanticAutoRate": 0,
+      "injectedTotal": 11,
+      "killedTotal": 0
+    }
+  },
+  "by_class": {
+    "diff": {
+      "testid": {
+        "injected": 5,
+        "killed": 5,
+        "killRate": 1
+      },
+      "text": {
+        "injected": 10,
+        "killed": 8,
+        "killRate": 0.8
+      },
+      "attribute": {
+        "injected": 24,
+        "killed": 18,
+        "killRate": 0.75
+      },
+      "structure": {
+        "injected": 10,
+        "killed": 10,
+        "killRate": 1
+      },
+      "logic": {
+        "injected": 10,
+        "killed": 9,
+        "killRate": 0.9
+      }
+    },
+    "nodiff": {
+      "testid": {
+        "injected": 1,
+        "killed": 0,
+        "killRate": 0
+      },
+      "text": {
+        "injected": 2,
+        "killed": 0,
+        "killRate": 0
+      },
+      "attribute": {
+        "injected": 4,
+        "killed": 0,
+        "killRate": 0
+      },
+      "structure": {
+        "injected": 2,
+        "killed": 0,
+        "killRate": 0
+      },
+      "logic": {
+        "injected": 2,
+        "killed": 0,
+        "killRate": 0
+      }
+    }
+  },
+  "gaps": [
+    {
+      "gap_id": "x01",
+      "route": "/settings",
+      "batch": "stage3_v2_reused",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 5,
+          "killed": 4,
+          "mutation_score": 0.8,
+          "by_class": {
+            "testid": {
+              "injected": 1,
+              "killed": 1
+            },
+            "text": {
+              "injected": 1,
+              "killed": 1
+            },
+            "attribute": {
+              "injected": 1,
+              "killed": 0
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "injected": 0,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {},
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "x02",
+      "route": "/feedback",
+      "batch": "stage3_v2_reused",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 7,
+          "killed": 7,
+          "mutation_score": 1,
+          "by_class": {
+            "text": {
+              "injected": 1,
+              "killed": 1
+            },
+            "attribute": {
+              "injected": 4,
+              "killed": 4
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "injected": 0,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {},
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "x03",
+      "route": "/inbox",
+      "batch": "stage3_v2_reused",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 5,
+          "killed": 4,
+          "mutation_score": 0.8,
+          "by_class": {
+            "testid": {
+              "injected": 1,
+              "killed": 1
+            },
+            "text": {
+              "injected": 1,
+              "killed": 1
+            },
+            "attribute": {
+              "injected": 1,
+              "killed": 0
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": true,
+          "change_relevant": false,
+          "injected": 5,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {
+            "testid": {
+              "injected": 1,
+              "killed": 0
+            },
+            "text": {
+              "injected": 1,
+              "killed": 0
+            },
+            "attribute": {
+              "injected": 1,
+              "killed": 0
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 0
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 0
+            }
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "x04",
+      "route": "/checkout",
+      "batch": "stage3_v2_reused",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 6,
+          "killed": 6,
+          "mutation_score": 1,
+          "by_class": {
+            "text": {
+              "injected": 1,
+              "killed": 1
+            },
+            "attribute": {
+              "injected": 3,
+              "killed": 3
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "injected": 0,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {},
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "x05",
+      "route": "/help",
+      "batch": "stage3_v2_reused",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 5,
+          "killed": 4,
+          "mutation_score": 0.8,
+          "by_class": {
+            "text": {
+              "injected": 1,
+              "killed": 1
+            },
+            "attribute": {
+              "injected": 2,
+              "killed": 1
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "injected": 0,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {},
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y01",
+      "route": "/notifications",
+      "batch": "new10",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 5,
+          "killed": 4,
+          "mutation_score": 0.8,
+          "by_class": {
+            "testid": {
+              "injected": 1,
+              "killed": 1
+            },
+            "text": {
+              "injected": 1,
+              "killed": 1
+            },
+            "attribute": {
+              "injected": 1,
+              "killed": 0
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "injected": 0,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {},
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y02",
+      "route": "/survey",
+      "batch": "new10",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 7,
+          "killed": 7,
+          "mutation_score": 1,
+          "by_class": {
+            "text": {
+              "injected": 1,
+              "killed": 1
+            },
+            "attribute": {
+              "injected": 4,
+              "killed": 4
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "injected": 0,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {},
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y03",
+      "route": "/downloads",
+      "batch": "new10",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 6,
+          "killed": 5,
+          "mutation_score": 0.8333,
+          "by_class": {
+            "testid": {
+              "injected": 1,
+              "killed": 1
+            },
+            "text": {
+              "injected": 1,
+              "killed": 0
+            },
+            "attribute": {
+              "injected": 2,
+              "killed": 2
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "injected": 0,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {},
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y04",
+      "route": "/support",
+      "batch": "new10",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 6,
+          "killed": 5,
+          "mutation_score": 0.8333,
+          "by_class": {
+            "text": {
+              "injected": 1,
+              "killed": 0
+            },
+            "attribute": {
+              "injected": 3,
+              "killed": 3
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 1
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": true,
+          "change_relevant": false,
+          "injected": 6,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {
+            "text": {
+              "injected": 1,
+              "killed": 0
+            },
+            "attribute": {
+              "injected": 3,
+              "killed": 0
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 0
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 0
+            }
+          },
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    },
+    {
+      "gap_id": "y05",
+      "route": "/reports",
+      "batch": "new10",
+      "arms": {
+        "diff": {
+          "executable": true,
+          "change_relevant": true,
+          "injected": 7,
+          "killed": 4,
+          "mutation_score": 0.5714,
+          "by_class": {
+            "testid": {
+              "injected": 1,
+              "killed": 1
+            },
+            "text": {
+              "injected": 1,
+              "killed": 1
+            },
+            "attribute": {
+              "injected": 3,
+              "killed": 1
+            },
+            "structure": {
+              "injected": 1,
+              "killed": 1
+            },
+            "logic": {
+              "injected": 1,
+              "killed": 0
+            }
+          },
+          "change_sensitive": true,
+          "semantic_auto": true
+        },
+        "nodiff": {
+          "executable": false,
+          "change_relevant": false,
+          "injected": 0,
+          "killed": 0,
+          "mutation_score": 0,
+          "by_class": {},
+          "change_sensitive": false,
+          "semantic_auto": false
+        }
+      }
+    }
+  ]
+}
