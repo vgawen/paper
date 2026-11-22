@@ -6,6 +6,7 @@ import { resolve } from '../src/graph/resolve.mjs';
 import { addTestEdges } from '../src/graph/testEdges.mjs';
 import { semanticResolveCalls } from '../src/graph/semanticResolve.mjs';
 import { svelteKitRoutes } from '../src/graph/fileRoutes.mjs';
+import { buildTestCodeGraph } from '../src/graph/index.mjs';
 
 test('extract: contains/imports/calls edges for a small TS file', () => {
   const code = `
@@ -178,4 +179,23 @@ test('svelteKitRoutes: file-based +page.svelte -> route with dynamic segments', 
   assert.deepEqual(nodes.map((n) => n.name).sort(), ['/', '/about', '/blog/:slug']);
   assert.equal(edges.length, 3);
   assert.ok(edges.some((e) => e.kind === 'renders' && e.target === 'src/routes/blog/[slug]/+page.svelte::<file>'));
+});
+
+test('buildTestCodeGraph: unifies code + route + test layers', () => {
+  const files = [
+    { path: 'src/util.ts', code: 'export function formatPrice(c){ return c; }\n' },
+    { path: 'src/cart.ts', code: "import { formatPrice } from './util';\nexport function render(){ return formatPrice(1); }\n" },
+    { path: 'src/main.ts', code: "const routes = { '/cart': () => import('./cart') };\n" },
+  ];
+  const evidence = [{ test: 'cart.spec > x', funcs: { 'src/main.ts': ['/cart', 'render'], 'src/cart.ts': ['render'], 'src/util.ts': ['formatPrice'] } }];
+  const g = buildTestCodeGraph(files, evidence);
+  const kinds = new Set(g.nodes.map((n) => n.kind));
+  assert.ok(kinds.has('test'));
+  assert.ok(kinds.has('route'));
+  assert.ok(kinds.has('function'));
+  // the chain route:/cart -> renders -> cart file -> contains -> render -> executes -> test
+  const renders = g.edges.find((e) => e.kind === 'renders');
+  assert.ok(renders);
+  assert.ok(g.edges.some((e) => e.kind === 'executes' && e.target === 'src/cart.ts::render'));
+  assert.ok(g.edges.some((e) => e.kind === 'calls' && e.resolved && e.target === 'src/util.ts::formatPrice'));
 });
