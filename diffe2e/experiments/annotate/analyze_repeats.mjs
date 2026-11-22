@@ -284,7 +284,7 @@ const md = [
   '',
   `生成时间：${results.generated_at}`,
   '',
-  '口径：run1 为既有正式结果；run2/run3 为同材料、同 prompt、同模型与参数（`deepseek-v4-flash`、`temperature=0`、`max_tokens=2000`、预算阶梯 2000→4000→8000）的重复采样。每条的原始输出与 usage 均保存在 `out/repeats/` 对应 JSON。',
+  '口径：run1 为既有正式结果；run2/run3 为同材料、同 prompt、同模型与参数（`deepseek-v4-pro`、`temperature=0`、`max_tokens=2000`、预算阶梯 2000→4000→8000）的重复采样。每条的原始输出与 usage 均保存在 `out/repeats/` 对应 JSON。',
   '',
 ];
 for (const [name, cond] of Object.entries(results.conditions)) {

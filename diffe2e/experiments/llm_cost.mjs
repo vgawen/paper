@@ -71,7 +71,7 @@ export function summarizeLlmCost(inputs, options = {}) {
 
   return {
     provider: inputs.rq2?.provider || inputs.rq3?.provider || inputs.reprobreak?.provider || 'unknown',
-    model: 'deepseek-v4-flash',
+    model: 'deepseek-v4-pro',
     pricing,
     caveat: 'Estimated from call counts and prompt/output-size assumptions because prior experiment outputs did not persist provider usage fields. Future runs should capture API usage directly.',
     by_experiment: byExperiment,

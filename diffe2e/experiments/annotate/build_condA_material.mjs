@@ -254,7 +254,7 @@ const manifest = {
   per_case: perCase,
   known_deviations: [
     '原 prompt 文本不可知：条件 A 与 masked 使用同一份中性 prompt，因此不等同于原 prompt。',
-    '原模型、版本、温度、max_tokens、重试策略均无记录；条件 A 固定为 deepseek-v4-flash、temperature=0、max_tokens=500、retries=3。',
+    '原模型、版本、温度、max_tokens、重试策略均无记录；条件 A 固定为 deepseek-v4-pro、temperature=0、max_tokens=500、retries=3。',
     '原 RQ3 “旧测试行”的确切截取范围不可知；条件 A 用旧测试文件中 old_locator 所在单行近似，不是完整 it 块。',
     '原 RQ3 是否展示未遮蔽的断言级 diff 只能由 rationale 推断；条件 A 的 diff 由 compare 缓存重算，并优先限定到包含 old_locator/new_locator 的 hunk，定位不到时展示整文件断言变化；展示形式仍可能与当时不同。',
     '原 RQ2 是否看到应用源码 diff 不可知；条件 A 按“不提供”处理。',

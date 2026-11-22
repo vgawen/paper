@@ -12,7 +12,7 @@ import { execFileSync } from 'node:child_process';
 
 export const PROVIDERS = {
   deepseek: {
-    model: 'deepseek-v4-flash',
+    model: 'deepseek-v4-pro',
     endpoint: 'https://api.deepseek.com/chat/completions',
     keyEnv: 'DEEPSEEK_API_KEY',
   },

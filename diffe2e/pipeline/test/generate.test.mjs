@@ -101,7 +101,7 @@ test('real provider usage is appended to JSONL when LLM_USAGE_OUT is set', async
     assert.equal(await client.complete('prompt'), 'ok');
     const row = JSON.parse(fs.readFileSync(usagePath, 'utf8').trim());
     assert.equal(row.provider, 'deepseek');
-    assert.equal(row.model, 'deepseek-v4-flash');
+    assert.equal(row.model, 'deepseek-v4-pro');
     assert.deepEqual(row.usage, { prompt_tokens: 11, completion_tokens: 3, total_tokens: 14 });
   } finally {
     globalThis.fetch = originalFetch;
