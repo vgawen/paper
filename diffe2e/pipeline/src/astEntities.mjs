@@ -22,14 +22,24 @@ export function changedEntitiesFromCode(code, changedLines, fileName = 'x.tsx') 
     if (ts.isMethodDeclaration(node) && node.name) return node.name.getText();
     return null;
   }
+  // kind: 'function' for real functions and arrow/function-bound consts; 'variable'
+  // for plain module-level const/let (no function initializer) — the latter cannot be
+  // attributed by function-level coverage, so the selector falls back to file-level.
+  function kindOf(node) {
+    if (ts.isVariableDeclaration(node)) {
+      return node.initializer && (ts.isArrowFunction(node.initializer) || ts.isFunctionExpression(node.initializer))
+        ? 'function' : 'variable';
+    }
+    return 'function';
+  }
   function visit(node, depth) {
     if ((ts.isFunctionDeclaration(node) || ts.isArrowFunction(node) || ts.isFunctionExpression(node) ||
          ts.isMethodDeclaration(node) || ts.isVariableDeclaration(node)) && spanContainsChange(node)) {
       const nm = nameOf(node) || (node.parent && ts.isVariableDeclaration(node.parent) ? node.parent.name.getText() : null);
-      if (nm) hits.push({ kind: 'function', name: nm, depth, line: lineOf(node.getStart()) });
+      if (nm) hits.push({ kind: kindOf(node), name: nm, depth, line: lineOf(node.getStart()), start: node.getStart(), end: node.getEnd() });
     }
     if (ts.isJsxElement(node) && spanContainsChange(node)) {
-      hits.push({ kind: 'jsx', tag: node.openingElement.tagName.getText(), depth, line: lineOf(node.getStart()) });
+      hits.push({ kind: 'jsx', tag: node.openingElement.tagName.getText(), depth, line: lineOf(node.getStart()), start: node.getStart(), end: node.getEnd() });
     }
     ts.forEachChild(node, (c) => visit(c, depth + 1));
   }

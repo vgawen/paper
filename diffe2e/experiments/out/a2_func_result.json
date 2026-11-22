@@ -1,0 +1,360 @@
+{
+  "summary": {
+    "n": 24,
+    "reduction_file": 0.625,
+    "reduction_func": 0.6805,
+    "gain": 0.0556,
+    "total_misses": 0,
+    "changed_transitions": [
+      {
+        "tag": "c04",
+        "type": "multi_file",
+        "file": 2,
+        "func": 0
+      },
+      {
+        "tag": "c10",
+        "type": "refactor_noise",
+        "file": 1,
+        "func": 0
+      },
+      {
+        "tag": "c14",
+        "type": "logic",
+        "file": 1,
+        "func": 0
+      },
+      {
+        "tag": "c17",
+        "type": "logic",
+        "file": 2,
+        "func": 0
+      },
+      {
+        "tag": "c24",
+        "type": "refactor_noise",
+        "file": 2,
+        "func": 0
+      }
+    ]
+  },
+  "rows": [
+    {
+      "tag": "c01",
+      "type": "ui_text",
+      "changed": [
+        "src/home.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c02",
+      "type": "logic",
+      "changed": [
+        "src/search.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c03",
+      "type": "new_feature_gap",
+      "changed": [
+        "src/coupon.js",
+        "src/main.js"
+      ],
+      "sel_file": 6,
+      "sel_func": 6,
+      "red_file": 0,
+      "red_func": 0,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c04",
+      "type": "multi_file",
+      "changed": [
+        "src/util.js"
+      ],
+      "sel_file": 2,
+      "sel_func": 0,
+      "red_file": 0.6667,
+      "red_func": 1,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c05",
+      "type": "ui_text",
+      "changed": [
+        "src/profile.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c06",
+      "type": "logic",
+      "changed": [
+        "src/login.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c07",
+      "type": "logic",
+      "changed": [
+        "src/orders.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c08",
+      "type": "locator_break",
+      "changed": [
+        "src/cart.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 1,
+      "missed": []
+    },
+    {
+      "tag": "c09",
+      "type": "ui_text",
+      "changed": [
+        "src/search.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c10",
+      "type": "refactor_noise",
+      "changed": [
+        "src/home.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 0,
+      "red_file": 0.8333,
+      "red_func": 1,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c11",
+      "type": "multi_file",
+      "changed": [
+        "src/cart.js",
+        "src/login.js"
+      ],
+      "sel_file": 2,
+      "sel_func": 2,
+      "red_file": 0.6667,
+      "red_func": 0.6667,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c12",
+      "type": "route",
+      "changed": [
+        "src/main.js"
+      ],
+      "sel_file": 6,
+      "sel_func": 6,
+      "red_file": 0,
+      "red_func": 0,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c13",
+      "type": "new_feature_gap",
+      "changed": [
+        "src/main.js",
+        "src/wishlist.js"
+      ],
+      "sel_file": 6,
+      "sel_func": 6,
+      "red_file": 0,
+      "red_func": 0,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c14",
+      "type": "logic",
+      "changed": [
+        "src/orders.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 0,
+      "red_file": 0.8333,
+      "red_func": 1,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c15",
+      "type": "assertion_break",
+      "changed": [
+        "src/login.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 1,
+      "missed": []
+    },
+    {
+      "tag": "c16",
+      "type": "ui_text",
+      "changed": [
+        "src/profile.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c17",
+      "type": "logic",
+      "changed": [
+        "src/util.js"
+      ],
+      "sel_file": 2,
+      "sel_func": 0,
+      "red_file": 0.6667,
+      "red_func": 1,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c18",
+      "type": "ui_text",
+      "changed": [
+        "src/profile.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c19",
+      "type": "new_feature_gap",
+      "changed": [
+        "src/faq.js",
+        "src/main.js"
+      ],
+      "sel_file": 6,
+      "sel_func": 6,
+      "red_file": 0,
+      "red_func": 0,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c20",
+      "type": "locator_break",
+      "changed": [
+        "src/search.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 1,
+      "missed": []
+    },
+    {
+      "tag": "c21",
+      "type": "assertion_break",
+      "changed": [
+        "src/orders.js"
+      ],
+      "sel_file": 1,
+      "sel_func": 1,
+      "red_file": 0.8333,
+      "red_func": 0.8333,
+      "aobs": 1,
+      "missed": []
+    },
+    {
+      "tag": "c22",
+      "type": "multi_file",
+      "changed": [
+        "src/home.js",
+        "src/profile.js"
+      ],
+      "sel_file": 2,
+      "sel_func": 2,
+      "red_file": 0.6667,
+      "red_func": 0.6667,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c23",
+      "type": "route",
+      "changed": [
+        "src/main.js"
+      ],
+      "sel_file": 6,
+      "sel_func": 6,
+      "red_file": 0,
+      "red_func": 0,
+      "aobs": 0,
+      "missed": []
+    },
+    {
+      "tag": "c24",
+      "type": "refactor_noise",
+      "changed": [
+        "src/util.js"
+      ],
+      "sel_file": 2,
+      "sel_func": 0,
+      "red_file": 0.6667,
+      "red_func": 1,
+      "aobs": 0,
+      "missed": []
+    }
+  ]
+}

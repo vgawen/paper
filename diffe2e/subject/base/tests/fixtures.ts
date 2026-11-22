@@ -14,6 +14,10 @@ export const test = base.extend({
     const entries = await page.coverage.stopJSCoverage();
 
     const files = new Set<string>();
+    // file -> set of executed NAMED functions (functionName != '', any range count > 0).
+    // Top-level module code is reported as functionName '' (module eval) and is excluded,
+    // so `funcs` captures only genuinely-called named functions (function-level attribution).
+    const funcs: Record<string, string[]> = {};
     for (const entry of entries) {
       const url: string = (entry as any).url || '';
       const m = url.match(/\/src\/[^?#]*\.js/);
@@ -23,13 +27,21 @@ export const test = base.extend({
         (fn.ranges || []).some((r: any) => r.count > 0)
       );
       if (executed) files.add(m[0]);
+      const names = new Set<string>();
+      for (const fn of (entry.functions || [])) {
+        if (!fn.functionName) continue; // skip top-level '' and anonymous handlers
+        for (const r of (fn.ranges || [])) {
+          if (r.count > 0) { names.add(fn.functionName); break; }
+        }
+      }
+      if (names.size) funcs[m[0]] = [...names];
     }
 
     fs.mkdirSync(OUT, { recursive: true });
     const id = testInfo.titlePath.join(' > ').replace(/[^\w.-]+/g, '_');
     fs.writeFileSync(
       path.join(OUT, id + '.json'),
-      JSON.stringify({ test: testInfo.titlePath.join(' > '), files: [...files].sort() }, null, 2)
+      JSON.stringify({ test: testInfo.titlePath.join(' > '), files: [...files].sort(), funcs }, null, 2)
     );
   },
 });
