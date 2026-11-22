@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { extractFile } from '../src/graph/extract.mjs';
 import { Graph } from '../src/graph/graph.mjs';
 import { resolve } from '../src/graph/resolve.mjs';
+import { addTestEdges } from '../src/graph/testEdges.mjs';
 
 test('extract: contains/imports/calls edges for a small TS file', () => {
   const code = `
@@ -106,4 +107,16 @@ test('route: route table extracts route nodes + renders edges', () => {
   assert.equal(renders.length, 2);
   assert.ok(renders.some((e) => e.target === 'src/cart.js::<file>'));
   assert.ok(renders.some((e) => e.target === 'src/home.js::<file>'));
+});
+
+test('testEdges: attaches executes + navigates edges from coverage evidence', () => {
+  const raw = Graph.build([
+    { path: 'src/main.js', code: "const routes = { '/cart': () => import('./cart.js') };\n" },
+    { path: 'src/cart.js', code: 'export function render(){};\n' },
+  ]).toJSON();
+  const evidence = [{ test: 'cart.spec > x', funcs: { 'src/main.js': ['/cart', 'render'], 'src/cart.js': ['render'] } }];
+  const g = addTestEdges(raw, evidence);
+  assert.ok(g.nodes.some((n) => n.kind === 'test' && n.name === 'cart.spec > x'));
+  assert.ok(g.edges.some((e) => e.kind === 'executes' && e.target === 'src/cart.js::render'));
+  assert.ok(g.edges.some((e) => e.kind === 'navigates' && e.target === 'src/main.js::route:/cart'));
 });
