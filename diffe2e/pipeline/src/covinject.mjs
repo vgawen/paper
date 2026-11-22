@@ -264,6 +264,7 @@ export const test = appTest.extend<{ _cov: void }>({
   _cov: [async ({ browser }, use, testInfo) => {
     const orig = browser.newPage.bind(browser);
     const files = new Set<string>();
+    const funcs: Record<string, string[]> = {};
     const seen = new Set<string>();
     const pending = new Set<any>();
     const collect = async (p: any) => {
@@ -278,6 +279,12 @@ export const test = appTest.extend<{ _cov: void }>({
         if (!m) continue;
         const hit = (e.functions || []).some((fn: any) => (fn.ranges || []).some((r: any) => r.count > 0));
         if (hit) files.add(m[1]);
+        const names = new Set<string>();
+        for (const fn of (e.functions || [])) {
+          if (!fn.functionName) continue;
+          for (const r of (fn.ranges || [])) if (r.count > 0) { names.add(fn.functionName); break; }
+        }
+        if (names.size) funcs[m[1]] = [...names];
       }
     };
     (browser as any).newPage = async (o: any) => {
@@ -294,7 +301,7 @@ export const test = appTest.extend<{ _cov: void }>({
     fs.mkdirSync(OUT, { recursive: true });
     const id = testInfo.titlePath.join(' > ');
     fs.writeFileSync(path.join(OUT, id.replace(/[^\\w.-]+/g, '_') + '.json'),
-      JSON.stringify({ test: id, files: [...files].sort() }));
+      JSON.stringify({ test: id, files: [...files].sort(), funcs }));
     if (process.env.COV_DEBUG) fs.writeFileSync(path.join(OUT, '_urls.json'), JSON.stringify([...seen].slice(0, 60), null, 2));
   }, { auto: true }],
 });
