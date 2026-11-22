@@ -4,6 +4,7 @@ import { extractFile } from '../src/graph/extract.mjs';
 import { Graph } from '../src/graph/graph.mjs';
 import { resolve } from '../src/graph/resolve.mjs';
 import { addTestEdges } from '../src/graph/testEdges.mjs';
+import { semanticResolveCalls } from '../src/graph/semanticResolve.mjs';
 
 test('extract: contains/imports/calls edges for a small TS file', () => {
   const code = `
@@ -119,4 +120,32 @@ test('testEdges: attaches executes + navigates edges from coverage evidence', ()
   assert.ok(g.nodes.some((n) => n.kind === 'test' && n.name === 'cart.spec > x'));
   assert.ok(g.edges.some((e) => e.kind === 'executes' && e.target === 'src/cart.js::render'));
   assert.ok(g.edges.some((e) => e.kind === 'navigates' && e.target === 'src/main.js::route:/cart'));
+});
+
+test('semanticResolve: resolves aliased imports where name-based fails', () => {
+  const files = [
+    { path: 'src/util.ts', code: 'export function formatPrice(c){ return c; }\n' },
+    { path: 'src/cart.ts', code: "import { formatPrice as fmt } from './util';\nexport function render(){ fmt(1); }\n" },
+  ];
+  // typeChecker follows the alias `fmt` -> formatPrice
+  const sem = semanticResolveCalls(files);
+  const call = sem.resolved.find((e) => e.callee === 'fmt');
+  assert.ok(call && call.resolved);
+  assert.equal(call.target, 'src/util.ts::formatPrice');
+
+  // name-based cannot (it looks up 'fmt', which has no declaration)
+  const nb = resolve(Graph.build(files).toJSON()).edges.find((e) => e.kind === 'calls' && e.callee === 'fmt');
+  assert.ok(nb && nb.resolved === false);
+});
+
+test('semanticResolve: resolves re-exports (barrel file)', () => {
+  const files = [
+    { path: 'src/util.ts', code: 'export function formatPrice(c){ return c; }\n' },
+    { path: 'src/index.ts', code: "export { formatPrice } from './util';\n" },
+    { path: 'src/cart.ts', code: "import { formatPrice } from './index';\nexport function render(){ formatPrice(1); }\n" },
+  ];
+  const sem = semanticResolveCalls(files);
+  const call = sem.resolved.find((e) => e.callee === 'formatPrice');
+  assert.ok(call && call.resolved);
+  assert.equal(call.target, 'src/util.ts::formatPrice'); // resolves THROUGH the barrel to the real decl
 });
