@@ -111,5 +111,44 @@ export function extractFile(filePath, code) {
     visit(n, null, null);
   });
 
+  // Route table: `const routes = { '/path': () => import('./file.js'), ... }`.
+  // Emits route nodes + `renders` edges (route -> component file node). Per-file
+  // pure (the table lives in this file), so incremental update re-emits cleanly.
+  const findDynamicImport = (node) => {
+    let imp = null;
+    const walk = (n) => {
+      if (imp) return;
+      if (ts.isCallExpression(n) && n.expression.kind === ts.SyntaxKind.ImportKeyword &&
+          n.arguments && n.arguments[0] && ts.isStringLiteral(n.arguments[0])) {
+        imp = n.arguments[0].text;
+        return;
+      }
+      ts.forEachChild(n, walk);
+    };
+    walk(node);
+    return imp;
+  };
+
+  const visitRoutes = (node) => {
+    if (ts.isVariableDeclaration(node) && node.initializer && ts.isObjectLiteralExpression(node.initializer)) {
+      for (const prop of node.initializer.properties) {
+        if (!ts.isPropertyAssignment(prop) || !ts.isStringLiteral(prop.name)) continue;
+        const routePath = prop.name.text;
+        const imp = findDynamicImport(prop.initializer);
+        if (!imp) continue;
+        const routeQn = `route:${routePath}`;
+        const routeId = nodeId(filePath, routeQn);
+        const componentFile = path.posix.normalize(path.posix.join(path.posix.dirname(filePath), imp));
+        if (!nodes.some((n) => n.id === routeId)) {
+          nodes.push({ id: routeId, kind: 'route', name: routePath, qualifiedName: routeQn, file: filePath, startLine: lineOf(prop.getStart()), endLine: lineOf(prop.getEnd()), isExported: false });
+          edges.push({ source: fileId, target: routeId, kind: 'contains', provenance: 'symbolic', line: lineOf(prop.getStart()) });
+        }
+        edges.push({ source: routeId, target: nodeId(componentFile, '<file>'), kind: 'renders', provenance: 'symbolic', line: lineOf(prop.getStart()) });
+      }
+    }
+    ts.forEachChild(node, visitRoutes);
+  };
+  ts.forEachChild(sf, (n) => visitRoutes(n));
+
   return { nodes, edges };
 }

@@ -96,3 +96,14 @@ test('resolve: rename without updating caller -> call becomes unresolved (broken
   const call = resolve(inc.toJSON()).edges.find((e) => e.kind === 'calls' && e.callee === 'foo');
   assert.ok(call && call.resolved === false);
 });
+
+test('route: route table extracts route nodes + renders edges', () => {
+  const code = "const routes = { '/cart': () => import('./cart.js'), '/home': () => import('./home.js') };\n";
+  const { nodes, edges } = extractFile('src/main.js', code);
+  const routeNodes = nodes.filter((n) => n.kind === 'route');
+  assert.deepEqual(routeNodes.map((n) => n.name).sort(), ['/cart', '/home']);
+  const renders = edges.filter((e) => e.kind === 'renders');
+  assert.equal(renders.length, 2);
+  assert.ok(renders.some((e) => e.target === 'src/cart.js::<file>'));
+  assert.ok(renders.some((e) => e.target === 'src/home.js::<file>'));
+});
