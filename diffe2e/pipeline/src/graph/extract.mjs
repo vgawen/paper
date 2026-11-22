@@ -62,8 +62,17 @@ function isExported(node) {
 }
 
 export function extractFile(filePath, code) {
-  const tree = parserFor(path.extname(filePath).toLowerCase()).parse(code);
-  const root = tree.rootNode;
+  let root;
+  try {
+    root = parserFor(path.extname(filePath).toLowerCase()).parse(code).rootNode;
+  } catch {
+    // parse failed (e.g. an oversized single token the grammar can't handle) —
+    // fall back to a file-only node so the file stays tracked, no symbols lost elsewhere
+    return {
+      nodes: [{ id: nodeId(filePath, '<file>'), kind: 'file', name: path.basename(filePath), qualifiedName: '<file>', file: filePath, startLine: 1, endLine: (code.match(/\n/g) || []).length + 1, startByte: 0, endByte: code.length }],
+      edges: [],
+    };
+  }
   const nodes = [];
   const edges = [];
   const lineOf = (n) => n.startPosition.row + 1;
@@ -181,6 +190,38 @@ export function extractFile(filePath, code) {
     for (const c of node.children) visitRoutes(c);
   };
 
+  // React Router JSX form: <Route path="..." element={<X/>} /> (or <Route ...>...</Route>)
+  const jsxComponentOf = (val) => {
+    if (!val || val.type !== 'jsx_expression') return null;
+    const el = val.children.find((c) => c.type === 'jsx_element' || c.type === 'jsx_self_closing_element');
+    if (!el) return null;
+    const tag = el.childForFieldName('name');
+    return tag ? tag.text : null;
+  };
+
+  const visitJsxRoutes = (node) => {
+    if (node.type === 'jsx_opening_element' || node.type === 'jsx_self_closing_element') {
+      const tag = node.childForFieldName('name');
+      if (tag && tag.text === 'Route') {
+        let path = null, component = null, isIndex = false;
+        for (const attr of node.children) {
+          if (attr.type !== 'jsx_attribute') continue;
+          const name = attr.children.find((c) => c.type === 'property_identifier');
+          const val = attr.children.find((c) => c.type === 'string' || c.type === 'jsx_expression');
+          if (!name) continue;
+          const key = name.text;
+          if (key === 'path' && val && val.type === 'string') path = val.text.slice(1, -1);
+          else if (key === 'element') component = jsxComponentOf(val);
+          else if (key === 'index') isIndex = true;
+        }
+        if (component && (path !== null || isIndex)) {
+          emitRoute(isIndex && path === null ? '' : (path ?? ''), { kind: 'component', name: component }, node);
+        }
+      }
+    }
+    for (const c of node.children) visitJsxRoutes(c);
+  };
+
   // imports (module specifier = the string source)
   const visitImports = (node) => {
     if (node.type === 'import_statement') {
@@ -199,6 +240,7 @@ export function extractFile(filePath, code) {
   visitImports(root);
   for (const c of root.children) visit(c, null, null);
   visitRoutes(root);
+  visitJsxRoutes(root);
 
   return { nodes, edges };
 }

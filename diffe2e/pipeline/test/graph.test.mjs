@@ -169,6 +169,21 @@ test('route: React Router Component/component identifiers', () => {
   assert.deepEqual(targets, ['component:PageA', 'component:PageB']);
 });
 
+test('route: React Router JSX <Route path element> -> route + component', () => {
+  const code = '<Routes><Route path="/checkout" element={<PaymentForm />} /><Route path="/settings" element={<Settings />}><Route path="general" element={<GeneralSettings />} /></Route></Routes>';
+  const { nodes, edges } = extractFile('src/App.tsx', code);
+  assert.deepEqual(nodes.filter((n) => n.kind === 'route').map((n) => n.name), ['/checkout', '/settings', 'general']);
+  assert.ok(edges.some((e) => e.kind === 'renders' && e.target === 'component:PaymentForm'));
+  assert.ok(edges.some((e) => e.kind === 'renders' && e.target === 'component:Settings'));
+});
+
+test('extract: oversized/broken file degrades to file-only node (no crash)', () => {
+  const { nodes, edges } = extractFile('src/big.tsx', 'x'.repeat(200000));
+  assert.equal(nodes.length, 1);
+  assert.equal(nodes[0].kind, 'file');
+  assert.equal(edges.length, 0);
+});
+
 test('svelteKitRoutes: file-based +page.svelte -> route with dynamic segments', () => {
   const files = [
     { path: 'src/routes/+page.svelte', code: '' },
