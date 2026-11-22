@@ -7,7 +7,7 @@ export function parseUnifiedDiff(text) {
   let oldLine = 0, newLine = 0;
   for (const line of text.split('\n')) {
     let m;
-    if (line.startsWith('--- a/')) continue;
+    if (line.startsWith('--- a/') || line.startsWith('--- /dev/null')) continue;
     if ((m = line.match(/^\+\+\+ b\/(.+)$/))) {
       const path = m[1].trim();
       current = path === '/dev/null' ? null : path;
@@ -21,7 +21,8 @@ export function parseUnifiedDiff(text) {
     if (!current) continue;
     if (line.startsWith('+')) { byFile[current].added.add(newLine); newLine++; }
     else if (line.startsWith('-')) { byFile[current].removed.add(oldLine); oldLine++; }
-    else { oldLine++; newLine++; }
+    else if (line.startsWith(' ')) { oldLine++; newLine++; }
+    // else: metadata (diff --git / index / new file mode / \ No newline ...) -> skip
   }
   return { files: Object.keys(byFile), byFile };
 }

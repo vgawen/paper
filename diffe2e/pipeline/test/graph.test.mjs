@@ -197,6 +197,13 @@ test('extract: value-reference edge (function -> module-level variable it reads)
   assert.ok(!refs.some((e) => e.source === 'src/orders.ts::calc'));
 });
 
+test('extract: route table variable is marked isRouteTable', () => {
+  const code = "const routes = { '/cart': () => import('./cart.js') };\n";
+  const { nodes } = extractFile('src/main.js', code);
+  const routesVar = nodes.find((n) => n.kind === 'variable' && n.name === 'routes');
+  assert.ok(routesVar && routesVar.isRouteTable);
+});
+
 test('workspace: discovers packages + builds paths mapping', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ws-'));
   fs.mkdirSync(path.join(tmp, 'packages', 'pkg-a', 'src'), { recursive: true });

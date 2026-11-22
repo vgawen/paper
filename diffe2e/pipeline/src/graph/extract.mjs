@@ -84,6 +84,7 @@ export function extractFile(filePath, code) {
 
   // module-level variable names (for value-reference edges)
   const moduleVarNames = new Set();
+  const routeTableVars = new Set();
   const refSeen = new Set();
   const collectModuleVars = (node) => {
     if (node.type === 'lexical_declaration' || node.type === 'variable_declaration') {
@@ -180,7 +181,8 @@ export function extractFile(filePath, code) {
   // two route-config shapes:
   //  (a) React Router style: { path: '/x', element: <X/> | Component: X | component: X }
   //  (b) controlled-subject style: { '/x': () => import('./y.js') }
-  const extractRouteObject = (obj) => {
+  const extractRouteObject = (obj, varName) => {
+    let extracted = false;
     const pairs = obj.children.filter((c) => c.type === 'pair');
     const getPair = (key) => pairs.find((p) => {
       const k = p.childForFieldName('key');
@@ -196,23 +198,33 @@ export function extractFile(filePath, code) {
         const compPair = getPair('element') || getPair('Component') || getPair('component');
         if (compPair) {
           const ct = componentTarget(compPair.childForFieldName('value'));
-          if (ct) emitRoute(pathVal.text.slice(1, -1), ct, pathPair);
+          if (ct) { emitRoute(pathVal.text.slice(1, -1), ct, pathPair); extracted = true; }
         }
       }
-      return;
+      if (extracted && varName) routeTableVars.add(varName);
+      return extracted;
     }
     for (const pair of pairs) {
       const key = pair.childForFieldName('key');
       const pv = pair.childForFieldName('value');
       if (!key || key.type !== 'string' || !pv) continue;
       const imp = findDynamicImport(pv);
-      if (imp) emitRoute(key.text.slice(1, -1), { kind: 'file', target: imp }, pair);
+      if (imp) { emitRoute(key.text.slice(1, -1), { kind: 'file', target: imp }, pair); extracted = true; }
     }
+    if (extracted && varName) routeTableVars.add(varName);
+    return extracted;
   };
 
   const visitRoutes = (node) => {
-    // any object literal — covers `const routes = {...}` and `[{ path, element }]`
-    if (node.type === 'object') extractRouteObject(node);
+    if (node.type === 'variable_declarator') {
+      const val = node.childForFieldName('value');
+      if (val && val.type === 'object') {
+        const name = node.childForFieldName('name');
+        extractRouteObject(val, name ? name.text : null);
+      }
+    } else if (node.type === 'object' && node.parent && node.parent.type === 'array') {
+      extractRouteObject(node, null); // React Router [{ path, element }]
+    }
     for (const c of node.children) visitRoutes(c);
   };
 
@@ -267,6 +279,9 @@ export function extractFile(filePath, code) {
   for (const c of root.children) visit(c, null, null);
   visitRoutes(root);
   visitJsxRoutes(root);
+
+  // mark route-table variables (handled by route-level, not value-reference)
+  for (const n of nodes) if (n.kind === 'variable' && routeTableVars.has(n.name)) n.isRouteTable = true;
 
   return { nodes, edges };
 }

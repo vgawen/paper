@@ -68,8 +68,11 @@ function changedEntities(oldT, newT) {
 function selectByGraph(graph, changed) {
   // value-reference: variable -> functions that reference it
   const readers = new Map();
+  const routeTableVars = new Set();
   for (const e of graph.edges) {
     if (e.kind === 'references') {
+      const varNode = graph.nodes.find((n) => n.id === e.target);
+      if (varNode && varNode.isRouteTable) { routeTableVars.add(e.target); continue; } // handled by route-level
       if (!readers.has(e.target)) readers.set(e.target, new Set());
       readers.get(e.target).add(e.source);
     }
@@ -82,8 +85,39 @@ function selectByGraph(graph, changed) {
     if (e.kind === 'executes' && affectedFns.has(e.target)) sel.add(e.source);
     if (e.kind === 'navigates' && changed.routes.has(e.target)) sel.add(e.source);
   }
-  const varUnresolved = [...changed.vars].filter((v) => !readers.has(v));
+  const varUnresolved = [...changed.vars].filter((v) => !readers.has(v) && !routeTableVars.has(v));
   return { sel, varUnresolved };
+}
+
+// diff routes between V_old and V_new: ADD / REMOVE / MODIFY (renders target changed)
+function routeDiff(graphOld, graphNew) {
+  const of = new Map(), nf = new Map();
+  for (const n of graphOld.nodes) if (n.kind === 'route') {
+    const r = graphOld.edges.find((e) => e.kind === 'renders' && e.source === n.id);
+    of.set(n.name, r ? r.target : null);
+  }
+  for (const n of graphNew.nodes) if (n.kind === 'route') {
+    const r = graphNew.edges.find((e) => e.kind === 'renders' && e.source === n.id);
+    nf.set(n.name, r ? r.target : null);
+  }
+  const added = [...nf.keys()].filter((r) => !of.has(r));
+  const removed = [...of.keys()].filter((r) => !nf.has(r));
+  const modified = [...nf.keys()].filter((r) => of.has(r) && of.get(r) !== nf.get(r));
+  return { added, removed, modified };
+}
+
+// route-level selection: only tests navigating to a REMOVED/MODIFIED route are
+// affected (ADD is new, no test visits it -> 0 tests)
+function selectRoutes(graph, removed, modified) {
+  const sel = new Set();
+  const changed = new Set([...removed, ...modified]);
+  if (!changed.size) return sel;
+  for (const e of graph.edges) {
+    if (e.kind !== 'navigates') continue;
+    const rn = graph.nodes.find((n) => n.id === e.target);
+    if (rn && changed.has(rn.name)) sel.add(e.source);
+  }
+  return sel;
 }
 
 const rows = [];
@@ -94,11 +128,13 @@ for (let i = 1; i < manifest.length; i++) {
   const graph = buildTestCodeGraph(files, evidence);
   const changed = changedEntities(o, n);
   const { sel, varUnresolved } = selectByGraph(graph, changed);
+  const { added, removed, modified } = routeDiff(graph, buildTestCodeGraph(filesAt(n), []));
+  for (const t of selectRoutes(graph, removed, modified)) sel.add(t);
   const fr = frozen[n];
   const reduction = 1 - sel.size / fr.full;
   const missed = fr.affected_obs.filter((t) => !sel.has(`test::${t}`));
-  rows.push({ tag: n, sel: sel.size, full: fr.full, reduction: +reduction.toFixed(4), cov: fr.cov_reduction, missed: missed.length, changedFns: changed.fns.size, changedRoutes: changed.routes.size, changedVars: changed.vars.size, varUnresolved: varUnresolved.length });
-  console.log(`${n} sel=${sel.size}/${fr.full} red=${reduction.toFixed(3)} cov=${fr.cov_reduction.toFixed(3)} missed=${missed.length} (fns=${changed.fns.size}, vars=${changed.vars.size}, routes=${changed.routes.size}, varUnresolved=${varUnresolved.length})`);
+  rows.push({ tag: n, sel: sel.size, full: fr.full, reduction: +reduction.toFixed(4), cov: fr.cov_reduction, missed: missed.length, added: added.length, removed: removed.length, modified: modified.length });
+  console.log(`${n} sel=${sel.size}/${fr.full} red=${reduction.toFixed(3)} cov=${fr.cov_reduction.toFixed(3)} missed=${missed.length} (route +${added.length}/-${removed.length}/~${modified.length})`);
 }
 
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
