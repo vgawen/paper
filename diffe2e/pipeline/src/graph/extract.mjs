@@ -45,6 +45,21 @@ function nameOf(n) {
   return n.name && ts.isIdentifier(n.name) ? n.name.text : null;
 }
 
+// `export function f` / `export const x = 1`: the modifier sits on the function/
+// class node, or on the parent VariableStatement for variables.
+function isExported(n) {
+  const hasExport = (x) => (x.modifiers || []).some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
+  if (hasExport(n)) return true;
+  if (ts.isVariableDeclaration(n)) {
+    let p = n.parent;
+    while (p && !ts.isSourceFile(p)) {
+      if (ts.isVariableStatement(p) && hasExport(p)) return true;
+      p = p.parent;
+    }
+  }
+  return false;
+}
+
 function calleeOf(expr) {
   if (ts.isIdentifier(expr)) return expr.text;
   if (ts.isPropertyAccessExpression(expr)) return expr.name.text;
@@ -76,7 +91,7 @@ export function extractFile(filePath, code) {
       const qn = parentQn ? `${parentQn}::${nm}` : nm;
       const id = nodeId(filePath, qn);
       const parentId = parentQn ? nodeId(filePath, parentQn) : fileId;
-      nodes.push({ id, kind: k, name: nm, qualifiedName: qn, file: filePath, startLine: lineOf(node.getStart()), endLine: lineOf(node.getEnd()) });
+      nodes.push({ id, kind: k, name: nm, qualifiedName: qn, file: filePath, startLine: lineOf(node.getStart()), endLine: lineOf(node.getEnd()), isExported: isExported(node) });
       edges.push({ source: parentId, target: id, kind: 'contains', provenance: 'symbolic', line: lineOf(node.getStart()) });
       const newOwner = (k === 'function' || k === 'method' || k === 'class') ? id : ownerId;
       ts.forEachChild(node, (c) => visit(c, qn, newOwner));

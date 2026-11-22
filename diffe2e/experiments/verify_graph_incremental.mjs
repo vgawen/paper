@@ -9,6 +9,7 @@ import { execSync } from 'node:child_process';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Graph } from '../pipeline/src/graph/graph.mjs';
+import { resolve } from '../pipeline/src/graph/resolve.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const WORK = path.join(here, '..', 'subject', 'work');
@@ -30,11 +31,12 @@ if (tags.length < 2) {
 
 // full rebuild at every tag
 const full = tags.map((t) => Graph.build(filesAt(t).map((f) => ({ path: f, code: contentAt(t, f) }))));
+const eqResolved = (a, b) => JSON.stringify(resolve(a.toJSON())) === JSON.stringify(resolve(b.toJSON()));
 
 // incremental
 const inc = new Graph();
 for (const f of filesAt(tags[0])) inc.addFile(f, contentAt(tags[0], f));
-const results = [{ tag: tags[0], ok: inc.equals(full[0]), changed: filesAt(tags[0]).length }];
+const results = [{ tag: tags[0], rawOk: inc.equals(full[0]), resOk: eqResolved(inc, full[0]), changed: filesAt(tags[0]).length }];
 
 for (let i = 1; i < tags.length; i++) {
   const prev = tags[i - 1], cur = tags[i];
@@ -43,15 +45,17 @@ for (let i = 1; i < tags.length; i++) {
     if (existsAt(cur, f)) inc.addFile(f, contentAt(cur, f));
     else inc.removeFile(f);
   }
-  results.push({ tag: cur, ok: inc.equals(full[i]), changed: changed.length });
+  results.push({ tag: cur, rawOk: inc.equals(full[i]), resOk: eqResolved(inc, full[i]), changed: changed.length });
 }
 
-const allOk = results.every((r) => r.ok);
-console.log(`incremental == full rebuild: ${allOk ? 'PASS' : 'FAIL'}  (${tags.length} commits)`);
-if (!allOk) {
-  for (const r of results) if (!r.ok) console.log(`  MISMATCH at ${r.tag} (${r.changed} changed files)`);
+const allRaw = results.every((r) => r.rawOk);
+const allRes = results.every((r) => r.resOk);
+console.log(`incremental == full rebuild : ${allRaw ? 'PASS' : 'FAIL'}  (${tags.length} commits)`);
+console.log(`resolved   == full rebuild : ${allRes ? 'PASS' : 'FAIL'}`);
+if (!allRaw || !allRes) {
+  for (const r of results) if (!r.rawOk || !r.resOk) console.log(`  MISMATCH at ${r.tag} (raw=${r.rawOk}, res=${r.resOk})`);
 }
 console.log(`final graph: ${inc.nodeCount()} nodes, ${inc.edgeCount()} edges`);
 for (const r of results) {
-  if (r.changed) console.log(`  ${r.tag}: ${r.changed} changed file(s), ok=${r.ok}`);
+  if (r.changed) console.log(`  ${r.tag}: ${r.changed} changed file(s), raw=${r.rawOk}, res=${r.resOk}`);
 }
