@@ -15,7 +15,10 @@ export function svelteKitRoutes(files) {
     const seg = (m[1] || '').replace(/\/+$/, '');
     const routePath = seg === ''
       ? '/'
-      : '/' + seg.split('/').map((s) => (s.startsWith('[') && s.endsWith(']') ? ':' + s.slice(1, -1) : s)).join('/');
+      : '/' + seg.split('/')
+        .filter((s) => !(s.startsWith('(') && s.endsWith(')'))) // drop route groups `(app)`
+        .map((s) => (s.startsWith('[') && s.endsWith(']') ? ':' + s.slice(1, -1) : s)) // [slug] -> :slug
+        .join('/');
     const routeId = `sveltekit::route:${routePath}`;
     if (!nodes.some((n) => n.id === routeId)) {
       nodes.push({ id: routeId, kind: 'route', name: routePath, qualifiedName: `route:${routePath}`, file: '<sveltekit-routes>', startLine: 0, endLine: 0, isExported: false });
