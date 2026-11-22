@@ -5,6 +5,7 @@ import { Graph } from '../src/graph/graph.mjs';
 import { resolve } from '../src/graph/resolve.mjs';
 import { addTestEdges } from '../src/graph/testEdges.mjs';
 import { semanticResolveCalls } from '../src/graph/semanticResolve.mjs';
+import { svelteKitRoutes } from '../src/graph/fileRoutes.mjs';
 
 test('extract: contains/imports/calls edges for a small TS file', () => {
   const code = `
@@ -148,4 +149,33 @@ test('semanticResolve: resolves re-exports (barrel file)', () => {
   const call = sem.resolved.find((e) => e.callee === 'formatPrice');
   assert.ok(call && call.resolved);
   assert.equal(call.target, 'src/util.ts::formatPrice'); // resolves THROUGH the barrel to the real decl
+});
+
+test('route: React Router config { path, element:<X/> } -> route + component ref', () => {
+  const code = "const routes = [{ path: '/checkout', element: <PaymentForm /> }];\n";
+  const { nodes, edges } = extractFile('src/router.tsx', code);
+  const route = nodes.find((n) => n.kind === 'route');
+  assert.ok(route && route.name === '/checkout');
+  const renders = edges.find((e) => e.kind === 'renders');
+  assert.ok(renders && renders.target === 'component:PaymentForm');
+});
+
+test('route: React Router Component/component identifiers', () => {
+  const code = "export const routes = [{ path: '/a', Component: PageA }, { path: '/b', component: PageB }];\n";
+  const { nodes, edges } = extractFile('src/router.tsx', code);
+  assert.deepEqual(nodes.filter((n) => n.kind === 'route').map((n) => n.name).sort(), ['/a', '/b']);
+  const targets = edges.filter((e) => e.kind === 'renders').map((e) => e.target).sort();
+  assert.deepEqual(targets, ['component:PageA', 'component:PageB']);
+});
+
+test('svelteKitRoutes: file-based +page.svelte -> route with dynamic segments', () => {
+  const files = [
+    { path: 'src/routes/+page.svelte', code: '' },
+    { path: 'src/routes/about/+page.svelte', code: '' },
+    { path: 'src/routes/blog/[slug]/+page.svelte', code: '' },
+  ];
+  const { nodes, edges } = svelteKitRoutes(files);
+  assert.deepEqual(nodes.map((n) => n.name).sort(), ['/', '/about', '/blog/:slug']);
+  assert.equal(edges.length, 3);
+  assert.ok(edges.some((e) => e.kind === 'renders' && e.target === 'src/routes/blog/[slug]/+page.svelte::<file>'));
 });

@@ -117,29 +117,67 @@ export function extractFile(filePath, code) {
     return imp;
   }
 
-  const visitRoutes = (node) => {
-    if (node.type === 'variable_declarator') {
-      const val = node.childForFieldName('value');
-      if (val && val.type === 'object') {
-        for (const pair of val.children) {
-          if (pair.type !== 'pair') continue;
-          const key = pair.childForFieldName('key');
-          const pv = pair.childForFieldName('value');
-          if (!key || key.type !== 'string' || !pv) continue;
-          const routePath = key.text.slice(1, -1);
-          const imp = findDynamicImport(pv);
-          if (!imp) continue;
-          const routeQn = `route:${routePath}`;
-          const routeId = nodeId(filePath, routeQn);
-          const componentFile = path.posix.normalize(path.posix.join(path.posix.dirname(filePath), imp));
-          if (!nodes.some((n) => n.id === routeId)) {
-            nodes.push({ id: routeId, kind: 'route', name: routePath, qualifiedName: routeQn, file: filePath, startLine: lineOf(pair), endLine: pair.endPosition.row + 1, startByte: pair.startIndex, endByte: pair.endIndex, isExported: false });
-            edges.push({ source: fileId, target: routeId, kind: 'contains', provenance: 'symbolic', line: lineOf(pair) });
-          }
-          edges.push({ source: routeId, target: nodeId(componentFile, '<file>'), kind: 'renders', provenance: 'symbolic', line: lineOf(pair) });
+  // component reference for a route's element/Component/component value
+  const componentTarget = (pv) => {
+    const imp = findDynamicImport(pv);
+    if (imp) return { kind: 'file', target: imp };
+    if (pv.type === 'jsx_element' || pv.type === 'jsx_self_closing_element') {
+      const tag = pv.childForFieldName('name');
+      if (tag && (tag.type === 'identifier' || tag.type === 'member_expression' || tag.type === 'nested_identifier')) return { kind: 'component', name: tag.text };
+    }
+    if (pv.type === 'identifier') return { kind: 'component', name: pv.text };
+    return null;
+  };
+
+  const emitRoute = (routePath, ct, pair) => {
+    const routeQn = `route:${routePath}`;
+    const routeId = nodeId(filePath, routeQn);
+    if (!nodes.some((n) => n.id === routeId)) {
+      nodes.push({ id: routeId, kind: 'route', name: routePath, qualifiedName: routeQn, file: filePath, startLine: lineOf(pair), endLine: pair.endPosition.row + 1, startByte: pair.startIndex, endByte: pair.endIndex, isExported: false });
+      edges.push({ source: fileId, target: routeId, kind: 'contains', provenance: 'symbolic', line: lineOf(pair) });
+    }
+    const target = ct.kind === 'file'
+      ? nodeId(path.posix.normalize(path.posix.join(path.posix.dirname(filePath), ct.target)), '<file>')
+      : `component:${ct.name}`;
+    edges.push({ source: routeId, target, kind: 'renders', provenance: 'symbolic', line: lineOf(pair) });
+  };
+
+  // two route-config shapes:
+  //  (a) React Router style: { path: '/x', element: <X/> | Component: X | component: X }
+  //  (b) controlled-subject style: { '/x': () => import('./y.js') }
+  const extractRouteObject = (obj) => {
+    const pairs = obj.children.filter((c) => c.type === 'pair');
+    const getPair = (key) => pairs.find((p) => {
+      const k = p.childForFieldName('key');
+      if (!k) return false;
+      if (k.type === 'string') return k.text.slice(1, -1) === key;
+      if (k.type === 'property_identifier') return k.text === key;
+      return false;
+    });
+    const pathPair = getPair('path');
+    if (pathPair) {
+      const pathVal = pathPair.childForFieldName('value');
+      if (pathVal && pathVal.type === 'string') {
+        const compPair = getPair('element') || getPair('Component') || getPair('component');
+        if (compPair) {
+          const ct = componentTarget(compPair.childForFieldName('value'));
+          if (ct) emitRoute(pathVal.text.slice(1, -1), ct, pathPair);
         }
       }
+      return;
     }
+    for (const pair of pairs) {
+      const key = pair.childForFieldName('key');
+      const pv = pair.childForFieldName('value');
+      if (!key || key.type !== 'string' || !pv) continue;
+      const imp = findDynamicImport(pv);
+      if (imp) emitRoute(key.text.slice(1, -1), { kind: 'file', target: imp }, pair);
+    }
+  };
+
+  const visitRoutes = (node) => {
+    // any object literal — covers `const routes = {...}` and `[{ path, element }]`
+    if (node.type === 'object') extractRouteObject(node);
     for (const c of node.children) visitRoutes(c);
   };
 

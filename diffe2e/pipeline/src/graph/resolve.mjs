@@ -32,6 +32,18 @@ export function resolve(raw) {
 
   const edges = [];
   for (const e of raw.edges) {
+    // resolve route->component references (React Router `element`/`Component`)
+    if (e.kind === 'renders' && typeof e.target === 'string' && e.target.startsWith('component:')) {
+      const name = e.target.slice('component:'.length);
+      const owner = raw.nodes.find((x) => x.id === e.source);
+      const ownerFile = owner ? owner.file : null;
+      const imps = (ownerFile && imports.get(ownerFile)) || new Set();
+      const cands = (byName.get(name) || []).filter((c) =>
+        c.file === ownerFile || (c.isExported && [...imps].some((t) => c.file === t || c.file.startsWith(t + '.')))
+      );
+      edges.push(cands.length === 1 ? { ...e, target: cands[0].id, resolved: true } : { ...e, resolved: false });
+      continue;
+    }
     if (e.kind !== 'calls') { edges.push({ ...e }); continue; }
     const owner = raw.nodes.find((x) => x.id === e.source);
     const ownerFile = owner ? owner.file : null;
