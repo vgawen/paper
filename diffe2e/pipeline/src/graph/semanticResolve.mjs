@@ -15,7 +15,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { nodeId } from './extract.mjs';
 
-function buildProgram(files) {
+function buildProgram(files, opts = {}) {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'tcgraph-'));
   const reverse = new Map(); // tmp abs path -> original graph path
   const rootNames = [];
@@ -34,6 +34,8 @@ function buildProgram(files) {
     checkJs: true,
     noEmit: true,
     skipLibCheck: true,
+    baseUrl: tmp,
+    ...(opts.paths ? { paths: opts.paths } : {}),
   };
   const program = ts.createProgram(rootNames, options);
   return { program, reverse, tmp };
@@ -57,10 +59,10 @@ function qualifiedNameOf(node) {
   return nm; // top-level function / arrow-bound const
 }
 
-export function semanticResolveCalls(files) {
+export function semanticResolveCalls(files, opts = {}) {
   let program, checker, reverse, tmp;
   try {
-    ({ program, reverse, tmp } = buildProgram(files));
+    ({ program, reverse, tmp } = buildProgram(files, opts));
     checker = program.getTypeChecker();
   } catch {
     return { resolved: [], errors: ['program-build-failed'] };

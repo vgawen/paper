@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { extractFile } from '../src/graph/extract.mjs';
 import { Graph } from '../src/graph/graph.mjs';
 import { resolve } from '../src/graph/resolve.mjs';
@@ -7,6 +10,7 @@ import { addTestEdges } from '../src/graph/testEdges.mjs';
 import { semanticResolveCalls } from '../src/graph/semanticResolve.mjs';
 import { svelteKitRoutes } from '../src/graph/fileRoutes.mjs';
 import { buildTestCodeGraph } from '../src/graph/index.mjs';
+import { discoverWorkspace, buildPaths } from '../src/graph/workspace.mjs';
 
 test('extract: contains/imports/calls edges for a small TS file', () => {
   const code = `
@@ -182,6 +186,20 @@ test('extract: oversized/broken file degrades to file-only node (no crash)', () 
   assert.equal(nodes.length, 1);
   assert.equal(nodes[0].kind, 'file');
   assert.equal(edges.length, 0);
+});
+
+test('workspace: discovers packages + builds paths mapping', () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ws-'));
+  fs.mkdirSync(path.join(tmp, 'packages', 'pkg-a', 'src'), { recursive: true });
+  fs.writeFileSync(path.join(tmp, 'packages', 'pkg-a', 'package.json'), JSON.stringify({ name: '@scope/a', exports: { './x': './src/x.ts' } }));
+  fs.writeFileSync(path.join(tmp, 'packages', 'pkg-a', 'src', 'x.ts'), 'export const x = 1;\n');
+  const pkgs = discoverWorkspace(tmp);
+  assert.equal(pkgs.length, 1);
+  assert.equal(pkgs[0].name, '@scope/a');
+  assert.equal(pkgs[0].src, 'packages/pkg-a/src');
+  const paths = buildPaths(pkgs);
+  assert.deepEqual(paths['@scope/a/*'], ['packages/pkg-a/src/*']);
+  fs.rmSync(tmp, { recursive: true, force: true });
 });
 
 test('svelteKitRoutes: file-based +page.svelte -> route with dynamic segments', () => {

@@ -8,7 +8,7 @@ import { semanticResolveCalls } from './semanticResolve.mjs';
 import { svelteKitRoutes } from './fileRoutes.mjs';
 import { addTestEdges } from './testEdges.mjs';
 
-export function buildTestCodeGraph(files, testEvidence = []) {
+export function buildTestCodeGraph(files, testEvidence = [], opts = {}) {
   // 1. raw per-file extraction (lossless tree-sitter spans)
   const raw = Graph.build(files).toJSON();
 
@@ -21,9 +21,9 @@ export function buildTestCodeGraph(files, testEvidence = []) {
   const nameResolved = resolve(raw);
 
   // 4. typeChecker semantic resolution overrides where it succeeds (aliasing,
-  //    barrels, re-exports that name-based cannot resolve)
+  //    barrels, re-exports, workspace paths that name-based cannot resolve)
   let sem = { resolved: [], errors: ['skipped'] };
-  try { sem = semanticResolveCalls(files); } catch { /* fall back to name-based */ }
+  try { sem = semanticResolveCalls(files, opts); } catch { /* fall back to name-based */ }
   const semByCall = new Map(sem.resolved.filter((r) => r.resolved).map((r) => [`${r.source}\u0000${r.callee}`, r.target]));
   const edges = nameResolved.edges.map((e) => {
     if (e.kind === 'calls' && semByCall.has(`${e.source}\u0000${e.callee}`)) {
