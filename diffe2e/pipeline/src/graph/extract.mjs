@@ -233,7 +233,10 @@ export function extractFile(filePath, code) {
     if (!val || val.type !== 'jsx_expression') return null;
     const el = val.children.find((c) => c.type === 'jsx_element' || c.type === 'jsx_self_closing_element');
     if (!el) return null;
-    const tag = el.childForFieldName('name');
+    // non-self-closing <X>...</X> has its tag name on the jsx_opening_element child
+    const tag = el.type === 'jsx_element'
+      ? el.children.find((c) => c.type === 'jsx_opening_element')?.childForFieldName('name')
+      : el.childForFieldName('name');
     return tag ? tag.text : null;
   };
 
