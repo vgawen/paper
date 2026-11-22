@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { selectAffected } from '../src/graph/select.mjs';
+import { selectAffected, detectGaps } from '../src/graph/select.mjs';
+import { addStaticTestEdges } from '../src/graph/testEdges.mjs';
 
 test('selectAffected: config change -> retest_all (global implicit dependency)', () => {
   const graph = {
@@ -35,4 +36,32 @@ test('selectAffected: route ADD selects nothing (no test visits a new route)', (
   };
   const sel = selectAffected(graph, { routeChanges: { added: ['/wishlist'], removed: [], modified: [] } });
   assert.equal(sel.size, 0); // added route -> no test visits it
+});
+
+test('detectGaps: function with no executes edge is a gap; covered one is not', () => {
+  const graph = {
+    nodes: [
+      { id: 'src/a.ts::used', kind: 'function', name: 'used', file: 'src/a.ts' },
+      { id: 'src/a.ts::unused', kind: 'function', name: 'unused', file: 'src/a.ts' },
+      { id: 'src/main.ts::route:/x', kind: 'route', name: '/x', file: 'src/main.ts' },
+    ],
+    edges: [
+      { kind: 'executes', source: 'test::t1', target: 'src/a.ts::used' },
+      { kind: 'navigates', source: 'test::t1', target: 'src/main.ts::route:/x' },
+    ],
+  };
+  const gaps = detectGaps(graph);
+  const names = gaps.map((n) => n.name);
+  assert.ok(names.includes('unused')); // unused function -> gap
+  assert.ok(!names.includes('used'));   // covered function -> not a gap
+  assert.ok(!names.includes('/x'));     // visited route -> not a gap
+});
+
+test('addStaticTestEdges: parses locators + assertions into asserts edges', () => {
+  const code = "await page.getByTestId('cart-add').click();\nawait expect(page.getByTestId('cart-count')).toHaveText('1');\n";
+  const g = addStaticTestEdges({ nodes: [], edges: [] }, { 'cart.spec > x': code });
+  const targets = g.edges.filter((e) => e.kind === 'asserts').map((e) => e.target);
+  assert.ok(targets.includes('ui:cart-add'));
+  assert.ok(targets.includes('ui:cart-count'));
+  assert.ok(targets.includes('ui:1'));
 });

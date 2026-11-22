@@ -88,3 +88,15 @@ export function selectAffected(graph, {
 
   return sel;
 }
+
+// RQ2 gap detection: code entities (functions/routes) with no incoming `executes`
+// edge — i.e. no test actually exercises them. Finer than file-level coverageGap
+// (which only flags whole files with zero coverage): it also catches unused
+// functions inside an otherwise-covered file, and new routes with no test.
+export function detectGaps(graph, { kinds = ['function', 'method', 'route'] } = {}) {
+  const covered = new Set();
+  for (const e of graph.edges) {
+    if (e.kind === 'executes' || e.kind === 'navigates') covered.add(e.target);
+  }
+  return graph.nodes.filter((n) => kinds.includes(n.kind) && !covered.has(n.id));
+}

@@ -36,3 +36,19 @@ export function addTestEdges(rawGraph, testEvidence) {
 
   return { nodes, edges };
 }
+
+// Static test→UI evidence edges: parse a test's locators (getByTestId/getByText/…)
+// and assertions (toHaveText/toContainText/…) into `asserts` edges (test -> ui node).
+// Used for RQ3 breakage diagnosis: a failing test whose edge points at a changed UI
+// node tells you WHICH locator/assertion broke and why.
+export function addStaticTestEdges(graph, testSources) {
+  const nodes = [...graph.nodes];
+  const edges = [...graph.edges];
+  for (const [testId, code] of Object.entries(testSources)) {
+    const refs = new Set();
+    for (const m of code.matchAll(/getBy(?:TestId|Text|Role|Label)\(['"]([^'"]+)['"]/g)) refs.add('ui:' + m[1]);
+    for (const m of code.matchAll(/to(?:HaveText|ContainText)\(['"]([^'"]+)['"]/g)) refs.add('ui:' + m[1]);
+    for (const ui of refs) edges.push({ source: `test::${testId}`, target: ui, kind: 'asserts', provenance: 'symbolic', line: 0 });
+  }
+  return { nodes, edges };
+}
