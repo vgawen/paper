@@ -1,0 +1,1893 @@
+From 70de7363d8193528141481411a93939cf47b3760 Mon Sep 17 00:00:00 2001
+From: Khalid Adil <khalidadil29@gmail.com>
+Date: Wed, 3 Jan 2024 19:11:35 -0600
+Subject: [PATCH] [Flexible Layouts] Flexible Layout styling fixes (#7319)
+
+---
+ .cspell.json                                  |   4 +-
+ .git-blame-ignore-revs                        |   4 +
+ e2e/.percy.ci.yml                             |   7 +-
+ e2e/.percy.nightly.yml                        |   4 +
+ e2e/helper/stylingUtils.js                    | 104 +++++
+ .../framework/exampleTemplate.e2e.spec.js     |   2 +-
+ .../generateLocalStorageData.e2e.spec.js      |   4 +-
+ .../functional/clearDataAction.e2e.spec.js    |   2 +-
+ e2e/tests/functional/forms.e2e.spec.js        |   2 +-
+ .../conditionSet/conditionSet.e2e.spec.js     |   4 +-
+ .../flexibleLayout/flexibleLayout.e2e.spec.js |  19 +-
+ .../plugins/gauge/gauge.e2e.spec.js           |   4 +-
+ .../plugins/notebook/notebook.e2e.spec.js     |   2 +-
+ .../notebook/notebookSnapshots.e2e.spec.js    |   6 +-
+ .../notebook/restrictedNotebook.e2e.spec.js   |  10 +-
+ .../plugins/notebook/tags.e2e.spec.js         |   2 +-
+ .../plugins/plot/plotRendering.e2e.spec.js    |   2 +-
+ .../styling/conditionalStyling.e2e.spec.js    |  48 ++
+ .../styling/flexLayoutStyling.e2e.spec.js     | 414 ++++++++++++++++++
+ .../styling/stackedPlotStyling.e2e.spec.js    | 246 +++++++++++
+ .../styling/styleInspectorOptions.e2e.spec.js |  90 ++++
+ .../plugins/timer/timer.e2e.spec.js           |   6 +-
+ e2e/tests/visual-a11y/ladTable.visual.spec.js |   2 +-
+ e2e/tests/visual-a11y/styling.visual.spec.js  | 194 ++++++++
+ src/api/menu/components/MenuComponent.vue     |  10 +-
+ src/api/menu/components/SuperMenu.vue         |  13 +-
+ .../components/ContainerComponent.vue         |   9 +-
+ .../components/FlexibleLayout.vue             |   3 +-
+ .../TelemetryFrame.vue                        |   3 +-
+ .../inspectorViews/styles/FontStyleEditor.vue |   7 +-
+ .../styles/StylesInspectorViewProvider.js     |   9 +-
+ .../notebook/components/NotebookEmbed.vue     |   3 +-
+ src/plugins/plot/stackedPlot/StackedPlot.vue  |   3 +-
+ src/ui/components/ObjectView.vue              |   6 +-
+ src/ui/layout/BrowseBar.vue                   |   7 +-
+ src/ui/preview/PreviewHeader.vue              |   3 +-
+ src/ui/toolbar/ToolbarContainer.vue           |   2 +-
+ src/ui/toolbar/components/ToolbarButton.vue   |   2 +
+ .../toolbar/components/ToolbarColorPicker.vue |  16 +-
+ .../toolbar/components/ToolbarSeparator.vue   |   2 +-
+ 40 files changed, 1222 insertions(+), 58 deletions(-)
+ create mode 100644 e2e/helper/stylingUtils.js
+ create mode 100644 e2e/tests/functional/plugins/styling/conditionalStyling.e2e.spec.js
+ create mode 100644 e2e/tests/functional/plugins/styling/flexLayoutStyling.e2e.spec.js
+ create mode 100644 e2e/tests/functional/plugins/styling/stackedPlotStyling.e2e.spec.js
+ create mode 100644 e2e/tests/functional/plugins/styling/styleInspectorOptions.e2e.spec.js
+ create mode 100644 e2e/tests/visual-a11y/styling.visual.spec.js
+
+diff --git a/.cspell.json b/.cspell.json
+index 024e09d178..1baa99e4ad 100644
+--- a/.cspell.json
++++ b/.cspell.json
+@@ -491,7 +491,9 @@
+     "oger",
+     "lcovonly",
+     "gcov",
+-    "WCAG"
++    "WCAG",
++    "stackedplot",
++    "Andale"
+   ],
+   "dictionaries": ["npm", "softwareTerms", "node", "html", "css", "bash", "en_US"],
+   "ignorePaths": [
+diff --git a/.git-blame-ignore-revs b/.git-blame-ignore-revs
+index 6aa1fd0665..839df6c0f9 100644
+--- a/.git-blame-ignore-revs
++++ b/.git-blame-ignore-revs
+@@ -4,6 +4,10 @@
+ # Requires Git > 2.23
+ # See https://git-scm.com/docs/git-blame#Documentation/git-blame.txt---ignore-revs-fileltfilegt
+ 
++# vue-eslint update 2019
++14a0f84c1bcd56886d7c9e4e6afa8f7d292734e5
++# eslint changes 2022
++d80b6923541704ab925abf0047cbbc58735c27e2
+ # Copyright year update 2022
+ 4a9744e916d24122a81092f6b7950054048ba860
+ # Copyright year update 2023
+diff --git a/e2e/.percy.ci.yml b/e2e/.percy.ci.yml
+index e15de3f810..bccb093fc9 100644
+--- a/e2e/.percy.ci.yml
++++ b/e2e/.percy.ci.yml
+@@ -25,4 +25,9 @@ snapshot:
+     /* Time Conductor Start Time */
+     .c-compact-tc__setting-value{
+       opacity: 0 !important;
+-    }
+\ No newline at end of file
++    }
++    /* Chart Area for Plots */
++    .gl-plot-chart-area{
++      opacity: 0 !important;
++    }
++   
+\ No newline at end of file
+diff --git a/e2e/.percy.nightly.yml b/e2e/.percy.nightly.yml
+index 7f9d8ec813..b5b3d7ecfa 100644
+--- a/e2e/.percy.nightly.yml
++++ b/e2e/.percy.nightly.yml
+@@ -25,4 +25,8 @@ snapshot:
+     /* Time Conductor Start Time */
+     .c-compact-tc__setting-value{
+       opacity: 0 !important;
++    }
++    /* Chart Area for Plots */
++    .gl-plot-chart-area{
++      opacity: 0 !important;
+     }
+\ No newline at end of file
+diff --git a/e2e/helper/stylingUtils.js b/e2e/helper/stylingUtils.js
+new file mode 100644
+index 0000000000..9d59196aec
+--- /dev/null
++++ b/e2e/helper/stylingUtils.js
+@@ -0,0 +1,104 @@
++/*****************************************************************************
++ * Open MCT, Copyright (c) 2014-2023, United States Government
++ * as represented by the Administrator of the National Aeronautics and Space
++ * Administration. All rights reserved.
++ *
++ * Open MCT is licensed under the Apache License, Version 2.0 (the
++ * "License"); you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * http://www.apache.org/licenses/LICENSE-2.0.
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
++ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
++ * License for the specific language governing permissions and limitations
++ * under the License.
++ *
++ * Open MCT includes source code licensed under additional open source
++ * licenses. See the Open Source Licenses file (LICENSES.md) included with
++ * this source code distribution or the Licensing information page available
++ * at runtime from the About dialog for additional information.
++ *****************************************************************************/
++
++import { expect } from '../pluginFixtures.js';
++
++/**
++ * Converts a hex color value to its RGB equivalent.
++ *
++ * @param {string} hex - The hex color value. i.e. '#5b0f00'
++ * @returns {string} The RGB equivalent of the hex color.
++ */
++function hexToRGB(hex) {
++  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
++  return result
++    ? `rgb(${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)})`
++    : null;
++}
++
++/**
++ * Sets the background and text color of a given element.
++ *
++ * @param {import('@playwright/test').Page} page - The Playwright page object.
++ * @param {string} borderColorHex - The hex value of the border color to set, or 'No Style'.
++ * @param {string} backgroundColorHex - The hex value of the background color to set, or 'No Style'.
++ * @param {string} textColorHex - The hex value of the text color to set, or 'No Style'.
++ * @param {import('@playwright/test').Locator} locator - The Playwright locator for the element whose style is to be set.
++ */
++async function setStyles(page, borderColorHex, backgroundColorHex, textColorHex, locator) {
++  await locator.click(); // Assuming the locator is clickable and opens the style setting UI
++  await page.getByLabel('Set border color').click();
++  await page.getByLabel(borderColorHex).click();
++  await page.getByLabel('Set background color').click();
++  await page.getByLabel(backgroundColorHex).click();
++  await page.getByLabel('Set text color').click();
++  await page.getByLabel(textColorHex).click();
++}
++
++/**
++ * Checks if the styles of an element match the expected values.
++ *
++ * @param {string} expectedBorderColor - The expected border color in RGB format. Default is '#e6b8af' or 'rgb(230, 184, 175)'
++ * @param {string} expectedBackgroundColor - The expected background color in RGB format.
++ * @param {string} expectedTextColor - The expected text color in RGB format. Default is #aaaaaa or 'rgb(170, 170, 170)'
++ * @param {import('@playwright/test').Locator} locator - The Playwright locator for the element whose style is to be checked.
++ */
++async function checkStyles(
++  expectedBorderColor,
++  expectedBackgroundColor,
++  expectedTextColor,
++  locator
++) {
++  const layoutStyles = await locator.evaluate((el) => {
++    return {
++      border: window.getComputedStyle(el).getPropertyValue('border-top-color'), //infer the left, right, and bottom
++      background: window.getComputedStyle(el).getPropertyValue('background-color'),
++      fontColor: window.getComputedStyle(el).getPropertyValue('color')
++    };
++  });
++  expect(layoutStyles.border).toContain(expectedBorderColor);
++  expect(layoutStyles.background).toContain(expectedBackgroundColor);
++  expect(layoutStyles.fontColor).toContain(expectedTextColor);
++}
++
++/**
++ * Checks if the font Styles of an element match the expected values.
++ *
++ * @param {string} expectedFontSize - The expected font size in '72px' format. Default is 'Default'
++ * @param {string} expectedFontWeight - The expected font Type. Format as '700' for bold. Default is 'Default'
++ * @param {string} expectedFontFamily - The expected font Type. Format as "\"Andale Mono\", sans-serif". Default is 'Default'
++ * @param {import('@playwright/test').Locator} locator - The Playwright locator for the element whose style is to be checked.
++ */
++async function checkFontStyles(expectedFontSize, expectedFontWeight, expectedFontFamily, locator) {
++  const layoutStyles = await locator.evaluate((el) => {
++    return {
++      fontSize: window.getComputedStyle(el).getPropertyValue('font-size'),
++      fontWeight: window.getComputedStyle(el).getPropertyValue('font-weight'),
++      fontFamily: window.getComputedStyle(el).getPropertyValue('font-family')
++    };
++  });
++  expect(layoutStyles.fontSize).toContain(expectedFontSize);
++  expect(layoutStyles.fontWeight).toContain(expectedFontWeight);
++  expect(layoutStyles.fontFamily).toContain(expectedFontFamily);
++}
++
++export { checkFontStyles, checkStyles, hexToRGB, setStyles };
+diff --git a/e2e/tests/framework/exampleTemplate.e2e.spec.js b/e2e/tests/framework/exampleTemplate.e2e.spec.js
+index b12494751d..834a9b62ad 100644
+--- a/e2e/tests/framework/exampleTemplate.e2e.spec.js
++++ b/e2e/tests/framework/exampleTemplate.e2e.spec.js
+@@ -164,7 +164,7 @@ async function renameTimerFrom3DotMenu(page, timerUrl, newNameForTimer) {
+   await page.goto(timerUrl);
+ 
+   // Click on 3 Dot Menu
+-  await page.locator('button[title="More options"]').click();
++  await page.locator('button[title="More actions"]').click();
+ 
+   // Click text=Edit Properties...
+   await page.locator('text=Edit Properties...').click();
+diff --git a/e2e/tests/framework/generateLocalStorageData.e2e.spec.js b/e2e/tests/framework/generateLocalStorageData.e2e.spec.js
+index 03395c4d29..7bbcd793f6 100644
+--- a/e2e/tests/framework/generateLocalStorageData.e2e.spec.js
++++ b/e2e/tests/framework/generateLocalStorageData.e2e.spec.js
+@@ -131,7 +131,7 @@ test.describe('Generate Visual Test Data @localStorage @generatedata', () => {
+     const exampleTelemetry = await createExampleTelemetryObject(page);
+ 
+     // Make Link from Telemetry Object to Overlay Plot
+-    await page.locator('button[title="More options"]').click();
++    await page.locator('button[title="More actions"]').click();
+ 
+     // Select 'Create Link' from dropdown
+     await page.getByRole('menuitem', { name: ' Create Link' }).click();
+@@ -206,7 +206,7 @@ test.describe('Generate Visual Test Data @localStorage @generatedata', () => {
+     const swgWith5sDelay = await createExampleTelemetryObject(page, overlayPlot.uuid);
+ 
+     await page.goto(swgWith5sDelay.url);
+-    await page.getByTitle('More options').click();
++    await page.getByTitle('More actions').click();
+     await page.getByRole('menuitem', { name: ' Edit Properties...' }).click();
+ 
+     //Edit Example Telemetry Object to include 5s loading Delay
+diff --git a/e2e/tests/functional/clearDataAction.e2e.spec.js b/e2e/tests/functional/clearDataAction.e2e.spec.js
+index de568ce114..c75517276e 100644
+--- a/e2e/tests/functional/clearDataAction.e2e.spec.js
++++ b/e2e/tests/functional/clearDataAction.e2e.spec.js
+@@ -45,7 +45,7 @@ test.describe('Clear Data Action', () => {
+   test('works as expected with Example Imagery', async ({ page }) => {
+     await expect(await page.locator('.c-thumb__image').count()).toBeGreaterThan(0);
+     // Click the "Clear Data" menu action
+-    await page.getByTitle('More options').click();
++    await page.getByTitle('More actions').click();
+     const clearDataMenuItem = page.getByRole('menuitem', {
+       name: 'Clear Data'
+     });
+diff --git a/e2e/tests/functional/forms.e2e.spec.js b/e2e/tests/functional/forms.e2e.spec.js
+index b25a7b9dca..ce3d2d9893 100644
+--- a/e2e/tests/functional/forms.e2e.spec.js
++++ b/e2e/tests/functional/forms.e2e.spec.js
+@@ -158,7 +158,7 @@ test.describe('Persistence operations @couchdb', () => {
+     });
+ 
+     // Open the edit form for the clock object
+-    await page.click('button[title="More options"]');
++    await page.click('button[title="More actions"]');
+     await page.click('li[title="Edit properties of this object."]');
+ 
+     // Modify the display format from default 12hr -> 24hr and click 'Save'
+diff --git a/e2e/tests/functional/plugins/conditionSet/conditionSet.e2e.spec.js b/e2e/tests/functional/plugins/conditionSet/conditionSet.e2e.spec.js
+index ed4d0390f2..70362f824f 100644
+--- a/e2e/tests/functional/plugins/conditionSet/conditionSet.e2e.spec.js
++++ b/e2e/tests/functional/plugins/conditionSet/conditionSet.e2e.spec.js
+@@ -196,7 +196,7 @@ test.describe.serial('Condition Set CRUD Operations on @localStorage', () => {
+       .first()
+       .click();
+     // Click hamburger button
+-    await page.locator('[title="More options"]').click();
++    await page.locator('[title="More actions"]').click();
+ 
+     // Click 'Remove' and press OK
+     await page.locator('li[role="menuitem"]:has-text("Remove")').click();
+@@ -366,7 +366,7 @@ test.describe('Basic Condition Set Use', () => {
+ 
+     // Edit SWG to add 8 second loading delay to simulate the case
+     // where telemetry is not available.
+-    await page.getByTitle('More options').click();
++    await page.getByTitle('More actions').click();
+     await page.getByRole('menuitem', { name: 'Edit Properties...' }).click();
+     await page.getByRole('spinbutton', { name: 'Loading Delay (ms)' }).fill('8000');
+     await page.getByLabel('Save').click();
+diff --git a/e2e/tests/functional/plugins/flexibleLayout/flexibleLayout.e2e.spec.js b/e2e/tests/functional/plugins/flexibleLayout/flexibleLayout.e2e.spec.js
+index 75e35d03a2..378850d7e6 100644
+--- a/e2e/tests/functional/plugins/flexibleLayout/flexibleLayout.e2e.spec.js
++++ b/e2e/tests/functional/plugins/flexibleLayout/flexibleLayout.e2e.spec.js
+@@ -283,16 +283,18 @@ test.describe('Flexible Layout Toolbar Actions @localStorage', () => {
+       type: 'issue',
+       description: 'https://github.com/nasa/openmct/issues/7234'
+     });
+-    expect(await page.getByRole('group', { name: 'Container' }).count()).toEqual(2);
+-    await page.getByRole('group', { name: 'Container' }).nth(1).click();
++
++    const containerHandles = page.getByRole('columnheader', { name: 'Handle' });
++    expect(await containerHandles.count()).toEqual(2);
++    await page.getByRole('columnheader', { name: 'Container Handle 1' }).click();
+     await page.getByTitle('Add Container').click();
+-    expect(await page.getByRole('group', { name: 'Container' }).count()).toEqual(3);
++    expect(await containerHandles.count()).toEqual(3);
+     await page.getByTitle('Remove Container').click();
+     await expect(page.getByRole('dialog')).toHaveText(
+       'This action will permanently delete this container from this Flexible Layout. Do you want to continue?'
+     );
+     await page.getByRole('button', { name: 'OK' }).click();
+-    expect(await page.getByRole('group', { name: 'Container' }).count()).toEqual(2);
++    expect(await containerHandles.count()).toEqual(2);
+   });
+   test('Remove Frame', async ({ page }) => {
+     expect(await page.getByRole('group', { name: 'Frame' }).count()).toEqual(2);
+@@ -305,11 +307,12 @@ test.describe('Flexible Layout Toolbar Actions @localStorage', () => {
+     expect(await page.getByRole('group', { name: 'Frame' }).count()).toEqual(1);
+   });
+   test('Columns/Rows Layout Toggle', async ({ page }) => {
+-    await page.getByRole('group', { name: 'Container' }).nth(1).click();
+-    expect(await page.locator('.c-fl--rows').count()).toEqual(0);
++    await page.getByRole('columnheader', { name: 'Container Handle 1' }).click();
++    const flexRows = page.getByLabel('Flexible Layout Row');
++    expect(await flexRows.count()).toEqual(0);
+     await page.getByTitle('Columns layout').click();
+-    expect(await page.locator('.c-fl--rows').count()).toEqual(1);
++    expect(await flexRows.count()).toEqual(1);
+     await page.getByTitle('Rows layout').click();
+-    expect(await page.locator('.c-fl--rows').count()).toEqual(0);
++    expect(await flexRows.count()).toEqual(0);
+   });
+ });
+diff --git a/e2e/tests/functional/plugins/gauge/gauge.e2e.spec.js b/e2e/tests/functional/plugins/gauge/gauge.e2e.spec.js
+index b578a63745..b15125fe80 100644
+--- a/e2e/tests/functional/plugins/gauge/gauge.e2e.spec.js
++++ b/e2e/tests/functional/plugins/gauge/gauge.e2e.spec.js
+@@ -128,7 +128,7 @@ test.describe('Gauge', () => {
+ 
+     // Create the gauge with defaults
+     await createDomainObjectWithDefaults(page, { type: 'Gauge' });
+-    await page.click('button[title="More options"]');
++    await page.click('button[title="More actions"]');
+     await page.click('li[role="menuitem"]:has-text("Edit Properties")');
+     // FIXME: We need better selectors for these custom form controls
+     const displayCurrentValueSwitch = page.locator('.c-toggle-switch__slider >> nth=0');
+@@ -148,7 +148,7 @@ test.describe('Gauge', () => {
+     const swgWith5sDelay = await createExampleTelemetryObject(page, gauge.uuid);
+ 
+     await page.goto(swgWith5sDelay.url);
+-    await page.getByTitle('More options').click();
++    await page.getByTitle('More actions').click();
+     await page.getByRole('menuitem', { name: /Edit Properties.../ }).click();
+ 
+     //Edit Example Telemetry Object to include 5s loading Delay
+diff --git a/e2e/tests/functional/plugins/notebook/notebook.e2e.spec.js b/e2e/tests/functional/plugins/notebook/notebook.e2e.spec.js
+index 5c1b9a1cad..fd6b9dd77a 100644
+--- a/e2e/tests/functional/plugins/notebook/notebook.e2e.spec.js
++++ b/e2e/tests/functional/plugins/notebook/notebook.e2e.spec.js
+@@ -247,7 +247,7 @@ test.describe('Notebook export tests', () => {
+   test('can export notebook as text', async ({ page }) => {
+     await nbUtils.enterTextEntry(page, `Foo bar entry`);
+     // Click on 3 Dot Menu
+-    await page.locator('button[title="More options"]').click();
++    await page.locator('button[title="More actions"]').click();
+     const downloadPromise = page.waitForEvent('download');
+ 
+     await page.getByRole('menuitem', { name: /Export Notebook as Text/ }).click();
+diff --git a/e2e/tests/functional/plugins/notebook/notebookSnapshots.e2e.spec.js b/e2e/tests/functional/plugins/notebook/notebookSnapshots.e2e.spec.js
+index a9fa726e70..07c5a612c8 100644
+--- a/e2e/tests/functional/plugins/notebook/notebookSnapshots.e2e.spec.js
++++ b/e2e/tests/functional/plugins/notebook/notebookSnapshots.e2e.spec.js
+@@ -105,7 +105,7 @@ test.describe('Snapshot Container tests', () => {
+   test.fixme(
+     'A snapshot can be Viewed, Annotated, display deleted, and saved from Container with 3 dot action menu',
+     async ({ page }) => {
+-      await page.locator('.c-snapshot.c-ne__embed').first().getByTitle('More options').click();
++      await page.locator('.c-snapshot.c-ne__embed').first().getByTitle('More actions').click();
+       await page.getByRole('menuitem', { name: ' View Snapshot' }).click();
+       await expect(page.locator('.c-overlay__outer')).toBeVisible();
+       await page.getByTitle('Annotate').click();
+@@ -118,7 +118,7 @@ test.describe('Snapshot Container tests', () => {
+     }
+   );
+   test('A snapshot can be Quick Viewed from Container with 3 dot action menu', async ({ page }) => {
+-    await page.locator('.c-snapshot.c-ne__embed').first().getByTitle('More options').click();
++    await page.locator('.c-snapshot.c-ne__embed').first().getByTitle('More actions').click();
+     await page.getByRole('menuitem', { name: 'Quick View' }).click();
+     await expect(page.locator('.c-overlay__outer')).toBeVisible();
+   });
+@@ -212,7 +212,7 @@ test.describe('Snapshot image tests', () => {
+     // expect two embedded images now
+     expect(await page.getByRole('img', { name: 'favicon-96x96.png thumbnail' }).count()).toBe(2);
+ 
+-    await page.locator('.c-snapshot.c-ne__embed').first().getByTitle('More options').click();
++    await page.locator('.c-snapshot.c-ne__embed').first().getByTitle('More actions').click();
+ 
+     await page.getByRole('menuitem', { name: /Remove This Embed/ }).click();
+     await page.getByRole('button', { name: 'Ok', exact: true }).click();
+diff --git a/e2e/tests/functional/plugins/notebook/restrictedNotebook.e2e.spec.js b/e2e/tests/functional/plugins/notebook/restrictedNotebook.e2e.spec.js
+index f43f857911..8b0507de83 100644
+--- a/e2e/tests/functional/plugins/notebook/restrictedNotebook.e2e.spec.js
++++ b/e2e/tests/functional/plugins/notebook/restrictedNotebook.e2e.spec.js
+@@ -152,18 +152,18 @@ test.describe('Restricted Notebook with a page locked and with an embed @addInit
+ 
+   test('Allows embeds to be deleted if page unlocked @addInit', async ({ page }) => {
+     // Click embed popup menu
+-    await page.locator('.c-ne__embed__name .c-icon-button').click();
++    await page.getByLabel('Notebook Entry').getByLabel('More actions').click();
+ 
+-    const embedMenu = page.locator('body >> .c-menu');
++    const embedMenu = page.getByLabel('Super Menu');
+     await expect(embedMenu).toContainText('Remove This Embed');
+   });
+ 
+   test('Disallows embeds to be deleted if page locked @addInit', async ({ page }) => {
+     await lockPage(page);
+     // Click embed popup menu
+-    await page.locator('.c-ne__embed__name .c-icon-button').click();
++    await page.getByLabel('Notebook Entry').getByLabel('More actions').click();
+ 
+-    const embedMenu = page.locator('body >> .c-menu');
++    const embedMenu = page.getByLabel('Super Menu');
+     await expect(embedMenu).not.toContainText('Remove This Embed');
+   });
+ });
+@@ -176,7 +176,7 @@ test.describe('can export restricted notebook as text', () => {
+   test('basic functionality ', async ({ page }) => {
+     await enterTextEntry(page, `Foo bar entry`);
+     // Click on 3 Dot Menu
+-    await page.locator('button[title="More options"]').click();
++    await page.locator('button[title="More actions"]').click();
+     const downloadPromise = page.waitForEvent('download');
+ 
+     await page.getByRole('menuitem', { name: /Export Notebook as Text/ }).click();
+diff --git a/e2e/tests/functional/plugins/notebook/tags.e2e.spec.js b/e2e/tests/functional/plugins/notebook/tags.e2e.spec.js
+index 00f2e3b05c..a27d4dfb19 100644
+--- a/e2e/tests/functional/plugins/notebook/tags.e2e.spec.js
++++ b/e2e/tests/functional/plugins/notebook/tags.e2e.spec.js
+@@ -167,7 +167,7 @@ test.describe('Tagging in Notebooks @addInit', () => {
+   test('Can delete objects with tags and neither return in search', async ({ page }) => {
+     await createNotebookEntryAndTags(page);
+     // Delete Notebook
+-    await page.locator('button[title="More options"]').click();
++    await page.locator('button[title="More actions"]').click();
+     await page.locator('li[title="Remove this object from its containing object."]').click();
+     await page.locator('button:has-text("OK")').click();
+     await page.goto('./', { waitUntil: 'domcontentloaded' });
+diff --git a/e2e/tests/functional/plugins/plot/plotRendering.e2e.spec.js b/e2e/tests/functional/plugins/plot/plotRendering.e2e.spec.js
+index 1fc2a99d50..da93083dfc 100644
+--- a/e2e/tests/functional/plugins/plot/plotRendering.e2e.spec.js
++++ b/e2e/tests/functional/plugins/plot/plotRendering.e2e.spec.js
+@@ -73,7 +73,7 @@ test.describe('Plot Rendering', () => {
+ async function editSineWaveToUseInfinityOption(page, sineWaveGeneratorObject) {
+   await page.goto(sineWaveGeneratorObject.url);
+   // Edit SWG properties to include infinity values
+-  await page.locator('[title="More options"]').click();
++  await page.locator('[title="More actions"]').click();
+   await page.locator('[title="Edit properties of this object."]').click();
+   await page
+     .getByRole('switch', {
+diff --git a/e2e/tests/functional/plugins/styling/conditionalStyling.e2e.spec.js b/e2e/tests/functional/plugins/styling/conditionalStyling.e2e.spec.js
+new file mode 100644
+index 0000000000..8f028c8d83
+--- /dev/null
++++ b/e2e/tests/functional/plugins/styling/conditionalStyling.e2e.spec.js
+@@ -0,0 +1,48 @@
++/*****************************************************************************
++ * Open MCT, Copyright (c) 2014-2023, United States Government
++ * as represented by the Administrator of the National Aeronautics and Space
++ * Administration. All rights reserved.
++ *
++ * Open MCT is licensed under the Apache License, Version 2.0 (the
++ * "License"); you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * http://www.apache.org/licenses/LICENSE-2.0.
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
++ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
++ * License for the specific language governing permissions and limitations
++ * under the License.
++ *
++ * Open MCT includes source code licensed under additional open source
++ * licenses. See the Open Source Licenses file (LICENSES.md) included with
++ * this source code distribution or the Licensing information page available
++ * at runtime from the About dialog for additional information.
++ *****************************************************************************/
++
++/**
++ * This test is dedicated to test conditional styling
++ */
++
++import { test } from '../../../../pluginFixtures.js';
++
++test.describe('Conditional Styling', () => {
++  test.fixme(
++    'Conditional Styling can be applied to Flex Layout and its children',
++    async ({ page }) => {
++      //test
++    }
++  );
++  test.fixme(
++    'Conditional Styling can be applied to Overlay Plot and its children',
++    async ({ page }) => {
++      //test
++    }
++  );
++  test.fixme(
++    'Conditional Styling changes the styling of the object the condition changes state',
++    async ({ page }) => {
++      //test
++    }
++  );
++});
+diff --git a/e2e/tests/functional/plugins/styling/flexLayoutStyling.e2e.spec.js b/e2e/tests/functional/plugins/styling/flexLayoutStyling.e2e.spec.js
+new file mode 100644
+index 0000000000..a873c0eab0
+--- /dev/null
++++ b/e2e/tests/functional/plugins/styling/flexLayoutStyling.e2e.spec.js
+@@ -0,0 +1,414 @@
++/*****************************************************************************
++ * Open MCT, Copyright (c) 2014-2023, United States Government
++ * as represented by the Administrator of the National Aeronautics and Space
++ * Administration. All rights reserved.
++ *
++ * Open MCT is licensed under the Apache License, Version 2.0 (the
++ * "License"); you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * http://www.apache.org/licenses/LICENSE-2.0.
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
++ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
++ * License for the specific language governing permissions and limitations
++ * under the License.
++ *
++ * Open MCT includes source code licensed under additional open source
++ * licenses. See the Open Source Licenses file (LICENSES.md) included with
++ * this source code distribution or the Licensing information page available
++ * at runtime from the About dialog for additional information.
++ *****************************************************************************/
++
++/**
++ * This test is dedicated to test styling of flex layouts
++ */
++
++import { createDomainObjectWithDefaults } from '../../../../appActions.js';
++import { checkStyles, hexToRGB, setStyles } from '../../../../helper/stylingUtils.js';
++import { test } from '../../../../pluginFixtures.js';
++
++const setBorderColor = '#ff00ff';
++const setBackgroundColor = '#5b0f00';
++const setTextColor = '#e6b8af';
++const defaultFrameBorderColor = '#e6b8af'; //default border color
++const defaultBorderTargetColor = '#aaaaaa';
++const defaultTextColor = '#aaaaaa'; // default text color
++const inheritedColor = '#aaaaaa'; // inherited from the body style
++const pukeGreen = '#6aa84f'; //Ugliest green known to man
++const NO_STYLE_RGBA = 'rgba(0, 0, 0, 0)'; //default background color value
++
++test.describe('Flexible Layout styling', () => {
++  let stackedPlot;
++  let flexibleLayout;
++  test.beforeEach(async ({ page }) => {
++    await page.goto('./', { waitUntil: 'domcontentloaded' });
++
++    // Create a Flexible Layout and attach to the Stacked Plot
++    flexibleLayout = await createDomainObjectWithDefaults(page, {
++      type: 'Flexible Layout',
++      name: 'Flexible Layout'
++    });
++
++    // Create a Stacked Plot and attach to the Flexible Layout
++    stackedPlot = await createDomainObjectWithDefaults(page, {
++      type: 'Stacked Plot',
++      name: 'StackedPlot1',
++      parent: flexibleLayout.uuid
++    });
++
++    // Create a Stacked Plot and attach to the Flexible Layout
++    await createDomainObjectWithDefaults(page, {
++      type: 'Stacked Plot',
++      name: 'StackedPlot2',
++      parent: flexibleLayout.uuid
++    });
++  });
++
++  test('styling the flexible layout properly applies the styles to flex layout', async ({
++    page
++  }) => {
++    // Directly navigate to the flexible layout
++    await page.goto(flexibleLayout.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // Select styles tab
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    // Set styles using setStyles function
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByLabel('Flexible Layout Column')
++    );
++
++    // Flex Layout Column matches set styles
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('Flexible Layout Column')
++    );
++
++    // Save Flexible Layout
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    // Reload page
++    await page.reload({ waitUntil: 'domcontentloaded' });
++
++    // Check styles of overall Flex Layout
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('Flexible Layout Column')
++    );
++
++    // Check styles on StackedPlot1. Note: https://github.com/nasa/openmct/issues/7337
++    await checkStyles(
++      hexToRGB(defaultFrameBorderColor),
++      NO_STYLE_RGBA,
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Check styles on StackedPlot2. Note: https://github.com/nasa/openmct/issues/7337
++    await checkStyles(
++      hexToRGB(defaultFrameBorderColor),
++      NO_STYLE_RGBA,
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot2 Frame').getByLabel('Stacked Plot Style Target')
++    );
++  });
++
++  test('styling a child object of the flexible layout properly applies that style to only that child', async ({
++    page
++  }) => {
++    // Directly navigate to the flexible layout
++    await page.goto(flexibleLayout.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // Select styles tab
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    // Check styles on StackedPlot1
++    await checkStyles(
++      hexToRGB(defaultBorderTargetColor),
++      NO_STYLE_RGBA,
++      hexToRGB(defaultTextColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Check styles on StackedPlot2
++    await checkStyles(
++      hexToRGB(defaultBorderTargetColor),
++      NO_STYLE_RGBA,
++      hexToRGB(defaultTextColor),
++      page.getByLabel('StackedPlot2 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Set styles using setStyles function on StackedPlot1 but not StackedPlot2
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByLabel('StackedPlot1 Frame')
++    );
++
++    // Check styles on StackedPlot1
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Check styles on StackedPlot2
++    await checkStyles(
++      hexToRGB(defaultBorderTargetColor),
++      NO_STYLE_RGBA,
++      hexToRGB(defaultTextColor),
++      page.getByLabel('StackedPlot2 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Save Flexible Layout
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    // Reload page and verify that styles persist
++    await page.reload({ waitUntil: 'domcontentloaded' });
++
++    // Check styles on StackedPlot1
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Check styles on StackedPlot2
++    await checkStyles(
++      hexToRGB(defaultBorderTargetColor),
++      NO_STYLE_RGBA,
++      hexToRGB(defaultTextColor),
++      page.getByLabel('StackedPlot2 Frame').getByLabel('Stacked Plot Style Target')
++    );
++  });
++
++  test('if an overall style has been applied to the parent layout or plot, the individual styling should be able to coexist with that', async ({
++    page
++  }) => {
++    //Navigate to stackedPlot
++    await page.goto(stackedPlot.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit stackedPlot
++    await page.getByLabel('Edit').click();
++
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    // Set styles using setStyles function on StackedPlot1 but not StackedPlot2
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByLabel('Stacked Plot Style Target').locator('div')
++    );
++
++    // Save Flexible Layout
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    // Directly navigate to the flexible layout
++    await page.goto(flexibleLayout.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // Select styles tab
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    // Check styles on StackedPlot1 to match the set colors
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Check styles on StackedPlot2 to verify they are the default
++    await checkStyles(
++      hexToRGB(defaultBorderTargetColor),
++      NO_STYLE_RGBA,
++      hexToRGB(defaultTextColor),
++      page.getByLabel('StackedPlot2 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Set styles using setStyles function on StackedPlot2
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByLabel('StackedPlot2 Frame')
++    );
++
++    // Check styles on StackedPlot2
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot2 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Save Flexible Layout
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    // Reload page and verify that styles persist
++    await page.reload({ waitUntil: 'domcontentloaded' });
++
++    // Check styles on StackedPlot1
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Check styles on StackedPlot2
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot2 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Directly navigate to the flexible layout
++    await page.goto(flexibleLayout.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // Select styles tab
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    // Set Flex Layout Column to puke green
++    await setStyles(
++      page,
++      pukeGreen,
++      pukeGreen,
++      pukeGreen,
++      page.getByLabel('Flexible Layout Column')
++    );
++    // Save Flexible Layout
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    // Flex Layout Column matches set styles
++    await checkStyles(
++      hexToRGB(pukeGreen),
++      hexToRGB(pukeGreen),
++      hexToRGB(pukeGreen),
++      page.getByLabel('Flexible Layout Column')
++    );
++
++    // Check styles on StackedPlot1 matches previously set colors
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Check styles on StackedPlot2 matches previous set colors
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot2 Frame').getByLabel('Stacked Plot Style Target')
++    );
++  });
++
++  test('when the "no style" option is selected, background and text should be reset to inherited styles', async ({
++    page
++  }) => {
++    // Directly navigate to the flexible layout
++    await page.goto(flexibleLayout.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // Select styles tab
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    // Set styles using setStyles function
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByLabel('StackedPlot1 Frame')
++    );
++
++    // Check styles using checkStyles function
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++
++    // Save Flexible Layout
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    // Reload page and set Styles to 'None'
++    await page.reload({ waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // Select styles tab
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    //Select the 'No Style' option
++    await setStyles(
++      page,
++      'No Style',
++      'No Style',
++      'No Style',
++      page.getByLabel('StackedPlot1 Frame')
++    );
++
++    // Check styles using checkStyles function
++    await checkStyles(
++      hexToRGB(defaultBorderTargetColor),
++      NO_STYLE_RGBA,
++      hexToRGB(inheritedColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++    // Save Flexible Layout
++    await page.locator('button[title="Save"]').click();
++    await page.locator('text=Save and Finish Editing').click();
++
++    // Reload page and verify that styles persist
++    await page.reload({ waitUntil: 'domcontentloaded' });
++
++    // Check styles using checkStyles function
++    await checkStyles(
++      hexToRGB(defaultBorderTargetColor),
++      NO_STYLE_RGBA,
++      hexToRGB(inheritedColor),
++      page.getByLabel('StackedPlot1 Frame').getByLabel('Stacked Plot Style Target')
++    );
++  });
++});
+diff --git a/e2e/tests/functional/plugins/styling/stackedPlotStyling.e2e.spec.js b/e2e/tests/functional/plugins/styling/stackedPlotStyling.e2e.spec.js
+new file mode 100644
+index 0000000000..82d38cf309
+--- /dev/null
++++ b/e2e/tests/functional/plugins/styling/stackedPlotStyling.e2e.spec.js
+@@ -0,0 +1,246 @@
++/*****************************************************************************
++ * Open MCT, Copyright (c) 2014-2023, United States Government
++ * as represented by the Administrator of the National Aeronautics and Space
++ * Administration. All rights reserved.
++ *
++ * Open MCT is licensed under the Apache License, Version 2.0 (the
++ * "License"); you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * http://www.apache.org/licenses/LICENSE-2.0.
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
++ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
++ * License for the specific language governing permissions and limitations
++ * under the License.
++ *
++ * Open MCT includes source code licensed under additional open source
++ * licenses. See the Open Source Licenses file (LICENSES.md) included with
++ * this source code distribution or the Licensing information page available
++ * at runtime from the About dialog for additional information.
++ *****************************************************************************/
++
++/**
++ * This test is dedicated to test styling of stacked plots
++ */
++
++import { createDomainObjectWithDefaults } from '../../../../appActions.js';
++import {
++  checkFontStyles,
++  checkStyles,
++  hexToRGB,
++  setStyles
++} from '../../../../helper/stylingUtils.js';
++import { test } from '../../../../pluginFixtures.js';
++
++const setBorderColor = '#ff00ff';
++const setBackgroundColor = '#5b0f00';
++const setTextColor = '#e6b8af';
++const defaultTextColor = '#aaaaaa'; // default text color
++const NO_STYLE_RGBA = 'rgba(0, 0, 0, 0)'; //default background color value
++const setFontSize = '72px';
++const setFontWeight = '700'; //bold for monospace bold
++// eslint-disable-next-line prettier/prettier
++const setFontFamily = "\"Andale Mono\", sans-serif";
++
++test.describe('Stacked Plot styling', () => {
++  let stackedPlot;
++  test.beforeEach(async ({ page }) => {
++    await page.goto('./', { waitUntil: 'domcontentloaded' });
++
++    // Create a Stacked Plot
++    stackedPlot = await createDomainObjectWithDefaults(page, {
++      type: 'Stacked Plot',
++      name: 'StackedPlot1'
++    });
++
++    // Create two SWGs and attach them to the Stacked Plot
++    await createDomainObjectWithDefaults(page, {
++      type: 'Sine Wave Generator',
++      name: 'Sine Wave Generator 1',
++      parent: stackedPlot.uuid
++    });
++
++    await createDomainObjectWithDefaults(page, {
++      type: 'Sine Wave Generator',
++      name: 'Sine Wave Generator 2',
++      parent: stackedPlot.uuid
++    });
++  });
++
++  test('styling the overlay plot properly applies the styles to all containers', async ({
++    page
++  }) => {
++    // Directly navigate to the stacked plot
++    await page.goto(stackedPlot.url, { waitUntil: 'domcontentloaded' });
++
++    await page.getByLabel('Edit').click();
++
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    //Set styles on overall stacked plot
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByRole('tab', { name: 'Styles' }) //Workaround for https://github.com/nasa/openmct/issues/7229
++    );
++
++    //Set Font Size to 72
++    await page.getByLabel('Set Font Size').click();
++    await page.getByRole('menuitem', { name: '72px' }).click();
++
++    //Set Font Type to Monospace Bold. See setFontWeight and setFontFamily variables
++    await page.getByLabel('Set Font Type').click();
++    await page.getByRole('menuitem', { name: 'Monospace Bold' }).click();
++
++    //Check styles of stacked plot
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('Stacked Plot Style Target')
++    );
++
++    //Check font styles of stacked plot
++    await checkFontStyles(
++      setFontSize,
++      setFontWeight,
++      setFontFamily,
++      page.getByLabel('Stacked Plot Style Target')
++    );
++
++    //Save
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    // Reload page
++    await page.reload({ waitUntil: 'domcontentloaded' });
++
++    //Verify styles are correct after reload
++    await checkStyles(
++      hexToRGB(setBorderColor),
++      hexToRGB(setBackgroundColor),
++      hexToRGB(setTextColor),
++      page.getByLabel('Stacked Plot Style Target')
++    );
++
++    await checkFontStyles(
++      setFontSize,
++      setFontWeight,
++      setFontFamily,
++      page.getByLabel('Stacked Plot Style Target')
++    );
++
++    //Verify that stacked Plot Items inherit only text properties
++    await checkStyles(
++      NO_STYLE_RGBA,
++      NO_STYLE_RGBA,
++      hexToRGB(setTextColor),
++      page.getByLabel('Stacked Plot Item Sine Wave Generator 1')
++    );
++
++    await checkStyles(
++      NO_STYLE_RGBA,
++      NO_STYLE_RGBA,
++      hexToRGB(setTextColor),
++      page.getByLabel('Stacked Plot Item Sine Wave Generator 2')
++    );
++
++    await checkFontStyles(
++      setFontSize,
++      setFontWeight,
++      setFontFamily,
++      page.getByLabel('Stacked Plot Item Sine Wave Generator 1')
++    );
++  });
++
++  test.fixme(
++    'styling a child object of the flexible layout properly applies that style to only that child',
++    async ({ page }) => {
++      test.info().annotations.push({
++        type: 'issue',
++        description: 'https://github.com/nasa/openmct/issues/7338'
++      });
++      await page.goto(stackedPlot.url, { waitUntil: 'domcontentloaded' });
++
++      await page.getByLabel('Edit').click();
++
++      await page.getByRole('tab', { name: 'Styles' }).click();
++
++      //Check default styles for SWG1 and SWG2
++      await checkStyles(
++        NO_STYLE_RGBA,
++        NO_STYLE_RGBA,
++        hexToRGB(defaultTextColor),
++        page.getByLabel('Stacked Plot Item Sine Wave Generator 1')
++      );
++
++      await checkStyles(
++        NO_STYLE_RGBA,
++        NO_STYLE_RGBA,
++        hexToRGB(defaultTextColor),
++        page.getByLabel('Stacked Plot Item Sine Wave Generator 2')
++      );
++
++      // Set styles using setStyles function on StackedPlot1 but not StackedPlot2
++      await setStyles(
++        page,
++        setBorderColor,
++        setBackgroundColor,
++        setTextColor,
++        page.getByLabel('Stacked Plot Item Sine Wave Generator 1')
++      );
++
++      //Set Font Styles on SWG1 but not SWG2
++      await page.getByLabel('Stacked Plot Item Sine Wave Generator 1').click();
++      //Set Font Size to 72
++      await page.getByLabel('Set Font Size').click();
++      await page.getByRole('menuitem', { name: '72px' }).click();
++
++      //Set Font Type to Monospace Bold. See setFontWeight and setFontFamily variables
++      await page.getByLabel('Set Font Type').click();
++      await page.getByRole('menuitem', { name: 'Monospace Bold' }).click();
++
++      // Save Flexible Layout
++      await page.getByRole('button', { name: 'Save' }).click();
++      await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++      // Check styles on StackedPlot1
++      await checkStyles(
++        hexToRGB(setBorderColor),
++        hexToRGB(setBackgroundColor),
++        hexToRGB(setTextColor),
++        page.getByLabel('Stacked Plot Item Sine Wave Generator 1')
++      );
++
++      // Check styles on StackedPlot2
++      await checkStyles(
++        NO_STYLE_RGBA,
++        NO_STYLE_RGBA,
++        hexToRGB(defaultTextColor),
++        page.getByLabel('Stacked Plot Item Sine Wave Generator 2')
++      );
++
++      // Reload page and verify that styles persist
++      await page.reload({ waitUntil: 'domcontentloaded' });
++
++      // Check styles on StackedPlot1
++      await checkStyles(
++        hexToRGB(setBorderColor),
++        hexToRGB(setBackgroundColor),
++        hexToRGB(setTextColor),
++        page.getByLabel('Stacked Plot Item Sine Wave Generator 1')
++      );
++
++      // Check styles on StackedPlot2
++      await checkStyles(
++        NO_STYLE_RGBA,
++        NO_STYLE_RGBA,
++        hexToRGB(defaultTextColor),
++        page.getByLabel('Stacked Plot Item Sine Wave Generator 2')
++      );
++    }
++  );
++});
+diff --git a/e2e/tests/functional/plugins/styling/styleInspectorOptions.e2e.spec.js b/e2e/tests/functional/plugins/styling/styleInspectorOptions.e2e.spec.js
+new file mode 100644
+index 0000000000..dc73928f91
+--- /dev/null
++++ b/e2e/tests/functional/plugins/styling/styleInspectorOptions.e2e.spec.js
+@@ -0,0 +1,90 @@
++/*****************************************************************************
++ * Open MCT, Copyright (c) 2014-2023, United States Government
++ * as represented by the Administrator of the National Aeronautics and Space
++ * Administration. All rights reserved.
++ *
++ * Open MCT is licensed under the Apache License, Version 2.0 (the
++ * "License"); you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * http://www.apache.org/licenses/LICENSE-2.0.
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
++ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
++ * License for the specific language governing permissions and limitations
++ * under the License.
++ *
++ * Open MCT includes source code licensed under additional open source
++ * licenses. See the Open Source Licenses file (LICENSES.md) included with
++ * this source code distribution or the Licensing information page available
++ * at runtime from the About dialog for additional information.
++ *****************************************************************************/
++
++/**
++ * This test is dedicated to test styling changes in the inspector tool
++ */
++
++import { createDomainObjectWithDefaults } from '../../../../appActions.js';
++import { expect, test } from '../../../../pluginFixtures.js';
++
++test.describe('Style Inspector Options', () => {
++  let flexibleLayout;
++  test.beforeEach(async ({ page }) => {
++    await page.goto('./', { waitUntil: 'domcontentloaded' });
++
++    // Create a Flexible Layout and attach to the Stacked Plot
++    flexibleLayout = await createDomainObjectWithDefaults(page, {
++      type: 'Flexible Layout',
++      name: 'Flexible Layout'
++    });
++    // Create a Stacked Plot and attach to the Flexible Layout
++    await createDomainObjectWithDefaults(page, {
++      type: 'Stacked Plot',
++      name: 'Stacked Plot',
++      parent: flexibleLayout.uuid
++    });
++  });
++
++  test('styles button only appears when appropriate component selected', async ({ page }) => {
++    await page.goto(flexibleLayout.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // The overall Flex Layout or Stacked Plot itself MUST be style-able.
++    await expect(page.getByRole('tab', { name: 'Styles' })).toBeVisible();
++
++    // Select flexible layout column
++    await page.getByLabel('Container Handle 1').click();
++
++    // Flex Layout containers should NOT be style-able.
++    await expect(page.getByRole('tab', { name: 'Styles' })).toBeHidden();
++
++    // Select Flex Layout Column
++    await page.getByLabel('Flexible Layout Column').click();
++
++    // The overall Flex Layout or Stacked Plot itself MUST be style-able.
++    await expect(page.getByRole('tab', { name: 'Styles' })).toBeVisible();
++
++    // Select Stacked Layout Column
++    await page.getByLabel('Stacked Plot Frame').click();
++
++    // The overall Flex Layout or Stacked Plot itself MUST be style-able.
++    await expect(page.getByRole('tab', { name: 'Styles' })).toBeVisible();
++  });
++});
++
++test.describe('Saved Styles', () => {
++  test.fixme('historical styles appear as an option once used', async ({ page }) => {
++    //test
++  });
++  test.fixme('at least 5 saved styles appear in the saved styles list', async ({ page }) => {
++    //test
++  });
++  test.fixme('Saved Styles can be deleted once used', async ({ page }) => {
++    //test
++  });
++  test.fixme('can apply a saved style to the currently selected target', async ({ page }) => {
++    //test
++  });
++});
+diff --git a/e2e/tests/functional/plugins/timer/timer.e2e.spec.js b/e2e/tests/functional/plugins/timer/timer.e2e.spec.js
+index 112ef175fe..3d1558d572 100644
+--- a/e2e/tests/functional/plugins/timer/timer.e2e.spec.js
++++ b/e2e/tests/functional/plugins/timer/timer.e2e.spec.js
+@@ -85,7 +85,7 @@ test.describe('Timer with target date', () => {
+ 
+   test('Can count down to a target date', async ({ page }) => {
+     // Set the target date to 2024-11-24 03:30:00
+-    await page.getByTitle('More options').click();
++    await page.getByTitle('More actions').click();
+     await page.getByRole('menuitem', { name: /Edit Properties.../ }).click();
+     await page.getByPlaceholder('YYYY-MM-DD').fill('2024-11-24');
+     await page.locator('input[name="hour"]').fill('3');
+@@ -108,7 +108,7 @@ test.describe('Timer with target date', () => {
+ 
+   test('Can count up from a target date', async ({ page }) => {
+     // Set the target date to 2020-11-23 03:30:00
+-    await page.getByTitle('More options').click();
++    await page.getByTitle('More actions').click();
+     await page.getByRole('menuitem', { name: /Edit Properties.../ }).click();
+     await page.getByPlaceholder('YYYY-MM-DD').fill('2020-11-23');
+     await page.locator('input[name="hour"]').fill('3');
+@@ -159,7 +159,7 @@ async function triggerTimerContextMenuAction(page, timerUrl, action) {
+  */
+ async function triggerTimer3dotMenuAction(page, action) {
+   const menuAction = `.c-menu ul li >> text="${action}"`;
+-  const threeDotMenuButton = 'button[title="More options"]';
++  const threeDotMenuButton = 'button[title="More actions"]';
+   let isActionAvailable = false;
+   let iterations = 0;
+   // Dismiss/open the 3dot menu until the action is available
+diff --git a/e2e/tests/visual-a11y/ladTable.visual.spec.js b/e2e/tests/visual-a11y/ladTable.visual.spec.js
+index 5690cf053f..06e06f5b38 100644
+--- a/e2e/tests/visual-a11y/ladTable.visual.spec.js
++++ b/e2e/tests/visual-a11y/ladTable.visual.spec.js
+@@ -46,7 +46,7 @@ test.describe('Visual - LAD Table', () => {
+     });
+ 
+     //Modify SWG to create a really stable SWG
+-    await page.locator('button[title="More options"]').click();
++    await page.locator('button[title="More actions"]').click();
+ 
+     await page.getByRole('menuitem', { name: ' Edit Properties...' }).click();
+ 
+diff --git a/e2e/tests/visual-a11y/styling.visual.spec.js b/e2e/tests/visual-a11y/styling.visual.spec.js
+new file mode 100644
+index 0000000000..e13168262d
+--- /dev/null
++++ b/e2e/tests/visual-a11y/styling.visual.spec.js
+@@ -0,0 +1,194 @@
++/*****************************************************************************
++ * Open MCT, Copyright (c) 2014-2023, United States Government
++ * as represented by the Administrator of the National Aeronautics and Space
++ * Administration. All rights reserved.
++ *
++ * Open MCT is licensed under the Apache License, Version 2.0 (the
++ * "License"); you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ * http://www.apache.org/licenses/LICENSE-2.0.
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
++ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
++ * License for the specific language governing permissions and limitations
++ * under the License.
++ *
++ * Open MCT includes source code licensed under additional open source
++ * licenses. See the Open Source Licenses file (LICENSES.md) included with
++ * this source code distribution or the Licensing information page available
++ * at runtime from the About dialog for additional information.
++ *****************************************************************************/
++
++/**
++ * This test is dedicated to test notification banner functionality and its accessibility attributes.
++ */
++
++import percySnapshot from '@percy/playwright';
++
++import { createDomainObjectWithDefaults } from '../../appActions.js';
++import { scanForA11yViolations, test } from '../../avpFixtures.js';
++import { setStyles } from '../../helper/stylingUtils.js';
++
++const setBorderColor = '#ff00ff';
++const setBackgroundColor = '#5b0f00';
++const setTextColor = '#e6b8af';
++
++test.describe('Flexible Layout styling @a11y', () => {
++  let flexibleLayout;
++  test.beforeEach(async ({ page }) => {
++    await page.goto('./', { waitUntil: 'domcontentloaded' });
++
++    // Create a Flexible Layout and attach to the Stacked Plot
++    flexibleLayout = await createDomainObjectWithDefaults(page, {
++      type: 'Flexible Layout',
++      name: 'Flexible Layout'
++    });
++
++    // Create a Stacked Plot and attach to the Flexible Layout
++    await createDomainObjectWithDefaults(page, {
++      type: 'Stacked Plot',
++      name: 'StackedPlot1',
++      parent: flexibleLayout.uuid
++    });
++
++    // Create a Stacked Plot and attach to the Flexible Layout
++    await createDomainObjectWithDefaults(page, {
++      type: 'Stacked Plot',
++      name: 'StackedPlot2',
++      parent: flexibleLayout.uuid
++    });
++  });
++
++  test('styling the flexible layout properly applies the styles to flex layout', async ({
++    page,
++    theme
++  }) => {
++    // Directly navigate to the flexible layout
++    await page.goto(flexibleLayout.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // Select styles tab
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    await percySnapshot(page, `Flex Layout with 2 children (theme: '${theme}')`);
++
++    // Set styles using setStyles function
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByLabel('Flexible Layout Column')
++    );
++
++    await percySnapshot(page, `Edit Mode Styled Flex Layout Column (theme: '${theme}')`);
++
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByLabel('StackedPlot1 Frame')
++    );
++
++    await percySnapshot(
++      page,
++      `Edit Mode Styled Flex Layout with Styled StackedPlot (theme: '${theme}')`
++    );
++
++    // Save Flexible Layout
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    await percySnapshot(
++      page,
++      `Saved Styled Flex Layout with Styled StackedPlot (theme: '${theme}')`
++    );
++  });
++  test.afterEach(async ({ page }, testInfo) => {
++    await scanForA11yViolations(page, testInfo.title);
++  });
++});
++
++test.describe('Stacked Plot styling @a11y', () => {
++  let stackedPlot;
++  test.beforeEach(async ({ page }) => {
++    await page.goto('./', { waitUntil: 'domcontentloaded' });
++
++    // Create a Stacked Plot
++    stackedPlot = await createDomainObjectWithDefaults(page, {
++      type: 'Stacked Plot',
++      name: 'StackedPlot1'
++    });
++
++    // Create two SWGs and attach them to the Stacked Plot
++    await createDomainObjectWithDefaults(page, {
++      type: 'Sine Wave Generator',
++      name: 'Sine Wave Generator 1',
++      parent: stackedPlot.uuid
++    });
++
++    await createDomainObjectWithDefaults(page, {
++      type: 'Sine Wave Generator',
++      name: 'Sine Wave Generator 2',
++      parent: stackedPlot.uuid
++    });
++  });
++
++  test('styling the flexible layout properly applies the styles to flex layout', async ({
++    page,
++    theme
++  }) => {
++    // Directly navigate to the flexible layout
++    await page.goto(stackedPlot.url, { waitUntil: 'domcontentloaded' });
++
++    // Edit Flexible Layout
++    await page.getByLabel('Edit').click();
++
++    // Select styles tab
++    await page.getByRole('tab', { name: 'Styles' }).click();
++
++    await percySnapshot(page, `StackedPlot with 2 SWG (theme: '${theme}')`);
++
++    // Set styles using setStyles function
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByRole('tab', { name: 'Styles' }) //Workaround for https://github.com/nasa/openmct/issues/7229
++    );
++
++    //Set Font Size to 72
++    await page.getByLabel('Set Font Size').click();
++    await page.getByRole('menuitem', { name: '72px' }).click();
++
++    //Set Font Type to Monospace Bold
++    await page.getByLabel('Set Font Type').click();
++    await page.getByRole('menuitem', { name: 'Monospace Bold' }).click();
++
++    await percySnapshot(page, `Edit Mode StackedPlot Styled (theme: '${theme}')`);
++
++    await setStyles(
++      page,
++      setBorderColor,
++      setBackgroundColor,
++      setTextColor,
++      page.getByLabel('Stacked Plot Item Sine Wave Generator 1')
++    );
++
++    await percySnapshot(page, `Edit Mode StackedPlot with Styled SWG (theme: '${theme}')`);
++
++    // Save Flexible Layout
++    await page.getByRole('button', { name: 'Save' }).click();
++    await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();
++
++    await percySnapshot(page, `Saved Styled StackedPlot (theme: '${theme}')`);
++  });
++  test.afterEach(async ({ page }, testInfo) => {
++    await scanForA11yViolations(page, testInfo.title);
++  });
++});
+diff --git a/src/api/menu/components/MenuComponent.vue b/src/api/menu/components/MenuComponent.vue
+index 90aaf76067..0d46cd6863 100644
+--- a/src/api/menu/components/MenuComponent.vue
++++ b/src/api/menu/components/MenuComponent.vue
+@@ -20,7 +20,7 @@
+  at runtime from the About dialog for additional information.
+ -->
+ <template>
+-  <div class="c-menu" :class="options.menuClass" :style="styleObject">
++  <div :aria-label="optionsLabel" class="c-menu" :class="options.menuClass" :style="styleObject">
+     <ul v-if="options.actions.length && options.actions[0].length" role="menu">
+       <template v-for="(actionGroups, index) in options.actions" :key="index">
+         <div role="group">
+@@ -65,6 +65,12 @@
+ import popupMenuMixin from '../mixins/popupMenuMixin.js';
+ export default {
+   mixins: [popupMenuMixin],
+-  inject: ['options']
++  inject: ['options'],
++  computed: {
++    optionsLabel() {
++      const label = this.options.label ? `${this.options.label} Menu` : 'Menu';
++      return label;
++    }
++  }
+ };
+ </script>
+diff --git a/src/api/menu/components/SuperMenu.vue b/src/api/menu/components/SuperMenu.vue
+index 78aa1d9f84..e354beab75 100644
+--- a/src/api/menu/components/SuperMenu.vue
++++ b/src/api/menu/components/SuperMenu.vue
+@@ -20,7 +20,12 @@
+  at runtime from the About dialog for additional information.
+ -->
+ <template>
+-  <div class="c-menu" :class="[options.menuClass, 'c-super-menu']" :style="styleObject">
++  <div
++    :aria-label="optionsLabel"
++    class="c-menu"
++    :class="[options.menuClass, 'c-super-menu']"
++    :style="styleObject"
++  >
+     <ul
+       v-if="options.actions.length && options.actions[0].length"
+       role="menu"
+@@ -88,6 +93,12 @@ export default {
+       hoveredItem: {}
+     };
+   },
++  computed: {
++    optionsLabel() {
++      const label = this.options.label ? `${this.options.label} Super Menu` : 'Super Menu';
++      return label;
++    }
++  },
+   methods: {
+     toggleItemDescription(action = {}) {
+       const hoveredItem = {
+diff --git a/src/plugins/flexibleLayout/components/ContainerComponent.vue b/src/plugins/flexibleLayout/components/ContainerComponent.vue
+index 69ae78ccf4..dd1c65a646 100644
+--- a/src/plugins/flexibleLayout/components/ContainerComponent.vue
++++ b/src/plugins/flexibleLayout/components/ContainerComponent.vue
+@@ -25,13 +25,14 @@
+     class="c-fl-container"
+     :style="[{ 'flex-basis': sizeString }]"
+     :class="{ 'is-empty': !frames.length }"
+-    role="group"
+-    :aria-label="`Container ${container.id}`"
++    role="grid"
+   >
+     <div
+       v-show="isEditing"
+       class="c-fl-container__header"
+       draggable="true"
++      role="columnheader"
++      :aria-label="`Container Handle ${index + 1}`"
+       @dragstart="startContainerDrag"
+     >
+       <span class="c-fl-container__size-indicator">{{ sizeString }}</span>
+@@ -44,12 +45,14 @@
+       @object-drop-to="moveOrCreateNewFrame"
+     />
+ 
+-    <div class="c-fl-container__frames-holder">
++    <div role="row" class="c-fl-container__frames-holder">
+       <template v-for="(frame, i) in frames" :key="frame.id">
+         <frame-component
+           class="c-fl-container__frame"
+           :frame="frame"
+           :index="i"
++          role="gridcell"
++          :aria-label="`Container Frame ${index}`"
+           :container-index="index"
+           :is-editing="isEditing"
+           :object-path="objectPath"
+diff --git a/src/plugins/flexibleLayout/components/FlexibleLayout.vue b/src/plugins/flexibleLayout/components/FlexibleLayout.vue
+index 602ec6eca6..42522417e5 100644
+--- a/src/plugins/flexibleLayout/components/FlexibleLayout.vue
++++ b/src/plugins/flexibleLayout/components/FlexibleLayout.vue
+@@ -29,10 +29,11 @@
+     </div>
+ 
+     <div
+-      class="c-fl__container-holder"
++      class="c-fl__container-holder u-style-receiver js-style-receiver"
+       :class="{
+         'c-fl--rows': rowsLayout === true
+       }"
++      :aria-label="`Flexible Layout ${rowsLayout ? 'Row' : 'Column'}`"
+     >
+       <template v-for="(container, index) in containers" :key="`component-${container.id}`">
+         <drop-hint
+diff --git a/src/plugins/inspectorDataVisualization/TelemetryFrame.vue b/src/plugins/inspectorDataVisualization/TelemetryFrame.vue
+index 23b53fdd78..5b18b966d6 100644
+--- a/src/plugins/inspectorDataVisualization/TelemetryFrame.vue
++++ b/src/plugins/inspectorDataVisualization/TelemetryFrame.vue
+@@ -29,7 +29,8 @@
+       </span>
+       <button
+         ref="menu-button"
+-        title="More options"
++        title="More actions"
++        aria-label="More actions"
+         class="l-browse-bar__actions c-icon-button icon-3-dots"
+         @click="toggleMenu"
+       ></button>
+diff --git a/src/plugins/inspectorViews/styles/FontStyleEditor.vue b/src/plugins/inspectorViews/styles/FontStyleEditor.vue
+index a3e2fbfe0c..c8cc92ebd6 100644
+--- a/src/plugins/inspectorViews/styles/FontStyleEditor.vue
++++ b/src/plugins/inspectorViews/styles/FontStyleEditor.vue
+@@ -24,13 +24,18 @@
+     <div ref="fontSizeMenu" class="c-menu-button c-ctrl-wrapper c-ctrl-wrapper--menus-left">
+       <button
+         class="c-icon-button c-button--menu icon-font-size"
++        aria-label="Set Font Size"
+         @click.prevent.stop="showFontSizeMenu"
+       >
+         <span class="c-button__label">{{ fontSizeLabel }}</span>
+       </button>
+     </div>
+     <div ref="fontMenu" class="c-menu-button c-ctrl-wrapper c-ctrl-wrapper--menus-left">
+-      <button class="c-icon-button c-button--menu icon-font" @click.prevent.stop="showFontMenu">
++      <button
++        class="c-icon-button c-button--menu icon-font"
++        aria-label="Set Font Type"
++        @click.prevent.stop="showFontMenu"
++      >
+         <span class="c-button__label">{{ fontTypeLabel }}</span>
+       </button>
+     </div>
+diff --git a/src/plugins/inspectorViews/styles/StylesInspectorViewProvider.js b/src/plugins/inspectorViews/styles/StylesInspectorViewProvider.js
+index 2c242ac69a..1520c3e513 100644
+--- a/src/plugins/inspectorViews/styles/StylesInspectorViewProvider.js
++++ b/src/plugins/inspectorViews/styles/StylesInspectorViewProvider.js
+@@ -46,14 +46,17 @@ export default function StylesInspectorViewProvider(openmct) {
+     glyph: 'icon-paint-bucket',
+     canView: function (selection) {
+       const objectSelection = selection?.[0];
+-      const layoutItem = objectSelection?.[0]?.context?.layoutItem;
+-      const domainObject = objectSelection?.[0]?.context?.item;
++      const objectContext = objectSelection?.[0]?.context;
++      const layoutItem = objectContext?.layoutItem;
++      const domainObject = objectContext?.item;
++      const isFlexibleLayoutContainer =
++        domainObject?.type === 'flexible-layout' && objectContext.type === 'container';
+ 
+       if (layoutItem) {
+         return true;
+       }
+ 
+-      if (!domainObject) {
++      if (!domainObject || isFlexibleLayoutContainer) {
+         return false;
+       }
+ 
+diff --git a/src/plugins/notebook/components/NotebookEmbed.vue b/src/plugins/notebook/components/NotebookEmbed.vue
+index 7a886cf103..0c762d857c 100644
+--- a/src/plugins/notebook/components/NotebookEmbed.vue
++++ b/src/plugins/notebook/components/NotebookEmbed.vue
+@@ -36,7 +36,8 @@
+         </a>
+         <button
+           class="c-ne__embed__actions c-icon-button icon-3-dots"
+-          title="More options"
++          title="More actions"
++          aria-label="More actions"
+           @click.prevent.stop="showMenuItems($event)"
+         ></button>
+       </div>
+diff --git a/src/plugins/plot/stackedPlot/StackedPlot.vue b/src/plugins/plot/stackedPlot/StackedPlot.vue
+index b46f9ba653..a1ab86d90e 100644
+--- a/src/plugins/plot/stackedPlot/StackedPlot.vue
++++ b/src/plugins/plot/stackedPlot/StackedPlot.vue
+@@ -23,8 +23,9 @@
+ <template>
+   <div
+     v-if="loaded"
+-    class="c-plot c-plot--stacked holder holder-plot has-control-bar"
++    class="c-plot c-plot--stacked holder holder-plot has-control-bar u-style-receiver js-style-receiver"
+     :class="[plotLegendExpandedStateClass, plotLegendPositionClass]"
++    aria-label="Stacked Plot Style Target"
+   >
+     <plot-legend
+       v-if="compositionObjectsConfigLoaded && showLegendsForChildren === false"
+diff --git a/src/ui/components/ObjectView.vue b/src/ui/components/ObjectView.vue
+index 1576feddad..1eea8d8a61 100644
+--- a/src/ui/components/ObjectView.vue
++++ b/src/ui/components/ObjectView.vue
+@@ -236,7 +236,11 @@ export default {
+         if (elemToStyle) {
+           if (typeof styleObj[key] === 'string' && styleObj[key].indexOf('__no_value') > -1) {
+             if (elemToStyle.style[key]) {
+-              elemToStyle.style[key] = '';
++              if (key === 'background-color') {
++                elemToStyle.style[key] = 'transparent';
++              } else {
++                elemToStyle.style[key] = '';
++              }
+             }
+           } else {
+             if (
+diff --git a/src/ui/layout/BrowseBar.vue b/src/ui/layout/BrowseBar.vue
+index 39dc15d7a3..747838f195 100644
+--- a/src/ui/layout/BrowseBar.vue
++++ b/src/ui/layout/BrowseBar.vue
+@@ -128,7 +128,8 @@
+         ></button>
+         <button
+           class="l-browse-bar__actions c-icon-button icon-3-dots"
+-          title="More options"
++          title="More actions"
++          aria-label="More actions"
+           @click.prevent.stop="showMenuItems($event)"
+         ></button>
+       </div>
+@@ -362,6 +363,10 @@ export default {
+         title: 'Saving'
+       });
+ 
++      const currentSelection = this.openmct.selection.selected[0];
++      const parentObject = currentSelection[currentSelection.length - 1];
++      this.openmct.selection.select(parentObject);
++
+       return this.openmct.editor
+         .save()
+         .then(() => {
+diff --git a/src/ui/preview/PreviewHeader.vue b/src/ui/preview/PreviewHeader.vue
+index 6424dc2068..21aa5fe91f 100644
+--- a/src/ui/preview/PreviewHeader.vue
++++ b/src/ui/preview/PreviewHeader.vue
+@@ -48,7 +48,8 @@
+         ></button>
+         <button
+           class="l-browse-bar__actions c-icon-button icon-3-dots"
+-          title="More options"
++          title="More actions"
++          aria-label="More actions"
+           @click.prevent.stop="showMenuItems($event)"
+         ></button>
+       </div>
+diff --git a/src/ui/toolbar/ToolbarContainer.vue b/src/ui/toolbar/ToolbarContainer.vue
+index 4a64ec545d..6e771e065e 100644
+--- a/src/ui/toolbar/ToolbarContainer.vue
++++ b/src/ui/toolbar/ToolbarContainer.vue
+@@ -20,7 +20,7 @@
+  at runtime from the About dialog for additional information.
+ -->
+ <template>
+-  <div class="c-toolbar">
++  <div role="menubar" class="c-toolbar">
+     <div class="c-toolbar__element-controls">
+       <component
+         :is="item.control"
+diff --git a/src/ui/toolbar/components/ToolbarButton.vue b/src/ui/toolbar/components/ToolbarButton.vue
+index c14eabe9f1..b5f4c76767 100644
+--- a/src/ui/toolbar/components/ToolbarButton.vue
++++ b/src/ui/toolbar/components/ToolbarButton.vue
+@@ -24,6 +24,8 @@
+     <div
+       ref="button"
+       class="c-icon-button"
++      role="menuitem"
++      :aria-label="options.title"
+       :title="options.title"
+       :class="{
+         [options.icon]: true,
+diff --git a/src/ui/toolbar/components/ToolbarColorPicker.vue b/src/ui/toolbar/components/ToolbarColorPicker.vue
+index 2fd57f01f0..e9f0b21d16 100644
+--- a/src/ui/toolbar/components/ToolbarColorPicker.vue
++++ b/src/ui/toolbar/components/ToolbarColorPicker.vue
+@@ -21,23 +21,26 @@
+ -->
+ <template>
+   <div class="c-ctrl-wrapper">
+-    <div
++    <button
+       class="c-icon-button c-icon-button--swatched"
+       :class="[options.icon, { 'c-icon-button--mixed': nonSpecific }]"
+       :title="options.title"
++      :aria-label="options.title"
+       @click="handleClick"
+     >
+       <div
+         class="c-swatch"
+-        :style="{
+-          background: options.value
+-        }"
++        :style="{ background: options.value }"
++        role="img"
++        :aria-label="None"
+       ></div>
+-    </div>
++    </button>
+     <div v-if="open" class="c-menu c-palette c-palette--color">
+       <div
+         v-if="!options.preventNone"
+         class="c-palette__item-none"
++        role="grid"
++        aria-label="No Style"
+         @click="select({ value: 'transparent' })"
+       >
+         <div class="c-palette__item"></div>
+@@ -47,8 +50,11 @@
+         <div
+           v-for="(color, index) in colorPalette"
+           :key="index"
++          role="gridcell"
+           class="c-palette__item"
+           :style="{ background: color.value }"
++          :title="color.value"
++          :aria-label="color.value"
+           @click="select(color)"
+         ></div>
+       </div>
+diff --git a/src/ui/toolbar/components/ToolbarSeparator.vue b/src/ui/toolbar/components/ToolbarSeparator.vue
+index 22f614fb38..6bdf7614dd 100644
+--- a/src/ui/toolbar/components/ToolbarSeparator.vue
++++ b/src/ui/toolbar/components/ToolbarSeparator.vue
+@@ -20,7 +20,7 @@
+  at runtime from the About dialog for additional information.
+ -->
+ <template>
+-  <div class="c-toolbar__separator"></div>
++  <div role="separator" class="c-toolbar__separator"></div>
+ </template>
+ 
+ <script>

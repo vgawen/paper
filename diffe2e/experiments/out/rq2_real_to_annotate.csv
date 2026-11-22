@@ -14,7 +14,7 @@ test('exercises new UI elements and verifies visibility', async ({ page }) => {
   // Assert that a custom cell is visible
   await expect(page.locator('customcell').first()).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_002,actual_desktop:packages/desktop-client/src/components/transactions/TransactionsTable.tsx,packages/desktop-client/src/components/transactions/TransactionsTable.tsx,"import { test, expect } from './fixtures';
 
 test('smoke test for actual_desktop', async ({ page }) => {
@@ -25,7 +25,7 @@ test('smoke test for actual_desktop', async ({ page }) => {
   await expect(page.locator('[data-testid=""budget-header""]')).toBeVisible();
   await expect(page.locator('text=Budget')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_003,actual_desktop:packages/desktop-client/src/components/schedules/SchedulesTable.tsx,packages/desktop-client/src/components/schedules/SchedulesTable.tsx,"import { test, expect } from './fixtures';
 
 test('exercise new UI elements', async ({ page }) => {
@@ -63,7 +63,7 @@ test('exercise new UI elements', async ({ page }) => {
   await expect(fields.first()).toHaveValue('123');
   await expect(viewPlusMinus).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_004,actual_desktop:packages/desktop-client/src/components/schedules/SchedulesTable.tsx,packages/desktop-client/src/components/schedules/SchedulesTable.tsx,"import { test, expect } from './fixtures';
 
 test('smoke test: add an expense and verify budget summary on actual_desktop', async ({ page }) => {
@@ -101,13 +101,13 @@ test('smoke test: add an expense and verify budget summary on actual_desktop', a
   const totalSpent = page.locator('[data-testid=""total-spent""]');
   await expect(totalSpent).toHaveText(/\$42\.50/);
 });
-",n,,
+",n,n,
 rq2_005,actual_desktop:packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx,packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx,"import { test, expect } from './fixtures';
 
 test('actual_desktop SelectLinkedAccountsModal.tsx changed UI', async ({ page }) => {
   await expect(page.locator('body')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_006,actual_desktop:packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx,packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx,"import { test, expect } from './fixtures';
 
 test('smoke test: main page loads correctly', async ({ page }) => {
@@ -115,7 +115,7 @@ test('smoke test: main page loads correctly', async ({ page }) => {
   await expect(page.locator('body')).toBeVisible();
   await expect(page).toHaveURL('/#/');
 });
-",n,,
+",n,n,
 rq2_007,actual_desktop:packages/desktop-client/src/components/rules/RuleEditor.tsx,packages/desktop-client/src/components/rules/RuleEditor.tsx,"import { test, expect } from './fixtures';
 
 test('exercises new UI elements and asserts visible outcome', async ({ page }) => {
@@ -149,7 +149,7 @@ test('exercises new UI elements and asserts visible outcome', async ({ page }) =
   await expect(page.locator('[data-testid=""action-split-list""]')).toBeVisible();
   await expect(page.locator('[data-testid=""action-list""]').first()).toBeVisible();
 });
-",y,,
+",y,n,
 rq2_008,actual_desktop:packages/desktop-client/src/components/rules/RuleEditor.tsx,packages/desktop-client/src/components/rules/RuleEditor.tsx,"import { test, expect } from './fixtures';
 
 test('smoke test - budget page loads', async ({ page }) => {
@@ -157,7 +157,7 @@ test('smoke test - budget page loads', async ({ page }) => {
   // Wait for the budget page to render (e.g., a heading or key element)
   await expect(page.locator('h1:has-text(""Budget"")')).toBeVisible({ timeout: 15000 });
 });
-",n,,
+",n,n,
 rq2_009,actual_desktop:packages/desktop-client/src/components/reports/reports/Formula.tsx,packages/desktop-client/src/components/reports/reports/Formula.tsx,"import { test, expect } from './fixtures';
 
 test('exercise new UI elements and assert visibility', async ({ page }) => {
@@ -207,7 +207,7 @@ test('exercise new UI elements and assert visibility', async ({ page }) => {
   await expect(select).toBeVisible();
   await expect(input).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_010,actual_desktop:packages/desktop-client/src/components/reports/reports/Formula.tsx,packages/desktop-client/src/components/reports/reports/Formula.tsx,"import { test, expect } from './fixtures';
 
 test('smoke test - add item to cart and verify in cart', async ({ page }) => {
@@ -226,7 +226,7 @@ test('smoke test - add item to cart and verify in cart', async ({ page }) => {
   // Verify that a cart item is visible
   await expect(page.locator('[data-testid=""cart-item""]')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_011,actual_desktop:packages/desktop-client/src/components/settings/Format.tsx,packages/desktop-client/src/components/settings/Format.tsx,"import { test, expect } from './fixtures';
 
 test('exercise new UI elements', async ({ page }) => {
@@ -311,7 +311,7 @@ test('exercise new UI elements', async ({ page }) => {
   // Final assertion: all expected tags are present and visible (selects have been interacted with)
   console.log('New UI elements exercised successfully');
 });
-",n,,
+",n,n,
 rq2_012,actual_desktop:packages/desktop-client/src/components/settings/Format.tsx,packages/desktop-client/src/components/settings/Format.tsx,"import { test, expect } from './fixtures';
 
 test.describe('Actual Desktop Smoke Test', () => {
@@ -325,7 +325,7 @@ test.describe('Actual Desktop Smoke Test', () => {
     await expect(page).toHaveTitle(/Actual/);
   });
 });
-",n,,
+",n,n,
 rq2_013,actual_desktop:packages/desktop-client/src/components/reports/Overview.tsx,packages/desktop-client/src/components/reports/Overview.tsx,"import { test, expect } from './fixtures';
 
 test('exercises new UI elements and asserts visible outcome', async ({ page }) => {
@@ -343,14 +343,14 @@ test('exercises new UI elements and asserts visible outcome', async ({ page }) =
   // Assert that after interacting, the header remains visible
   await expect(header).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_014,actual_desktop:packages/desktop-client/src/components/reports/Overview.tsx,packages/desktop-client/src/components/reports/Overview.tsx,"import { test, expect } from './fixtures';
 
 test('desktop app loads and displays accounts', async ({ page }) => {
   await page.goto('/#/accounts');
   await expect(page.locator('.accounts-table')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_015,actual_desktop:packages/desktop-client/src/components/settings/index.tsx,packages/desktop-client/src/components/settings/index.tsx,"import { test, expect } from './fixtures';
 
 test('exercises new UI elements and asserts visible outcome', async ({ page }) => {
@@ -377,7 +377,7 @@ test('exercises new UI elements and asserts visible outcome', async ({ page }) =
   // Here we assume clicking the button clears the input (common behavior)
   await expect(input).toHaveValue('');
 });
-",n,,
+",n,n,
 rq2_016,actual_desktop:packages/desktop-client/src/components/settings/index.tsx,packages/desktop-client/src/components/settings/index.tsx,"import { test, expect } from './fixtures';
 
 test.describe('Actual Desktop Smoke Test', () => {
@@ -396,13 +396,13 @@ test.describe('Actual Desktop Smoke Test', () => {
     await expect(balance).toBeVisible();
   });
 });
-",n,,
+",n,n,
 rq2_017,actual_desktop:packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx,packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx,"import { test, expect } from './fixtures';
 
 test('actual_desktop AccountSyncCheck.tsx changed UI', async ({ page }) => {
   await expect(page.locator('body')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_018,actual_desktop:packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx,packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx,"import { test, expect } from './fixtures';
 
 test('desktop smoke test', async ({ page }) => {
@@ -412,27 +412,27 @@ test('desktop smoke test', async ({ page }) => {
   // Quick sanity: the navigation or sidebar should be present
   await expect(page.locator('[data-testid=""sidebar""]')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_019,actual_desktop:packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx,packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx,"import { test, expect } from './fixtures';
 
 test('functiontooltip is visible', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('functiontooltip')).toBeVisible();
 });
-",y,,
+",y,n,
 rq2_020,actual_desktop:packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx,packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx,"import { test, expect } from './fixtures';
 
 test('desktop smoke test - home page loads', async ({ page }) => {
   await page.goto('/#/');
   await expect(page.locator('h1')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_021,actual_desktop:packages/desktop-client/src/components/reports/FormulaResult.tsx,packages/desktop-client/src/components/reports/FormulaResult.tsx,"import { test, expect } from './fixtures';
 
 test('actual_desktop FormulaResult.tsx changed UI', async ({ page }) => {
   await expect(page.locator('body')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_022,actual_desktop:packages/desktop-client/src/components/reports/FormulaResult.tsx,packages/desktop-client/src/components/reports/FormulaResult.tsx,"import { test, expect } from './fixtures';
 
 test('smoke test: add item to cart and verify', async ({ page }) => {
@@ -451,7 +451,7 @@ test('smoke test: add item to cart and verify', async ({ page }) => {
   const cartItem = page.locator('.cart-item, .cart-item-row, [data-testid=""cart-item""]');
   await expect(cartItem).toHaveCount(1);
 });
-",n,,
+",n,n,
 rq2_023,actual_desktop:packages/desktop-client/src/components/reports/reports/FormulaCard.tsx,packages/desktop-client/src/components/reports/reports/FormulaCard.tsx,"import { test, expect } from './fixtures';
 
 test('should interact with reportcardname element and show visible outcome', async ({ page }) => {
@@ -461,7 +461,7 @@ test('should interact with reportcardname element and show visible outcome', asy
   await reportCardName.fill('Math Report');
   await expect(reportCardName).toHaveValue('Math Report');
 });
-",y,,
+",y,n,n
 rq2_024,actual_desktop:packages/desktop-client/src/components/reports/reports/FormulaCard.tsx,packages/desktop-client/src/components/reports/reports/FormulaCard.tsx,"import { test, expect } from './fixtures';
 
 test('smoke test: application loads and displays budget page', async ({ page }) => {
@@ -473,7 +473,7 @@ test('smoke test: application loads and displays budget page', async ({ page }) 
   // Confirm page has loaded by checking for a common heading
   await expect(page.locator('h1')).toContainText(/budget/i);
 });
-",n,,
+",n,n,
 rq2_025,actual_desktop:packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx,packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx,"import { test, expect } from './fixtures';
 
 test('should display split transaction dialog after clicking the button', async ({ page }) => {
@@ -491,7 +491,7 @@ test('should display split transaction dialog after clicking the button', async 
   const splitDialog = page.getByTestId('split-transaction-dialog');
   await expect(splitDialog).toBeVisible();
 });
-",y,,
+",y,n,
 rq2_026,actual_desktop:packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx,packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx,"import { test, expect } from './fixtures';
 
 test('smoke test: budget page loads correctly', async ({ page }) => {
@@ -510,13 +510,13 @@ test('smoke test: budget page loads correctly', async ({ page }) => {
   // Assert that the budget table is visible
   await expect(page.locator('[data-testid=""budget-table""]')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_027,actual_desktop:packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx,packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx,"import { test, expect } from './fixtures';
 
 test('actual_desktop TransactionsTable.test.tsx changed UI', async ({ page }) => {
   await expect(page.locator('body')).toBeVisible();
 });
-",n,,
+",n,n,
 rq2_028,actual_desktop:packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx,packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx,"import { test, expect } from './fixtures';
 
 test('desktop app loads and shows budget page', async ({ page }) => {
@@ -533,7 +533,7 @@ test('desktop app loads and shows budget page', async ({ page }) => {
   // Also confirm the URL includes the hash route
   await expect(page).toHaveURL(/#\//);
 });
-",n,,
+",n,n,
 rq2_029,mermaid_live:src/lib/components/Preset.svelte,src/lib/components/Preset.svelte,"import { test, expect } from './fixtures';
 
 test('should open popover when trigger is clicked', async ({ page }) => {
@@ -555,7 +555,7 @@ test('should open popover when trigger is clicked', async ({ page }) => {
   const popover = page.locator('popover');
   await expect(popover).toBeVisible();
 });
-",y,,
+",y,n,n
 rq2_030,mermaid_live:src/lib/components/Preset.svelte,src/lib/components/Preset.svelte,"import { test, expect } from './fixtures';
 
 test('smoke test: load page and verify default diagram renders', async ({ page }) => {
@@ -571,4 +571,4 @@ test('smoke test: load page and verify default diagram renders', async ({ page }
   const svgCount = await page.locator('#preview svg').count();
   expect(svgCount).toBeGreaterThan(0);
 });
-",n,,
+",n,n,

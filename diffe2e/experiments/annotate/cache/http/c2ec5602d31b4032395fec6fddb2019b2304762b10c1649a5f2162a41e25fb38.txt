@@ -1,0 +1,98 @@
+From f2d79731f635934393c95353b1853a897c968c50 Mon Sep 17 00:00:00 2001
+From: Kevin Ansfield <kevin@lookingsideways.co.uk>
+Date: Thu, 8 Jun 2023 14:27:10 +0100
+Subject: [PATCH] Swapped audio-caption testid for more accurately named
+ audio-title
+
+no issue
+
+- insurance against confusion if a caption field is added to audio cards in the future
+---
+ .../src/components/ui/cards/AudioCard.jsx     |  2 +-
+ .../test/e2e/cards/audio-card.test.js         | 22 +++++++++----------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/packages/koenig-lexical/src/components/ui/cards/AudioCard.jsx b/packages/koenig-lexical/src/components/ui/cards/AudioCard.jsx
+index a6395ecd60..a5f9ba3fbb 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/AudioCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/AudioCard.jsx
+@@ -198,7 +198,7 @@ function PopulatedAudioCard({
+                 {(isEditing || title) && (
+                     <TextInput
+                         className="font-sans text-lg font-bold text-black"
+-                        data-testid="audio-caption"
++                        data-testid="audio-title"
+                         name="title"
+                         placeholder={placeholder}
+                         readOnly={!isEditing}
+diff --git a/packages/koenig-lexical/test/e2e/cards/audio-card.test.js b/packages/koenig-lexical/test/e2e/cards/audio-card.test.js
+index d11ce2dded..6ee426768c 100644
+--- a/packages/koenig-lexical/test/e2e/cards/audio-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/audio-card.test.js
+@@ -77,8 +77,8 @@ test.describe('Audio card', async () => {
+         await uploadAudio(page);
+ 
+         // Check that audio file was uploaded
+-        await expect(await page.getByTestId('audio-caption')).toBeVisible();
+-        expect(await page.getByTestId('audio-caption').inputValue()).toEqual('Audio sample');
++        await expect(await page.getByTestId('audio-title')).toBeVisible();
++        expect(await page.getByTestId('audio-title').inputValue()).toEqual('Audio sample');
+ 
+         await assertHTML(page, html`
+             <div data-lexical-decorator="true" contenteditable="false">
+@@ -168,12 +168,12 @@ test.describe('Audio card', async () => {
+         await uploadAudio(page);
+ 
+         // Change title
+-        await expect(await page.getByTestId('audio-caption')).toBeVisible();
+-        await page.getByTestId('audio-caption').click();
++        await expect(await page.getByTestId('audio-title')).toBeVisible();
++        await page.getByTestId('audio-title').click();
+         await page.keyboard.type(' 1');
+ 
+         // Check that title updated
+-        expect(await page.getByTestId('audio-caption').inputValue()).toEqual('Audio sample 1');
++        expect(await page.getByTestId('audio-title').inputValue()).toEqual('Audio sample 1');
+     });
+ 
+     test('can upload and remove a thumbnail image', async function () {
+@@ -254,7 +254,7 @@ test.describe('Audio card', async () => {
+         await uploadAudio(page);
+ 
+         // Leave editing mode to display the toolbar
+-        await expect(await page.getByTestId('audio-caption')).toBeVisible();
++        await expect(await page.getByTestId('audio-title')).toBeVisible();
+         await page.keyboard.press('Escape');
+ 
+         // Check that the toolbar is displayed
+@@ -266,7 +266,7 @@ test.describe('Audio card', async () => {
+         await uploadAudio(page);
+ 
+         // Leave editing mode to display the toolbar
+-        await expect(await page.getByTestId('audio-caption')).toBeVisible();
++        await expect(await page.getByTestId('audio-title')).toBeVisible();
+         await page.keyboard.press('Escape');
+ 
+         // Check that the toolbar is displayed
+@@ -292,8 +292,8 @@ test.describe('Audio card', async () => {
+         await expect(await page.getByTestId('media-duration')).toContainText('0:19');
+         await page.keyboard.press('Escape');
+ 
+-        // Caption input should be read only
+-        await expect(await page.getByTestId('audio-caption')).toHaveAttribute('readOnly', '');
++        // Title input should be read only
++        await expect(await page.getByTestId('audio-title')).toHaveAttribute('readOnly', '');
+ 
+         const filePath = path.relative(process.cwd(), __dirname + '/../fixtures/large-image.png');
+         // Create and dispatch data transfer
+@@ -348,8 +348,8 @@ test.describe('Audio card', async () => {
+         await uploadAudio(page);
+ 
+         // Check that audio file was uploaded
+-        await expect(await page.getByTestId('audio-caption')).toBeVisible();
+-        expect(await page.getByTestId('audio-caption').inputValue()).toEqual('Audio sample');
++        await expect(await page.getByTestId('audio-title')).toBeVisible();
++        expect(await page.getByTestId('audio-title').inputValue()).toEqual('Audio sample');
+ 
+         // create snippet
+         await page.keyboard.press('Escape');

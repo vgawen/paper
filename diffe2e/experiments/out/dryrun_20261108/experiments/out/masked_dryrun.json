@@ -1,0 +1,220 @@
+{
+  "rq2": {
+    "rows": {
+      "rq2_001": {
+        "label": "y"
+      },
+      "rq2_002": {
+        "label": "n"
+      },
+      "rq2_003": {
+        "label": "y"
+      },
+      "rq2_004": {
+        "label": "n"
+      },
+      "rq2_005": {
+        "label": "y"
+      },
+      "rq2_006": {
+        "label": "n"
+      },
+      "rq2_007": {
+        "label": "y"
+      },
+      "rq2_008": {
+        "label": "n"
+      },
+      "rq2_009": {
+        "label": "y"
+      },
+      "rq2_010": {
+        "label": "n"
+      },
+      "rq2_011": {
+        "label": "y"
+      },
+      "rq2_012": {
+        "label": "n"
+      },
+      "rq2_013": {
+        "label": "y"
+      },
+      "rq2_014": {
+        "label": "n"
+      },
+      "rq2_015": {
+        "label": "y"
+      },
+      "rq2_016": {
+        "label": "n"
+      },
+      "rq2_017": {
+        "label": "y"
+      },
+      "rq2_018": {
+        "label": "n"
+      },
+      "rq2_019": {
+        "label": "y"
+      },
+      "rq2_020": {
+        "label": "n"
+      },
+      "rq2_021": {
+        "label": "y"
+      },
+      "rq2_022": {
+        "label": "n"
+      },
+      "rq2_023": {
+        "label": "y"
+      },
+      "rq2_024": {
+        "label": "n"
+      },
+      "rq2_025": {
+        "label": "y"
+      },
+      "rq2_026": {
+        "label": "n"
+      },
+      "rq2_027": {
+        "label": "y"
+      },
+      "rq2_028": {
+        "label": "n"
+      },
+      "rq2_029": {
+        "label": "y"
+      },
+      "rq2_030": {
+        "label": "n"
+      }
+    }
+  },
+  "rq3": {
+    "rows": {
+      "rb001": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb002": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb003": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb004": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb005": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb006": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb007": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb008": {
+        "label": "SUSPECTED_REGRESSION"
+      },
+      "rb009": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb010": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb011": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb012": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb013": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb014": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb015": {
+        "label": "SUSPECTED_REGRESSION"
+      },
+      "rb016": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb017": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb018": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb019": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb020": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb021": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb022": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb023": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb024": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb025": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb026": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb027": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb028": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb029": {
+        "label": "SUSPECTED_REGRESSION"
+      },
+      "rb030": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb031": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb032": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb033": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb034": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb035": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb036": {
+        "label": "SUSPECTED_REGRESSION"
+      },
+      "rb037": {
+        "label": "EXPECTATION_CHANGE"
+      },
+      "rb038": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb039": {
+        "label": "STRUCTURAL_ONLY"
+      },
+      "rb040": {
+        "label": "EXPECTATION_CHANGE"
+      }
+    }
+  }
+}

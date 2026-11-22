@@ -1,0 +1,22 @@
+363f03ce changed=18 (fs=18) cov=11 ui=0 dual Safe=1 Prec=1
+0c497c75 changed=1 (fs=1) cov=0 ui=0 dual Safe=1 Prec=1
+e599aa1a changed=3 (fs=3) cov=11 ui=0 dual Safe=1 Prec=1
+40103832 changed=2 (fs=2) cov=0 ui=0 dual Safe=1 Prec=1
+91a47188 changed=2 (fs=2) cov=11 ui=0 dual Safe=1 Prec=1
+dd116535 changed=2 (fs=2) cov=11 ui=0 dual Safe=1 Prec=1
+0bba15d7 changed=4 (fs=4) cov=11 ui=0 dual Safe=1 Prec=1
+2cf23f0c changed=4 (fs=4) cov=11 ui=0 dual Safe=1 Prec=1
+90677090 changed=2 (fs=2) cov=0 ui=0 dual Safe=1 Prec=1
+4e8f6226 changed=4 (fs=4) cov=11 ui=0 dual Safe=1 Prec=1
+5e46744c changed=4 (fs=4) cov=11 ui=0 dual Safe=1 Prec=1
+2d721051 changed=81 (fs=78) cov=11 ui=0 dual Safe=1 Prec=1
+
+included 12 stable transitions; skipped 0 (see tldraw_examples_rq1_skips.json)
+
+# RQ1 real: tldraw_examples (n=12)
+
+| method | Reduction | Safety | Precision |
+|---|---|---|---|
+| coverage_only | 0.25 | 1 | 1 |
+| uidiff_only | 1 | 0.25 | 1 |
+| dual | 0.25 | 1 | 1 |

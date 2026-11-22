@@ -1,0 +1,343 @@
+From 167c35ca6600bb1a3722b0c0ece4201ce776e44d Mon Sep 17 00:00:00 2001
+From: Pavel Feldman <pavel.feldman@gmail.com>
+Date: Thu, 7 Sep 2023 17:14:39 -0700
+Subject: [PATCH] chore: store scroll positions in trace viewer (#26938)
+
+---
+ packages/trace-viewer/src/ui/actionList.tsx   |  2 +-
+ packages/trace-viewer/src/ui/consoleTab.tsx   |  1 +
+ packages/trace-viewer/src/ui/logTab.tsx       |  2 +-
+ packages/trace-viewer/src/ui/networkTab.tsx   |  2 +-
+ packages/trace-viewer/src/ui/stackTrace.tsx   |  2 +-
+ packages/trace-viewer/src/ui/uiModeView.tsx   |  1 +
+ packages/web/src/components/listView.tsx      | 22 ++++++++++++++++++-
+ packages/web/src/components/treeView.tsx      |  5 ++++-
+ tests/config/traceViewerFixtures.ts           |  4 ++--
+ tests/library/trace-viewer.spec.ts            |  2 +-
+ tests/playwright-test/reporter-blob.spec.ts   |  2 +-
+ tests/playwright-test/reporter-html.spec.ts   |  4 ++--
+ .../ui-mode-test-progress.spec.ts             | 14 ++++++------
+ tests/playwright-test/ui-mode-trace.spec.ts   |  8 +++----
+ 14 files changed, 48 insertions(+), 23 deletions(-)
+
+diff --git a/packages/trace-viewer/src/ui/actionList.tsx b/packages/trace-viewer/src/ui/actionList.tsx
+index 669afd30014ae..e6dd6a557787b 100644
+--- a/packages/trace-viewer/src/ui/actionList.tsx
++++ b/packages/trace-viewer/src/ui/actionList.tsx
+@@ -62,7 +62,7 @@ export const ActionList: React.FC<ActionListProps> = ({
+   return <div className='vbox'>
+     {selectedTime && <div className='action-list-show-all' onClick={() => setSelectedTime(undefined)}><span className='codicon codicon-triangle-left'></span>Show all</div>}
+     <ActionTreeView
+-      dataTestId='action-list'
++      name='actions'
+       rootItem={rootItem}
+       treeState={treeState}
+       setTreeState={setTreeState}
+diff --git a/packages/trace-viewer/src/ui/consoleTab.tsx b/packages/trace-viewer/src/ui/consoleTab.tsx
+index 3dcfd4dbadf04..fcb1cd79cc77e 100644
+--- a/packages/trace-viewer/src/ui/consoleTab.tsx
++++ b/packages/trace-viewer/src/ui/consoleTab.tsx
+@@ -119,6 +119,7 @@ export const ConsoleTab: React.FunctionComponent<{
+ 
+   return <div className='console-tab'>
+     <ConsoleListView
++      name='console'
+       items={consoleModel.entries}
+       isError={entry => entry.isError}
+       isWarning={entry => entry.isWarning}
+diff --git a/packages/trace-viewer/src/ui/logTab.tsx b/packages/trace-viewer/src/ui/logTab.tsx
+index 5f5c12bff74ef..0fac986a075c0 100644
+--- a/packages/trace-viewer/src/ui/logTab.tsx
++++ b/packages/trace-viewer/src/ui/logTab.tsx
+@@ -27,7 +27,7 @@ export const LogTab: React.FunctionComponent<{
+   if (!action?.log.length)
+     return <PlaceholderPanel text='No log entries' />;
+   return <LogList
+-    dataTestId='log-list'
++    name='log'
+     items={action?.log || []}
+     render={logLine => logLine}
+   />;
+diff --git a/packages/trace-viewer/src/ui/networkTab.tsx b/packages/trace-viewer/src/ui/networkTab.tsx
+index 8d0ccb8749cae..02820f1843ed8 100644
+--- a/packages/trace-viewer/src/ui/networkTab.tsx
++++ b/packages/trace-viewer/src/ui/networkTab.tsx
+@@ -69,7 +69,7 @@ export const NetworkTab: React.FunctionComponent<{
+     {!resource && <div className='vbox'>
+       <NetworkHeader sorting={sorting} toggleSorting={toggleSorting} />
+       <NetworkListView
+-        dataTestId='network-request-list'
++        name='network'
+         items={networkModel.resources}
+         render={entry => <NetworkResource boundaries={boundaries} resource={entry}></NetworkResource>}
+         onSelected={setResource}
+diff --git a/packages/trace-viewer/src/ui/stackTrace.tsx b/packages/trace-viewer/src/ui/stackTrace.tsx
+index ef3f2601b945f..4e35946d84a12 100644
+--- a/packages/trace-viewer/src/ui/stackTrace.tsx
++++ b/packages/trace-viewer/src/ui/stackTrace.tsx
+@@ -29,7 +29,7 @@ export const StackTraceView: React.FunctionComponent<{
+ }> = ({ action, setSelectedFrame, selectedFrame }) => {
+   const frames = action?.stack || [];
+   return <StackFrameListView
+-    dataTestId='stack-trace'
++    name='stack-trace'
+     items={frames}
+     selectedItem={frames[selectedFrame]}
+     render={frame => {
+diff --git a/packages/trace-viewer/src/ui/uiModeView.tsx b/packages/trace-viewer/src/ui/uiModeView.tsx
+index 6b63a2162c21d..3fd5ce588bee7 100644
+--- a/packages/trace-viewer/src/ui/uiModeView.tsx
++++ b/packages/trace-viewer/src/ui/uiModeView.tsx
+@@ -467,6 +467,7 @@ const TestList: React.FC<{
+   };
+ 
+   return <TestTreeView
++    name='tests'
+     treeState={treeState}
+     setTreeState={setTreeState}
+     rootItem={rootItem}
+diff --git a/packages/web/src/components/listView.tsx b/packages/web/src/components/listView.tsx
+index 5e3d5f36708d7..28bd4e4dd7dfc 100644
+--- a/packages/web/src/components/listView.tsx
++++ b/packages/web/src/components/listView.tsx
+@@ -18,6 +18,7 @@ import * as React from 'react';
+ import './listView.css';
+ 
+ export type ListViewProps<T> = {
++  name: string,
+   items: T[],
+   id?: (item: T, index: number) => string,
+   render: (item: T, index: number) => React.ReactNode,
+@@ -36,7 +37,10 @@ export type ListViewProps<T> = {
+   dataTestId?: string,
+ };
+ 
++const scrollPositions = new Map<string, number>();
++
+ export function ListView<T>({
++  name,
+   items = [],
+   id,
+   render,
+@@ -61,7 +65,23 @@ export function ListView<T>({
+     onHighlighted?.(highlightedItem);
+   }, [onHighlighted, highlightedItem]);
+ 
+-  return <div className='list-view vbox' role='list' data-testid={dataTestId}>
++  React.useEffect(() => {
++    const listElem = itemListRef.current;
++    if (!listElem)
++      return;
++    const saveScrollPosition = () => {
++      scrollPositions.set(name, listElem.scrollTop);
++    };
++    listElem.addEventListener('scroll', saveScrollPosition, { passive: true });
++    return () => listElem.removeEventListener('scroll', saveScrollPosition);
++  }, [name]);
++
++  React.useEffect(() => {
++    if (itemListRef.current)
++      itemListRef.current.scrollTop = scrollPositions.get(name) || 0;
++  }, [name]);
++
++  return <div className='list-view vbox' role='list' data-testid={dataTestId || (name + '-list')}>
+     <div
+       className='list-view-content'
+       tabIndex={0}
+diff --git a/packages/web/src/components/treeView.tsx b/packages/web/src/components/treeView.tsx
+index 9bf6f77b94c8c..8341056779bdb 100644
+--- a/packages/web/src/components/treeView.tsx
++++ b/packages/web/src/components/treeView.tsx
+@@ -28,6 +28,7 @@ export type TreeState = {
+ };
+ 
+ export type TreeViewProps<T> = {
++  name: string,
+   rootItem: T,
+   render: (item: T) => React.ReactNode,
+   icon?: (item: T) => string | undefined,
+@@ -47,6 +48,7 @@ export type TreeViewProps<T> = {
+ const TreeListView = ListView<TreeItem>;
+ 
+ export function TreeView<T extends TreeItem>({
++  name,
+   rootItem,
+   render,
+   icon,
+@@ -96,9 +98,10 @@ export function TreeView<T extends TreeItem>({
+   }, [treeItems, isVisible]);
+ 
+   return <TreeListView
++    name={name}
+     items={visibleItems}
+     id={item => item.id}
+-    dataTestId={dataTestId}
++    dataTestId={dataTestId || (name + '-tree')}
+     render={item => {
+       const rendered = render(item as T);
+       return <>
+diff --git a/tests/config/traceViewerFixtures.ts b/tests/config/traceViewerFixtures.ts
+index 42ab162ba489e..16d58d761d042 100644
+--- a/tests/config/traceViewerFixtures.ts
++++ b/tests/config/traceViewerFixtures.ts
+@@ -52,8 +52,8 @@ class TraceViewerPage {
+     this.consoleLines = page.locator('.console-line');
+     this.consoleLineMessages = page.locator('.console-line-message');
+     this.consoleStacks = page.locator('.console-stack');
+-    this.stackFrames = page.getByTestId('stack-trace').locator('.list-view-entry');
+-    this.networkRequests = page.getByTestId('network-request-list').locator('.list-view-entry');
++    this.stackFrames = page.getByTestId('stack-trace-list').locator('.list-view-entry');
++    this.networkRequests = page.getByTestId('network-list').locator('.list-view-entry');
+     this.snapshotContainer = page.locator('.snapshot-container iframe.snapshot-visible[name=snapshot]');
+   }
+ 
+diff --git a/tests/library/trace-viewer.spec.ts b/tests/library/trace-viewer.spec.ts
+index 75a756c9ff248..c706ea6e1a8c9 100644
+--- a/tests/library/trace-viewer.spec.ts
++++ b/tests/library/trace-viewer.spec.ts
+@@ -674,7 +674,7 @@ test('should show action source', async ({ showTraceViewer }) => {
+ 
+   await page.click('text=Source');
+   await expect(page.locator('.source-line-running')).toContainText('await page.getByText(\'Click\').click()');
+-  await expect(page.getByTestId('stack-trace').locator('.list-view-entry.selected')).toHaveText(/doClick.*trace-viewer\.spec\.ts:[\d]+/);
++  await expect(page.getByTestId('stack-trace-list').locator('.list-view-entry.selected')).toHaveText(/doClick.*trace-viewer\.spec\.ts:[\d]+/);
+ });
+ 
+ test('should follow redirects', async ({ page, runAndTrace, server, asset }) => {
+diff --git a/tests/playwright-test/reporter-blob.spec.ts b/tests/playwright-test/reporter-blob.spec.ts
+index 3f03fa0db23ea..f74626f2942c3 100644
+--- a/tests/playwright-test/reporter-blob.spec.ts
++++ b/tests/playwright-test/reporter-blob.spec.ts
+@@ -668,7 +668,7 @@ test('generate html with attachment urls', async ({ runInlineTest, mergeReports,
+   // Check that trace loads.
+   await page.locator('div').filter({ hasText: /^a\.test\.js:13$/ }).getByRole('link', { name: 'View trace' }).click();
+   await expect(page).toHaveTitle('Playwright Trace Viewer');
+-  await expect(page.getByTestId('action-list').locator('div').filter({ hasText: /^expect\.toBe$/ })).toBeVisible();
++  await expect(page.getByTestId('actions-tree').locator('div').filter({ hasText: /^expect\.toBe$/ })).toBeVisible();
+ });
+ 
+ test('resource names should not clash between runs', async ({ runInlineTest, showReport, mergeReports, page }) => {
+diff --git a/tests/playwright-test/reporter-html.spec.ts b/tests/playwright-test/reporter-html.spec.ts
+index d016e514b91ed..a2c1bec167c8c 100644
+--- a/tests/playwright-test/reporter-html.spec.ts
++++ b/tests/playwright-test/reporter-html.spec.ts
+@@ -454,10 +454,10 @@ for (const useIntermediateMergeReport of [false] as const) {
+       ]);
+       await expect(page.locator('.source-line-running')).toContainText('page.evaluate');
+ 
+-      await expect(page.getByTestId('stack-trace')).toContainText([
++      await expect(page.getByTestId('stack-trace-list')).toContainText([
+         /a.test.js:[\d]+/,
+       ]);
+-      await expect(page.getByTestId('stack-trace').locator('.list-view-entry.selected')).toContainText('a.test.js');
++      await expect(page.getByTestId('stack-trace-list').locator('.list-view-entry.selected')).toContainText('a.test.js');
+     });
+ 
+     test('should show trace title', async ({ runInlineTest, page, showReport }) => {
+diff --git a/tests/playwright-test/ui-mode-test-progress.spec.ts b/tests/playwright-test/ui-mode-test-progress.spec.ts
+index 63644896090aa..16c88290c1de9 100644
+--- a/tests/playwright-test/ui-mode-test-progress.spec.ts
++++ b/tests/playwright-test/ui-mode-test-progress.spec.ts
+@@ -47,7 +47,7 @@ test('should update trace live', async ({ runUITest, server }) => {
+   await page.getByText('live test').dblclick();
+ 
+   // It should halt on loading one.html.
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -134,7 +134,7 @@ test('should preserve action list selection upon live trace update', async ({ ru
+   await page.getByText('live test').dblclick();
+ 
+   // It should wait on the latch.
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -145,7 +145,7 @@ test('should preserve action list selection upon live trace update', async ({ ru
+   ]);
+ 
+   // Manually select page.goto.
+-  await page.getByTestId('action-list').getByText('page.goto').click();
++  await page.getByTestId('actions-tree').getByText('page.goto').click();
+ 
+   // Generate more actions and check that we are still on the page.goto action.
+   latch.open();
+@@ -195,7 +195,7 @@ test('should update tracing network live', async ({ runUITest, server }) => {
+   await page.getByText('live test').dblclick();
+ 
+   // It should wait on the latch.
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -207,7 +207,7 @@ test('should update tracing network live', async ({ runUITest, server }) => {
+ 
+   // Once page.setContent is visible, we can be sure that page.goto has all required
+   // resources in the trace. Switch to it and check that everything renders.
+-  await page.getByTestId('action-list').getByText('page.goto').click();
++  await page.getByTestId('actions-tree').getByText('page.goto').click();
+ 
+   await expect(
+       page.frameLocator('iframe.snapshot-visible[name=snapshot]').locator('body'),
+@@ -235,7 +235,7 @@ test('should show trace w/ multiple contexts', async ({ runUITest, server, creat
+   await page.getByText('live test').dblclick();
+ 
+   // It should wait on the latch.
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -280,7 +280,7 @@ test('should show live trace for serial', async ({ runUITest, server, createLatc
+   await page.getByText('two', { exact: true }).click();
+   await page.getByTitle('Run all').click();
+ 
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'
+diff --git a/tests/playwright-test/ui-mode-trace.spec.ts b/tests/playwright-test/ui-mode-trace.spec.ts
+index 9ead20c58b163..c3dad2b78665f 100644
+--- a/tests/playwright-test/ui-mode-trace.spec.ts
++++ b/tests/playwright-test/ui-mode-trace.spec.ts
+@@ -34,7 +34,7 @@ test('should merge trace events', async ({ runUITest, server }) => {
+ 
+   await page.getByText('trace test').dblclick();
+ 
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -63,7 +63,7 @@ test('should merge web assertion events', async ({  runUITest }, testInfo) => {
+ 
+   await page.getByText('trace test').dblclick();
+ 
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -90,7 +90,7 @@ test('should merge screenshot assertions', async ({  runUITest }, testInfo) => {
+ 
+   await page.getByText('trace test').dblclick();
+ 
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -137,7 +137,7 @@ test('should show snapshots for sync assertions', async ({ runUITest, server })
+ 
+   await page.getByText('trace test').dblclick();
+ 
+-  const listItem = page.getByTestId('action-list').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
+   await expect(
+       listItem,
+       'action list'

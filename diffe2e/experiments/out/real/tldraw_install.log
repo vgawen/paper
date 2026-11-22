@@ -1,0 +1,56 @@
+Downloading the pnpm 12.16.1 binary for darwin-arm64...
+Scope: all 53 workspace projects
+. preinstall$ node internal/scripts/preinstall.mjs
+. preinstall: Done
+The lockfile does not record that it was resolved with autoDedupe, so installs that are not frozen resolve it again. To record it, set lockfile.includeResolutionSettings to true in pnpm-workspace.yaml.
+? Verifying lockfile against supply-chain policies (3066 entries)...
+Progress: resolved 0, reused 0, downloaded 1, added 0
+Progress: resolved 0, reused 0, downloaded 28, added 0
+Progress: resolved 0, reused 0, downloaded 92, added 0
+Progress: resolved 0, reused 0, downloaded 138, added 0
+Progress: resolved 0, reused 0, downloaded 188, added 0
+Progress: resolved 0, reused 0, downloaded 234, added 0
+Progress: resolved 0, reused 0, downloaded 278, added 0
+[WARN] Tarball download average speed 46 KiB/s (size 57 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vitest/mocker/-/mocker-5.0.0.tgz (GET)
+[WARN] Tarball download average speed 25 KiB/s (size 40 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vitest/utils/-/utils-5.0.0.tgz (GET)
+[WARN] Tarball download average speed 29 KiB/s (size 48 KiB) is below 50 KiB/s: https://registry.npmjs.org/rsvp/-/rsvp-3.2.1.tgz (GET)
+[WARN] Tarball download average speed 20 KiB/s (size 40 KiB) is below 50 KiB/s: https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz (GET)
+Progress: resolved 0, reused 0, downloaded 326, added 0
+Progress: resolved 0, reused 0, downloaded 353, added 0
+[WARN] Tarball download average speed 34 KiB/s (size 45 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vercel/backends/-/backends-0.2.0.tgz (GET)
+Progress: resolved 0, reused 0, downloaded 377, added 0
+[WARN] Tarball download average speed 28 KiB/s (size 65 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vercel/sandbox/-/sandbox-1.9.0.tgz (GET)
+[WARN] Tarball download average speed 29 KiB/s (size 105 KiB) is below 50 KiB/s: https://registry.npmjs.org/zod/-/zod-3.22.4.tgz (GET)
+Progress: resolved 0, reused 0, downloaded 419, added 0
+[WARN] Tarball download average speed 17 KiB/s (size 66 KiB) is below 50 KiB/s: https://registry.npmjs.org/path-to-regexp/-/path-to-regexp-6.1.0.tgz (GET)
+[WARN] Tarball download average speed 34 KiB/s (size 43 KiB) is below 50 KiB/s: https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.9.tgz (GET)
+[WARN] Tarball download average speed 17 KiB/s (size 71 KiB) is below 50 KiB/s: https://registry.npmjs.org/js-yaml/-/js-yaml-3.15.1.tgz (GET)
+Progress: resolved 0, reused 0, downloaded 435, added 0
+[WARN] Tarball download average speed 21 KiB/s (size 119 KiB) is below 50 KiB/s: https://registry.npmjs.org/zod/-/zod-3.24.4.tgz (GET)
+[WARN] Tarball download average speed 42 KiB/s (size 180 KiB) is below 50 KiB/s: https://registry.npmjs.org/iconv-lite/-/iconv-lite-0.4.24.tgz (GET)
+[WARN] Tarball download average speed 33 KiB/s (size 211 KiB) is below 50 KiB/s: https://registry.npmjs.org/ajv/-/ajv-8.6.3.tgz (GET)
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 0.00 B/7.58 MB
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 434.17 kB/7.58 MB
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 843.77 kB/7.58 MB
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 1.21 MB/7.58 MB
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 1.58 MB/7.58 MB
+[WARN] Request took 10255ms: https://registry.npmjs.org/@clerk%2Fbackend
+[WARN] Request took 14689ms: https://registry.npmjs.org/@vercel%2Fnext
+Progress: resolved 0, reused 0, downloaded 451, added 0
+[WARN] Request took 25080ms: https://registry.npmjs.org/vite
+[WARN] Request took 13066ms: https://registry.npmjs.org/@clerk%2Fshared
+Downloading @rolldown/binding-darwin-arm64@1.2.4: 0.00 B/7.26 MB
+[WARN] Request took 10839ms: https://registry.npmjs.org/@next%2Fenv
+[WARN] Tarball download average speed 23 KiB/s (size 294 KiB) is below 50 KiB/s: https://registry.npmjs.org/@babel/types/-/types-7.29.8.tgz (GET)
+[WARN] Request took 13380ms: https://registry.npmjs.org/@formatjs%2Fcli
+[WARN] Tarball download average speed 26 KiB/s (size 333 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vercel/build-utils/-/build-utils-13.20.0.tgz (GET)
+Downloading @rolldown/binding-darwin-arm64@1.2.4: 4.66 MB/7.26 MB
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 4.45 MB/7.58 MB
+[WARN] Request took 15321ms: https://registry.npmjs.org/@next%2Fswc-linux-arm64-musl
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 4.80 MB/7.58 MB
+[WARN] Request took 23357ms: https://registry.npmjs.org/playwright
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 5.45 MB/7.58 MB
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 5.84 MB/7.58 MB
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 6.24 MB/7.58 MB
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 6.68 MB/7.58 MB
+[WARN] Request took 13681ms: https://registry.npmjs.org/@swc%2Fcore-win32-ia32-msvc

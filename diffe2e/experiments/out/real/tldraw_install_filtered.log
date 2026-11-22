@@ -1,0 +1,19 @@
+. preinstall$ node internal/scripts/preinstall.mjs
+. preinstall: Done
+The lockfile does not record that it was resolved with autoDedupe, so installs that are not frozen resolve it again. To record it, set lockfile.includeResolutionSettings to true in pnpm-workspace.yaml.
+? Verifying lockfile against supply-chain policies (3066 entries)...
+[WARN] Request took 12787ms: https://registry.npmjs.org/framer-motion
+[WARN] Request took 16271ms: https://registry.npmjs.org/electron-to-chromium
+[WARN] Request took 10631ms: https://registry.npmjs.org/react-dom
+[WARN] Request took 12179ms: https://registry.npmjs.org/ts-toolbelt
+[WARN] Request took 11905ms: https://registry.npmjs.org/typescript
+[WARN] Request took 12823ms: https://registry.npmjs.org/tldts
+[WARN] Request took 17599ms: https://registry.npmjs.org/react-is
+[WARN] Request took 25613ms: https://registry.npmjs.org/axe-core
+[WARN] Request took 21439ms: https://registry.npmjs.org/next
+[WARN] Request took 19923ms: https://registry.npmjs.org/tailwindcss
+[WARN] Request took 19278ms: https://registry.npmjs.org/framer-motion
+[WARN] Request took 27456ms: https://registry.npmjs.org/react
+[WARN] Request took 22288ms: https://registry.npmjs.org/webdriverio
+[WARN] Request took 19085ms: https://registry.npmjs.org/electron-to-chromium
+[WARN] Request took 13167ms: https://registry.npmjs.org/axe-core

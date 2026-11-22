@@ -1,0 +1,212 @@
+diff --git a/packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx b/packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx
+index 4f7980c1c11..8eeebb4924f 100644
+--- a/packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx
++++ b/packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx
+@@ -1,4 +1,4 @@
+-import React, { Fragment, useCallback, useMemo } from 'react';
++import React, { Fragment, useMemo } from 'react';
+ import type {
+   ComponentProps,
+   ComponentPropsWithoutRef,
+@@ -23,7 +23,6 @@ import type {
+   CategoryGroupEntity,
+ } from '@actual-app/core/types/models';
+ import { css, cx } from '@emotion/css';
+-import { Fzf } from 'fzf';
+ 
+ import { useEnvelopeSheetValue } from '#components/budget/envelope/EnvelopeBudgetComponents';
+ import { makeAmountFullStyle } from '#components/budget/util';
+@@ -34,6 +33,7 @@ import { useSyncedPref } from '#hooks/useSyncedPref';
+ import { envelopeBudget, trackingBudget } from '#spreadsheet/bindings';
+ 
+ import { Autocomplete } from './Autocomplete';
++import { filterCategorySuggestions } from './filterCategorySuggestions';
+ import { ItemHeader } from './ItemHeader';
+ 
+ type CategoryAutocompleteItem = Omit<CategoryEntity, 'group'> & {
+@@ -249,32 +249,6 @@ export function CategoryAutocomplete({
+     showHiddenCategories,
+   ]);
+ 
+-  const filterSuggestions = useCallback(
+-    (
+-      suggestions: CategoryAutocompleteItem[],
+-      value: string,
+-    ): CategoryAutocompleteItem[] => {
+-      const splitItem = suggestions.find(s => s.id === 'split');
+-      const realSuggestions = suggestions.filter(s => s.id !== 'split');
+-
+-      if (!value) {
+-        return suggestions;
+-      }
+-
+-      const filtered = new Fzf(realSuggestions, {
+-        selector: item =>
+-          item.group ? item.group.name + ' ' + item.name : item.name,
+-        limit: 100,
+-        casing: 'case-insensitive',
+-      })
+-        .find(value)
+-        .map(result => result.item);
+-
+-      return splitItem ? [splitItem, ...filtered] : filtered;
+-    },
+-    [],
+-  );
+-
+   return (
+     <Autocomplete
+       strict
+@@ -290,7 +264,7 @@ export function CategoryAutocomplete({
+         }
+         return 0;
+       }}
+-      filterSuggestions={filterSuggestions}
++      filterSuggestions={filterCategorySuggestions}
+       suggestions={categorySuggestions}
+       renderItems={(items, getItemProps, highlightedIndex) => (
+         <CategoryList
+diff --git a/packages/desktop-client/src/components/autocomplete/filterCategorySuggestions.test.ts b/packages/desktop-client/src/components/autocomplete/filterCategorySuggestions.test.ts
+new file mode 100644
+index 00000000000..3e59d523fa1
+--- /dev/null
++++ b/packages/desktop-client/src/components/autocomplete/filterCategorySuggestions.test.ts
+@@ -0,0 +1,70 @@
++import { describe, expect, it } from 'vitest';
++
++import { filterCategorySuggestions } from './filterCategorySuggestions';
++
++const savings = { name: 'Savings' };
++const food = { name: 'Food' };
++const bills = { name: 'Bills' };
++
++const suggestions = [
++  { id: '1', name: 'Emergency Fund', group: savings },
++  { id: '2', name: 'Home Repairs', group: savings },
++  { id: '3', name: 'Savings Goals', group: savings },
++  { id: '4', name: 'New Car', group: savings },
++  { id: '5', name: 'Holidays', group: savings },
++  { id: '6', name: 'Groceries', group: food },
++  { id: '7', name: 'Restaurants', group: food },
++  { id: '8', name: 'Electric', group: bills },
++];
++
++function names(items: Array<{ name: string }>): string[] {
++  return items.map(item => item.name);
++}
++
++describe('filterCategorySuggestions', () => {
++  it('ranks category name matches above group-only matches', () => {
++    const result = filterCategorySuggestions(suggestions, 'sav');
++
++    expect(names(result)[0]).toBe('Savings Goals');
++  });
++
++  it('still includes categories whose group name matches', () => {
++    const result = filterCategorySuggestions(suggestions, 'sav');
++
++    expect(names(result)).toEqual([
++      'Savings Goals',
++      'Emergency Fund',
++      'Home Repairs',
++      'New Car',
++      'Holidays',
++    ]);
++  });
++
++  it('matches queries spanning group and category name', () => {
++    const result = filterCategorySuggestions(suggestions, 'food gro');
++
++    expect(names(result)).toEqual(['Groceries']);
++  });
++
++  it('matches case-insensitively', () => {
++    const result = filterCategorySuggestions(suggestions, 'GROC');
++
++    expect(names(result)).toEqual(['Groceries']);
++  });
++
++  it('returns all suggestions when the value is empty', () => {
++    expect(filterCategorySuggestions(suggestions, '')).toEqual(suggestions);
++  });
++
++  it('returns no suggestions when nothing matches', () => {
++    expect(filterCategorySuggestions(suggestions, 'zzz')).toEqual([]);
++  });
++
++  it('keeps the split option pinned to the top', () => {
++    const withSplit = [{ id: 'split', name: '' }, ...suggestions];
++    const result = filterCategorySuggestions(withSplit, 'sav');
++
++    expect(result[0].id).toBe('split');
++    expect(names(result.slice(1))[0]).toBe('Savings Goals');
++  });
++});
+diff --git a/packages/desktop-client/src/components/autocomplete/filterCategorySuggestions.ts b/packages/desktop-client/src/components/autocomplete/filterCategorySuggestions.ts
+new file mode 100644
+index 00000000000..8a0e64da660
+--- /dev/null
++++ b/packages/desktop-client/src/components/autocomplete/filterCategorySuggestions.ts
+@@ -0,0 +1,50 @@
++import { Fzf } from 'fzf';
++
++type CategorySuggestion = {
++  id: string;
++  name: string;
++  group?: { name: string };
++};
++
++function rankMatches<T extends CategorySuggestion>(
++  items: T[],
++  value: string,
++  selector: (item: CategorySuggestion) => string,
++): T[] {
++  const itemsById = new Map(items.map(item => [item.id, item]));
++  return new Fzf<CategorySuggestion[]>(items, {
++    selector,
++    limit: 100,
++    casing: 'case-insensitive',
++  })
++    .find(value)
++    .map(result => itemsById.get(result.item.id))
++    .filter(item => item != null);
++}
++
++export function filterCategorySuggestions<T extends CategorySuggestion>(
++  suggestions: T[],
++  value: string,
++): T[] {
++  const splitItem = suggestions.find(s => s.id === 'split');
++  const realSuggestions = suggestions.filter(s => s.id !== 'split');
++
++  if (!value) {
++    return suggestions;
++  }
++
++  // matches on the category name itself rank above matches that
++  // only hit the group name
++  const nameMatches = rankMatches(realSuggestions, value, item => item.name);
++
++  const nameMatchIds = new Set(nameMatches.map(item => item.id));
++  const groupMatches = rankMatches(
++    realSuggestions.filter(item => !nameMatchIds.has(item.id)),
++    value,
++    item => (item.group ? item.group.name + ' ' + item.name : item.name),
++  );
++
++  const filtered = [...nameMatches, ...groupMatches].slice(0, 100);
++
++  return splitItem ? [splitItem, ...filtered] : filtered;
++}
+diff --git a/upcoming-release-notes/search-category-devalue-group.md b/upcoming-release-notes/search-category-devalue-group.md
+new file mode 100644
+index 00000000000..4811e2be671
+--- /dev/null
++++ b/upcoming-release-notes/search-category-devalue-group.md
+@@ -0,0 +1,6 @@
++---
++category: Bugfixes
++authors: [matt-fidd]
++---
++
++Prioritise category name matches over group matches in the category autocomplete

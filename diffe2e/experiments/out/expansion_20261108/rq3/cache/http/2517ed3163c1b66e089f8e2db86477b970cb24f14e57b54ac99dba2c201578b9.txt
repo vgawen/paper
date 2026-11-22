@@ -1,0 +1,293 @@
+{
+  "sha": "623a8916f9acf76f3a49287f3d63af9f9dac591a",
+  "node_id": "C_kwDODTssw9oAKDYyM2E4OTE2ZjlhY2Y3NmYzYTQ5Mjg3ZjNkNjNhZjlmOWRhYzU5MWE",
+  "commit": {
+    "author": {
+      "name": "Pavel Feldman",
+      "email": "pavel.feldman@gmail.com",
+      "date": "2024-10-17T23:57:45Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2024-10-17T23:57:45Z"
+    },
+    "message": "chore: implement tree w/o list (#33167)",
+    "tree": {
+      "sha": "186acc57bb5148bd19f739405a1cbdafa31e9a54",
+      "url": "https://api.github.com/repos/microsoft/playwright/git/trees/186acc57bb5148bd19f739405a1cbdafa31e9a54"
+    },
+    "url": "https://api.github.com/repos/microsoft/playwright/git/commits/623a8916f9acf76f3a49287f3d63af9f9dac591a",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJnEaR5CRC1aQ7uu5UhlAAA1jIQAFwmo8Hrj84QhC5f3qRJx7g5\ntHOKruKBzrwsA2x1+GOYdsLaFLjkYmVdikLWMY6MOysYSdoRkZBV2aNJ3mZh3kLz\nbro7XGIJqQEynXpzYaKuIS9geFGJKVzxKsGIeZIULi58/0oAu0MU/XKwRY1o2pT5\nOcj8srcLlzqfQHVsykMPAcS+uFA1EbtEm38CjuUWjw4HMpvtUDmsnF4phTQzuunC\nAAXPAsQipHYB4HcRotS6KoyTHFNTL3ChqlGgym4hc6Xh7rUimX601I4uCYaUTKB0\nGEhIwfUCMAYcR8YlQ08TPQNmUFxAFaAsfbQ+NXdDDZ7UsLHeUGuyhQ6OThG2hmku\n1hF4WrUPkPkQCWLz0uKIL/a2czlDnvFnwwNxyWeLYFqGBdDxTmp6xxHIzPDYFzz3\noHbnny/VxDZ1FwC0hKM7NoURoqXco2GsnKTwk4QxlYw05XJg2zlfY1jw5kp+XhZD\nRoHiBP+iHyAX+0wXkR0tzUD2DerAn2rzsaFdM8cUoH0rBUiu/NOYsIqJS+53k4yc\nRcCLrYHiqRhPVXHyPOIbm9yuv2ja4tiuUHRMSCV9zzt0pZlSmi7e2JPycXUKpdqC\nJDKAgRp6/581Udnr3XNPcEOMTTaKM0Vtjs+ErYuM5vCimL3x0HuWL1vDdhIX1p7n\n2H/IER/v+JakPLzQFbwJ\n=fsK7\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree 186acc57bb5148bd19f739405a1cbdafa31e9a54\nparent aa952c1b03d5676c29760793cdefa0bdc78222f9\nauthor Pavel Feldman <pavel.feldman@gmail.com> 1729209465 -0700\ncommitter GitHub <noreply@github.com> 1729209465 -0700\n\nchore: implement tree w/o list (#33167)\n\n",
+      "verified_at": "2024-11-05T00:56:59Z"
+    }
+  },
+  "url": "https://api.github.com/repos/microsoft/playwright/commits/623a8916f9acf76f3a49287f3d63af9f9dac591a",
+  "html_url": "https://github.com/microsoft/playwright/commit/623a8916f9acf76f3a49287f3d63af9f9dac591a",
+  "comments_url": "https://api.github.com/repos/microsoft/playwright/commits/623a8916f9acf76f3a49287f3d63af9f9dac591a/comments",
+  "author": {
+    "login": "pavelfeldman",
+    "id": 883973,
+    "node_id": "MDQ6VXNlcjg4Mzk3Mw==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/883973?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/pavelfeldman",
+    "html_url": "https://github.com/pavelfeldman",
+    "followers_url": "https://api.github.com/users/pavelfeldman/followers",
+    "following_url": "https://api.github.com/users/pavelfeldman/following{/other_user}",
+    "gists_url": "https://api.github.com/users/pavelfeldman/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/pavelfeldman/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/pavelfeldman/subscriptions",
+    "organizations_url": "https://api.github.com/users/pavelfeldman/orgs",
+    "repos_url": "https://api.github.com/users/pavelfeldman/repos",
+    "events_url": "https://api.github.com/users/pavelfeldman/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/pavelfeldman/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "aa952c1b03d5676c29760793cdefa0bdc78222f9",
+      "url": "https://api.github.com/repos/microsoft/playwright/commits/aa952c1b03d5676c29760793cdefa0bdc78222f9",
+      "html_url": "https://github.com/microsoft/playwright/commit/aa952c1b03d5676c29760793cdefa0bdc78222f9"
+    }
+  ],
+  "stats": {
+    "total": 478,
+    "additions": 339,
+    "deletions": 139
+  },
+  "files": [
+    {
+      "sha": "335daecfb1ad1764ecd539cbb3e7e8c9fd963088",
+      "filename": "packages/trace-viewer/src/ui/uiModeTestListView.css",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 6,
+      "changes": 12,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.css",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.css",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.css?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -14,28 +14,28 @@\n   limitations under the License.\n */\n \n-.ui-mode-list-item {\n+.ui-mode-tree-item {\n   flex: auto;\n }\n \n-.ui-mode-list-item-title {\n+.ui-mode-tree-item-title {\n   flex: auto;\n   text-overflow: ellipsis;\n   overflow: hidden;\n }\n \n-.ui-mode-list-item-time {\n+.ui-mode-tree-item-time {\n   flex: none;\n   color: var(--vscode-editorCodeLens-foreground);\n   margin: 0 4px;\n   user-select: none;\n }\n \n-.tests-list-view .list-view-entry.selected .ui-mode-list-item-time,\n-.tests-list-view .list-view-entry.highlighted .ui-mode-list-item-time {\n+.tests-tree-view .tree-view-entry.selected .ui-mode-tree-item-time,\n+.tests-tree-view .tree-view-entry.highlighted .ui-mode-tree-item-time {\n   display: none;\n }\n \n-.tests-list-view .list-view-entry:not(.highlighted):not(.selected) .toolbar-button:not(.toggled) {\n+.tests-tree-view .tree-view-entry:not(.highlighted):not(.selected) .toolbar-button:not(.toggled) {\n   display: none;\n }"
+    },
+    {
+      "sha": "96fbaadbf78ad67fdc5958d81a5f898933877db3",
+      "filename": "packages/trace-viewer/src/ui/uiModeTestListView.tsx",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 3,
+      "changes": 6,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.tsx?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -159,12 +159,12 @@ export const TestListView: React.FC<{\n     rootItem={testTree.rootItem}\n     dataTestId='test-tree'\n     render={treeItem => {\n-      return <div className='hbox ui-mode-list-item'>\n-        <div className='ui-mode-list-item-title'>\n+      return <div className='hbox ui-mode-tree-item'>\n+        <div className='ui-mode-tree-item-title'>\n           <span title={treeItem.title}>{treeItem.title}</span>\n           {treeItem.kind === 'case' ? treeItem.tags.map(tag => <TagView key={tag} tag={tag.slice(1)} onClick={e => handleTagClick(e, tag)} />) : null}\n         </div>\n-        {!!treeItem.duration && treeItem.status !== 'skipped' && <div className='ui-mode-list-item-time'>{msToString(treeItem.duration)}</div>}\n+        {!!treeItem.duration && treeItem.status !== 'skipped' && <div className='ui-mode-tree-item-time'>{msToString(treeItem.duration)}</div>}\n         <Toolbar noMinHeight={true} noShadow={true}>\n           <ToolbarButton icon='play' title='Run' onClick={() => runTreeItem(treeItem)} disabled={!!runningState && !runningState.completed}></ToolbarButton>\n           <ToolbarButton icon='go-to-file' title='Show source' onClick={onRevealSource} style={(treeItem.kind === 'group' && treeItem.subKind === 'folder') ? { visibility: 'hidden' } : {}}></ToolbarButton>"
+    },
+    {
+      "sha": "10fc48c247037ed563b6a6f87e439c7d07d7f498",
+      "filename": "packages/web/src/components/gridView.tsx",
+      "status": "modified",
+      "additions": 0,
+      "deletions": 3,
+      "changes": 3,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2Fcomponents%2FgridView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2Fcomponents%2FgridView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FgridView.tsx?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -110,15 +110,12 @@ export function GridView<T>(model: GridViewProps<T>) {\n           </>;\n         }}\n         icon={model.icon}\n-        indent={model.indent}\n         isError={model.isError}\n         isWarning={model.isWarning}\n         isInfo={model.isInfo}\n         selectedItem={model.selectedItem}\n         onAccepted={model.onAccepted}\n         onSelected={model.onSelected}\n-        onLeftArrow={model.onLeftArrow}\n-        onRightArrow={model.onRightArrow}\n         onHighlighted={model.onHighlighted}\n         onIconClicked={model.onIconClicked}\n         noItemsMessage={model.noItemsMessage}"
+    },
+    {
+      "sha": "73f9b65b8f3d1e05747cbd9d8c5bf45d26ae3048",
+      "filename": "packages/web/src/components/listView.tsx",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 29,
+      "changes": 31,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -16,23 +16,20 @@\n \n import * as React from 'react';\n import './listView.css';\n-import { clsx } from '@web/uiUtils';\n+import { clsx, scrollIntoViewIfNeeded } from '@web/uiUtils';\n \n export type ListViewProps<T> = {\n   name: string,\n   items: T[],\n   id?: (item: T, index: number) => string,\n   render: (item: T, index: number) => React.ReactNode,\n   icon?: (item: T, index: number) => string | undefined,\n-  indent?: (item: T, index: number) => number | undefined,\n   isError?: (item: T, index: number) => boolean,\n   isWarning?: (item: T, index: number) => boolean,\n   isInfo?: (item: T, index: number) => boolean,\n   selectedItem?: T,\n   onAccepted?: (item: T, index: number) => void,\n   onSelected?: (item: T, index: number) => void,\n-  onLeftArrow?: (item: T, index: number) => void,\n-  onRightArrow?: (item: T, index: number) => void,\n   onHighlighted?: (item: T | undefined) => void,\n   onIconClicked?: (item: T, index: number) => void,\n   noItemsMessage?: string,\n@@ -51,12 +48,9 @@ export function ListView<T>({\n   isError,\n   isWarning,\n   isInfo,\n-  indent,\n   selectedItem,\n   onAccepted,\n   onSelected,\n-  onLeftArrow,\n-  onRightArrow,\n   onHighlighted,\n   onIconClicked,\n   noItemsMessage,\n@@ -95,21 +89,12 @@ export function ListView<T>({\n           onAccepted?.(selectedItem, items.indexOf(selectedItem));\n           return;\n         }\n-        if (event.key !== 'ArrowDown' &&  event.key !== 'ArrowUp' && event.key !== 'ArrowLeft' &&  event.key !== 'ArrowRight')\n+        if (event.key !== 'ArrowDown' &&  event.key !== 'ArrowUp')\n           return;\n \n         event.stopPropagation();\n         event.preventDefault();\n \n-        if (selectedItem && event.key === 'ArrowLeft') {\n-          onLeftArrow?.(selectedItem, items.indexOf(selectedItem));\n-          return;\n-        }\n-        if (selectedItem && event.key === 'ArrowRight') {\n-          onRightArrow?.(selectedItem, items.indexOf(selectedItem));\n-          return;\n-        }\n-\n         const index = selectedItem ? items.indexOf(selectedItem) : -1;\n         let newIndex = index;\n         if (event.key === 'ArrowDown') {\n@@ -135,7 +120,6 @@ export function ListView<T>({\n     >\n       {noItemsMessage && items.length === 0 && <div className='list-view-empty'>{noItemsMessage}</div>}\n       {items.map((item, index) => {\n-        const indentation = indent?.(item, index) || 0;\n         const rendered = render(item, index);\n         return <div\n           key={id?.(item, index) || index}\n@@ -152,8 +136,6 @@ export function ListView<T>({\n           onMouseEnter={() => setHighlightedItem(item)}\n           onMouseLeave={() => setHighlightedItem(undefined)}\n         >\n-          {/* eslint-disable-next-line react/jsx-key */}\n-          {indentation ? new Array(indentation).fill(0).map(() => <div className='list-view-indent'></div>) : undefined}\n           {icon && <div\n             className={'codicon ' + (icon(item, index) || 'codicon-blank')}\n             style={{ minWidth: 16, marginRight: 4 }}\n@@ -173,12 +155,3 @@ export function ListView<T>({\n     </div>\n   </div>;\n }\n-\n-function scrollIntoViewIfNeeded(element: Element | undefined) {\n-  if (!element)\n-    return;\n-  if ((element as any)?.scrollIntoViewIfNeeded)\n-    (element as any).scrollIntoViewIfNeeded(false);\n-  else\n-    element?.scrollIntoView();\n-}"
+    },
+    {
+      "sha": "860d560fc9f9217f01a92fd2f67f10642b2b85b4",
+      "filename": "packages/web/src/components/treeView.css",
+      "status": "added",
+      "additions": 91,
+      "deletions": 0,
+      "changes": 91,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.css",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.css",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.css?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -0,0 +1,91 @@\n+/*\n+  Copyright (c) Microsoft Corporation.\n+\n+  Licensed under the Apache License, Version 2.0 (the \"License\");\n+  you may not use this file except in compliance with the License.\n+  You may obtain a copy of the License at\n+\n+      http://www.apache.org/licenses/LICENSE-2.0\n+\n+  Unless required by applicable law or agreed to in writing, software\n+  distributed under the License is distributed on an \"AS IS\" BASIS,\n+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+  See the License for the specific language governing permissions and\n+  limitations under the License.\n+*/\n+\n+.tree-view-content {\n+  display: flex;\n+  flex-direction: column;\n+  flex: auto;\n+  position: relative;\n+  user-select: none;\n+  overflow: hidden auto;\n+  outline: 1px solid transparent;\n+}\n+\n+.tree-view-entry {\n+  display: flex;\n+  flex: none;\n+  cursor: pointer;\n+  align-items: center;\n+  white-space: nowrap;\n+  line-height: 28px;\n+  padding-left: 5px;\n+}\n+\n+.tree-view-content.not-selectable > .tree-view-entry {\n+  cursor: inherit;\n+}\n+\n+.tree-view-entry.highlighted:not(.selected) {\n+  background-color: var(--vscode-list-inactiveSelectionBackground) !important;\n+}\n+\n+.tree-view-entry.selected {\n+  z-index: 10;\n+}\n+\n+.tree-view-indent {\n+  min-width: 16px;\n+}\n+\n+.tree-view-content:focus .tree-view-entry.selected {\n+  background-color: var(--vscode-list-activeSelectionBackground);\n+  color: var(--vscode-list-activeSelectionForeground);\n+  outline: 1px solid var(--vscode-focusBorder);\n+}\n+\n+.tree-view-content .tree-view-entry.selected {\n+  background-color: var(--vscode-list-inactiveSelectionBackground);\n+}\n+\n+.tree-view-content:focus .tree-view-entry.selected * {\n+  color: var(--vscode-list-activeSelectionForeground) !important;\n+  background-color: transparent !important;\n+}\n+\n+.tree-view-content:focus .tree-view-entry.selected .codicon {\n+  color: var(--vscode-list-activeSelectionForeground) !important;\n+}\n+\n+.tree-view-empty {\n+  flex: auto;\n+  display: flex;\n+  align-items: center;\n+  justify-content: center;\n+}\n+\n+.tree-view-entry.error {\n+  color: var(--vscode-list-errorForeground);\n+  background-color: var(--vscode-inputValidation-errorBackground);\n+}\n+\n+.tree-view-entry.warning {\n+  color: var(--vscode-list-warningForeground);\n+  background-color: var(--vscode-inputValidation-warningBackground);\n+}\n+\n+.tree-view-entry.info {\n+  background-color: var(--vscode-inputValidation-infoBackground);\n+}"
+    },
+    {
+      "sha": "6ad722145531f1485789fa7404fac90d6ca058be",
+      "filename": "packages/web/src/components/treeView.tsx",
+      "status": "modified",
+      "additions": 185,
+      "deletions": 55,
+      "changes": 240,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -15,7 +15,8 @@\n */\n \n import * as React from 'react';\n-import { ListView } from './listView';\n+import { clsx, scrollIntoViewIfNeeded } from '@web/uiUtils';\n+import './treeView.css';\n \n export type TreeItem = {\n   id: string,\n@@ -45,7 +46,7 @@ export type TreeViewProps<T> = {\n   autoExpandDepth?: number,\n };\n \n-const TreeListView = ListView<TreeItem>;\n+const scrollPositions = new Map<string, number>();\n \n export function TreeView<T extends TreeItem>({\n   name,\n@@ -97,61 +98,185 @@ export function TreeView<T extends TreeItem>({\n     return result;\n   }, [treeItems, isVisible]);\n \n-  return <TreeListView\n-    name={name}\n-    items={visibleItems}\n-    id={item => item.id}\n-    dataTestId={dataTestId || (name + '-tree')}\n-    render={item => {\n-      const rendered = render(item as T);\n-      return <>\n-        {icon && <div className={'codicon ' + (icon(item as T) || 'blank')} style={{ minWidth: 16, marginRight: 4 }}></div>}\n-        {typeof rendered === 'string' ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{rendered}</div> : rendered}\n-      </>;\n-    }}\n-    icon={item => {\n-      const expanded = treeItems.get(item as T)!.expanded;\n-      if (typeof expanded === 'boolean')\n-        return expanded ? 'codicon-chevron-down' : 'codicon-chevron-right';\n-    }}\n-    isError={item => isError?.(item as T) || false}\n-    indent={item => treeItems.get(item as T)!.depth}\n-    selectedItem={selectedItem}\n-    onAccepted={item => onAccepted?.(item as T)}\n-    onSelected={item => onSelected?.(item as T)}\n-    onHighlighted={item => onHighlighted?.(item as T)}\n-    onLeftArrow={item => {\n-      const { expanded, parent } = treeItems.get(item as T)!;\n-      if (expanded) {\n-        treeState.expandedItems.set(item.id, false);\n-        setTreeState({ ...treeState });\n-      } else if (parent) {\n-        onSelected?.(parent as T);\n-      }\n-    }}\n-    onRightArrow={item => {\n-      if (item.children.length) {\n-        treeState.expandedItems.set(item.id, true);\n-        setTreeState({ ...treeState });\n+  const itemListRef = React.useRef<HTMLDivElement>(null);\n+  const [highlightedItem, setHighlightedItem] = React.useState<any>();\n+\n+  React.useEffect(() => {\n+    onHighlighted?.(highlightedItem);\n+  }, [onHighlighted, highlightedItem]);\n+\n+  React.useEffect(() => {\n+    const treeElem = itemListRef.current;\n+    if (!treeElem)\n+      return;\n+    const saveScrollPosition = () => {\n+      scrollPositions.set(name, treeElem.scrollTop);\n+    };\n+    treeElem.addEventListener('scroll', saveScrollPosition, { passive: true });\n+    return () => treeElem.removeEventListener('scroll', saveScrollPosition);\n+  }, [name]);\n+\n+  React.useEffect(() => {\n+    if (itemListRef.current)\n+      itemListRef.current.scrollTop = scrollPositions.get(name) || 0;\n+  }, [name]);\n+\n+  const toggleExpanded = React.useCallback((item: T) => {\n+    const { expanded } = treeItems.get(item)!;\n+    if (expanded) {\n+      // Move nested selection up.\n+      for (let i: TreeItem | undefined = selectedItem; i; i = i.parent) {\n+        if (i === item) {\n+          onSelected?.(item as T);\n+          break;\n+        }\n       }\n-    }}\n-    onIconClicked={item => {\n-      const { expanded } = treeItems.get(item as T)!;\n-      if (expanded) {\n-        // Move nested selection up.\n-        for (let i: TreeItem | undefined = selectedItem; i; i = i.parent) {\n-          if (i === item) {\n-            onSelected?.(item as T);\n-            break;\n+      treeState.expandedItems.set(item.id, false);\n+    } else {\n+      treeState.expandedItems.set(item.id, true);\n+    }\n+    setTreeState({ ...treeState });\n+  }, [treeItems, selectedItem, onSelected, treeState, setTreeState]);\n+\n+  return <div className={clsx(`tree-view vbox`, name + '-tree-view')} role={'tree'} data-testid={dataTestId || (name + '-tree')}>\n+    <div\n+      className={clsx('tree-view-content')}\n+      tabIndex={0}\n+      onKeyDown={event => {\n+        if (selectedItem && event.key === 'Enter') {\n+          onAccepted?.(selectedItem);\n+          return;\n+        }\n+        if (event.key !== 'ArrowDown' &&  event.key !== 'ArrowUp' && event.key !== 'ArrowLeft' &&  event.key !== 'ArrowRight')\n+          return;\n+\n+        event.stopPropagation();\n+        event.preventDefault();\n+\n+        if (selectedItem && event.key === 'ArrowLeft') {\n+          const { expanded, parent } = treeItems.get(selectedItem)!;\n+          if (expanded) {\n+            treeState.expandedItems.set(selectedItem.id, false);\n+            setTreeState({ ...treeState });\n+          } else if (parent) {\n+            onSelected?.(parent as T);\n           }\n+          return;\n         }\n-        treeState.expandedItems.set(item.id, false);\n-      } else {\n-        treeState.expandedItems.set(item.id, true);\n-      }\n-      setTreeState({ ...treeState });\n-    }}\n-    noItemsMessage={noItemsMessage} />;\n+        if (selectedItem && event.key === 'ArrowRight') {\n+          if (selectedItem.children.length) {\n+            treeState.expandedItems.set(selectedItem.id, true);\n+            setTreeState({ ...treeState });\n+          }\n+          return;\n+        }\n+\n+        const index = selectedItem ? visibleItems.indexOf(selectedItem) : -1;\n+        let newIndex = index;\n+        if (event.key === 'ArrowDown') {\n+          if (index === -1)\n+            newIndex = 0;\n+          else\n+            newIndex = Math.min(index + 1, visibleItems.length - 1);\n+        }\n+        if (event.key === 'ArrowUp') {\n+          if (index === -1)\n+            newIndex = visibleItems.length - 1;\n+          else\n+            newIndex = Math.max(index - 1, 0);\n+        }\n+\n+        const element = itemListRef.current?.children.item(newIndex);\n+        scrollIntoViewIfNeeded(element || undefined);\n+        onHighlighted?.(undefined);\n+        onSelected?.(visibleItems[newIndex]);\n+        setHighlightedItem(undefined);\n+      }}\n+      ref={itemListRef}\n+    >\n+      {noItemsMessage && visibleItems.length === 0 && <div className='tree-view-empty'>{noItemsMessage}</div>}\n+      {visibleItems.map(item => {\n+        return <div key={item.id} role='treeitem' aria-selected={item === selectedItem}>\n+          <TreeItemHeader\n+            item={item}\n+            itemData={treeItems.get(item)!}\n+            selectedItem={selectedItem}\n+            onSelected={onSelected}\n+            onAccepted={onAccepted}\n+            isError={isError}\n+            toggleExpanded={toggleExpanded}\n+            highlightedItem={highlightedItem}\n+            setHighlightedItem={setHighlightedItem}\n+            render={render}\n+            icon={icon} />\n+        </div>;\n+      })}\n+    </div>\n+  </div>;\n+}\n+\n+type TreeItemHeaderProps<T> = {\n+  item: T,\n+  itemData: TreeItemData,\n+  selectedItem: T | undefined,\n+  onSelected?: (item: T) => void,\n+  toggleExpanded: (item: T) => void,\n+  highlightedItem: T | undefined,\n+  isError?: (item: T) => boolean,\n+  onAccepted?: (item: T) => void,\n+  setHighlightedItem: (item: T | undefined) => void,\n+  render: (item: T) => React.ReactNode,\n+  icon?: (item: T) => string | undefined,\n+};\n+\n+export function TreeItemHeader<T extends TreeItem>({\n+  item,\n+  itemData,\n+  selectedItem,\n+  onSelected,\n+  highlightedItem,\n+  setHighlightedItem,\n+  isError,\n+  onAccepted,\n+  toggleExpanded,\n+  render,\n+  icon }: TreeItemHeaderProps<T>) {\n+\n+  const indentation = itemData.depth;\n+  const expanded = itemData.expanded;\n+  let expandIcon = 'codicon-blank';\n+  if (typeof expanded === 'boolean')\n+    expandIcon = expanded ? 'codicon-chevron-down' : 'codicon-chevron-right';\n+  const rendered = render(item);\n+\n+  return <div\n+    onDoubleClick={() => onAccepted?.(item)}\n+    className={clsx(\n+        'tree-view-entry',\n+        selectedItem === item && 'selected',\n+        highlightedItem === item && 'highlighted',\n+        isError?.(item) && 'error')}\n+    onClick={() => onSelected?.(item)}\n+    onMouseEnter={() => setHighlightedItem(item)}\n+    onMouseLeave={() => setHighlightedItem(undefined)}\n+  >\n+    {indentation ? new Array(indentation).fill(0).map((_, i) => <div key={'indent-' + i} className='tree-view-indent'></div>) : undefined}\n+    <div\n+      className={'codicon ' + expandIcon}\n+      style={{ minWidth: 16, marginRight: 4 }}\n+      onDoubleClick={e => {\n+        e.preventDefault();\n+        e.stopPropagation();\n+      }}\n+      onClick={e => {\n+        e.stopPropagation();\n+        e.preventDefault();\n+        toggleExpanded(item);\n+      }}\n+    />\n+    {icon && <div className={'codicon ' + (icon(item) || 'codicon-blank')} style={{ minWidth: 16, marginRight: 4 }}></div>}\n+    {typeof rendered === 'string' ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{rendered}</div> : rendered}\n+  </div>;\n }\n \n type TreeItemData = {\n@@ -160,7 +285,12 @@ type TreeItemData = {\n   parent: TreeItem | null,\n };\n \n-function flattenTree<T extends TreeItem>(rootItem: T, selectedItem: T | undefined, expandedItems: Map<string, boolean | undefined>, autoExpandDepth: number): Map<T, TreeItemData> {\n+function flattenTree<T extends TreeItem>(\n+  rootItem: T,\n+  selectedItem: T | undefined,\n+  expandedItems: Map<string, boolean | undefined>,\n+  autoExpandDepth: number): Map<T, TreeItemData> {\n+\n   const result = new Map<T, TreeItemData>();\n   const temporaryExpanded = new Set<string>();\n   for (let item: TreeItem | undefined = selectedItem?.parent; item; item = item.parent)"
+    },
+    {
+      "sha": "ea714860146fb02f25e62de2dfa4ca78690e7177",
+      "filename": "packages/web/src/uiUtils.ts",
+      "status": "modified",
+      "additions": 9,
+      "deletions": 0,
+      "changes": 9,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2FuiUtils.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/packages%2Fweb%2Fsrc%2FuiUtils.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2FuiUtils.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -208,5 +208,14 @@ export async function sha1(str: string): Promise<string> {\n   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-1', buffer))).map(b => b.toString(16).padStart(2, '0')).join('');\n }\n \n+export function scrollIntoViewIfNeeded(element: Element | undefined) {\n+  if (!element)\n+    return;\n+  if ((element as any)?.scrollIntoViewIfNeeded)\n+    (element as any).scrollIntoViewIfNeeded(false);\n+  else\n+    element?.scrollIntoView();\n+}\n+\n const kControlCodesRe = '\\\\u0000-\\\\u0020\\\\u007f-\\\\u009f';\n export const kWebLinkRe = new RegExp('(?:[a-zA-Z][a-zA-Z0-9+.-]{2,}:\\\\/\\\\/|www\\\\.)[^\\\\s' + kControlCodesRe + '\"]{2,}[^\\\\s' + kControlCodesRe + '\"\\')}\\\\],:;.!?]', 'ug');"
+    },
+    {
+      "sha": "3eb3b11a153c7f73aba661a87062df5a96e373af",
+      "filename": "tests/config/traceViewerFixtures.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fconfig%2FtraceViewerFixtures.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fconfig%2FtraceViewerFixtures.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fconfig%2FtraceViewerFixtures.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -62,13 +62,13 @@ class TraceViewerPage {\n   }\n \n   async actionIconsText(action: string) {\n-    const entry = await this.page.waitForSelector(`.list-view-entry:has-text(\"${action}\")`);\n+    const entry = await this.page.waitForSelector(`.tree-view-entry:has-text(\"${action}\")`);\n     await entry.waitForSelector('.action-icon-value:visible');\n     return await entry.$$eval('.action-icon-value:visible', ee => ee.map(e => e.textContent));\n   }\n \n   async actionIcons(action: string) {\n-    return await this.page.waitForSelector(`.list-view-entry:has-text(\"${action}\") .action-icons`);\n+    return await this.page.waitForSelector(`.tree-view-entry:has-text(\"${action}\") .action-icons`);\n   }\n \n   @step"
+    },
+    {
+      "sha": "1e3b11a03ab099b55fce7cce4285ba2a7fa7988d",
+      "filename": "tests/playwright-test/ui-mode-fixtures.ts",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 8,
+      "changes": 16,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-fixtures.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-fixtures.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-fixtures.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -66,16 +66,16 @@ export function dumpTestTree(page: Page, options: { time?: boolean } = {}): () =\n     }\n \n     const result: string[] = [];\n-    const listItems = treeElement.querySelectorAll('[role=listitem]');\n-    for (const listItem of listItems) {\n-      const iconElements = listItem.querySelectorAll('.codicon');\n+    const treeItems = treeElement.querySelectorAll('[role=treeitem]');\n+    for (const treeItem of treeItems) {\n+      const iconElements = treeItem.querySelectorAll('.codicon');\n       const treeIcon = iconName(iconElements[0]);\n       const statusIcon = iconName(iconElements[1]);\n-      const indent = listItem.querySelectorAll('.list-view-indent').length;\n-      const watch = listItem.querySelector('.toolbar-button.eye.toggled') ? ' 👁' : '';\n-      const selected = listItem.classList.contains('selected') ? ' <=' : '';\n-      const title = listItem.querySelector('.ui-mode-list-item-title').childNodes[0].textContent;\n-      const timeElement = options.time ? listItem.querySelector('.ui-mode-list-item-time') : undefined;\n+      const indent = treeItem.querySelectorAll('.tree-view-indent').length;\n+      const watch = treeItem.querySelector('.toolbar-button.eye.toggled') ? ' 👁' : '';\n+      const selected = treeItem.getAttribute('aria-selected') === 'true' ? ' <=' : '';\n+      const title = treeItem.querySelector('.ui-mode-tree-item-title').childNodes[0].textContent;\n+      const timeElement = options.time ? treeItem.querySelector('.ui-mode-tree-item-time') : undefined;\n       const time = timeElement ? ' ' + timeElement.textContent.replace(/[.\\d]+m?s/, 'XXms') : '';\n       result.push('    ' + '  '.repeat(indent) + treeIcon + ' ' + statusIcon + ' ' + title + time + watch + selected);\n     }"
+    },
+    {
+      "sha": "f32d43aecfbabf41f1d25c296d489bd683d49cfd",
+      "filename": "tests/playwright-test/ui-mode-test-annotations.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-annotations.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-annotations.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-annotations.spec.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -33,7 +33,7 @@ test('should display annotations', async ({ runUITest }) => {\n   });\n   await page.getByTitle('Run all').click();\n   await expect(page.getByTestId('status-line')).toHaveText('1/1 passed (100%)');\n-  await page.getByRole('listitem').filter({ hasText: 'suite' }).locator('.codicon-chevron-right').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'suite' }).locator('.codicon-chevron-right').click();\n   await page.getByText('annotation test').click();\n   await page.getByText('Annotations', { exact: true }).click();\n "
+    },
+    {
+      "sha": "dd59c334b22c6b122da32f92f6083120f9dd358d",
+      "filename": "tests/playwright-test/ui-mode-test-filters.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-filters.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-filters.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-filters.spec.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -64,7 +64,7 @@ test('should display native tags and filter by them on click', async ({ runUITes\n       test('pwt', { tag: '@smoke' }, () => {});\n   `,\n   });\n-  await page.locator('.ui-mode-list-item-title').getByText('smoke').click();\n+  await page.locator('.ui-mode-tree-item-title').getByText('smoke').click();\n   await expect(page.getByPlaceholder('Filter')).toHaveValue('@smoke');\n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts"
+    },
+    {
+      "sha": "f2f01a79ce31f5672da0d58912ad98919e9ab54f",
+      "filename": "tests/playwright-test/ui-mode-test-progress.spec.ts",
+      "status": "modified",
+      "additions": 11,
+      "deletions": 11,
+      "changes": 22,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-progress.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-progress.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-progress.spec.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -47,7 +47,7 @@ test('should update trace live', async ({ runUITest, server }) => {\n   await page.getByText('live test').dblclick();\n \n   // It should halt on loading one.html.\n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -57,11 +57,11 @@ test('should update trace live', async ({ runUITest, server }) => {\n   ]);\n \n   await expect(\n-      listItem.locator(':scope.selected'),\n+      listItem.locator(':scope[aria-selected=\"true\"]'),\n       'last action to be selected'\n   ).toHaveText(/page.goto/);\n   await expect(\n-      listItem.locator(':scope.selected .codicon.codicon-loading'),\n+      listItem.locator(':scope[aria-selected=\"true\"] .codicon.codicon-loading'),\n       'spinner'\n   ).toBeVisible();\n \n@@ -83,11 +83,11 @@ test('should update trace live', async ({ runUITest, server }) => {\n     /page.gotohttp:\\/\\/localhost:\\d+\\/two.html/\n   ]);\n   await expect(\n-      listItem.locator(':scope.selected'),\n+      listItem.locator(':scope[aria-selected=\"true\"]'),\n       'last action to be selected'\n   ).toHaveText(/page.goto/);\n   await expect(\n-      listItem.locator(':scope.selected .codicon.codicon-loading'),\n+      listItem.locator(':scope[aria-selected=\"true\"] .codicon.codicon-loading'),\n       'spinner'\n   ).toBeVisible();\n \n@@ -132,7 +132,7 @@ test('should preserve action list selection upon live trace update', async ({ ru\n   await page.getByText('live test').dblclick();\n \n   // It should wait on the latch.\n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -157,7 +157,7 @@ test('should preserve action list selection upon live trace update', async ({ ru\n     /page.setContent[\\d.]+m?s/,\n   ]);\n   await expect(\n-      listItem.locator(':scope.selected'),\n+      listItem.locator(':scope[aria-selected=\"true\"]'),\n       'selected action stays the same'\n   ).toHaveText(/page.goto/);\n });\n@@ -193,7 +193,7 @@ test('should update tracing network live', async ({ runUITest, server }) => {\n   await page.getByText('live test').dblclick();\n \n   // It should wait on the latch.\n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -233,7 +233,7 @@ test('should show trace w/ multiple contexts', async ({ runUITest, server, creat\n   await page.getByText('live test').dblclick();\n \n   // It should wait on the latch.\n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -278,7 +278,7 @@ test('should show live trace for serial', async ({ runUITest, server, createLatc\n   await page.getByText('two', { exact: true }).click();\n   await page.getByTitle('Run all').click();\n \n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -318,7 +318,7 @@ test('should show live trace from hooks', async ({ runUITest, createLatch }) =>\n   `);\n   await page.getByText('test one').dblclick();\n \n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'"
+    },
+    {
+      "sha": "24731bcbb21738cf5af9ed79d92dc53762a5bc81",
+      "filename": "tests/playwright-test/ui-mode-test-run.spec.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-run.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-run.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-run.spec.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -93,7 +93,7 @@ test('should run on hover', async ({ runUITest }) => {\n   });\n \n   await page.getByText('passes').hover();\n-  await page.getByRole('listitem').filter({ hasText: 'passes' }).getByTitle('Run').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'passes' }).getByTitle('Run').click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts\n@@ -275,7 +275,7 @@ test('should run folder', async ({ runUITest }) => {\n   });\n \n   await page.getByText('folder-b').hover();\n-  await page.getByRole('listitem').filter({ hasText: 'folder-b' }).getByTitle('Run').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'folder-b' }).getByTitle('Run').click();\n \n   await expect.poll(dumpTestTree(page)).toContain(`\n     ▼ ✅ folder-b <="
+    },
+    {
+      "sha": "f8de9e262a8174c4c0b5e539fa431d04bc222211",
+      "filename": "tests/playwright-test/ui-mode-test-setup.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-setup.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-setup.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-setup.spec.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -211,7 +211,7 @@ test('should run part of the setup only', async ({ runUITest }) => {\n   await page.getByLabel('test').setChecked(true);\n \n   await page.getByText('setup.ts').hover();\n-  await page.getByRole('listitem').filter({ hasText: 'setup.ts' }).getByTitle('Run').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'setup.ts' }).getByTitle('Run').click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ✅ setup.ts <="
+    },
+    {
+      "sha": "ae5752c3f065023b6d8534345967623b9b4cf6ad",
+      "filename": "tests/playwright-test/ui-mode-test-update.spec.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-update.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-update.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-update.spec.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -149,7 +149,7 @@ test('should not loose run information after execution if test wrote into testDi\n   await page.getByTitle('Run all').click();\n   await page.waitForTimeout(5_000);\n   await expect(page.getByText('Did not run')).toBeHidden();\n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -215,7 +215,7 @@ test('should update test locations', async ({ runUITest, writeFiles }) => {\n   const messages: any[] = [];\n   await page.exposeBinding('__logForTest', (source, arg) => messages.push(arg));\n \n-  const passesItemLocator = page.getByRole('listitem').filter({ hasText: 'passes' });\n+  const passesItemLocator = page.getByRole('treeitem').filter({ hasText: 'passes' });\n   await passesItemLocator.hover();\n   await passesItemLocator.getByTitle('Show source').click();\n   await page.getByTitle('Open in VS Code').click();"
+    },
+    {
+      "sha": "893a0ef7acccb89e7ff01fe7f452644ecb2a24e9",
+      "filename": "tests/playwright-test/ui-mode-test-watch.spec.ts",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 8,
+      "changes": 16,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-watch.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-test-watch.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-watch.spec.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -28,14 +28,14 @@ test('should watch files', async ({ runUITest, writeFiles }) => {\n   });\n \n   await page.getByText('fails').click();\n-  await page.getByRole('listitem').filter({ hasText: 'fails' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'fails' }).getByTitle('Watch').click();\n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts\n         ◯ passes\n         ◯ fails 👁 <=\n   `);\n \n-  await page.getByRole('listitem').filter({ hasText: 'fails' }).getByTitle('Run').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'fails' }).getByTitle('Run').click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ❌ a.test.ts\n@@ -75,7 +75,7 @@ test('should watch e2e deps', async ({ runUITest, writeFiles }) => {\n   });\n \n   await page.getByText('answer').click();\n-  await page.getByRole('listitem').filter({ hasText: 'answer' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'answer' }).getByTitle('Watch').click();\n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts\n         ◯ answer 👁 <=\n@@ -102,13 +102,13 @@ test('should batch watch updates', async ({ runUITest, writeFiles }) => {\n   });\n \n   await page.getByText('a.test.ts').click();\n-  await page.getByRole('listitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();\n   await page.getByText('b.test.ts').click();\n-  await page.getByRole('listitem').filter({ hasText: 'b.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'b.test.ts' }).getByTitle('Watch').click();\n   await page.getByText('c.test.ts').click();\n-  await page.getByRole('listitem').filter({ hasText: 'c.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'c.test.ts' }).getByTitle('Watch').click();\n   await page.getByText('d.test.ts').click();\n-  await page.getByRole('listitem').filter({ hasText: 'd.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'd.test.ts' }).getByTitle('Watch').click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts 👁\n@@ -229,7 +229,7 @@ test('should run added test in watched file', async ({ runUITest, writeFiles })\n   });\n \n   await page.getByText('a.test.ts').click();\n-  await page.getByRole('listitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts 👁 <="
+    },
+    {
+      "sha": "def44e9aeb45110bfe71734b3ffce9b635643cd7",
+      "filename": "tests/playwright-test/ui-mode-trace.spec.ts",
+      "status": "modified",
+      "additions": 7,
+      "deletions": 7,
+      "changes": 14,
+      "blob_url": "https://github.com/microsoft/playwright/blob/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/623a8916f9acf76f3a49287f3d63af9f9dac591a/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts?ref=623a8916f9acf76f3a49287f3d63af9f9dac591a",
+      "patch": "@@ -34,7 +34,7 @@ test('should merge trace events', async ({ runUITest }) => {\n \n   await page.getByText('trace test').dblclick();\n \n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -61,7 +61,7 @@ test('should merge web assertion events', async ({  runUITest }, testInfo) => {\n \n   await page.getByText('trace test').dblclick();\n \n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -86,7 +86,7 @@ test('should merge screenshot assertions', async ({  runUITest }, testInfo) => {\n \n   await page.getByText('trace test').dblclick();\n \n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -134,7 +134,7 @@ test('should show snapshots for sync assertions', async ({ runUITest }) => {\n \n   await page.getByText('trace test').dblclick();\n \n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -214,7 +214,7 @@ test('should not fail on internal page logs', async ({ runUITest, server }) => {\n   });\n \n   await page.getByText('pass').dblclick();\n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n \n   await expect(\n       listItem,\n@@ -241,7 +241,7 @@ test('should not show caught errors in the errors tab', async ({ runUITest }, te\n   });\n \n   await page.getByText('pass').dblclick();\n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n \n   await expect(\n       listItem,\n@@ -272,7 +272,7 @@ test('should reveal errors in the sourcetab', async ({ runUITest }) => {\n   });\n \n   await page.getByText('pass').dblclick();\n-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');\n \n   await expect(\n       listItem,"
+    }
+  ]
+}

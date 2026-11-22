@@ -1,32 +1,95 @@
 {
-  "n": 0,
+  "n": 30,
+  "po": 0.9333,
+  "pe": 0.9333,
   "kappa": {
     "kappa": 0,
-    "po": 0,
-    "pe": 0,
-    "n": 0
+    "po": 0.9333,
+    "pe": 0.9333,
+    "n": 30
+  },
+  "confusion": {
+    "y": {
+      "y": 0,
+      "n": 2
+    },
+    "n": {
+      "y": 0,
+      "n": 28
+    }
+  },
+  "first_distribution": {
+    "n": 28,
+    "y": 2
+  },
+  "second_distribution": {
+    "n": 30
   },
   "semantic_validity": 0,
+  "unresolved_final": [],
+  "first_source": "b-majority",
+  "first_source_note": "协议 B 正式结果（masked 三次运行多数票，variance_report.json）",
+  "first_source_file": "experiments/out/repeats/variance_report.json",
+  "missing_first": [],
   "by_arm": {
     "diff": {
-      "n": 0,
+      "n": 15,
+      "po": 0.8667,
+      "pe": 0.8667,
       "kappa": {
         "kappa": 0,
-        "po": 0,
-        "pe": 0,
-        "n": 0
+        "po": 0.8667,
+        "pe": 0.8667,
+        "n": 15
       },
-      "semantic_validity": 0
+      "confusion": {
+        "y": {
+          "y": 0,
+          "n": 2
+        },
+        "n": {
+          "y": 0,
+          "n": 13
+        }
+      },
+      "first_distribution": {
+        "n": 13,
+        "y": 2
+      },
+      "second_distribution": {
+        "n": 15
+      },
+      "semantic_validity": 0,
+      "unresolved_final": []
     },
     "nodiff": {
-      "n": 0,
+      "n": 15,
+      "po": 1,
+      "pe": 1,
       "kappa": {
-        "kappa": 0,
-        "po": 0,
-        "pe": 0,
-        "n": 0
+        "kappa": 1,
+        "po": 1,
+        "pe": 1,
+        "n": 15
       },
-      "semantic_validity": 0
+      "confusion": {
+        "y": {
+          "y": 0,
+          "n": 0
+        },
+        "n": {
+          "y": 0,
+          "n": 15
+        }
+      },
+      "first_distribution": {
+        "n": 15
+      },
+      "second_distribution": {
+        "n": 15
+      },
+      "semantic_validity": 0,
+      "unresolved_final": []
     }
   }
 }

@@ -1,0 +1,270 @@
+From be7221b04998766fead7a3830f1adf94fff2ef2a Mon Sep 17 00:00:00 2001
+From: Kevin Ansfield <kevin@lookingsideways.co.uk>
+Date: Mon, 16 Mar 2026 21:49:49 +0000
+Subject: [PATCH] Fixed flaky E2E tests for snippet insertion, toolbar clicks,
+ and emoji picker
+
+- Fixed snippet menu race condition across 13 test files by waiting for the
+  correct menu item text instead of any selected item (the unfiltered menu
+  briefly appears before React re-renders with filtered results)
+- Fixed toolbar button instability in createSnippet helper and product card
+  test by adding stabilization waits after card state transitions
+- Fixed emoji picker punctuation test by adding typing delay and processing
+  wait to match other emoji tests
+- Fixed email card display mode test by waiting for editing state before
+  pressing ArrowDown
+---
+ packages/koenig-lexical/test/e2e/cards/audio-card.test.js | 2 +-
+ .../test/e2e/cards/bookmark-card-with-search.test.js      | 2 +-
+ .../test/e2e/cards/bookmark-card-without-search.test.js   | 2 +-
+ .../koenig-lexical/test/e2e/cards/button-card.test.js     | 2 +-
+ .../koenig-lexical/test/e2e/cards/callout-card.test.js    | 2 +-
+ packages/koenig-lexical/test/e2e/cards/email-card.test.js | 7 +++++--
+ .../koenig-lexical/test/e2e/cards/email-cta-card.test.js  | 2 +-
+ packages/koenig-lexical/test/e2e/cards/embed-card.test.js | 2 +-
+ packages/koenig-lexical/test/e2e/cards/html-card.test.js  | 2 +-
+ packages/koenig-lexical/test/e2e/cards/image-card.test.js | 2 +-
+ .../koenig-lexical/test/e2e/cards/product-card.test.js    | 8 ++++++--
+ .../koenig-lexical/test/e2e/cards/toggle-card.test.js     | 2 +-
+ .../test/e2e/cards/video-card.firefox.test.js             | 2 +-
+ .../test/e2e/plugins/EmojiPickerPlugin.test.js            | 4 +++-
+ .../test/e2e/plugins/KoenigSnippetPlugin.test.js          | 2 +-
+ packages/koenig-lexical/test/utils/e2e.js                 | 3 +++
+ 16 files changed, 29 insertions(+), 17 deletions(-)
+
+diff --git a/packages/koenig-lexical/test/e2e/cards/audio-card.test.js b/packages/koenig-lexical/test/e2e/cards/audio-card.test.js
+index 6ee426768c..f98c85eb67 100644
+--- a/packages/koenig-lexical/test/e2e/cards/audio-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/audio-card.test.js
+@@ -358,7 +358,7 @@ test.describe('Audio card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="audio"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/bookmark-card-with-search.test.js b/packages/koenig-lexical/test/e2e/cards/bookmark-card-with-search.test.js
+index 40efb545c6..decd9ac275 100644
+--- a/packages/koenig-lexical/test/e2e/cards/bookmark-card-with-search.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/bookmark-card-with-search.test.js
+@@ -241,7 +241,7 @@ test.describe('Bookmark card (with searchLinks)', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(page.locator('[data-kg-card="bookmark"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/bookmark-card-without-search.test.js b/packages/koenig-lexical/test/e2e/cards/bookmark-card-without-search.test.js
+index 4a7fc8e991..e7e6ac5310 100644
+--- a/packages/koenig-lexical/test/e2e/cards/bookmark-card-without-search.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/bookmark-card-without-search.test.js
+@@ -235,7 +235,7 @@ test.describe('Bookmark card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="bookmark"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/button-card.test.js b/packages/koenig-lexical/test/e2e/cards/button-card.test.js
+index 7c0414c099..1415ae82f1 100644
+--- a/packages/koenig-lexical/test/e2e/cards/button-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/button-card.test.js
+@@ -159,7 +159,7 @@ test.describe('Button Card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="button"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/callout-card.test.js b/packages/koenig-lexical/test/e2e/cards/callout-card.test.js
+index 55fe8bda30..2443df42b8 100644
+--- a/packages/koenig-lexical/test/e2e/cards/callout-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/callout-card.test.js
+@@ -310,7 +310,7 @@ test.describe('Callout Card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="callout"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/email-card.test.js b/packages/koenig-lexical/test/e2e/cards/email-card.test.js
+index 2fd2a51cbb..172c51ac63 100644
+--- a/packages/koenig-lexical/test/e2e/cards/email-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/email-card.test.js
+@@ -119,10 +119,13 @@ test.describe('Email card', async () => {
+         await focusEditor(page);
+         await insertEmailCard(page);
+ 
++        // Wait for card to be in editing mode before moving away
++        const emailCard = page.locator('[data-kg-card="email"]');
++        await expect(emailCard).toHaveAttribute('data-kg-card-editing', 'true');
++
+         // Shift focus away from email card
+         await page.keyboard.press('ArrowDown');
+ 
+-        const emailCard = page.locator('[data-kg-card="email"]');
+         await expect(emailCard).toHaveAttribute('data-kg-card-editing', 'false');
+     });
+ 
+@@ -176,7 +179,7 @@ test.describe('Email card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="email"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/email-cta-card.test.js b/packages/koenig-lexical/test/e2e/cards/email-cta-card.test.js
+index 3423671164..089ca9f0e3 100644
+--- a/packages/koenig-lexical/test/e2e/cards/email-cta-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/email-cta-card.test.js
+@@ -473,7 +473,7 @@ test.describe('Email card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(page.locator('[data-kg-card="email-cta"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/embed-card.test.js b/packages/koenig-lexical/test/e2e/cards/embed-card.test.js
+index 9e433428c7..76d7169c8f 100644
+--- a/packages/koenig-lexical/test/e2e/cards/embed-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/embed-card.test.js
+@@ -246,7 +246,7 @@ test.describe('Embed card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="embed"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/html-card.test.js b/packages/koenig-lexical/test/e2e/cards/html-card.test.js
+index 070dd613e1..42c5768abf 100644
+--- a/packages/koenig-lexical/test/e2e/cards/html-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/html-card.test.js
+@@ -119,7 +119,7 @@ test.describe('Html card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(page.locator('[data-kg-card="html"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/image-card.test.js b/packages/koenig-lexical/test/e2e/cards/image-card.test.js
+index bb39526067..ec55e4569c 100644
+--- a/packages/koenig-lexical/test/e2e/cards/image-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/image-card.test.js
+@@ -896,7 +896,7 @@ test.describe('Image card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="image"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/product-card.test.js b/packages/koenig-lexical/test/e2e/cards/product-card.test.js
+index aa217af2d5..66aaf5de4a 100644
+--- a/packages/koenig-lexical/test/e2e/cards/product-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/product-card.test.js
+@@ -365,10 +365,14 @@ test.describe('Product card', async () => {
+         await page.keyboard.press('Escape');
+ 
+         // Check that the toolbar is displayed
+-        await expect(await page.locator('[data-kg-card-toolbar="product"]')).toBeVisible();
++        await expect(page.locator('[data-kg-card-toolbar="product"]')).toBeVisible();
++
++        // Wait for card to finish transitioning to selected (non-editing) state
++        await expect(page.locator('[data-kg-card="product"]')).toHaveAttribute('data-kg-card-editing', 'false');
++        // Small wait for toolbar to stabilize after card state transition
++        await page.waitForTimeout(50);
+ 
+         // Edit video card
+-        await page.waitForSelector('[data-testid="edit-product-card"]');
+         await page.getByTestId('edit-product-card').click();
+ 
+         await assertHTML(page, html`
+diff --git a/packages/koenig-lexical/test/e2e/cards/toggle-card.test.js b/packages/koenig-lexical/test/e2e/cards/toggle-card.test.js
+index e60b1f2e9e..16c06feaf9 100644
+--- a/packages/koenig-lexical/test/e2e/cards/toggle-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/toggle-card.test.js
+@@ -250,7 +250,7 @@ test.describe('Toggle card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="toggle"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/cards/video-card.firefox.test.js b/packages/koenig-lexical/test/e2e/cards/video-card.firefox.test.js
+index 30f698e13b..49ef6b3f85 100644
+--- a/packages/koenig-lexical/test/e2e/cards/video-card.firefox.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/video-card.firefox.test.js
+@@ -390,7 +390,7 @@ test.describe('Video card', async () => {
+         // can insert card from snippet
+         await page.keyboard.press('Enter');
+         await page.keyboard.type('/snippet');
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'snippet'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await expect(await page.locator('[data-kg-card="video"]')).toHaveCount(2);
+     });
+diff --git a/packages/koenig-lexical/test/e2e/plugins/EmojiPickerPlugin.test.js b/packages/koenig-lexical/test/e2e/plugins/EmojiPickerPlugin.test.js
+index 5043907b28..93653d02fb 100644
+--- a/packages/koenig-lexical/test/e2e/plugins/EmojiPickerPlugin.test.js
++++ b/packages/koenig-lexical/test/e2e/plugins/EmojiPickerPlugin.test.js
+@@ -110,9 +110,11 @@ test.describe('Emoji Picker Plugin', async function () {
+     test('can use punctuation', async function () {
+         await focusEditor(page);
+ 
+-        await page.keyboard.type(':t-rex');
++        await page.keyboard.type(':t-rex', {delay: 10});
+         await expect(page.getByTestId('emoji-menu')).toBeVisible();
+ 
++        // small wait for emoji picker to fully process typed characters
++        await page.waitForTimeout(50);
+         await page.keyboard.press('Enter');
+         await assertHTML(page, '<p dir="ltr"><span data-lexical-text="true">🦖</span></p>');
+     });
+diff --git a/packages/koenig-lexical/test/e2e/plugins/KoenigSnippetPlugin.test.js b/packages/koenig-lexical/test/e2e/plugins/KoenigSnippetPlugin.test.js
+index b08424f326..23f100c71d 100644
+--- a/packages/koenig-lexical/test/e2e/plugins/KoenigSnippetPlugin.test.js
++++ b/packages/koenig-lexical/test/e2e/plugins/KoenigSnippetPlugin.test.js
+@@ -33,7 +33,7 @@ test.describe('Snippet Plugin', async function () {
+         await focusEditor(page);
+         await page.keyboard.type('/snippet');
+         // Wait for snippet to appear in slash menu before pressing Enter
+-        await page.waitForSelector('[data-kg-cardmenu-selected="true"]');
++        await expect(page.locator('[data-kg-cardmenu-selected="true"]').filter({hasText: 'planes'})).toBeVisible();
+         await page.keyboard.press('Enter');
+         await page.waitForSelector('[data-kg-card="image"]');
+         expect(await page.$('[data-kg-card="image"]')).not.toBeNull();
+diff --git a/packages/koenig-lexical/test/utils/e2e.js b/packages/koenig-lexical/test/utils/e2e.js
+index fa810cda5b..4a55c9ad7d 100644
+--- a/packages/koenig-lexical/test/utils/e2e.js
++++ b/packages/koenig-lexical/test/utils/e2e.js
+@@ -419,6 +419,9 @@ export async function insertCard(page, {cardName, nth = 0}) {
+ 
+ export async function createSnippet(page) {
+     await page.waitForSelector('[data-testid="create-snippet"]');
++    // Small wait for toolbar to stabilize after card state transitions
++    // (React re-renders can detach and re-mount toolbar elements)
++    await page.waitForTimeout(50);
+     await page.getByTestId('create-snippet').click();
+     await page.getByTestId('snippet-name').fill('snippet');
+     await page.keyboard.press('Enter');

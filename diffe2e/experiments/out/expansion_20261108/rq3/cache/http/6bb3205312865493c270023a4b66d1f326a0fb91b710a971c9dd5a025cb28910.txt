@@ -1,0 +1,197 @@
+{
+  "sha": "5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+  "node_id": "C_kwDODTssw9oAKDVlMDU3NGRjNDQxN2Y4ODE0NDJmNDY1YjhkNGQyYjZhZjc0Y2UxOWE",
+  "commit": {
+    "author": {
+      "name": "Pavel Feldman",
+      "email": "pavel.feldman@gmail.com",
+      "date": "2023-05-10T00:53:01Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2023-05-10T00:53:01Z"
+    },
+    "message": "chore: list attachments in the trace (#22919)\n\nFixes https://github.com/microsoft/playwright/issues/22736",
+    "tree": {
+      "sha": "dad5bca87fc4547b247470d24a4e60fbe5757c38",
+      "url": "https://api.github.com/repos/microsoft/playwright/git/trees/dad5bca87fc4547b247470d24a4e60fbe5757c38"
+    },
+    "url": "https://api.github.com/repos/microsoft/playwright/git/commits/5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJkWurtCRBK7hj4Ov3rIwAAYx4IABu9t+Qh0t3X5S3/iGUVBdYQ\nELiurgWj7EL0Zcg5zhLuTKn0vh4/piSxaIFvF+PV9oNWgI2eX8oCRimTQ6TVUyvg\n3+9UBHipFcx9AOz2KQxiBRVjk3VEGsJDtfsOHE6PN1NbGkKRfMtA96Cn3URBqL9h\nxGdK/QiksWorZc4nDDjzO2VGydho9FHWasxuobno10caaX7DIGjzEo7KnoIj7YgG\nUGSYXT+pNHpJXyUDDorJpI0Lza3vCQ+olK3BKcrkUVbvKH15HQ9d/BdJfw03I/9u\nSGZaJW+X7Z38n6+6XTM8kN4jJQtc/8HsK5ZjfTBlKvdabUprvTCQmjgePjhUGdI=\n=Q1sI\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree dad5bca87fc4547b247470d24a4e60fbe5757c38\nparent cd49f5c4668ca6ed4cc024bdacc0d27960049688\nauthor Pavel Feldman <pavel.feldman@gmail.com> 1683679981 -0700\ncommitter GitHub <noreply@github.com> 1683679981 -0700\n\nchore: list attachments in the trace (#22919)\n\nFixes https://github.com/microsoft/playwright/issues/22736",
+      "verified_at": "2024-01-16T19:59:59Z"
+    }
+  },
+  "url": "https://api.github.com/repos/microsoft/playwright/commits/5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+  "html_url": "https://github.com/microsoft/playwright/commit/5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+  "comments_url": "https://api.github.com/repos/microsoft/playwright/commits/5e0574dc4417f881442f465b8d4d2b6af74ce19a/comments",
+  "author": {
+    "login": "pavelfeldman",
+    "id": 883973,
+    "node_id": "MDQ6VXNlcjg4Mzk3Mw==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/883973?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/pavelfeldman",
+    "html_url": "https://github.com/pavelfeldman",
+    "followers_url": "https://api.github.com/users/pavelfeldman/followers",
+    "following_url": "https://api.github.com/users/pavelfeldman/following{/other_user}",
+    "gists_url": "https://api.github.com/users/pavelfeldman/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/pavelfeldman/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/pavelfeldman/subscriptions",
+    "organizations_url": "https://api.github.com/users/pavelfeldman/orgs",
+    "repos_url": "https://api.github.com/users/pavelfeldman/repos",
+    "events_url": "https://api.github.com/users/pavelfeldman/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/pavelfeldman/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "cd49f5c4668ca6ed4cc024bdacc0d27960049688",
+      "url": "https://api.github.com/repos/microsoft/playwright/commits/cd49f5c4668ca6ed4cc024bdacc0d27960049688",
+      "html_url": "https://github.com/microsoft/playwright/commit/cd49f5c4668ca6ed4cc024bdacc0d27960049688"
+    }
+  ],
+  "stats": {
+    "total": 187,
+    "additions": 158,
+    "deletions": 29
+  },
+  "files": [
+    {
+      "sha": "b39d7c9998fcd363258a00d69eef88349d9864e6",
+      "filename": "packages/playwright-core/src/utils/traceUtils.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Fplaywright-core%2Fsrc%2Futils%2FtraceUtils.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Fplaywright-core%2Fsrc%2Futils%2FtraceUtils.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fplaywright-core%2Fsrc%2Futils%2FtraceUtils.ts?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -119,12 +119,12 @@ export async function saveTraceFile(fileName: string, traceEvents: TraceEvent[],\n     for (const attachment of (event.attachments || []).filter(a => !!a.path)) {\n       await fs.promises.readFile(attachment.path!).then(content => {\n         const sha1 = calculateSha1(content);\n+        attachment.sha1 = sha1;\n+        delete attachment.path;\n         if (sha1s.has(sha1))\n           return;\n         sha1s.add(sha1);\n         zipFile.addBuffer(content, 'resources/' + sha1);\n-        attachment.sha1 = sha1;\n-        delete attachment.path;\n       }).catch();\n     }\n   }"
+    },
+    {
+      "sha": "110657222a67457e5fd1a15abf2cd1b9a50e17c8",
+      "filename": "packages/playwright-test/src/worker/testInfo.ts",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 0,
+      "changes": 6,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Fplaywright-test%2Fsrc%2Fworker%2FtestInfo.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Fplaywright-test%2Fsrc%2Fworker%2FtestInfo.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fplaywright-test%2Fsrc%2Fworker%2FtestInfo.ts?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -331,7 +331,13 @@ export class TestInfoImpl implements TestInfo {\n   // ------------ TestInfo methods ------------\n \n   async attach(name: string, options: { path?: string, body?: string | Buffer, contentType?: string } = {}) {\n+    const step = this._addStep({\n+      title: 'attach',\n+      category: 'attach',\n+      wallTime: Date.now(),\n+    });\n     this.attachments.push(await normalizeAndSaveAttachment(this.outputPath(), name, options));\n+    step.complete({});\n   }\n \n   outputPath(...pathSegments: string[]){"
+    },
+    {
+      "sha": "46eae4326b0eebf5bbb2782a4b2e5c856a0c0393",
+      "filename": "packages/trace-viewer/src/ui/attachmentsTab.css",
+      "status": "added",
+      "additions": 40,
+      "deletions": 0,
+      "changes": 40,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FattachmentsTab.css",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FattachmentsTab.css",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FattachmentsTab.css?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -0,0 +1,40 @@\n+/*\n+  Copyright (c) Microsoft Corporation.\n+\n+  Licensed under the Apache License, Version 2.0 (the \"License\");\n+  you may not use this file except in compliance with the License.\n+  You may obtain a copy of the License at\n+\n+      http://www.apache.org/licenses/LICENSE-2.0\n+\n+  Unless required by applicable law or agreed to in writing, software\n+  distributed under the License is distributed on an \"AS IS\" BASIS,\n+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+  See the License for the specific language governing permissions and\n+  limitations under the License.\n+*/\n+\n+.attachments-tab {\n+  flex: auto;\n+  line-height: 24px;\n+  white-space: pre;\n+  overflow: auto;\n+  user-select: text;\n+}\n+\n+.attachments-section {\n+  padding-left: 6px;\n+  font-weight: bold;\n+  text-transform: uppercase;\n+  font-size: 10px;\n+  color: var(--vscode-sideBarTitle-foreground);\n+  line-height: 24px;\n+}\n+\n+.attachments-section:not(:first-child) {\n+  border-top: 1px solid var(--vscode-panel-border);\n+}\n+\n+.attachment-item {\n+  margin: 4px 8px;\n+}"
+    },
+    {
+      "sha": "c74cea8b6f59c5d8078c2d9c9eb86dfa0983c6dd",
+      "filename": "packages/trace-viewer/src/ui/attachmentsTab.tsx",
+      "status": "added",
+      "additions": 59,
+      "deletions": 0,
+      "changes": 59,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FattachmentsTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FattachmentsTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FattachmentsTab.tsx?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -0,0 +1,59 @@\n+/**\n+ * Copyright (c) Microsoft Corporation.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ *     http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing, software\n+ * distributed under the License is distributed on an \"AS IS\" BASIS,\n+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+ * See the License for the specific language governing permissions and\n+ * limitations under the License.\n+ */\n+\n+import type { ActionTraceEvent } from '@trace/trace';\n+import * as React from 'react';\n+import './attachmentsTab.css';\n+import { ImageDiffView } from '@web/components/imageDiffView';\n+import type { TestAttachment } from '@web/components/imageDiffView';\n+\n+export const AttachmentsTab: React.FunctionComponent<{\n+  action: ActionTraceEvent | undefined,\n+}> = ({ action }) => {\n+  if (!action)\n+    return null;\n+  const expected = action.attachments?.find(a => a.name.endsWith('-expected.png') && (a.path || a.sha1)) as TestAttachment | undefined;\n+  const actual = action.attachments?.find(a => a.name.endsWith('-actual.png') && (a.path || a.sha1)) as TestAttachment | undefined;\n+  const diff = action.attachments?.find(a => a.name.endsWith('-diff.png') && (a.path || a.sha1)) as TestAttachment | undefined;\n+\n+  return <div className='attachments-tab'>\n+    {expected && actual && <div className='attachments-section'>Image diff</div>}\n+    {expected && actual && <ImageDiffView imageDiff={{\n+      name: 'Image diff',\n+      expected: { attachment: { ...expected, path: attachmentURL(expected) }, title: 'Expected' },\n+      actual: { attachment: { ...actual, path: attachmentURL(actual) } },\n+      diff: diff ? { attachment: { ...diff, path: attachmentURL(diff) } } : undefined,\n+    }} />}\n+    {<div className='attachments-section'>Attachments</div>}\n+    {action.attachments?.map(a => {\n+      return <div className='attachment-item'>\n+        <a target='_blank' href={`sha1/${a.sha1}`}>{a.name}</a>\n+      </div>;\n+    })}\n+  </div>;\n+};\n+\n+function attachmentURL(attachment: {\n+  name: string;\n+  contentType: string;\n+  path?: string;\n+  sha1?: string;\n+  body?: string;\n+}) {\n+  if (attachment.sha1)\n+    return 'sha1/' + attachment.sha1;\n+  return 'file?path=' + attachment.path;\n+}"
+    },
+    {
+      "sha": "e58970988247371b5724f009be4a09a8dd310ba6",
+      "filename": "packages/trace-viewer/src/ui/callTab.tsx",
+      "status": "modified",
+      "additions": 0,
+      "deletions": 25,
+      "changes": 25,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FcallTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FcallTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FcallTab.tsx?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -23,8 +23,6 @@ import { CopyToClipboard } from './copyToClipboard';\n import { asLocator } from '@isomorphic/locatorGenerators';\n import type { Language } from '@isomorphic/locatorGenerators';\n import { ErrorMessage } from '@web/components/errorMessage';\n-import { ImageDiffView } from '@web/components/imageDiffView';\n-import type { TestAttachment } from '@web/components/imageDiffView';\n \n export const CallTab: React.FunctionComponent<{\n   action: ActionTraceEvent | undefined,\n@@ -41,18 +39,7 @@ export const CallTab: React.FunctionComponent<{\n   const wallTime = action.wallTime ? new Date(action.wallTime).toLocaleString() : null;\n   const duration = action.endTime ? msToString(action.endTime - action.startTime) : 'Timed Out';\n \n-  const expected = action.attachments?.find(a => a.name.endsWith('-expected.png') && (a.path || a.sha1)) as TestAttachment | undefined;\n-  const actual = action.attachments?.find(a => a.name.endsWith('-actual.png') && (a.path || a.sha1)) as TestAttachment | undefined;\n-  const diff = action.attachments?.find(a => a.name.endsWith('-diff.png') && (a.path || a.sha1)) as TestAttachment | undefined;\n-\n   return <div className='call-tab'>\n-    { expected && actual && <div className='call-section'>Image diff</div> }\n-    { expected && actual && <ImageDiffView imageDiff={{\n-      name: 'Image diff',\n-      expected: { attachment: { ...expected, path: attachmentURL(expected) }, title: 'Expected' },\n-      actual: { attachment: { ...actual, path: attachmentURL(actual) } },\n-      diff: diff ? { attachment: { ...diff, path: attachmentURL(diff) } } : undefined,\n-    }} /> }\n     {!!error && <ErrorMessage error={error} />}\n     {!!error && <div className='call-section'>Call</div>}\n     <div className='call-line'>{action.apiName}</div>\n@@ -160,15 +147,3 @@ function parseSerializedValue(value: SerializedValue, handles: any[] | undefined\n   }\n   return '<object>';\n }\n-\n-function attachmentURL(attachment: {\n-  name: string;\n-  contentType: string;\n-  path?: string;\n-  sha1?: string;\n-  body?: string;\n-}) {\n-  if (attachment.sha1)\n-    return 'sha1/' + attachment.sha1;\n-  return 'file?path=' + attachment.path;\n-}"
+    },
+    {
+      "sha": "0b244b4404babcb6dff8c6718c0ac0f381537497",
+      "filename": "packages/trace-viewer/src/ui/sourceTab.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -44,7 +44,7 @@ export const SourceTab: React.FunctionComponent<{\n   const { source, highlight, targetLine, fileName } = useAsyncMemo<{ source: SourceModel, targetLine?: number, fileName?: string, highlight: SourceHighlight[] }>(async () => {\n     const actionLocation = action?.stack?.[selectedFrame];\n     const shouldUseFallback = !actionLocation?.file;\n-    if (shouldUseFallback && !shouldUseFallback)\n+    if (shouldUseFallback && !fallbackLocation)\n       return { source: { file: '', errors: [], content: undefined }, targetLine: 0, highlight: [] };\n \n     const file = shouldUseFallback ? fallbackLocation!.file : actionLocation.file;"
+    },
+    {
+      "sha": "025501345e984f51872ff5c5efe8bab96d3d3c3d",
+      "filename": "packages/trace-viewer/src/ui/workbench.tsx",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 0,
+      "changes": 8,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -30,6 +30,7 @@ import type { TabbedPaneTabModel } from '@web/components/tabbedPane';\n import { Timeline } from './timeline';\n import './workbench.css';\n import { MetadataView } from './metadataView';\n+import { AttachmentsTab } from './attachmentsTab';\n \n export const Workbench: React.FunctionComponent<{\n   model?: MultiTraceModel,\n@@ -98,17 +99,24 @@ export const Workbench: React.FunctionComponent<{\n     count: networkCount,\n     render: () => <NetworkTab action={activeAction} />\n   };\n+  const attachmentsTab: TabbedPaneTabModel = {\n+    id: 'attachments',\n+    title: 'Attachments',\n+    render: () => <AttachmentsTab action={activeAction} />\n+  };\n \n   const tabs: TabbedPaneTabModel[] = showSourcesFirst ? [\n     sourceTab,\n     consoleTab,\n     networkTab,\n     callTab,\n+    attachmentsTab,\n   ] : [\n     callTab,\n     consoleTab,\n     networkTab,\n     sourceTab,\n+    attachmentsTab,\n   ];\n \n   return <div className='vbox'>"
+    },
+    {
+      "sha": "d4dcfa45da3d7fbd0e2480b3a28eed5f0c088c13",
+      "filename": "tests/playwright-test/ui-mode-test-attachments.spec.ts",
+      "status": "added",
+      "additions": 41,
+      "deletions": 0,
+      "changes": 41,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/tests%2Fplaywright-test%2Fui-mode-test-attachments.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/tests%2Fplaywright-test%2Fui-mode-test-attachments.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-attachments.spec.ts?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -0,0 +1,41 @@\n+/**\n+ * Copyright (c) Microsoft Corporation.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ * http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing, software\n+ * distributed under the License is distributed on an \"AS IS\" BASIS,\n+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+ * See the License for the specific language governing permissions and\n+ * limitations under the License.\n+ */\n+\n+import { test, expect } from './ui-mode-fixtures';\n+\n+test.describe.configure({ mode: 'parallel' });\n+\n+test('should contain attachments', async ({ runUITest }) => {\n+  const { page } = await runUITest({\n+    'a.test.ts': `\n+      import { test } from '@playwright/test';\n+      test('attach test', async () => {\n+        await test.info().attach('note', { path: __filename });\n+      });\n+    `,\n+  });\n+  await page.getByText('attach test').click();\n+  await page.getByTitle('Run all').click();\n+  await expect(page.getByTestId('status-line')).toHaveText('1/1 passed (100%)');\n+  await page.getByText('Attachments').click();\n+  await page.getByText('attach', { exact: true }).click();\n+  const popupPromise = page.waitForEvent('popup');\n+  await page.getByRole('link', { name: 'note' }).click();\n+  const popup = await popupPromise;\n+  await popup.waitForLoadState();\n+  const content = await popup.content();\n+  expect(content).toContain('attach test');\n+});"
+    },
+    {
+      "sha": "c7e9c08f345cb2fda1af30dc5cf8dec43631096a",
+      "filename": "tests/playwright-test/ui-mode-trace.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/5e0574dc4417f881442f465b8d4d2b6af74ce19a/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/5e0574dc4417f881442f465b8d4d2b6af74ce19a/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts?ref=5e0574dc4417f881442f465b8d4d2b6af74ce19a",
+      "patch": "@@ -176,7 +176,7 @@ test('should show image diff', async ({ runUITest, server }) => {\n   });\n \n   await page.getByText('vrt test').dblclick();\n-  await page.getByText(/Log/).click();\n+  await page.getByText(/Attachments/).click();\n   await expect(page.getByText('Diff', { exact: true })).toBeVisible();\n   await expect(page.getByText('Actual', { exact: true })).toBeVisible();\n   await expect(page.getByText('Expected', { exact: true })).toBeVisible();"
+    }
+  ]
+}

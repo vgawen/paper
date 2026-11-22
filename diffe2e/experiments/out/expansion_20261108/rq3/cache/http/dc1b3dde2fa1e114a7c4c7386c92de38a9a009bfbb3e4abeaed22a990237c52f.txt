@@ -1,0 +1,161 @@
+{
+  "sha": "a3ab1eb608f85df2db279ff8e669e8b183951280",
+  "node_id": "C_kwDOCnGlsNoAKGEzYWIxZWI2MDhmODVkZjJkYjI3OWZmOGU2NjllOGIxODM5NTEyODA",
+  "commit": {
+    "author": {
+      "name": "Jono Mingard",
+      "email": "reason.koan@gmail.com",
+      "date": "2023-05-24T23:20:35Z"
+    },
+    "committer": {
+      "name": "Jono Mingard",
+      "email": "reason.koan@gmail.com",
+      "date": "2023-05-24T23:54:46Z"
+    },
+    "message": "Reworked signup card background image selection\n\nrefs https://github.com/TryGhost/Team/issues/3284",
+    "tree": {
+      "sha": "ba1b8e3f8f252715b3f6d8e584ee3dfc8d2f9098",
+      "url": "https://api.github.com/repos/TryGhost/Koenig/git/trees/ba1b8e3f8f252715b3f6d8e584ee3dfc8d2f9098"
+    },
+    "url": "https://api.github.com/repos/TryGhost/Koenig/git/commits/a3ab1eb608f85df2db279ff8e669e8b183951280",
+    "comment_count": 0,
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "url": "https://api.github.com/repos/TryGhost/Koenig/commits/a3ab1eb608f85df2db279ff8e669e8b183951280",
+  "html_url": "https://github.com/TryGhost/Koenig/commit/a3ab1eb608f85df2db279ff8e669e8b183951280",
+  "comments_url": "https://api.github.com/repos/TryGhost/Koenig/commits/a3ab1eb608f85df2db279ff8e669e8b183951280/comments",
+  "author": {
+    "login": "binary-koan",
+    "id": 1077405,
+    "node_id": "MDQ6VXNlcjEwNzc0MDU=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/1077405?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/binary-koan",
+    "html_url": "https://github.com/binary-koan",
+    "followers_url": "https://api.github.com/users/binary-koan/followers",
+    "following_url": "https://api.github.com/users/binary-koan/following{/other_user}",
+    "gists_url": "https://api.github.com/users/binary-koan/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/binary-koan/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/binary-koan/subscriptions",
+    "organizations_url": "https://api.github.com/users/binary-koan/orgs",
+    "repos_url": "https://api.github.com/users/binary-koan/repos",
+    "events_url": "https://api.github.com/users/binary-koan/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/binary-koan/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "binary-koan",
+    "id": 1077405,
+    "node_id": "MDQ6VXNlcjEwNzc0MDU=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/1077405?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/binary-koan",
+    "html_url": "https://github.com/binary-koan",
+    "followers_url": "https://api.github.com/users/binary-koan/followers",
+    "following_url": "https://api.github.com/users/binary-koan/following{/other_user}",
+    "gists_url": "https://api.github.com/users/binary-koan/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/binary-koan/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/binary-koan/subscriptions",
+    "organizations_url": "https://api.github.com/users/binary-koan/orgs",
+    "repos_url": "https://api.github.com/users/binary-koan/repos",
+    "events_url": "https://api.github.com/users/binary-koan/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/binary-koan/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "3b062613c96b4edec09ab33b0720c153fd9f6474",
+      "url": "https://api.github.com/repos/TryGhost/Koenig/commits/3b062613c96b4edec09ab33b0720c153fd9f6474",
+      "html_url": "https://github.com/TryGhost/Koenig/commit/3b062613c96b4edec09ab33b0720c153fd9f6474"
+    }
+  ],
+  "stats": {
+    "total": 166,
+    "additions": 135,
+    "deletions": 31
+  },
+  "files": [
+    {
+      "sha": "f3a4bc8e2fa75f654c011bd423ef794abe718434",
+      "filename": "packages/koenig-lexical/src/components/ui/MediaUploader.jsx",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 1,
+      "changes": 4,
+      "blob_url": "https://github.com/TryGhost/Koenig/blob/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2FMediaUploader.jsx",
+      "raw_url": "https://github.com/TryGhost/Koenig/raw/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2FMediaUploader.jsx",
+      "contents_url": "https://api.github.com/repos/TryGhost/Koenig/contents/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2FMediaUploader.jsx?ref=a3ab1eb608f85df2db279ff8e669e8b183951280",
+      "patch": "@@ -27,12 +27,14 @@ export function MediaUploader({\n     progress,\n     errors,\n     onRemoveMedia,\n-    additionalActions\n+    additionalActions,\n+    setFileInputRef\n }) {\n     const fileInputRef = useRef(null);\n \n     const onFileInputRef = (element) => {\n         fileInputRef.current = element;\n+        setFileInputRef?.(element);\n     };\n \n     const progressStyle = {"
+    },
+    {
+      "sha": "5108c1ba2bfe9964499c20af3bebad25f3cfe567",
+      "filename": "packages/koenig-lexical/src/components/ui/SettingsPanel.jsx",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 7,
+      "changes": 15,
+      "blob_url": "https://github.com/TryGhost/Koenig/blob/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2FSettingsPanel.jsx",
+      "raw_url": "https://github.com/TryGhost/Koenig/raw/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2FSettingsPanel.jsx",
+      "contents_url": "https://api.github.com/repos/TryGhost/Koenig/contents/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2FSettingsPanel.jsx?ref=a3ab1eb608f85df2db279ff8e669e8b183951280",
+      "patch": "@@ -1,5 +1,6 @@\n import KoenigComposerContext from '../../context/KoenigComposerContext.jsx';\n-import React, {createContext, useContext, useEffect, useState} from 'react';\n+import React, {createContext, useContext, useEffect} from 'react';\n+import clsx from 'clsx';\n import useSettingsPanelReposition from '../../hooks/useSettingsPanelReposition';\n import {ButtonGroup} from './ButtonGroup';\n import {ColorIndicator, ColorPicker} from './ColorPicker';\n@@ -171,8 +172,7 @@ export function ColorOptionSetting({label, onClick, selectedName, buttons, layou\n     );\n }\n \n-export function ColorPickerSetting({label, onChange, value, swatches, eyedropper, hasTransparentOption, dataTestId}) {\n-    const [isExpanded, setExpanded] = useState(false);\n+export function ColorPickerSetting({label, isExpanded, onChange, onTogglePicker, value, swatches, eyedropper, hasTransparentOption, dataTestId}) {\n     const {repositionPanel} = useSettingsPanelContext();\n \n     useEffect(() => repositionPanel(), [repositionPanel, isExpanded]);\n@@ -187,18 +187,18 @@ export function ColorPickerSetting({label, onChange, value, swatches, eyedropper\n                         swatches={swatches}\n                         value={value}\n                         onSelectSwatch={onChange}\n-                        onTogglePicker={() => setExpanded(!isExpanded)}\n+                        onTogglePicker={() => onTogglePicker(!isExpanded)}\n                     />\n                 </div>\n             </div>\n-            {isExpanded && <ColorPicker eyedropper={eyedropper} hasTransparentOption={hasTransparentOption} value={value} onBlur={() => setExpanded(false)} onChange={onChange} />}\n+            {isExpanded && <ColorPicker eyedropper={eyedropper} hasTransparentOption={hasTransparentOption} value={value} onBlur={() => onTogglePicker(false)} onChange={onChange} />}\n         </div>\n     );\n }\n \n-export function MediaUploadSetting({label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, errors = [], progress, onRemoveMedia, icon, desc = '', size, borderStyle, mimeTypes, isPinturaEnabled, openImageEditor}) {\n+export function MediaUploadSetting({className, label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, errors = [], progress, onRemoveMedia, icon, desc = '', size, borderStyle, mimeTypes, isPinturaEnabled, openImageEditor, setFileInputRef}) {\n     return (\n-        <div className=\"mt-2 text-[1.3rem] first:mt-0\" data-testid=\"custom-thumbnail\">\n+        <div className={clsx('mt-2 text-[1.3rem] first:mt-0', className)} data-testid=\"media-upload-setting\">\n             <div className={hideLabel ? 'sr-only' : 'font-bold text-grey-900 dark:text-grey-200'}>{label}</div>\n \n             <MediaUploader\n@@ -214,6 +214,7 @@ export function MediaUploadSetting({label, hideLabel, onFileChange, isDraggedOve\n                 mimeTypes={mimeTypes}\n                 openImageEditor={openImageEditor}\n                 progress={progress}\n+                setFileInputRef={setFileInputRef}\n                 size={size}\n                 src={src}\n                 onFileChange={onFileChange}"
+    },
+    {
+      "sha": "3f33b160f58c6c7974dc632e725c109ca161c6db",
+      "filename": "packages/koenig-lexical/src/components/ui/cards/SignupCard.jsx",
+      "status": "modified",
+      "additions": 27,
+      "deletions": 12,
+      "changes": 39,
+      "blob_url": "https://github.com/TryGhost/Koenig/blob/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2Fcards%2FSignupCard.jsx",
+      "raw_url": "https://github.com/TryGhost/Koenig/raw/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2Fcards%2FSignupCard.jsx",
+      "contents_url": "https://api.github.com/repos/TryGhost/Koenig/contents/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2Fcards%2FSignupCard.jsx?ref=a3ab1eb608f85df2db279ff8e669e8b183951280",
+      "patch": "@@ -1,6 +1,6 @@\n import KoenigNestedEditor from '../../KoenigNestedEditor';\n import PropTypes from 'prop-types';\n-import React, {useEffect} from 'react';\n+import React, {useEffect, useState} from 'react';\n import clsx from 'clsx';\n import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel} from '../SettingsPanel';\n import {ReactComponent as CenterAlignIcon} from '../../../assets/icons/kg-align-center.svg';\n@@ -20,9 +20,6 @@ import {isEditorEmpty} from '../../../utils/isEditorEmpty';\n import {textColorForBackgroundColor} from '@tryghost/color-utils';\n \n export function SignupCard({alignment,\n-    header,\n-    subheader,\n-    disclaimer,\n     buttonText,\n     showBackgroundImage,\n     backgroundImageSrc,\n@@ -35,6 +32,7 @@ export function SignupCard({alignment,\n     handleAlignment,\n     handleButtonText,\n     handleShowBackgroundImage,\n+    handleHideBackgroundImage,\n     handleClearBackgroundImage,\n     handleBackgroundColor,\n     handleButtonColor,\n@@ -55,7 +53,11 @@ export function SignupCard({alignment,\n     disclaimerTextEditor,\n     disclaimerTextEditorInitialState,\n     isSwapped,\n-    handleSwapLayout}) {\n+    handleSwapLayout,\n+    setFileInputRef}) {\n+    const [backgroundColorPickerExpanded, setBackgroundColorPickerExpanded] = useState(false);\n+    const [buttonColorPickerExpanded, setButtonColorPickerExpanded] = useState(false);\n+\n     const matchingTextColor = (color) => {\n         return color === 'transparent' ? '' : textColorForBackgroundColor(hexColorValue(color)).hex();\n     };\n@@ -305,6 +307,7 @@ export function SignupCard({alignment,\n                         dataTestId='signup-background-color'\n                         eyedropper={layout === 'split'}\n                         hasTransparentOption={true}\n+                        isExpanded={backgroundColorPickerExpanded}\n                         label='Background'\n                         swatches={[\n                             (layout !== 'split' && {\n@@ -317,7 +320,10 @@ export function SignupCard({alignment,\n                                         data-testid=\"signup-background-image-toggle\"\n                                         title=\"Image\"\n                                         type=\"button\"\n-                                        onClick={handleShowBackgroundImage}\n+                                        onClick={() => {\n+                                            handleShowBackgroundImage();\n+                                            setBackgroundColorPickerExpanded(false);\n+                                        }}\n                                     >\n                                         <ImgBgIcon className=\"h-[1.4rem] w-[1.4rem]\" />\n                                     </button>\n@@ -329,10 +335,17 @@ export function SignupCard({alignment,\n                         ].filter(Boolean)}\n                         value={(showBackgroundImage && layout !== 'split') ? '' : backgroundColor}\n                         onChange={color => handleBackgroundColor(color, matchingTextColor(color))}\n+                        onTogglePicker={(isExpanded) => {\n+                            if (isExpanded) {\n+                                handleHideBackgroundImage();\n+                            }\n+                            setBackgroundColorPickerExpanded(isExpanded);\n+                        }}\n                     />\n-                    {showBackgroundImage && layout !== 'split' && <MediaUploadSetting\n+                    <MediaUploadSetting\n                         alt='Background image'\n                         borderStyle={'dashed'}\n+                        className={(!showBackgroundImage || layout === 'split') && 'hidden'}\n                         desc='Click to upload'\n                         errors={fileUploader?.errors}\n                         hideLabel={layout !== 'split'}\n@@ -345,16 +358,18 @@ export function SignupCard({alignment,\n                         openImageEditor={openImageEditor}\n                         placeholderRef={imageDragHandler?.setRef}\n                         progress={progress}\n+                        setFileInputRef={setFileInputRef}\n                         size='xsmall'\n                         src={backgroundImageSrc}\n                         onFileChange={onFileChange}\n                         onRemoveMedia={handleClearBackgroundImage}\n-                    />}\n+                    />\n                     <SettingsDivider />\n \n                     <ColorPickerSetting\n                         dataTestId='signup-button-color'\n                         eyedropper={layout === 'split'}\n+                        isExpanded={buttonColorPickerExpanded}\n                         label='Button'\n                         swatches={[\n                             {title: 'White', hex: '#ffffff'},\n@@ -363,6 +378,7 @@ export function SignupCard({alignment,\n                         ]}\n                         value={buttonColor}\n                         onChange={color => handleButtonColor(color, matchingTextColor(color))}\n+                        onTogglePicker={setButtonColorPickerExpanded}\n                     />\n                     <InputSetting\n                         dataTestId='signup-button-text'\n@@ -388,9 +404,6 @@ export function SignupCard({alignment,\n \n SignupCard.propTypes = {\n     alignment: PropTypes.oneOf(['left', 'center']),\n-    header: PropTypes.string,\n-    subheader: PropTypes.string,\n-    disclaimer: PropTypes.string,\n     buttonColor: PropTypes.string,\n     buttonText: PropTypes.string,\n     buttonTextColor: PropTypes.string,\n@@ -409,6 +422,7 @@ SignupCard.propTypes = {\n     handleClearBackgroundImage: PropTypes.func,\n     handleBackgroundColor: PropTypes.func,\n     handleShowBackgroundImage: PropTypes.func,\n+    handleHideBackgroundImage: PropTypes.func,\n     handleButtonColor: PropTypes.func,\n     handleLabels: PropTypes.func,\n     handleTextColor: PropTypes.func,\n@@ -426,5 +440,6 @@ SignupCard.propTypes = {\n     disclaimerTextEditor: PropTypes.object,\n     disclaimerTextEditorInitialState: PropTypes.string,\n     isSwapped: PropTypes.bool,\n-    handleSwapLayout: PropTypes.func\n+    handleSwapLayout: PropTypes.func,\n+    setFileInputRef: PropTypes.func\n };"
+    },
+    {
+      "sha": "506e95600d3a00f7faca21766e53b3950cd6b2b8",
+      "filename": "packages/koenig-lexical/src/nodes/SignupNodeComponent.jsx",
+      "status": "modified",
+      "additions": 28,
+      "deletions": 4,
+      "changes": 32,
+      "blob_url": "https://github.com/TryGhost/Koenig/blob/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Fnodes%2FSignupNodeComponent.jsx",
+      "raw_url": "https://github.com/TryGhost/Koenig/raw/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Fnodes%2FSignupNodeComponent.jsx",
+      "contents_url": "https://api.github.com/repos/TryGhost/Koenig/contents/packages%2Fkoenig-lexical%2Fsrc%2Fnodes%2FSignupNodeComponent.jsx?ref=a3ab1eb608f85df2db279ff8e669e8b183951280",
+      "patch": "@@ -9,7 +9,8 @@ import {SignupCard} from '../components/ui/cards/SignupCard.jsx';\n import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';\n import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu';\n import {backgroundImageUploadHandler} from '../utils/imageUploadHandler';\n-import {useContext, useEffect, useState} from 'react';\n+import {openFileSelection} from '../utils/openFileSelection';\n+import {useContext, useEffect, useRef, useState} from 'react';\n import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';\n \n function SignupNodeComponent({\n@@ -41,7 +42,9 @@ function SignupNodeComponent({\n     const [showSnippetToolbar, setShowSnippetToolbar] = useState(false);\n     const [availableLabels, setAvailableLabels] = useState([]);\n     const [showBackgroundImage, setShowBackgroundImage] = useState(Boolean(backgroundImageSrc));\n+    const [lastBackgroundImage, setLastBackgroundImage] = useState(backgroundImageSrc);\n     const {isEnabled: isPinturaEnabled, openEditor: openImageEditor} = usePinturaEditor({config: cardConfig.pinturaConfig});\n+    const fileInputRef = useRef(null);\n \n     useEffect(() => {\n         if (cardConfig?.fetchLabels) {\n@@ -55,6 +58,10 @@ function SignupNodeComponent({\n         if (layout !== 'split') {\n             setShowBackgroundImage(Boolean(backgroundImageSrc));\n         }\n+\n+        if (layout === 'split' && !backgroundImageSrc && lastBackgroundImage) {\n+            handleShowBackgroundImage();\n+        }\n         // We just want to reset the show background image state when the layout changes, not when the image changes\n         // eslint-disable-next-line react-hooks/exhaustive-deps\n     }, [layout]);\n@@ -87,6 +94,8 @@ function SignupNodeComponent({\n             const node = $getNodeByKey(nodeKey);\n             node.setBackgroundImageSrc(imageSrc);\n         });\n+\n+        setLastBackgroundImage(imageSrc);\n     };\n \n     const onFileChange = async (e) => {\n@@ -116,8 +125,22 @@ function SignupNodeComponent({\n         });\n     };\n \n-    const handleShowBackgroundImage = (e) => {\n+    const handleShowBackgroundImage = () => {\n         setShowBackgroundImage(true);\n+\n+        if (lastBackgroundImage) {\n+            editor.update(() => {\n+                const node = $getNodeByKey(nodeKey);\n+                node.setBackgroundImageSrc(lastBackgroundImage);\n+            });\n+        } else {\n+            openFileSelection({fileInputRef});\n+        }\n+    };\n+\n+    const handleHideBackgroundImage = () => {\n+        setShowBackgroundImage(false);\n+        handleClearBackgroundImage();\n     };\n \n     const handleBackgroundColor = (color, matchingTextColor) => {\n@@ -127,8 +150,7 @@ function SignupNodeComponent({\n             node.setTextColor(matchingTextColor);\n \n             if (layout !== 'split') {\n-                setShowBackgroundImage(false);\n-                handleClearBackgroundImage();\n+                handleHideBackgroundImage();\n             }\n         });\n     };\n@@ -186,6 +208,7 @@ function SignupNodeComponent({\n                 handleButtonColor={handleButtonColor}\n                 handleButtonText={handleButtonText}\n                 handleClearBackgroundImage={handleClearBackgroundImage}\n+                handleHideBackgroundImage={handleHideBackgroundImage}\n                 handleLabels={handleLabels}\n                 handleLayout={handleLayout}\n                 handleShowBackgroundImage={handleShowBackgroundImage}\n@@ -201,6 +224,7 @@ function SignupNodeComponent({\n                 labels={labels}\n                 layout={layout}\n                 openImageEditor={openImageEditor}\n+                setFileInputRef={ref => fileInputRef.current = ref}\n                 showBackgroundImage={showBackgroundImage}\n                 subheader={subheader}\n                 subheaderTextEditor={subheaderTextEditor}"
+    },
+    {
+      "sha": "cd3991c04a76e6f7b374c6ad387216349cc45fed",
+      "filename": "packages/koenig-lexical/src/utils/openFileSelection.js",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/TryGhost/Koenig/blob/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Futils%2FopenFileSelection.js",
+      "raw_url": "https://github.com/TryGhost/Koenig/raw/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Fsrc%2Futils%2FopenFileSelection.js",
+      "contents_url": "https://api.github.com/repos/TryGhost/Koenig/contents/packages%2Fkoenig-lexical%2Fsrc%2Futils%2FopenFileSelection.js?ref=a3ab1eb608f85df2db279ff8e669e8b183951280",
+      "patch": "@@ -1,5 +1,5 @@\n // Triggers the file selection dialog from a given referenced element\n \n export function openFileSelection({fileInputRef}) {\n-    fileInputRef.current.click();\n-}\n\\ No newline at end of file\n+    fileInputRef.current?.click();\n+}"
+    },
+    {
+      "sha": "9c949342f9d603f84e1a558c52837d3b6bcf9872",
+      "filename": "packages/koenig-lexical/test/e2e/cards/signup-card.test.js",
+      "status": "modified",
+      "additions": 67,
+      "deletions": 5,
+      "changes": 72,
+      "blob_url": "https://github.com/TryGhost/Koenig/blob/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Ftest%2Fe2e%2Fcards%2Fsignup-card.test.js",
+      "raw_url": "https://github.com/TryGhost/Koenig/raw/a3ab1eb608f85df2db279ff8e669e8b183951280/packages%2Fkoenig-lexical%2Ftest%2Fe2e%2Fcards%2Fsignup-card.test.js",
+      "contents_url": "https://api.github.com/repos/TryGhost/Koenig/contents/packages%2Fkoenig-lexical%2Ftest%2Fe2e%2Fcards%2Fsignup-card.test.js?ref=a3ab1eb608f85df2db279ff8e669e8b183951280",
+      "patch": "@@ -228,13 +228,13 @@ test.describe('Signup card', async () => {\n \n     test('can add and remove background image', async function ({page}) {\n         const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);\n-        const fileChooserPromise = page.waitForEvent('filechooser');\n \n         await focusEditor(page);\n         await insertCard(page, {cardName: 'signup'});\n \n+        const fileChooserPromise = page.waitForEvent('filechooser');\n+\n         await page.click('[data-testid=\"signup-background-image-toggle\"]');\n-        await page.click('[data-testid=\"media-upload-placeholder\"]');\n \n         // Set files\n         const fileChooser = await fileChooserPromise;\n@@ -245,6 +245,67 @@ test.describe('Signup card', async () => {\n \n         // Check if it is also set as an image in the panel\n         await expect(page.locator('[data-testid=\"media-upload-filled\"] img')).toHaveAttribute('src', /blob:/);\n+\n+        // Remove the image\n+        await page.click('[data-testid=\"media-upload-remove\"]');\n+\n+        await expect(page.locator('[data-kg-card=\"signup\"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);\n+        await expect(page.locator('[data-testid=\"media-upload-placeholder\"]')).toBeVisible();\n+\n+        // Add it again by clicking the placeholder\n+        const fileChooserPromise2 = page.waitForEvent('filechooser');\n+\n+        await page.click('[data-testid=\"media-upload-placeholder\"]');\n+\n+        const fileChooser2 = await fileChooserPromise2;\n+        await fileChooser2.setFiles([filePath]);\n+\n+        await expect(page.locator('[data-kg-card=\"signup\"] > div:first-child')).toHaveCSS('background-image', /blob:/);\n+        await expect(page.locator('[data-testid=\"media-upload-filled\"] img')).toHaveAttribute('src', /blob:/);\n+    });\n+\n+    test('can switch between background image and color', async function ({page}) {\n+        const filePath = path.relative(process.cwd(), __dirname + `/../fixtures/large-image.jpeg`);\n+\n+        await focusEditor(page);\n+        await insertCard(page, {cardName: 'signup'});\n+\n+        // Choose an image\n+\n+        const fileChooserPromise = page.waitForEvent('filechooser');\n+\n+        await page.click('[data-testid=\"signup-background-image-toggle\"]');\n+\n+        const fileChooser = await fileChooserPromise;\n+        await fileChooser.setFiles([filePath]);\n+\n+        await expect(page.locator('[data-kg-card=\"signup\"] > div:first-child')).toHaveCSS('background-image', /blob:/);\n+        await expect(page.locator('[data-testid=\"media-upload-setting\"]')).toBeVisible();\n+        await expect(page.locator('[data-testid=\"media-upload-filled\"] img')).toHaveAttribute('src', /blob:/);\n+\n+        // Switch to a color swatch\n+\n+        await page.click('[data-testid=\"signup-background-color\"] button[title=\"Black\"]');\n+\n+        await expect(page.locator('[data-kg-card=\"signup\"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);\n+        await expect(page.locator('[data-kg-card=\"signup\"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');\n+        await expect(page.locator('[data-testid=\"media-upload-setting\"]')).not.toBeVisible();\n+\n+        // Switch back to the image\n+\n+        await page.click('[data-testid=\"signup-background-image-toggle\"]');\n+\n+        await expect(page.locator('[data-kg-card=\"signup\"] > div:first-child')).toHaveCSS('background-image', /blob:/);\n+        await expect(page.locator('[data-testid=\"media-upload-setting\"]')).toBeVisible();\n+        await expect(page.locator('[data-testid=\"media-upload-filled\"] img')).toHaveAttribute('src', /blob:/);\n+\n+        // Open the color picker\n+\n+        await page.click('[data-testid=\"signup-background-color\"] [aria-label=\"Pick color\"]');\n+\n+        await expect(page.locator('[data-kg-card=\"signup\"] > div:first-child')).not.toHaveCSS('background-image', /blob:/);\n+        await expect(page.locator('[data-kg-card=\"signup\"] > div:first-child')).toHaveCSS('background-color', 'rgb(0, 0, 0)');\n+        await expect(page.locator('[data-testid=\"media-upload-setting\"]')).not.toBeVisible();\n     });\n \n     test('can add and remove background image in split layout', async function ({page}) {\n@@ -257,14 +318,15 @@ test.describe('Signup card', async () => {\n         await page.locator('[data-testid=\"signup-layout-split\"]').click();\n \n         await expect(page.locator('[data-testid=\"signup-background-image-toggle\"]')).toHaveCount(0);\n+        await expect(page.locator('[data-testid=\"media-upload-setting\"]')).not.toBeVisible();\n \n-        await page.click('[data-testid=\"media-upload-placeholder\"]');\n+        await page.click('[data-testid=\"signup-card-container\"] [data-testid=\"media-upload-placeholder\"]');\n \n         // Set files\n         const fileChooser = await fileChooserPromise;\n         await fileChooser.setFiles([filePath]);\n \n-        await expect(page.locator('[data-testid=\"media-upload-filled\"] img')).toHaveAttribute('src', /blob:/);\n+        await expect(page.locator('[data-testid=\"signup-card-container\"] [data-testid=\"media-upload-filled\"] img')).toHaveAttribute('src', /blob:/);\n     });\n \n     test('can add and remove labels', async function ({page}) {\n@@ -385,7 +447,7 @@ test.describe('Signup card', async () => {\n         // Set files\n         const fileChooser = await fileChooserPromise;\n         await fileChooser.setFiles([filePath]);\n-        await expect(page.locator('[data-testid=\"media-upload-filled\"] img')).toHaveAttribute('src', /blob:/);\n+        await expect(page.locator('[data-testid=\"signup-card-container\"] [data-testid=\"media-upload-filled\"] img')).toHaveAttribute('src', /blob:/);\n         // Click swap\n         await page.click('[data-testid=\"media-upload-swap\"]');\n         // Check the parent class name was updated"
+    }
+  ]
+}

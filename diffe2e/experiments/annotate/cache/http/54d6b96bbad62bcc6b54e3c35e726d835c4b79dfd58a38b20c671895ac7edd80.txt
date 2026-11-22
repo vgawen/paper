@@ -1,0 +1,784 @@
+diff --git a/.github/actionlint.yaml b/.github/actionlint.yaml
+new file mode 100644
+index 00000000000..03f499d839c
+--- /dev/null
++++ b/.github/actionlint.yaml
+@@ -0,0 +1,4 @@
++self-hosted-runner:
++  # Depot-managed GitHub Actions runners (https://depot.dev/docs/github-actions/runner-types)
++  labels:
++    - depot-*
+diff --git a/.github/workflows/ai-generated-label.yml b/.github/workflows/ai-generated-label.yml
+index 82f99ffab90..405651bdb77 100644
+--- a/.github/workflows/ai-generated-label.yml
++++ b/.github/workflows/ai-generated-label.yml
+@@ -18,7 +18,7 @@ permissions:
+ jobs:
+   add-ai-generated-label:
+     name: Add 'AI generated' label
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     if: startsWith(github.event.pull_request.title, '[AI]')
+     steps:
+       - name: Add 'AI generated' label
+diff --git a/.github/workflows/autofix.yml b/.github/workflows/autofix.yml
+index a7b2b1c1dc0..9c3c950b519 100644
+--- a/.github/workflows/autofix.yml
++++ b/.github/workflows/autofix.yml
+@@ -13,7 +13,7 @@ permissions:
+ 
+ jobs:
+   autofix:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+diff --git a/.github/workflows/build.yml b/.github/workflows/build.yml
+index 7388ad48929..95fd3414d36 100644
+--- a/.github/workflows/build.yml
++++ b/.github/workflows/build.yml
+@@ -23,7 +23,7 @@ concurrency:
+ 
+ jobs:
+   setup:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     permissions:
+       contents: read
+     steps:
+@@ -37,7 +37,7 @@ jobs:
+ 
+   api:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -65,7 +65,7 @@ jobs:
+ 
+   crdt:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -93,7 +93,7 @@ jobs:
+ 
+   web:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -115,7 +115,7 @@ jobs:
+ 
+   cli:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -143,7 +143,7 @@ jobs:
+ 
+   server:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+diff --git a/.github/workflows/check.yml b/.github/workflows/check.yml
+index 4f1642b502d..3ef1f492666 100644
+--- a/.github/workflows/check.yml
++++ b/.github/workflows/check.yml
+@@ -16,7 +16,7 @@ concurrency:
+ 
+ jobs:
+   setup:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     permissions:
+       contents: read
+     steps:
+@@ -29,7 +29,7 @@ jobs:
+           download-translations: 'false'
+   constraints:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -44,7 +44,7 @@ jobs:
+         run: yarn check:tsconfig-references
+   lint:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -57,7 +57,7 @@ jobs:
+         run: yarn lint
+   typecheck:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -70,7 +70,7 @@ jobs:
+         run: yarn typecheck
+   validate-cli:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -85,7 +85,7 @@ jobs:
+         run: node packages/sync-server/build/bin/actual-server.js --version
+   test:
+     needs: setup
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -97,7 +97,7 @@ jobs:
+       - name: Test
+         run: yarn test
+   check-gh-actions:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     permissions:
+       security-events: write
+     steps:
+@@ -109,7 +109,7 @@ jobs:
+   migrations:
+     needs: setup
+     if: github.event_name == 'pull_request'
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+diff --git a/.github/workflows/codeql.yml b/.github/workflows/codeql.yml
+index 97477ce99da..634862d8993 100644
+--- a/.github/workflows/codeql.yml
++++ b/.github/workflows/codeql.yml
+@@ -14,7 +14,7 @@ concurrency:
+ jobs:
+   analyze:
+     name: Analyze
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     permissions:
+       actions: read
+       contents: read
+diff --git a/.github/workflows/count-points.yml b/.github/workflows/count-points.yml
+index 7c9bd874898..4d7b52c26e3 100644
+--- a/.github/workflows/count-points.yml
++++ b/.github/workflows/count-points.yml
+@@ -18,7 +18,7 @@ permissions:
+ 
+ jobs:
+   count-points:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - name: Checkout repository
+         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+diff --git a/.github/workflows/crdt-version-check.yml b/.github/workflows/crdt-version-check.yml
+index da2da6c68f9..196499a93fb 100644
+--- a/.github/workflows/crdt-version-check.yml
++++ b/.github/workflows/crdt-version-check.yml
+@@ -10,7 +10,7 @@ permissions:
+ 
+ jobs:
+   check-version-bump:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     name: Ensure @actual-app/crdt version is bumped
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+diff --git a/.github/workflows/cut-release-branch.yml b/.github/workflows/cut-release-branch.yml
+index 459c70c0cae..81bdc1057c2 100644
+--- a/.github/workflows/cut-release-branch.yml
++++ b/.github/workflows/cut-release-branch.yml
+@@ -22,7 +22,7 @@ permissions:
+ jobs:
+   cut-release-branch:
+     if: github.repository_owner == 'actualbudget'
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     environment: release
+     env:
+       GH_TOKEN: ${{ github.token }}
+diff --git a/.github/workflows/do-not-merge.yml b/.github/workflows/do-not-merge.yml
+index 048d142cbe5..3cead365a3e 100644
+--- a/.github/workflows/do-not-merge.yml
++++ b/.github/workflows/do-not-merge.yml
+@@ -11,7 +11,7 @@ permissions:
+ jobs:
+   do-not-merge:
+     name: Block PRs with "do not merge" label
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - name: Fail if 'do not merge' label is set
+         if: contains(github.event.pull_request.labels.*.name, 'do not merge')
+diff --git a/.github/workflows/docker-nightly.yml b/.github/workflows/docker-nightly.yml
+index f6910264741..6d21a9a4317 100644
+--- a/.github/workflows/docker-nightly.yml
++++ b/.github/workflows/docker-nightly.yml
+@@ -33,7 +33,7 @@ jobs:
+   build:
+     if: github.event_name == 'workflow_dispatch' || !github.event.repository.fork
+     name: Build Docker image
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     environment: release
+     strategy:
+       matrix:
+diff --git a/.github/workflows/docker-release.yml b/.github/workflows/docker-release.yml
+index a08f24d47d8..457aab15d51 100644
+--- a/.github/workflows/docker-release.yml
++++ b/.github/workflows/docker-release.yml
+@@ -30,7 +30,7 @@ permissions:
+ jobs:
+   build:
+     name: Build Docker image
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     environment: release
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+diff --git a/.github/workflows/docs-spelling.yml b/.github/workflows/docs-spelling.yml
+index 1eb7b2b4f37..f2da783e8fa 100644
+--- a/.github/workflows/docs-spelling.yml
++++ b/.github/workflows/docs-spelling.yml
+@@ -74,7 +74,7 @@ jobs:
+       security-events: write
+     outputs:
+       followup: ${{ steps.spelling.outputs.followup }}
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     if: "contains(github.event_name, 'pull_request') || github.event_name == 'push'"
+     concurrency:
+       group: spelling-${{ github.event.pull_request.number || github.ref }}
+@@ -111,7 +111,7 @@ jobs:
+   comment-push:
+     name: Report (Push)
+     # If your workflow isn't running on push, you can remove this job
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     needs: spelling
+     permissions:
+       contents: write
+@@ -128,7 +128,7 @@ jobs:
+   comment-pr:
+     name: Report (PR)
+     # If you workflow isn't running on pull_request*, you can remove this job
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     needs: spelling
+     permissions:
+       pull-requests: write
+@@ -149,7 +149,7 @@ jobs:
+       contents: write
+       pull-requests: write
+       actions: read
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     environment: docs-spelling
+     if: ${{
+       github.event_name == 'issue_comment' &&
+diff --git a/.github/workflows/e2e-test.yml b/.github/workflows/e2e-test.yml
+index be74689782e..9dafe6f74f1 100644
+--- a/.github/workflows/e2e-test.yml
++++ b/.github/workflows/e2e-test.yml
+@@ -27,7 +27,7 @@ concurrency:
+ jobs:
+   build-web:
+     name: Build web bundle
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+@@ -58,7 +58,7 @@ jobs:
+ 
+   functional:
+     name: Functional (shard ${{ matrix.shard }}/3)
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest-4
+     needs: build-web
+     strategy:
+       fail-fast: false
+@@ -95,7 +95,7 @@ jobs:
+ 
+   functional-desktop-app:
+     name: Functional Desktop App
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest-4
+     container:
+       image: mcr.microsoft.com/playwright:v1.59.1-jammy
+     steps:
+diff --git a/.github/workflows/electron-master.yml b/.github/workflows/electron-master.yml
+index 3ddd1fe8faf..2ac39820309 100644
+--- a/.github/workflows/electron-master.yml
++++ b/.github/workflows/electron-master.yml
+@@ -25,11 +25,14 @@ jobs:
+     strategy:
+       fail-fast: false
+       matrix:
+-        os:
+-          - ubuntu-22.04
+-          - windows-2022
+-          - macos-latest
+-    runs-on: ${{ matrix.os }}
++        include:
++          - os: ubuntu-22.04
++            runner: depot-ubuntu-22.04-4
++          - os: windows-2022
++            runner: windows-2022
++          - os: macos-latest
++            runner: depot-macos-latest
++    runs-on: ${{ matrix.runner }}
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+diff --git a/.github/workflows/electron-pr.yml b/.github/workflows/electron-pr.yml
+index ca5184c48f5..5c683efd6ec 100644
+--- a/.github/workflows/electron-pr.yml
++++ b/.github/workflows/electron-pr.yml
+@@ -31,11 +31,14 @@ jobs:
+     strategy:
+       fail-fast: false
+       matrix:
+-        os:
+-          - ubuntu-22.04
+-          - windows-2022
+-          - macos-latest
+-    runs-on: ${{ matrix.os }}
++        include:
++          - os: ubuntu-22.04
++            runner: depot-ubuntu-22.04-4
++          - os: windows-2022
++            runner: windows-2022
++          - os: macos-latest
++            runner: depot-macos-latest
++    runs-on: ${{ matrix.runner }}
+     steps:
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+         with:
+diff --git a/.github/workflows/fork-pr-welcome.yml b/.github/workflows/fork-pr-welcome.yml
+index 59831007926..603a03b190e 100644
+--- a/.github/workflows/fork-pr-welcome.yml
++++ b/.github/workflows/fork-pr-welcome.yml
+@@ -23,7 +23,7 @@ permissions:
+ jobs:
+   welcome:
+     name: Post Welcome Message
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     if: github.event.pull_request.head.repo.full_name != github.repository
+     steps:
+       - name: Post welcome comment
+diff --git a/.github/workflows/i18n-string-extract-master.yml b/.github/workflows/i18n-string-extract-master.yml
+index 63fec315c65..cadab9bdee6 100644
+--- a/.github/workflows/i18n-string-extract-master.yml
++++ b/.github/workflows/i18n-string-extract-master.yml
+@@ -11,7 +11,7 @@ permissions:
+ 
+ jobs:
+   extract-and-upload-i18n-strings:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     environment: i18n
+     if: github.repository == 'actualbudget/actual'
+     steps:
+diff --git a/.github/workflows/issues-close-feature-requests.yml b/.github/workflows/issues-close-feature-requests.yml
+index eac322c2a1a..caafadc0f4d 100644
+--- a/.github/workflows/issues-close-feature-requests.yml
++++ b/.github/workflows/issues-close-feature-requests.yml
+@@ -10,7 +10,7 @@ permissions:
+ jobs:
+   needs-votes:
+     if: ${{ github.event.label.name == 'feature' }}
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     env:
+       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       GH_REPO: ${{ github.repository }}
+diff --git a/.github/workflows/issues-close-tech-support.yml b/.github/workflows/issues-close-tech-support.yml
+index a92bbf41b5e..d53ebbddae3 100644
+--- a/.github/workflows/issues-close-tech-support.yml
++++ b/.github/workflows/issues-close-tech-support.yml
+@@ -10,7 +10,7 @@ permissions:
+ jobs:
+   tech-support:
+     if: ${{ github.event.label.name == 'tech-support' }}
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - name: Create comment and close issue
+         run: |
+diff --git a/.github/workflows/issues-feature-implemented.yml b/.github/workflows/issues-feature-implemented.yml
+index 3e1c2ced23d..d08ec9ad497 100644
+--- a/.github/workflows/issues-feature-implemented.yml
++++ b/.github/workflows/issues-feature-implemented.yml
+@@ -23,7 +23,7 @@ permissions:
+ jobs:
+   handle-feature-requests:
+     if: github.event.pull_request.merged == true
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       # This is not a security concern because we have approved & merged the PR
+       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+diff --git a/.github/workflows/issues-remove-help-wanted.yml b/.github/workflows/issues-remove-help-wanted.yml
+index 22174ef5fb3..17651c3f1f7 100644
+--- a/.github/workflows/issues-remove-help-wanted.yml
++++ b/.github/workflows/issues-remove-help-wanted.yml
+@@ -10,7 +10,7 @@ permissions:
+ jobs:
+   remove-help-wanted:
+     if: ${{ !contains(github.event.issue.labels.*.name, 'feature') && contains(github.event.issue.labels.*.name, 'help wanted') }}
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - name: Remove 'help wanted' label
+         env:
+diff --git a/.github/workflows/netlify-release.yml b/.github/workflows/netlify-release.yml
+index 114ecfd9980..a47370dc6c8 100644
+--- a/.github/workflows/netlify-release.yml
++++ b/.github/workflows/netlify-release.yml
+@@ -21,7 +21,7 @@ concurrency:
+ 
+ jobs:
+   build-and-deploy:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     environment: release
+     steps:
+       - name: Repository Checkout
+diff --git a/.github/workflows/nightly-theme-catalog-scan.yml b/.github/workflows/nightly-theme-catalog-scan.yml
+index dcbb698706f..2c9c83fe271 100644
+--- a/.github/workflows/nightly-theme-catalog-scan.yml
++++ b/.github/workflows/nightly-theme-catalog-scan.yml
+@@ -13,7 +13,7 @@ permissions:
+ jobs:
+   validate-theme-catalog:
+     name: Validate custom theme catalog
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     if: github.repository == 'actualbudget/actual'
+     timeout-minutes: 10
+     steps:
+@@ -32,7 +32,7 @@ jobs:
+     name: Notify Discord on failure
+     needs: validate-theme-catalog
+     if: failure() && github.repository == 'actualbudget/actual'
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     environment: nightly-alerts
+     timeout-minutes: 5
+     steps:
+diff --git a/.github/workflows/publish-crdt.yml b/.github/workflows/publish-crdt.yml
+index e83d8e5dc50..8586cc43eb4 100644
+--- a/.github/workflows/publish-crdt.yml
++++ b/.github/workflows/publish-crdt.yml
+@@ -19,7 +19,7 @@ concurrency:
+ 
+ jobs:
+   check-version:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     name: Check if publish is needed
+     outputs:
+       should-publish: ${{ steps.check.outputs.should-publish }}
+@@ -50,7 +50,7 @@ jobs:
+   publish:
+     needs: check-version
+     if: needs.check-version.outputs.should-publish == 'true'
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     name: Publish @actual-app/crdt to npm
+     permissions:
+       contents: read
+diff --git a/.github/workflows/publish-flathub.yml b/.github/workflows/publish-flathub.yml
+index 44aa1533644..4f789217682 100644
+--- a/.github/workflows/publish-flathub.yml
++++ b/.github/workflows/publish-flathub.yml
+@@ -23,7 +23,7 @@ permissions:
+ 
+ jobs:
+   publish-flathub:
+-    runs-on: ubuntu-22.04
++    runs-on: depot-ubuntu-22.04
+     environment: release
+     steps:
+       - name: Resolve version
+diff --git a/.github/workflows/publish-nightly-electron.yml b/.github/workflows/publish-nightly-electron.yml
+index 93090d75158..47fa7cf08d4 100644
+--- a/.github/workflows/publish-nightly-electron.yml
++++ b/.github/workflows/publish-nightly-electron.yml
+@@ -25,11 +25,14 @@ jobs:
+     strategy:
+       fail-fast: false
+       matrix:
+-        os:
+-          - ubuntu-22.04
+-          - windows-latest
+-          - macos-latest
+-    runs-on: ${{ matrix.os }}
++        include:
++          - os: ubuntu-22.04
++            runner: depot-ubuntu-22.04-4
++          - os: windows-latest
++            runner: windows-latest
++          - os: macos-latest
++            runner: depot-macos-latest
++    runs-on: ${{ matrix.runner }}
+     environment: release
+     if: github.event.repository.fork == false
+     steps:
+diff --git a/.github/workflows/publish-npm-packages.yml b/.github/workflows/publish-npm-packages.yml
+index 29b98d26e1c..e48df6cfded 100644
+--- a/.github/workflows/publish-npm-packages.yml
++++ b/.github/workflows/publish-npm-packages.yml
+@@ -14,7 +14,7 @@ permissions:
+ 
+ jobs:
+   build-and-pack:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     name: Build and pack npm packages
+     if: github.event_name == 'push' || (github.event.repository.fork == false)
+     steps:
+@@ -90,7 +90,7 @@ jobs:
+             packages/cli/@actual-app/cli.tgz
+ 
+   publish:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     name: Publish npm packages
+     needs: build-and-pack
+     environment: release
+diff --git a/.github/workflows/release-notes.yml b/.github/workflows/release-notes.yml
+index b771bc46968..057dab0a560 100644
+--- a/.github/workflows/release-notes.yml
++++ b/.github/workflows/release-notes.yml
+@@ -24,7 +24,7 @@ jobs:
+       && github.head_ref != 'release'
+       && startsWith(github.head_ref, 'release-notes/') == false
+       && github.event.pull_request.user.login != 'dependabot[bot]'
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     permissions:
+       contents: read
+     steps:
+@@ -77,7 +77,7 @@ jobs:
+       github.event_name == 'push'
+       || (github.event_name == 'workflow_run'
+           && github.event.workflow_run.conclusion == 'success')
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     environment: release
+     permissions:
+       contents: write
+diff --git a/.github/workflows/size-compare.yml b/.github/workflows/size-compare.yml
+index 941fe06766c..f14de5db465 100644
+--- a/.github/workflows/size-compare.yml
++++ b/.github/workflows/size-compare.yml
+@@ -31,7 +31,7 @@ concurrency:
+ 
+ jobs:
+   compare:
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     permissions:
+       pull-requests: write
+       contents: read
+diff --git a/.github/workflows/stale.yml b/.github/workflows/stale.yml
+index 371df13cb92..088b2877126 100644
+--- a/.github/workflows/stale.yml
++++ b/.github/workflows/stale.yml
+@@ -9,7 +9,7 @@ jobs:
+   stale:
+     permissions:
+       pull-requests: write
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
+         with:
+@@ -21,7 +21,7 @@ jobs:
+   stale-wip:
+     permissions:
+       pull-requests: write
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
+         with:
+@@ -34,7 +34,7 @@ jobs:
+   stale-needs-info:
+     permissions:
+       issues: write
+-    runs-on: ubuntu-latest
++    runs-on: depot-ubuntu-latest
+     steps:
+       - uses: actions/stale@b5d41d4e1d5dceea10e7104786b73624c18a190f # v10.2.0
+         with:
+diff --git a/README.md b/README.md
+index 4886a8eb803..363e39c7dd5 100644
+--- a/README.md
++++ b/README.md
+@@ -81,3 +81,4 @@ Make Actual Budget accessible to more people by helping with the [Internationali
+ Thanks to our wonderful sponsors who make Actual Budget possible!
+ 
+ <a href="https://www.netlify.com"> <img src="https://www.netlify.com/v3/img/components/netlify-color-accent.svg" alt="Deploys by Netlify" /> </a>
++<a href="https://depot.dev"> <img src="https://depot.dev/badges/built-with-depot.svg" alt="Built with Depot" /> </a>
+diff --git a/packages/desktop-client/e2e/page-models/account-page.ts b/packages/desktop-client/e2e/page-models/account-page.ts
+index 0386b022a0c..ea9deb38270 100644
+--- a/packages/desktop-client/e2e/page-models/account-page.ts
++++ b/packages/desktop-client/e2e/page-models/account-page.ts
+@@ -113,16 +113,19 @@ export class AccountPage {
+       category: 'split',
+     });
+ 
++    // Splitting starts with two empty splits
++    const initialSplitCount = 2;
++
+     // Child transactions
+     for (let i = 0; i < transactions.length; i++) {
++      if (i >= initialSplitCount) {
++        await this.page.getByRole('button', { name: 'Add Split' }).click();
++      }
++
+       await this._fillTransactionFields(
+         this.newTransactionRow.nth(i + 1),
+         transactions[i],
+       );
+-
+-      if (i + 1 < transactions.length) {
+-        await this.page.getByRole('button', { name: 'Add Split' }).click();
+-      }
+     }
+ 
+     await this.addTransactionButton.click();
+diff --git a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Area-Graph-and-checks-the-visuals-1-chromium-linux.png b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Area-Graph-and-checks-the-visuals-1-chromium-linux.png
+index 325b34b31f3..3204796e31f 100644
+Binary files a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Area-Graph-and-checks-the-visuals-1-chromium-linux.png and b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Area-Graph-and-checks-the-visuals-1-chromium-linux.png differ
+diff --git a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Bar-Graph-and-checks-the-visuals-2-chromium-linux.png b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Bar-Graph-and-checks-the-visuals-2-chromium-linux.png
+index 456639cc3e9..c0864b9b237 100644
+Binary files a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Bar-Graph-and-checks-the-visuals-2-chromium-linux.png and b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Bar-Graph-and-checks-the-visuals-2-chromium-linux.png differ
+diff --git a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Data-Table-and-checks-the-visuals-1-chromium-linux.png b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Data-Table-and-checks-the-visuals-1-chromium-linux.png
+index 03ec0633a32..ac788c0c106 100644
+Binary files a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Data-Table-and-checks-the-visuals-1-chromium-linux.png and b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Switches-to-Data-Table-and-checks-the-visuals-1-chromium-linux.png differ
+diff --git a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-labels-button-shows-the-labels-1-chromium-linux.png b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-labels-button-shows-the-labels-1-chromium-linux.png
+index f32b72c9de1..073793afd71 100644
+Binary files a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-labels-button-shows-the-labels-1-chromium-linux.png and b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-labels-button-shows-the-labels-1-chromium-linux.png differ
+diff --git a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-legend-button-shows-the-legend-side-bar-1-chromium-linux.png b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-legend-button-shows-the-legend-side-bar-1-chromium-linux.png
+index 40d7216f735..19eb8763ed2 100644
+Binary files a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-legend-button-shows-the-legend-side-bar-1-chromium-linux.png and b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-legend-button-shows-the-legend-side-bar-1-chromium-linux.png differ
+diff --git a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-summary-button-shows-the-summary-1-chromium-linux.png b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-summary-button-shows-the-summary-1-chromium-linux.png
+index 8de9c03236b..b589a358639 100644
+Binary files a/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-summary-button-shows-the-summary-1-chromium-linux.png and b/packages/desktop-client/e2e/reports.test.ts-snapshots/Reports-custom-reports-Validates-that-show-summary-button-shows-the-summary-1-chromium-linux.png differ
+diff --git a/packages/desktop-client/src/components/transactions/TransactionList.tsx b/packages/desktop-client/src/components/transactions/TransactionList.tsx
+index 09d2cc8167e..a065b7a880d 100644
+--- a/packages/desktop-client/src/components/transactions/TransactionList.tsx
++++ b/packages/desktop-client/src/components/transactions/TransactionList.tsx
+@@ -14,6 +14,7 @@ import {
+   addSplitTransaction,
+   applyTransactionDiff,
+   isPreviewId,
++  makeChild,
+   realizeTempTransactions,
+   splitTransaction,
+   updateTransaction,
+@@ -497,7 +498,11 @@ export function TransactionList({
+ 
+   const onSplit = useCallback(
+     (id: TransactionEntity['id']) => {
+-      const changes = splitTransaction(transactionsLatest.current, id);
++      const changes = splitTransaction(
++        transactionsLatest.current,
++        id,
++        parent => [makeChild(parent), makeChild(parent)],
++      );
+       onChange(changes.newTransaction, changes.data);
+       void saveDiffAndApply(
+         changes.diff,
+diff --git a/packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx b/packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx
+index ad567acc404..8473e484405 100644
+--- a/packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx
++++ b/packages/desktop-client/src/components/transactions/TransactionsTable.test.tsx
+@@ -941,10 +941,7 @@ describe('Transactions', () => {
+     await waitForAutocomplete();
+     await waitForAutocomplete();
+ 
+-    await userEvent.click(
+-      container.querySelector('[data-testid="add-split-button"]')!,
+-    );
+-
++    // Splitting starts with two empty splits
+     input = await editNewField(container, 'debit', 1);
+     await userEvent.clear(input);
+     await userEvent.type(input, '45.00');
+diff --git a/packages/desktop-client/src/components/transactions/TransactionsTable.tsx b/packages/desktop-client/src/components/transactions/TransactionsTable.tsx
+index 84e7eeb278f..f2c8449dfff 100644
+--- a/packages/desktop-client/src/components/transactions/TransactionsTable.tsx
++++ b/packages/desktop-client/src/components/transactions/TransactionsTable.tsx
+@@ -53,6 +53,7 @@ import {
+   groupTransaction,
+   isPreviewId,
+   isTemporaryId,
++  makeChild,
+   splitTransaction,
+   ungroupTransactions,
+   updateTransaction,
+@@ -3265,7 +3266,10 @@ export const TransactionTable = forwardRef(
+         if (isTemporaryId(id)) {
+           const { newNavigator } = latestState.current;
+           const newTrans = latestState.current.newTransactions;
+-          const { data, diff } = splitTransaction(newTrans, id);
++          const { data, diff } = splitTransaction(newTrans, id, parent => [
++            makeChild(parent),
++            makeChild(parent),
++          ]);
+           setNewTransactions(data);
+ 
+           // Jump next to "debit" field if it is empty
+diff --git a/upcoming-release-notes/8205.md b/upcoming-release-notes/8205.md
+new file mode 100644
+index 00000000000..1af4beb3d5d
+--- /dev/null
++++ b/upcoming-release-notes/8205.md
+@@ -0,0 +1,6 @@
++---
++category: Maintenance
++authors: [MatissJanis]
++---
++
++Migrate CI workflows to Depot runners
+diff --git a/upcoming-release-notes/default-two-splits.md b/upcoming-release-notes/default-two-splits.md
+new file mode 100644
+index 00000000000..12924de0a05
+--- /dev/null
++++ b/upcoming-release-notes/default-two-splits.md
+@@ -0,0 +1,6 @@
++---
++category: Enhancements
++authors: [citrus-it]
++---
++
++Start split transactions in the desktop app with two empty splits instead of one, matching the mobile app.

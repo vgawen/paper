@@ -1,0 +1,276 @@
+diff --git a/packages/desktop-client/src/accounts/syncStatus.test.ts b/packages/desktop-client/src/accounts/syncStatus.test.ts
+index c4618aa12e2..b8f57e03ea5 100644
+--- a/packages/desktop-client/src/accounts/syncStatus.test.ts
++++ b/packages/desktop-client/src/accounts/syncStatus.test.ts
+@@ -1,22 +1,59 @@
+ import type { AccountEntity } from '@actual-app/core/types/models';
+ import { describe, expect, it } from 'vitest';
+ 
+-import { isAccountFailedSync } from './syncStatus';
++import { getFailedSyncError, isAccountFailedSync } from './syncStatus';
+ 
+ function makeAccount(
+   bank_sync_status: AccountEntity['bank_sync_status'],
+-): Pick<AccountEntity, 'bank_sync_status'> {
+-  return { bank_sync_status };
++  account_sync_source: AccountEntity['account_sync_source'] = null,
++): Pick<AccountEntity, 'bank_sync_status' | 'account_sync_source'> {
++  return { bank_sync_status, account_sync_source };
+ }
+ 
+ describe('syncStatus', () => {
+-  it('treats failed, attention-required and reauth-required as failed', () => {
++  it('treats any durable non-ok status as failed', () => {
+     expect(isAccountFailedSync(makeAccount('failed'))).toBe(true);
+     expect(isAccountFailedSync(makeAccount('attention-required'))).toBe(true);
+     expect(isAccountFailedSync(makeAccount('reauth-required'))).toBe(true);
++    expect(isAccountFailedSync(makeAccount('rate-limit-exceeded'))).toBe(true);
++    expect(isAccountFailedSync(makeAccount('timed-out'))).toBe(true);
++    expect(isAccountFailedSync(makeAccount('account-missing'))).toBe(true);
+     expect(isAccountFailedSync(makeAccount('pending'))).toBe(false);
+     expect(isAccountFailedSync(makeAccount('sync-requested'))).toBe(false);
+     expect(isAccountFailedSync(makeAccount('ok'))).toBe(false);
+     expect(isAccountFailedSync(makeAccount(null))).toBe(false);
+   });
++
++  it('maps persisted failure statuses to error type/code pairs', () => {
++    expect(getFailedSyncError(makeAccount('reauth-required'))).toEqual({
++      type: 'ITEM_ERROR',
++      code: 'ITEM_LOGIN_REQUIRED',
++    });
++    expect(
++      getFailedSyncError(makeAccount('reauth-required', 'simpleFin')),
++    ).toEqual({
++      type: 'INVALID_ACCESS_TOKEN',
++      code: 'INVALID_ACCESS_TOKEN',
++    });
++    expect(getFailedSyncError(makeAccount('attention-required'))).toEqual({
++      type: 'ACCOUNT_NEEDS_ATTENTION',
++      code: 'ACCOUNT_NEEDS_ATTENTION',
++    });
++    expect(getFailedSyncError(makeAccount('rate-limit-exceeded'))).toEqual({
++      type: 'RATE_LIMIT_EXCEEDED',
++      code: 'RATE_LIMIT_EXCEEDED',
++    });
++    expect(getFailedSyncError(makeAccount('timed-out'))).toEqual({
++      type: 'TIMED_OUT',
++      code: 'TIMED_OUT',
++    });
++    expect(getFailedSyncError(makeAccount('account-missing'))).toEqual({
++      type: 'ACCOUNT_MISSING',
++      code: 'ACCOUNT_MISSING',
++    });
++    expect(getFailedSyncError(makeAccount('failed'))).toEqual({
++      type: 'SYNC_ERROR',
++      code: 'SYNC_ERROR',
++    });
++  });
+ });
+diff --git a/packages/desktop-client/src/accounts/syncStatus.ts b/packages/desktop-client/src/accounts/syncStatus.ts
+index e4ccb84500e..7d39c4390fa 100644
+--- a/packages/desktop-client/src/accounts/syncStatus.ts
++++ b/packages/desktop-client/src/accounts/syncStatus.ts
+@@ -5,8 +5,34 @@ export function isAccountFailedSync(
+ ) {
+   const status = account.bank_sync_status;
+   return (
+-    status === 'failed' ||
+-    status === 'attention-required' ||
+-    status === 'reauth-required'
++    status != null &&
++    status !== 'ok' &&
++    status !== 'pending' &&
++    status !== 'sync-requested'
+   );
+ }
++
++export function getFailedSyncError(
++  account: Pick<AccountEntity, 'bank_sync_status' | 'account_sync_source'>,
++): { type: string; code: string } {
++  switch (account.bank_sync_status) {
++    case 'reauth-required':
++      if (account.account_sync_source === 'simpleFin') {
++        return { type: 'INVALID_ACCESS_TOKEN', code: 'INVALID_ACCESS_TOKEN' };
++      }
++      return { type: 'ITEM_ERROR', code: 'ITEM_LOGIN_REQUIRED' };
++    case 'attention-required':
++      return {
++        type: 'ACCOUNT_NEEDS_ATTENTION',
++        code: 'ACCOUNT_NEEDS_ATTENTION',
++      };
++    case 'rate-limit-exceeded':
++      return { type: 'RATE_LIMIT_EXCEEDED', code: 'RATE_LIMIT_EXCEEDED' };
++    case 'timed-out':
++      return { type: 'TIMED_OUT', code: 'TIMED_OUT' };
++    case 'account-missing':
++      return { type: 'ACCOUNT_MISSING', code: 'ACCOUNT_MISSING' };
++    default:
++      return { type: 'SYNC_ERROR', code: 'SYNC_ERROR' };
++  }
++}
+diff --git a/packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx b/packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx
+index 7a46225c0fd..1a76bea8951 100644
+--- a/packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx
++++ b/packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx
+@@ -10,6 +10,7 @@ import { View } from '@actual-app/components/view';
+ import type { AccountEntity } from '@actual-app/core/types/models';
+ 
+ import { useUnlinkAccountMutation } from '#accounts';
++import { getFailedSyncError, isAccountFailedSync } from '#accounts/syncStatus';
+ import { Link } from '#components/common/Link';
+ import { authorizeBank as authorizeEnableBanking } from '#enablebanking';
+ import { authorizeBank as authorizeGoCardless } from '#gocardless';
+@@ -126,20 +127,19 @@ export function AccountSyncCheck() {
+     [unlinkAccount],
+   );
+ 
+-  if (!failedAccounts || !id) {
+-    return null;
+-  }
+-
+-  const error = failedAccounts.get(id);
+-  if (!error) {
++  if (!id) {
+     return null;
+   }
+ 
+   const account = accounts.find(account => account.id === id);
+-  if (!account) {
++  if (!account || !isAccountFailedSync(account)) {
+     return null;
+   }
+ 
++  // prefer the detailed error from the client that ran the sync, fall back
++  // to the persisted status for failures that happened on another client
++  const error = failedAccounts.get(id) ?? getFailedSyncError(account);
++
+   const { type, code } = error;
+   const showAuth =
+     (type === 'ITEM_ERROR' && code === 'ITEM_LOGIN_REQUIRED') ||
+diff --git a/packages/loot-core/src/server/accounts/app-bank-sync.test.ts b/packages/loot-core/src/server/accounts/app-bank-sync.test.ts
+index 455bab4da94..c7307184964 100644
+--- a/packages/loot-core/src/server/accounts/app-bank-sync.test.ts
++++ b/packages/loot-core/src/server/accounts/app-bank-sync.test.ts
+@@ -198,6 +198,60 @@ describe('accountsBankSync', () => {
+     expect(account!.bank_sync_status).toBe('reauth-required');
+   });
+ 
++  it('persists rate-limit-exceeded status after a rate limit error', async () => {
++    insertBank({ id: 'bank1', bank_id: 'gc-bank', name: 'GoCardless' });
++    await db.insertAccount({
++      id: 'acct1',
++      name: 'Checking',
++      bank: 'bank1',
++      account_id: 'ext-1',
++      account_sync_source: 'goCardless',
++    });
++
++    vi.mocked(bankSync.syncAccount).mockRejectedValue({
++      type: 'BankSyncError',
++      reason: 'rate limit exceeded',
++      category: 'RATE_LIMIT_EXCEEDED',
++      code: 'NORDIGEN_ERROR',
++      message: 'rate limit exceeded',
++    });
++
++    await accountsBankSyncHandler({ ids: ['acct1'] });
++
++    const account = await db.first<db.DbAccount>(
++      'SELECT * FROM accounts WHERE id = ?',
++      ['acct1'],
++    );
++    expect(account!.bank_sync_status).toBe('rate-limit-exceeded');
++  });
++
++  it('persists timed-out status after a timeout error', async () => {
++    insertBank({ id: 'bank1', bank_id: 'sfin-bank', name: 'SimpleFin' });
++    await db.insertAccount({
++      id: 'acct1',
++      name: 'Checking',
++      bank: 'bank1',
++      account_id: 'ext-1',
++      account_sync_source: 'simpleFin',
++    });
++
++    vi.mocked(bankSync.syncAccount).mockRejectedValue({
++      type: 'BankSyncError',
++      reason: 'timed out',
++      category: 'TIMED_OUT',
++      code: 'TIMED_OUT',
++      message: 'timed out',
++    });
++
++    await accountsBankSyncHandler({ ids: ['acct1'] });
++
++    const account = await db.first<db.DbAccount>(
++      'SELECT * FROM accounts WHERE id = ?',
++      ['acct1'],
++    );
++    expect(account!.bank_sync_status).toBe('timed-out');
++  });
++
+   it('persists failed status after an operational sync error', async () => {
+     insertBank({ id: 'bank1', bank_id: 'gc-bank', name: 'GoCardless' });
+     await db.insertAccount({
+diff --git a/packages/loot-core/src/server/accounts/app.ts b/packages/loot-core/src/server/accounts/app.ts
+index 816ab03ae69..e531c2317a6 100644
+--- a/packages/loot-core/src/server/accounts/app.ts
++++ b/packages/loot-core/src/server/accounts/app.ts
+@@ -1376,6 +1376,18 @@ function getBankSyncStatusFromError(
+     if (err.category === 'ACCOUNT_NEEDS_ATTENTION') {
+       return 'attention-required';
+     }
++
++    if (err.category === 'RATE_LIMIT_EXCEEDED') {
++      return 'rate-limit-exceeded';
++    }
++
++    if (err.category === 'TIMED_OUT') {
++      return 'timed-out';
++    }
++
++    if (err.category === 'ACCOUNT_MISSING') {
++      return 'account-missing';
++    }
+   }
+ 
+   return 'failed';
+diff --git a/packages/loot-core/src/server/db/types/index.ts b/packages/loot-core/src/server/db/types/index.ts
+index e3908059215..6c5df637651 100644
+--- a/packages/loot-core/src/server/db/types/index.ts
++++ b/packages/loot-core/src/server/db/types/index.ts
+@@ -31,6 +31,9 @@ export type DbAccount = {
+     | 'failed'
+     | 'reauth-required'
+     | 'attention-required'
++    | 'rate-limit-exceeded'
++    | 'timed-out'
++    | 'account-missing'
+     | null;
+ };
+ 
+diff --git a/packages/loot-core/src/types/models/account.ts b/packages/loot-core/src/types/models/account.ts
+index 7315be64a8e..c05529489ad 100644
+--- a/packages/loot-core/src/types/models/account.ts
++++ b/packages/loot-core/src/types/models/account.ts
+@@ -32,4 +32,7 @@ export type BankSyncStatus =
+   | 'sync-requested'
+   | 'failed'
+   | 'reauth-required'
+-  | 'attention-required';
++  | 'attention-required'
++  | 'rate-limit-exceeded'
++  | 'timed-out'
++  | 'account-missing';
+diff --git a/upcoming-release-notes/bank-sync-persist.md b/upcoming-release-notes/bank-sync-persist.md
+new file mode 100644
+index 00000000000..98d7de96c3c
+--- /dev/null
++++ b/upcoming-release-notes/bank-sync-persist.md
+@@ -0,0 +1,6 @@
++---
++category: Enhancements
++authors: [matt-fidd]
++---
++
++Show the bank sync error banner on the accounts even if the error occurred on a different device

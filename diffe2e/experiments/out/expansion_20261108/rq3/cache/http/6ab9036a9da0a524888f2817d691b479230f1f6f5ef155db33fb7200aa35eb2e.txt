@@ -1,0 +1,185 @@
+{
+  "sha": "43ae3cf655feb3b202fa57f85275d274b4079bcd",
+  "node_id": "C_kwDOAjDRr9oAKDQzYWUzY2Y2NTVmZWIzYjIwMmZhNTdmODUyNzVkMjc0YjQwNzliY2Q",
+  "commit": {
+    "author": {
+      "name": "Scott Bell",
+      "email": "scott@traclabs.com",
+      "date": "2024-01-19T08:47:44Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2024-01-19T08:47:44Z"
+    },
+    "message": "Provide `renderWhenVisible` to LadTableSets (#7384)\n\n* Provide renderWhenVisible for LadTables\r\n\r\n* fix open in new tab\r\n\r\n* add test for open in new tab\r\n\r\n* fix test to include renderWhenVisible\r\n\r\n* refactor test\r\n\r\n* fix tests\r\n\r\n* fix tests\r\n\r\n* having timing issues now",
+    "tree": {
+      "sha": "36d5c9b5540505f321322f670c6632270011bfed",
+      "url": "https://api.github.com/repos/nasa/openmct/git/trees/36d5c9b5540505f321322f670c6632270011bfed"
+    },
+    "url": "https://api.github.com/repos/nasa/openmct/git/commits/43ae3cf655feb3b202fa57f85275d274b4079bcd",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJlqjcwCRC1aQ7uu5UhlAAADRkQADGgEEq6zgk/r8BlcimBDRLt\nmMBJzVDbu4OXTHIV3fO4UeqjYgTabfHiIGuDBiNqKaVrtpl7pA6IBLv5ljFnvVSU\n+img65/j2e5lGjmokpEb+cSGQ28tv+E3l+YEImFnrjKBILtezaWuynP54sjXf4yd\nXoa8xcY6LVEOTy8Vl+7DGPzbWO8jPNTHRFnM2R40R64oXtklns1SKoPiJ7i46J+A\nLlhuRKaz8/GskralFIWAToKWtQJTUWSv3ZiuD/YpCdVVf9aUXy6rKsxry7GkDZ8E\n8eoEwo6pdYINDfBVCPDlZoh3OlwU75EDVfnRDOAlP1H7GFx4ASsqH9qOpDK/VsRA\n4WOjR+yL++Qz8jZiUUERONj0duA1e4q3A0vOjl2ldpMQU3jNRGoxoAv33Z6VqZHC\nnUHL9YK43eynE9hrGdJPGLunNQ7aDdTHX3W2qooqeXPmugJutQquokDgGtboTAF3\nKHKHW+G/gQAe8C4+hotLB33nTb484L0Yg6xsPiSoGJo1lMESx0v/xDanJUoBYLf4\nVN+GH4ipRm1OhF7NvR0dKgfz8yxwSNS+K7VwptjuIgI4npYmulMUgSXKEK7TmXlO\nbcTzBvRObh6TIBBKmQo4eIYkfKt3LqnrIYoah+h4XXRCqfAh3owz3WFrYT6+Xcda\n6o1SzA5REiNwIlHH7Y/q\n=zuKI\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree 36d5c9b5540505f321322f670c6632270011bfed\nparent 01434ff2d51adda220713d24f275fad94b7c48e3\nauthor Scott Bell <scott@traclabs.com> 1705654064 +0100\ncommitter GitHub <noreply@github.com> 1705654064 +0100\n\nProvide `renderWhenVisible` to LadTableSets (#7384)\n\n* Provide renderWhenVisible for LadTables\r\n\r\n* fix open in new tab\r\n\r\n* add test for open in new tab\r\n\r\n* fix test to include renderWhenVisible\r\n\r\n* refactor test\r\n\r\n* fix tests\r\n\r\n* fix tests\r\n\r\n* having timing issues now",
+      "verified_at": "2024-11-15T07:40:29Z"
+    }
+  },
+  "url": "https://api.github.com/repos/nasa/openmct/commits/43ae3cf655feb3b202fa57f85275d274b4079bcd",
+  "html_url": "https://github.com/nasa/openmct/commit/43ae3cf655feb3b202fa57f85275d274b4079bcd",
+  "comments_url": "https://api.github.com/repos/nasa/openmct/commits/43ae3cf655feb3b202fa57f85275d274b4079bcd/comments",
+  "author": {
+    "login": "scottbell",
+    "id": 9853862,
+    "node_id": "MDQ6VXNlcjk4NTM4NjI=",
+    "avatar_url": "https://avatars.githubusercontent.com/u/9853862?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/scottbell",
+    "html_url": "https://github.com/scottbell",
+    "followers_url": "https://api.github.com/users/scottbell/followers",
+    "following_url": "https://api.github.com/users/scottbell/following{/other_user}",
+    "gists_url": "https://api.github.com/users/scottbell/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/scottbell/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/scottbell/subscriptions",
+    "organizations_url": "https://api.github.com/users/scottbell/orgs",
+    "repos_url": "https://api.github.com/users/scottbell/repos",
+    "events_url": "https://api.github.com/users/scottbell/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/scottbell/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "01434ff2d51adda220713d24f275fad94b7c48e3",
+      "url": "https://api.github.com/repos/nasa/openmct/commits/01434ff2d51adda220713d24f275fad94b7c48e3",
+      "html_url": "https://github.com/nasa/openmct/commit/01434ff2d51adda220713d24f275fad94b7c48e3"
+    }
+  ],
+  "stats": {
+    "total": 168,
+    "additions": 127,
+    "deletions": 41
+  },
+  "files": [
+    {
+      "sha": "a3f74b8f166993420c2be947e900559cedbc222b",
+      "filename": "e2e/tests/functional/plugins/inspectorDataVisualization/numericData.e2e.spec.js",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 1,
+      "changes": 13,
+      "blob_url": "https://github.com/nasa/openmct/blob/43ae3cf655feb3b202fa57f85275d274b4079bcd/e2e%2Ftests%2Ffunctional%2Fplugins%2FinspectorDataVisualization%2FnumericData.e2e.spec.js",
+      "raw_url": "https://github.com/nasa/openmct/raw/43ae3cf655feb3b202fa57f85275d274b4079bcd/e2e%2Ftests%2Ffunctional%2Fplugins%2FinspectorDataVisualization%2FnumericData.e2e.spec.js",
+      "contents_url": "https://api.github.com/repos/nasa/openmct/contents/e2e%2Ftests%2Ffunctional%2Fplugins%2FinspectorDataVisualization%2FnumericData.e2e.spec.js?ref=43ae3cf655feb3b202fa57f85275d274b4079bcd",
+      "patch": "@@ -36,7 +36,7 @@ test.describe('Testing numeric data with inspector data visualization (i.e., dat\n     await page.goto('./', { waitUntil: 'domcontentloaded' });\n   });\n \n-  test('Can click on telemetry and see data in inspector', async ({ page }) => {\n+  test('Can click on telemetry and see data in inspector', async ({ page, context }) => {\n     const exampleDataVisualizationSource = await createDomainObjectWithDefaults(page, {\n       type: 'Example Data Visualization Source'\n     });\n@@ -67,5 +67,16 @@ test.describe('Testing numeric data with inspector data visualization (i.e., dat\n       page.locator('span.plot-series-name', { hasText: 'Second Sine Wave Generator Hz' })\n     ).toBeVisible();\n     await expect(page.locator('.js-series-data-loaded')).toBeVisible();\n+\n+    // test new tab\n+    await page.getByLabel('Inspector Views').getByLabel('More actions').click();\n+    const pagePromise = context.waitForEvent('page');\n+    await page.getByRole('menuitem', { name: /Open In New Tab/ }).click();\n+\n+    // ensure our new tab's title is correct\n+    const newPage = await pagePromise;\n+    await newPage.waitForLoadState();\n+    // expect new tab title to contain 'Second Sine Wave Generator'\n+    await expect(newPage).toHaveTitle('Second Sine Wave Generator');\n   });\n });"
+    },
+    {
+      "sha": "289b1690e83a1408e20a3e543056caf08d81359c",
+      "filename": "e2e/tests/functional/plugins/lad/lad.e2e.spec.js",
+      "status": "modified",
+      "additions": 26,
+      "deletions": 26,
+      "changes": 52,
+      "blob_url": "https://github.com/nasa/openmct/blob/43ae3cf655feb3b202fa57f85275d274b4079bcd/e2e%2Ftests%2Ffunctional%2Fplugins%2Flad%2Flad.e2e.spec.js",
+      "raw_url": "https://github.com/nasa/openmct/raw/43ae3cf655feb3b202fa57f85275d274b4079bcd/e2e%2Ftests%2Ffunctional%2Fplugins%2Flad%2Flad.e2e.spec.js",
+      "contents_url": "https://api.github.com/repos/nasa/openmct/contents/e2e%2Ftests%2Ffunctional%2Fplugins%2Flad%2Flad.e2e.spec.js?ref=43ae3cf655feb3b202fa57f85275d274b4079bcd",
+      "patch": "@@ -56,20 +56,20 @@ test.describe('Testing LAD table configuration', () => {\n     await page.getByRole('tab', { name: 'LAD Table Configuration' }).click();\n \n     // make sure headers are visible initially\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeVisible();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'CRITICAL' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'SEVERE' })).toBeVisible();\n \n     // hide timestamp column\n-    await page.getByLabel('Timestamp').uncheck();\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeHidden();\n+    await page.getByLabel('Timestamp', { exact: true }).uncheck();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeVisible();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -78,10 +78,10 @@ test.describe('Testing LAD table configuration', () => {\n \n     // hide units & type column\n     await page.getByLabel('Units').uncheck();\n-    await page.getByLabel('Type').uncheck();\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeHidden();\n+    await page.getByLabel('Type', { exact: true }).uncheck();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeHidden();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -90,9 +90,9 @@ test.describe('Testing LAD table configuration', () => {\n \n     // hide WATCH column\n     await page.getByLabel('WATCH').uncheck();\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeHidden();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeHidden();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -103,9 +103,9 @@ test.describe('Testing LAD table configuration', () => {\n     await page.locator('button[title=\"Save\"]').click();\n     await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();\n     await page.reload();\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeHidden();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeHidden();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -117,10 +117,10 @@ test.describe('Testing LAD table configuration', () => {\n     await page.getByRole('tab', { name: 'LAD Table Configuration' }).click();\n \n     // show timestamp column\n-    await page.getByLabel('Timestamp').check();\n+    await page.getByLabel('Timestamp', { exact: true }).check();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeHidden();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -132,8 +132,8 @@ test.describe('Testing LAD table configuration', () => {\n     await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();\n     await page.reload();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeHidden();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeHidden();\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeHidden();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -146,11 +146,11 @@ test.describe('Testing LAD table configuration', () => {\n \n     // show units, type, and WATCH columns\n     await page.getByLabel('Units').check();\n-    await page.getByLabel('Type').check();\n+    await page.getByLabel('Type', { exact: true }).check();\n     await page.getByLabel('WATCH').check();\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeVisible();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -161,9 +161,9 @@ test.describe('Testing LAD table configuration', () => {\n     await page.locator('button[title=\"Save\"]').click();\n     await page.getByRole('listitem', { name: 'Save and Finish Editing' }).click();\n     await page.reload();\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeVisible();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -185,9 +185,9 @@ test.describe('Testing LAD table configuration', () => {\n     await page.getByRole('tab', { name: 'LAD Table Configuration' }).click();\n \n     // make sure Sine Wave headers are visible initially too\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeVisible();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'DISTRESS' })).toBeVisible();\n@@ -206,8 +206,8 @@ test.describe('Testing LAD table configuration', () => {\n     // Ensure Units & Limit columns are gone\n     // as Event Generator don't have them\n     await page.goto(ladTable.url);\n-    await expect(page.getByRole('cell', { name: 'Timestamp' })).toBeVisible();\n-    await expect(page.getByRole('cell', { name: 'Type' })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Timestamp', exact: true })).toBeVisible();\n+    await expect(page.getByRole('cell', { name: 'Type', exact: true })).toBeVisible();\n     await expect(page.getByRole('cell', { name: 'Units' })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WATCH' })).toBeHidden();\n     await expect(page.getByRole('cell', { name: 'WARNING' })).toBeHidden();"
+    },
+    {
+      "sha": "838eb57187dfdd5de1f382cfc00d712e073e9194",
+      "filename": "e2e/tests/functional/plugins/lad/ladSet.e2e.spec.js",
+      "status": "added",
+      "additions": 66,
+      "deletions": 0,
+      "changes": 66,
+      "blob_url": "https://github.com/nasa/openmct/blob/43ae3cf655feb3b202fa57f85275d274b4079bcd/e2e%2Ftests%2Ffunctional%2Fplugins%2Flad%2FladSet.e2e.spec.js",
+      "raw_url": "https://github.com/nasa/openmct/raw/43ae3cf655feb3b202fa57f85275d274b4079bcd/e2e%2Ftests%2Ffunctional%2Fplugins%2Flad%2FladSet.e2e.spec.js",
+      "contents_url": "https://api.github.com/repos/nasa/openmct/contents/e2e%2Ftests%2Ffunctional%2Fplugins%2Flad%2FladSet.e2e.spec.js?ref=43ae3cf655feb3b202fa57f85275d274b4079bcd",
+      "patch": "@@ -0,0 +1,66 @@\n+/*****************************************************************************\n+ * Open MCT, Copyright (c) 2014-2024, United States Government\n+ * as represented by the Administrator of the National Aeronautics and Space\n+ * Administration. All rights reserved.\n+ *\n+ * Open MCT is licensed under the Apache License, Version 2.0 (the\n+ * \"License\"); you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ * http://www.apache.org/licenses/LICENSE-2.0.\n+ *\n+ * Unless required by applicable law or agreed to in writing, software\n+ * distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT\n+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the\n+ * License for the specific language governing permissions and limitations\n+ * under the License.\n+ *\n+ * Open MCT includes source code licensed under additional open source\n+ * licenses. See the Open Source Licenses file (LICENSES.md) included with\n+ * this source code distribution or the Licensing information page available\n+ * at runtime from the About dialog for additional information.\n+ *****************************************************************************/\n+\n+import { createDomainObjectWithDefaults } from '../../../../appActions.js';\n+import { expect, test } from '../../../../pluginFixtures.js';\n+\n+test.describe('LAD Table Sets', () => {\n+  test('Ensure we have numbers in cells', async ({ page }) => {\n+    await page.goto('./', { waitUntil: 'domcontentloaded' });\n+\n+    const ladTableSet = await createDomainObjectWithDefaults(page, {\n+      type: 'LAD Table Set'\n+    });\n+\n+    const firstLadTable = await createDomainObjectWithDefaults(page, {\n+      type: 'LAD Table',\n+      parent: ladTableSet.uuid\n+    });\n+\n+    await createDomainObjectWithDefaults(page, {\n+      type: 'Sine Wave Generator',\n+      parent: firstLadTable.uuid\n+    });\n+\n+    const secondLadTable = await createDomainObjectWithDefaults(page, {\n+      type: 'LAD Table',\n+      parent: ladTableSet.uuid\n+    });\n+\n+    await createDomainObjectWithDefaults(page, {\n+      type: 'Sine Wave Generator',\n+      parent: secondLadTable.uuid\n+    });\n+\n+    await page.goto(ladTableSet.url);\n+\n+    const valueFromFirstSineWave = await page.getByLabel('lad value').first().innerText();\n+    const firstSineWaveNumber = parseFloat(valueFromFirstSineWave);\n+    // ensure we have a float value in the cell and it's finite\n+    expect(Number.isFinite(firstSineWaveNumber)).toBeTruthy();\n+\n+    const valueFromSecondSineWave = await page.getByLabel('lad value').last().innerText();\n+    const secondSineWaveNumber = parseFloat(valueFromSecondSineWave);\n+    // ensure we have a float value in the cell and it's finite\n+    expect(Number.isFinite(secondSineWaveNumber)).toBeTruthy();\n+  });\n+});"
+    },
+    {
+      "sha": "2e8d0a73543a560c5c467dafcb7d6d3c519b25b4",
+      "filename": "src/plugins/LADTable/LadTableSetView.js",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 2,
+      "changes": 5,
+      "blob_url": "https://github.com/nasa/openmct/blob/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FLADTable%2FLadTableSetView.js",
+      "raw_url": "https://github.com/nasa/openmct/raw/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FLADTable%2FLadTableSetView.js",
+      "contents_url": "https://api.github.com/repos/nasa/openmct/contents/src%2Fplugins%2FLADTable%2FLadTableSetView.js?ref=43ae3cf655feb3b202fa57f85275d274b4079bcd",
+      "patch": "@@ -34,7 +34,7 @@ export default class LadTableSetView {\n     this.component = null;\n   }\n \n-  show(element) {\n+  show(element, isEditing, { renderWhenVisible }) {\n     let ladTableConfiguration = new LADTableConfiguration(this.domainObject, this.openmct);\n \n     const { vNode, destroy } = mount(\n@@ -47,7 +47,8 @@ export default class LadTableSetView {\n           openmct: this.openmct,\n           objectPath: this.objectPath,\n           currentView: this,\n-          ladTableConfiguration\n+          ladTableConfiguration,\n+          renderWhenVisible\n         },\n         data: () => {\n           return {"
+    },
+    {
+      "sha": "ea7e525435bd8f64f0d9f946e71ace85d9bea812",
+      "filename": "src/plugins/LADTable/components/LadRow.vue",
+      "status": "modified",
+      "additions": 11,
+      "deletions": 4,
+      "changes": 15,
+      "blob_url": "https://github.com/nasa/openmct/blob/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FLADTable%2Fcomponents%2FLadRow.vue",
+      "raw_url": "https://github.com/nasa/openmct/raw/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FLADTable%2Fcomponents%2FLadRow.vue",
+      "contents_url": "https://api.github.com/repos/nasa/openmct/contents/src%2Fplugins%2FLADTable%2Fcomponents%2FLadRow.vue?ref=43ae3cf655feb3b202fa57f85275d274b4079bcd",
+      "patch": "@@ -35,13 +35,20 @@\n     >\n       {{ domainObject.name }}\n     </td>\n-    <td v-if=\"showTimestamp\" class=\"js-second-data\">{{ formattedTimestamp }}</td>\n-    <td class=\"js-third-data\" :class=\"valueClasses\">{{ value }}</td>\n+    <td v-if=\"showTimestamp\" aria-label=\"lad timestamp\" class=\"js-second-data\">\n+      {{ formattedTimestamp }}\n+    </td>\n+    <td aria-label=\"lad value\" class=\"js-third-data\" :class=\"valueClasses\">{{ value }}</td>\n     <td v-if=\"hasUnits\" class=\"js-units\">\n       {{ unit }}\n     </td>\n-    <td v-if=\"showType\" class=\"js-type-data\">{{ typeLabel }}</td>\n-    <td v-for=\"limit in formattedLimitValues\" :key=\"limit.key\" class=\"js-limit-data\">\n+    <td v-if=\"showType\" aria-label=\"lad type\" class=\"js-type-data\">{{ typeLabel }}</td>\n+    <td\n+      v-for=\"limit in formattedLimitValues\"\n+      :key=\"limit.key\"\n+      aria-label=\"lad limit value\"\n+      class=\"js-limit-data\"\n+    >\n       {{ limit.value }}\n     </td>\n   </tr>"
+    },
+    {
+      "sha": "2c44f6e23b5ff132afe06e2bc4ce48c291b56dc8",
+      "filename": "src/plugins/LADTable/components/LadTableConfiguration.vue",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0,
+      "changes": 3,
+      "blob_url": "https://github.com/nasa/openmct/blob/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FLADTable%2Fcomponents%2FLadTableConfiguration.vue",
+      "raw_url": "https://github.com/nasa/openmct/raw/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FLADTable%2Fcomponents%2FLadTableConfiguration.vue",
+      "contents_url": "https://api.github.com/repos/nasa/openmct/contents/src%2Fplugins%2FLADTable%2Fcomponents%2FLadTableConfiguration.vue?ref=43ae3cf655feb3b202fa57f85275d274b4079bcd",
+      "patch": "@@ -143,6 +143,9 @@ export default {\n       ladTable.domainObject = domainObject;\n       ladTable.key = this.openmct.objects.makeKeyString(domainObject.identifier);\n \n+      if (!this.ladTelemetryObjects) {\n+        this.ladTelemetryObjects = {};\n+      }\n       this.ladTelemetryObjects[ladTable.key] = [];\n       this.ladTableObjects.push(ladTable);\n "
+    },
+    {
+      "sha": "22dc6fd1677e92e2de2859d943e7225818e33792",
+      "filename": "src/plugins/LADTable/pluginSpec.js",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/nasa/openmct/blob/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FLADTable%2FpluginSpec.js",
+      "raw_url": "https://github.com/nasa/openmct/raw/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FLADTable%2FpluginSpec.js",
+      "contents_url": "https://api.github.com/repos/nasa/openmct/contents/src%2Fplugins%2FLADTable%2FpluginSpec.js?ref=43ae3cf655feb3b202fa57f85275d274b4079bcd",
+      "patch": "@@ -423,7 +423,7 @@ describe('The LAD Table Set', () => {\n         (viewProvider) => viewProvider.key === ladTableSetKey\n       );\n       ladTableSetView = ladTableSetViewProvider.view(mockObj.ladTableSet, [mockObj.ladTableSet]);\n-      ladTableSetView.show(child);\n+      ladTableSetView.show(child, false, { renderWhenVisible });\n \n       return nextTick();\n     });"
+    },
+    {
+      "sha": "da3a230647b5342bfee49a3f9ba8d6df187d3e41",
+      "filename": "src/plugins/inspectorDataVisualization/TelemetryFrame.vue",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 7,
+      "changes": 12,
+      "blob_url": "https://github.com/nasa/openmct/blob/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FinspectorDataVisualization%2FTelemetryFrame.vue",
+      "raw_url": "https://github.com/nasa/openmct/raw/43ae3cf655feb3b202fa57f85275d274b4079bcd/src%2Fplugins%2FinspectorDataVisualization%2FTelemetryFrame.vue",
+      "contents_url": "https://api.github.com/repos/nasa/openmct/contents/src%2Fplugins%2FinspectorDataVisualization%2FTelemetryFrame.vue?ref=43ae3cf655feb3b202fa57f85275d274b4079bcd",
+      "patch": "@@ -93,13 +93,11 @@ export default {\n       this.showMenu = !this.showMenu;\n     },\n     async getTelemetryPath() {\n-      let sourceTelem;\n-      if (this.telemetryObject.type === 'yamcs.telemetry') {\n-        sourceTelem = this.openmct.objects.makeKeyString(this.telemetryObject.identifier);\n-      } else if (this.telemetryObject.type === 'yamcs.image') {\n-        sourceTelem = this.openmct.objects.makeKeyString(this.telemetryObject.identifier);\n-      }\n-      const telemetryPath = await this.openmct.objects.getOriginalPath(sourceTelem);\n+      const telemetryObjectKeyString = this.openmct.objects.makeKeyString(\n+        this.telemetryObject.identifier\n+      );\n+\n+      const telemetryPath = await this.openmct.objects.getOriginalPath(telemetryObjectKeyString);\n       return telemetryPath;\n     },\n     async openInNewTab() {"
+    }
+  ]
+}

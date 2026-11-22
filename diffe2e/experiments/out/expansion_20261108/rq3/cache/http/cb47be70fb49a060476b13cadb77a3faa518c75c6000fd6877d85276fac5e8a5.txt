@@ -1,0 +1,113 @@
+{
+  "sha": "46b8d7c3972af402bbc0489d16427e5ba3bdd26c",
+  "node_id": "C_kwDOCnGlsNoAKDQ2YjhkN2MzOTcyYWY0MDJiYmMwNDg5ZDE2NDI3ZTViYTNiZGQyNmM",
+  "commit": {
+    "author": {
+      "name": "Elena Baidakova",
+      "email": "elena@ghost.org",
+      "date": "2023-06-13T08:33:35Z"
+    },
+    "committer": {
+      "name": "Elena Baidakova",
+      "email": "lena.baydakova@gmail.com",
+      "date": "2023-06-13T08:47:03Z"
+    },
+    "message": "Turned off spellchecker for markdown card by default\n\nrefs TryGhost/Team#3453\n- Spellchecker turned off in mobiledoc editor by default.",
+    "tree": {
+      "sha": "bb8b3b04edbff64c449671e69ef28be67c254e2f",
+      "url": "https://api.github.com/repos/TryGhost/Koenig/git/trees/bb8b3b04edbff64c449671e69ef28be67c254e2f"
+    },
+    "url": "https://api.github.com/repos/TryGhost/Koenig/git/commits/46b8d7c3972af402bbc0489d16427e5ba3bdd26c",
+    "comment_count": 0,
+    "verification": {
+      "verified": false,
+      "reason": "unsigned",
+      "signature": null,
+      "payload": null,
+      "verified_at": null
+    }
+  },
+  "url": "https://api.github.com/repos/TryGhost/Koenig/commits/46b8d7c3972af402bbc0489d16427e5ba3bdd26c",
+  "html_url": "https://github.com/TryGhost/Koenig/commit/46b8d7c3972af402bbc0489d16427e5ba3bdd26c",
+  "comments_url": "https://api.github.com/repos/TryGhost/Koenig/commits/46b8d7c3972af402bbc0489d16427e5ba3bdd26c/comments",
+  "author": {
+    "login": "lenabaidakova",
+    "id": 14221798,
+    "node_id": "MDQ6VXNlcjE0MjIxNzk4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/14221798?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/lenabaidakova",
+    "html_url": "https://github.com/lenabaidakova",
+    "followers_url": "https://api.github.com/users/lenabaidakova/followers",
+    "following_url": "https://api.github.com/users/lenabaidakova/following{/other_user}",
+    "gists_url": "https://api.github.com/users/lenabaidakova/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/lenabaidakova/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/lenabaidakova/subscriptions",
+    "organizations_url": "https://api.github.com/users/lenabaidakova/orgs",
+    "repos_url": "https://api.github.com/users/lenabaidakova/repos",
+    "events_url": "https://api.github.com/users/lenabaidakova/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/lenabaidakova/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "lenabaidakova",
+    "id": 14221798,
+    "node_id": "MDQ6VXNlcjE0MjIxNzk4",
+    "avatar_url": "https://avatars.githubusercontent.com/u/14221798?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/lenabaidakova",
+    "html_url": "https://github.com/lenabaidakova",
+    "followers_url": "https://api.github.com/users/lenabaidakova/followers",
+    "following_url": "https://api.github.com/users/lenabaidakova/following{/other_user}",
+    "gists_url": "https://api.github.com/users/lenabaidakova/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/lenabaidakova/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/lenabaidakova/subscriptions",
+    "organizations_url": "https://api.github.com/users/lenabaidakova/orgs",
+    "repos_url": "https://api.github.com/users/lenabaidakova/repos",
+    "events_url": "https://api.github.com/users/lenabaidakova/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/lenabaidakova/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "fee89f61dab3fef238ee13e2426a12f477902337",
+      "url": "https://api.github.com/repos/TryGhost/Koenig/commits/fee89f61dab3fef238ee13e2426a12f477902337",
+      "html_url": "https://github.com/TryGhost/Koenig/commit/fee89f61dab3fef238ee13e2426a12f477902337"
+    }
+  ],
+  "stats": {
+    "total": 17,
+    "additions": 9,
+    "deletions": 8
+  },
+  "files": [
+    {
+      "sha": "4410eb7d12f729700dc5b3ae8c2cb1c6aace54da",
+      "filename": "packages/koenig-lexical/src/components/ui/cards/MarkdownCard/MarkdownEditor.jsx",
+      "status": "modified",
+      "additions": 5,
+      "deletions": 1,
+      "changes": 6,
+      "blob_url": "https://github.com/TryGhost/Koenig/blob/46b8d7c3972af402bbc0489d16427e5ba3bdd26c/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2Fcards%2FMarkdownCard%2FMarkdownEditor.jsx",
+      "raw_url": "https://github.com/TryGhost/Koenig/raw/46b8d7c3972af402bbc0489d16427e5ba3bdd26c/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2Fcards%2FMarkdownCard%2FMarkdownEditor.jsx",
+      "contents_url": "https://api.github.com/repos/TryGhost/Koenig/contents/packages%2Fkoenig-lexical%2Fsrc%2Fcomponents%2Fui%2Fcards%2FMarkdownCard%2FMarkdownEditor.jsx?ref=46b8d7c3972af402bbc0489d16427e5ba3bdd26c",
+      "patch": "@@ -81,7 +81,7 @@ export default function MarkdownEditor({\n                 {\n                     name: 'spellcheck',\n                     action: toggleSpellcheck,\n-                    className: 'fa fa-check active',\n+                    className: 'fa fa-check',\n                     title: `Spellcheck (${shortcuts.toggleSpellcheck})`\n                 },\n                 {\n@@ -120,6 +120,10 @@ export default function MarkdownEditor({\n \n         addShortcuts();\n \n+        // spellchecker turned off by default\n+        const codemirror = editor.current.codemirror;\n+        codemirror.setOption('mode', 'gfm');\n+\n         // remove editor on unmount\n         return () => {\n             editor.current.toTextArea();"
+    },
+    {
+      "sha": "925c2c6535f0da9abac99c3a59e5fa3ea7edc704",
+      "filename": "packages/koenig-lexical/test/e2e/cards/markdown-card.test.js",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 7,
+      "changes": 11,
+      "blob_url": "https://github.com/TryGhost/Koenig/blob/46b8d7c3972af402bbc0489d16427e5ba3bdd26c/packages%2Fkoenig-lexical%2Ftest%2Fe2e%2Fcards%2Fmarkdown-card.test.js",
+      "raw_url": "https://github.com/TryGhost/Koenig/raw/46b8d7c3972af402bbc0489d16427e5ba3bdd26c/packages%2Fkoenig-lexical%2Ftest%2Fe2e%2Fcards%2Fmarkdown-card.test.js",
+      "contents_url": "https://api.github.com/repos/TryGhost/Koenig/contents/packages%2Fkoenig-lexical%2Ftest%2Fe2e%2Fcards%2Fmarkdown-card.test.js?ref=46b8d7c3972af402bbc0489d16427e5ba3bdd26c",
+      "patch": "@@ -121,14 +121,11 @@ test.describe('Markdown card', async () => {\n \n     test('should toggle spellcheck on Cmd-Alt-S', async function () {\n         await focusEditor(page);\n-        await page.keyboard.type('/');\n-        await page.click('[data-kg-card-menu-item=\"Markdown\"]');\n-        await page.click('[data-kg-card=\"markdown\"]');\n+        await insertCard(page, {cardName: 'markdown'});\n \n-        expect(await page.locator('[title*=\"Spellcheck\"][class*=\"active\"]')).not.toBeNull();\n+        await expect(page.locator('[title*=\"Spellcheck\"]')).not.toBeNull();\n         await page.keyboard.press(`Control+Alt+S`);\n-        expect(await page.locator('[title*=\"Spellcheck\"]')).not.toBeNull();\n-        await expect(await page.locator('[title*=\"Spellcheck\"][class*=\"active\"]')).toHaveCount(0);\n+        await expect(page.locator('[title*=\"Spellcheck\"][class*=\"active\"]')).toHaveCount(1);\n     });\n \n     test('should open image upload dialog on Cmd-Alt-I', async function () {\n@@ -211,7 +208,7 @@ test.describe('Markdown card', async () => {\n         // await expect(await page.getByTestId('progress-bar')).not.toBeVisible();\n \n         // wait for image markdown to be inserted\n-        await page.waitForSelector('[data-kg-card=\"markdown\"] .cm-formatting-image');\n+        await page.waitForSelector('[data-kg-card=\"markdown\"] .cm-image');\n \n         await assertRootChildren(page, JSON.stringify([\n             {"
+    }
+  ]
+}

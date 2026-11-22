@@ -1,16 +1,35 @@
 {
-  "n": 0,
-  "human_kappa": {
-    "kappa": 0,
-    "po": 0,
-    "pe": 0,
-    "n": 0
+  "n": 40,
+  "po": 1,
+  "confusion": {
+    "STRUCTURAL_ONLY": {
+      "STRUCTURAL_ONLY": 40,
+      "EXPECTATION_CHANGE": 0,
+      "SUSPECTED_REGRESSION": 0
+    },
+    "EXPECTATION_CHANGE": {
+      "STRUCTURAL_ONLY": 0,
+      "EXPECTATION_CHANGE": 0,
+      "SUSPECTED_REGRESSION": 0
+    },
+    "SUSPECTED_REGRESSION": {
+      "STRUCTURAL_ONLY": 0,
+      "EXPECTATION_CHANGE": 0,
+      "SUSPECTED_REGRESSION": 0
+    }
   },
-  "model_kappa": {
-    "kappa": 0,
-    "po": 0,
-    "pe": 0,
-    "n": 0
+  "disagreements": [],
+  "first_distribution": {
+    "STRUCTURAL_ONLY": 40
   },
-  "model_accuracy": 0
+  "second_distribution": {
+    "STRUCTURAL_ONLY": 40
+  },
+  "kappa": null,
+  "kappa_reported": false,
+  "kappa_reason": "RQ3 预标注为常量 STRUCTURAL_ONLY，Pe 退化；按既定口径只报 Po、混淆矩阵与逐条分歧，不报 κ。",
+  "first_source": "b-majority",
+  "first_source_note": "协议 B 正式结果（masked 三次运行多数票，variance_report.json）",
+  "first_source_file": "experiments/out/repeats/variance_report.json",
+  "missing_first": []
 }

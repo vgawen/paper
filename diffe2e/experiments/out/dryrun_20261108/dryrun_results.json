@@ -1,0 +1,663 @@
+{
+  "log": [
+    {
+      "name": "collect dry-run (md)",
+      "status": 0,
+      "stdout": "rq2_blind_main.csv: 30/30 labeled, 0 missing\nrq3_blind_main.csv: 40/40 labeled, 0 missing\ndry run; add --write to persist the labels.",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "collect --write (md)",
+      "status": 0,
+      "stdout": "rq2_blind_main.csv: 30/30 labeled, 0 missing\nrq3_blind_main.csv: 40/40 labeled, 0 missing\nwrote labels into the blind CSVs; next run merge_second_annotator.mjs + score.mjs.",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "list --write",
+      "status": 0,
+      "stdout": "== rq2 ==\nmain: experiments/out/rq2_real_to_annotate.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/rq2_blind_main.csv\nrows=30\n  orig:   30 已标 / 0 空 / 0 非法\n  masked: 30 已标 / 0 空 / 0 非法\n  human:  30 已标 / 0 空 / 0 非法\npairs: orig-masked=30 orig-human=30 masked-human=30\ndisagreements=17\nproblems=0\ndisagreements:\n  - rq2_001: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_003: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_004: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_005: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_009: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_010: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_011: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_013: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_015: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_016: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_017: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_021: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_022: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_023: orig=y masked=y human=n (orig≠human;masked≠human)\n  - rq2_027: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_028: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_029: orig=y masked=y human=n (orig≠human;masked≠human)\nwrote 17 rows -> experiments/out/rq2_label_disagreements.csv\n\n== rq3 ==\nmain: experiments/out/rq3_reprobreak_to_annotate.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/rq3_blind_main.csv\nrows=40\n  orig:   40 已标 / 0 空 / 0 非法\n  masked: 40 已标 / 0 空 / 0 非法\n  human:  40 已标 / 0 空 / 0 非法\npairs: orig-masked=40 orig-human=40 masked-human=40\ndisagreements=27\nproblems=0\ndisagreements:\n  - rb001: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb004: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb005: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb006: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb007: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb008: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb009: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb010: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb011: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb013: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb015: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb016: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb017: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb019: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb021: orig=SUSPECTED_REGRESSION masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb022: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb024: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=STRUCTURAL_ONLY (orig≠masked;orig≠human)\n  - rb025: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb026: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb028: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb029: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb031: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb033: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;masked≠human)\n  - rb034: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb036: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=SUSPECTED_REGRESSION (orig≠masked;orig≠human)\n  - rb037: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb040: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\nwrote 27 rows -> experiments/out/rq3_label_disagreements.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "merge RQ2",
+      "status": 0,
+      "stdout": "merged 30/30 annotator2_yn labels into experiments/out/rq2_real_to_annotate.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "merge RQ3",
+      "status": 0,
+      "stdout": "merged 40/40 human2 labels into experiments/out/rq3_reprobreak_to_annotate.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "gate main RQ2",
+      "status": 0,
+      "stdout": "PASS rq2: 30 rows, labels valid, final consistent with disagreements",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "gate main RQ3",
+      "status": 0,
+      "stdout": "PASS rq3: 40 rows, labels valid, final consistent with disagreements",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "score RQ2",
+      "status": 0,
+      "stdout": "semantic-validity=0.4  kappa=0.2286 (n=30)\n  diff=0.4667  nodiff=0.3333",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "score RQ3",
+      "status": 0,
+      "stdout": "model-accuracy=0.575  model-kappa=0  human-kappa=0.0671 (n=40)",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "matrix RQ2",
+      "status": 0,
+      "stdout": "{\n  \"family\": \"rq2\",\n  \"n\": 30,\n  \"expected\": 30,\n  \"complete\": true,\n  \"po\": 0.7,\n  \"pe\": 0.6111,\n  \"kappa\": 0.2286,\n  \"cm\": {\n    \"n\": {\n      \"n\": 18,\n      \"y\": 7\n    },\n    \"y\": {\n      \"n\": 2,\n      \"y\": 3\n    }\n  }\n}",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "matrix RQ3",
+      "status": 0,
+      "stdout": "{\n  \"family\": \"rq3\",\n  \"n\": 40,\n  \"expected\": 40,\n  \"complete\": true,\n  \"po\": 0.6,\n  \"pe\": 0.5713,\n  \"kappa\": 0.0671,\n  \"cm\": {\n    \"STRUCTURAL_ONLY\": {\n      \"STRUCTURAL_ONLY\": 23,\n      \"SUSPECTED_REGRESSION\": 6,\n      \"EXPECTATION_CHANGE\": 8\n    },\n    \"SUSPECTED_REGRESSION\": {\n      \"STRUCTURAL_ONLY\": 0,\n      \"SUSPECTED_REGRESSION\": 0,\n      \"EXPECTATION_CHANGE\": 1\n    },\n    \"EXPECTATION_CHANGE\": {\n      \"STRUCTURAL_ONLY\": 1,\n      \"SUSPECTED_REGRESSION\": 0,\n      \"EXPECTATION_CHANGE\": 1\n    }\n  }\n}",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "render kappa template",
+      "status": 0,
+      "stdout": "wrote experiments/out/kappa_backfill.md",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "gate labels-only RQ2",
+      "status": 0,
+      "stdout": "PASS rq2: 30 rows, labels valid",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "gate labels-only RQ3",
+      "status": 0,
+      "stdout": "PASS rq3: 40 rows, labels valid",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "short collect dry-run",
+      "status": 0,
+      "stdout": "rq2.csv: 29/30 labeled, 1 missing\nrq3.csv: 39/40 labeled, 1 missing\ndry run; add --write to persist the labels.",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "short collect --write",
+      "status": 0,
+      "stdout": "rq2.csv: 29/30 labeled, 1 missing\nrq3.csv: 39/40 labeled, 1 missing\nwrote labels into the blind CSVs; next run merge_second_annotator.mjs + score.mjs.",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "short merge RQ2",
+      "status": 0,
+      "stdout": "merged 29/30 annotator2_yn labels into experiments/out/scen_short/rq2_main.csv",
+      "stderr": "WARNING: 1/30 rows have an empty annotator2_yn; scoring will ignore them.",
+      "extra": ""
+    },
+    {
+      "name": "short merge RQ3",
+      "status": 0,
+      "stdout": "merged 39/40 human2 labels into experiments/out/scen_short/rq3_main.csv",
+      "stderr": "WARNING: 1/40 rows have an empty human2; scoring will ignore them.",
+      "extra": ""
+    },
+    {
+      "name": "short gate RQ2",
+      "status": 1,
+      "stdout": "",
+      "stderr": "FAIL rq2: 1 issue(s)\n  - 空标签: rq2_030",
+      "extra": ""
+    },
+    {
+      "name": "short gate RQ3",
+      "status": 1,
+      "stdout": "",
+      "stderr": "FAIL rq3: 1 issue(s)\n  - 空标签: rb040",
+      "extra": ""
+    },
+    {
+      "name": "short list --write",
+      "status": 0,
+      "stdout": "== rq2 ==\nmain: experiments/out/scen_short/rq2_main.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/scen_short/rq2.csv\nrows=30\n  orig:   30 已标 / 0 空 / 0 非法\n  masked: 30 已标 / 0 空 / 0 非法\n  human:  29 已标 / 1 空 / 0 非法\npairs: orig-masked=30 orig-human=29 masked-human=29\ndisagreements=17\n  - human 部分缺失 1 条：rq2_030\nproblems=0\ndisagreements:\n  - rq2_001: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_003: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_004: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_005: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_009: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_010: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_011: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_013: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_015: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_016: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_017: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_021: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_022: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_023: orig=y masked=y human=n (orig≠human;masked≠human)\n  - rq2_027: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_028: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_029: orig=y masked=y human=n (orig≠human;masked≠human)\nwrote 17 rows -> experiments/out/rq2_label_disagreements.csv\n\n== rq3 ==\nmain: experiments/out/scen_short/rq3_main.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/scen_short/rq3.csv\nrows=40\n  orig:   40 已标 / 0 空 / 0 非法\n  masked: 40 已标 / 0 空 / 0 非法\n  human:  39 已标 / 1 空 / 0 非法\npairs: orig-masked=40 orig-human=39 masked-human=39\ndisagreements=27\n  - human 部分缺失 1 条：rb040\nproblems=0\ndisagreements:\n  - rb001: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb004: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb005: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb006: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb007: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb008: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb009: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb010: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb011: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb013: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb015: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb016: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb017: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb019: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb021: orig=SUSPECTED_REGRESSION masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb022: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb024: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=STRUCTURAL_ONLY (orig≠masked;orig≠human)\n  - rb025: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb026: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb028: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb029: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb031: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb033: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;masked≠human)\n  - rb034: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb036: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=SUSPECTED_REGRESSION (orig≠masked;orig≠human)\n  - rb037: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb040: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=— (orig≠masked)\nwrote 27 rows -> experiments/out/rq3_label_disagreements.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "short score RQ2",
+      "status": 0,
+      "stdout": "semantic-validity=0.4138  kappa=0.2209 (n=29)\n  diff=0.4667  nodiff=0.3571",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "short score RQ3",
+      "status": 0,
+      "stdout": "model-accuracy=0.5641  model-kappa=0  human-kappa=0.0645 (n=39)",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "invalid collect dry-run",
+      "status": 0,
+      "stdout": "rq2.csv: 27/30 labeled, 0 missing\nrq3.csv: 38/40 labeled, 0 missing\ndry run; add --write to persist the labels.",
+      "stderr": "rq2_001: invalid annotator2_yn value Y\nrq2_002: invalid annotator2_yn value yes\nrq2_003: invalid annotator2_yn value Y\n3 invalid label(s)\nrb001: invalid human2 value structural_only\nrb002: invalid human2 value EC\n2 invalid label(s)",
+      "extra": ""
+    },
+    {
+      "name": "invalid collect --write",
+      "status": 0,
+      "stdout": "rq2.csv: 27/30 labeled, 0 missing\nrq3.csv: 38/40 labeled, 0 missing\nwrote labels into the blind CSVs; next run merge_second_annotator.mjs + score.mjs.",
+      "stderr": "rq2_001: invalid annotator2_yn value Y\nrq2_002: invalid annotator2_yn value yes\nrq2_003: invalid annotator2_yn value Y\n3 invalid label(s)\nrb001: invalid human2 value structural_only\nrb002: invalid human2 value EC\n2 invalid label(s)",
+      "extra": ""
+    },
+    {
+      "name": "invalid merge RQ2 (csv path, bypasses collect)",
+      "status": 0,
+      "stdout": "merged 30/30 annotator2_yn labels into experiments/out/scen_invalid/rq2_main.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "invalid merge RQ3 (csv path, bypasses collect)",
+      "status": 0,
+      "stdout": "merged 40/40 human2 labels into experiments/out/scen_invalid/rq3_main.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "invalid gate RQ2",
+      "status": 1,
+      "stdout": "",
+      "stderr": "FAIL rq2: 5 issue(s)\n  - 非法标签: rq2_001=\"Y\"\n  - 非法标签: rq2_002=\"yes\"\n  - 非法标签: rq2_003=\"Y\"\n  - 分歧未填 final: rq2_002 (n vs yes)\n  - 分歧未填 final: rq2_003 (n vs Y)",
+      "extra": ""
+    },
+    {
+      "name": "invalid gate RQ3",
+      "status": 1,
+      "stdout": "",
+      "stderr": "FAIL rq3: 3 issue(s)\n  - 非法标签: rb001=\"structural_only\"\n  - 非法标签: rb002=\"EC\"\n  - 分歧未填 final: rb002 (STRUCTURAL_ONLY vs EC)",
+      "extra": ""
+    },
+    {
+      "name": "invalid list --write",
+      "status": 1,
+      "stdout": "== rq2 ==\nmain: experiments/out/scen_invalid/rq2_main.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/scen_invalid/rq2.csv\nrows=30\n  orig:   30 已标 / 0 空 / 0 非法\n  masked: 30 已标 / 0 空 / 0 非法\n  human:  27 已标 / 0 空 / 3 非法\npairs: orig-masked=30 orig-human=27 masked-human=27\ndisagreements=17\nproblems=3:\n  - rq2_001 [human] annotator2_yn invalid: 非法取值: \"Y\"\n  - rq2_002 [human] annotator2_yn invalid: 非法取值: \"yes\"\n  - rq2_003 [human] annotator2_yn invalid: 非法取值: \"Y\"\ndisagreements:\n  - rq2_001: orig=n masked=y human=Y (orig≠masked)\n  - rq2_003: orig=n masked=y human=Y (orig≠masked)\n  - rq2_004: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_005: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_009: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_010: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_011: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_013: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_015: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_016: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_017: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_021: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_022: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_023: orig=y masked=y human=n (orig≠human;masked≠human)\n  - rq2_027: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_028: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_029: orig=y masked=y human=n (orig≠human;masked≠human)\nwrote 17 rows -> experiments/out/rq2_label_disagreements.csv\n\n== rq3 ==\nmain: experiments/out/scen_invalid/rq3_main.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/scen_invalid/rq3.csv\nrows=40\n  orig:   40 已标 / 0 空 / 0 非法\n  masked: 40 已标 / 0 空 / 0 非法\n  human:  38 已标 / 0 空 / 2 非法\npairs: orig-masked=40 orig-human=38 masked-human=38\ndisagreements=27\nproblems=2:\n  - rb001 [human] human2 invalid: 非法取值: \"structural_only\"\n  - rb002 [human] human2 invalid: 非法取值: \"EC\"\ndisagreements:\n  - rb001: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=structural_only (orig≠masked)\n  - rb004: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb005: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb006: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb007: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb008: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb009: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb010: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb011: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb013: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb015: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb016: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb017: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb019: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb021: orig=SUSPECTED_REGRESSION masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb022: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb024: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=STRUCTURAL_ONLY (orig≠masked;orig≠human)\n  - rb025: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb026: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb028: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb029: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb031: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb033: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;masked≠human)\n  - rb034: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb036: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=SUSPECTED_REGRESSION (orig≠masked;orig≠human)\n  - rb037: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb040: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\nwrote 27 rows -> experiments/out/rq3_label_disagreements.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "invalid score RQ2",
+      "status": 0,
+      "stdout": "semantic-validity=0.4  kappa=0.1852 (n=30)\n  diff=0.4667  nodiff=0.3333",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "invalid score RQ3",
+      "status": 0,
+      "stdout": "model-accuracy=0.5641  model-kappa=0  human-kappa=0.0621 (n=39)",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "blank-final merge RQ2",
+      "status": 0,
+      "stdout": "merged 30/30 annotator2_yn labels into experiments/out/scen_blank_final/rq2_main.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "blank-final merge RQ3",
+      "status": 0,
+      "stdout": "merged 40/40 human2 labels into experiments/out/scen_blank_final/rq3_main.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "blank-final gate RQ2",
+      "status": 1,
+      "stdout": "",
+      "stderr": "FAIL rq2: 9 issue(s)\n  - 分歧未填 final: rq2_001 (n vs y)\n  - 分歧未填 final: rq2_004 (n vs y)\n  - 分歧未填 final: rq2_010 (n vs y)\n  - 分歧未填 final: rq2_013 (n vs y)\n  - 分歧未填 final: rq2_016 (n vs y)\n  - 分歧未填 final: rq2_022 (n vs y)\n  - 分歧未填 final: rq2_023 (y vs n)\n  - 分歧未填 final: rq2_028 (n vs y)\n  - 分歧未填 final: rq2_029 (y vs n)",
+      "extra": ""
+    },
+    {
+      "name": "blank-final gate RQ3",
+      "status": 1,
+      "stdout": "",
+      "stderr": "FAIL rq3: 16 issue(s)\n  - 分歧未填 final: rb001 (STRUCTURAL_ONLY vs EXPECTATION_CHANGE)\n  - 分歧未填 final: rb005 (STRUCTURAL_ONLY vs EXPECTATION_CHANGE)\n  - 分歧未填 final: rb006 (STRUCTURAL_ONLY vs SUSPECTED_REGRESSION)\n  - 分歧未填 final: rb009 (STRUCTURAL_ONLY vs EXPECTATION_CHANGE)\n  - 分歧未填 final: rb011 (STRUCTURAL_ONLY vs SUSPECTED_REGRESSION)\n  - 分歧未填 final: rb013 (STRUCTURAL_ONLY vs EXPECTATION_CHANGE)\n  - 分歧未填 final: rb016 (STRUCTURAL_ONLY vs SUSPECTED_REGRESSION)\n  - 分歧未填 final: rb017 (STRUCTURAL_ONLY vs EXPECTATION_CHANGE)\n  - 分歧未填 final: rb021 (SUSPECTED_REGRESSION vs EXPECTATION_CHANGE)\n  - 分歧未填 final: rb024 (EXPECTATION_CHANGE vs STRUCTURAL_ONLY)\n  - 分歧未填 final: rb025 (STRUCTURAL_ONLY vs EXPECTATION_CHANGE)\n  - 分歧未填 final: rb026 (STRUCTURAL_ONLY vs SUSPECTED_REGRESSION)\n  - 分歧未填 final: rb029 (STRUCTURAL_ONLY vs EXPECTATION_CHANGE)\n  - 分歧未填 final: rb031 (STRUCTURAL_ONLY vs SUSPECTED_REGRESSION)\n  - 分歧未填 final: rb036 (STRUCTURAL_ONLY vs SUSPECTED_REGRESSION)\n  - 分歧未填 final: rb037 (STRUCTURAL_ONLY vs EXPECTATION_CHANGE)",
+      "extra": ""
+    },
+    {
+      "name": "blank-final score RQ2",
+      "status": 0,
+      "stdout": "semantic-validity=0.1  kappa=0.2286 (n=30)\n  diff=0.2  nodiff=0",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "blank-final score RQ3",
+      "status": 0,
+      "stdout": "model-accuracy=0.9583  model-kappa=0  human-kappa=0.0671 (n=24)",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "conflict list --write",
+      "status": 1,
+      "stdout": "== rq2 ==\nmain: experiments/out/scen_conflict/rq2_main.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/scen_conflict/rq2.csv\nrows=30\n  orig:   30 已标 / 0 空 / 0 非法\n  masked: 30 已标 / 0 空 / 0 非法\n  human:  30 已标 / 0 空 / 0 非法\npairs: orig-masked=30 orig-human=30 masked-human=30\ndisagreements=17\nproblems=1:\n  - rq2_001 [human] annotator2_yn conflict: 主表=\"y\" 盲表=\"n\"\ndisagreements:\n  - rq2_001: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_003: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_004: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_005: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_009: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_010: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_011: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_013: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_015: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_016: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_017: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_021: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_022: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_023: orig=y masked=y human=n (orig≠human;masked≠human)\n  - rq2_027: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_028: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_029: orig=y masked=y human=n (orig≠human;masked≠human)\nwrote 17 rows -> experiments/out/rq2_label_disagreements.csv\n\n== rq3 ==\nmain: experiments/out/rq3_reprobreak_to_annotate.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/rq3_blind_main.csv\nrows=40\n  orig:   40 已标 / 0 空 / 0 非法\n  masked: 40 已标 / 0 空 / 0 非法\n  human:  40 已标 / 0 空 / 0 非法\npairs: orig-masked=40 orig-human=40 masked-human=40\ndisagreements=27\nproblems=0\ndisagreements:\n  - rb001: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb004: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb005: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb006: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb007: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb008: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb009: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb010: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb011: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb013: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb015: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb016: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb017: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb019: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb021: orig=SUSPECTED_REGRESSION masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb022: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb024: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=STRUCTURAL_ONLY (orig≠masked;orig≠human)\n  - rb025: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb026: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb028: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb029: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb031: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb033: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;masked≠human)\n  - rb034: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb036: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=SUSPECTED_REGRESSION (orig≠masked;orig≠human)\n  - rb037: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb040: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\nwrote 27 rows -> experiments/out/rq3_label_disagreements.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "duplicate merge RQ2",
+      "status": 0,
+      "stdout": "merged 30/30 annotator2_yn labels into experiments/out/scen_duplicate/rq2_main.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "duplicate gate RQ2",
+      "status": 1,
+      "stdout": "",
+      "stderr": "FAIL rq2: 2 issue(s)\n  - 盲表行数=31，期望 30\n  - 重复 case_id: rq2_001",
+      "extra": ""
+    },
+    {
+      "name": "duplicate list --write",
+      "status": 0,
+      "stdout": "== rq2 ==\nmain: experiments/out/scen_duplicate/rq2_main.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/scen_duplicate/rq2.csv\nrows=30\n  orig:   30 已标 / 0 空 / 0 非法\n  masked: 30 已标 / 0 空 / 0 非法\n  human:  30 已标 / 0 空 / 0 非法\npairs: orig-masked=30 orig-human=30 masked-human=30\ndisagreements=17\nproblems=0\ndisagreements:\n  - rq2_001: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_003: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_004: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_005: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_009: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_010: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_011: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_013: orig=n masked=y human=y (orig≠masked;orig≠human)\n  - rq2_015: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_016: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_017: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_021: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_022: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_023: orig=y masked=y human=n (orig≠human;masked≠human)\n  - rq2_027: orig=n masked=y human=n (orig≠masked;masked≠human)\n  - rq2_028: orig=n masked=n human=y (orig≠human;masked≠human)\n  - rq2_029: orig=y masked=y human=n (orig≠human;masked≠human)\nwrote 17 rows -> experiments/out/rq2_label_disagreements.csv\n\n== rq3 ==\nmain: experiments/out/rq3_reprobreak_to_annotate.csv\nmasked: ok (experiments/out/masked_dryrun.json)\nhuman fallback: experiments/out/rq3_blind_main.csv\nrows=40\n  orig:   40 已标 / 0 空 / 0 非法\n  masked: 40 已标 / 0 空 / 0 非法\n  human:  40 已标 / 0 空 / 0 非法\npairs: orig-masked=40 orig-human=40 masked-human=40\ndisagreements=27\nproblems=0\ndisagreements:\n  - rb001: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb004: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb005: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb006: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb007: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb008: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb009: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb010: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb011: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb013: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb015: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb016: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb017: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠human;masked≠human)\n  - rb019: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb021: orig=SUSPECTED_REGRESSION masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb022: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb024: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=STRUCTURAL_ONLY (orig≠masked;orig≠human)\n  - rb025: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb026: orig=STRUCTURAL_ONLY masked=STRUCTURAL_ONLY human=SUSPECTED_REGRESSION (orig≠human;masked≠human)\n  - rb028: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb029: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=EXPECTATION_CHANGE (orig≠masked;orig≠human;masked≠human)\n  - rb031: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=SUSPECTED_REGRESSION (orig≠masked;orig≠human;masked≠human)\n  - rb033: orig=EXPECTATION_CHANGE masked=STRUCTURAL_ONLY human=EXPECTATION_CHANGE (orig≠masked;masked≠human)\n  - rb034: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\n  - rb036: orig=STRUCTURAL_ONLY masked=SUSPECTED_REGRESSION human=SUSPECTED_REGRESSION (orig≠masked;orig≠human)\n  - rb037: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=EXPECTATION_CHANGE (orig≠masked;orig≠human)\n  - rb040: orig=STRUCTURAL_ONLY masked=EXPECTATION_CHANGE human=STRUCTURAL_ONLY (orig≠masked;masked≠human)\nwrote 27 rows -> experiments/out/rq3_label_disagreements.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "duplicate score RQ2",
+      "status": 0,
+      "stdout": "semantic-validity=0.4  kappa=0.2286 (n=30)\n  diff=0.4667  nodiff=0.3333",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "skew merge RQ2",
+      "status": 0,
+      "stdout": "merged 30/30 annotator2_yn labels into experiments/out/scen_skew/rq2_main.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "skew merge RQ3",
+      "status": 0,
+      "stdout": "merged 40/40 human2 labels into experiments/out/scen_skew/rq3_main.csv",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "skew gate RQ2",
+      "status": 0,
+      "stdout": "PASS rq2: 30 rows, labels valid, final consistent with disagreements",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "skew gate RQ3",
+      "status": 0,
+      "stdout": "PASS rq3: 40 rows, labels valid, final consistent with disagreements",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "skew score RQ2",
+      "status": 0,
+      "stdout": "semantic-validity=1  kappa=0 (n=30)\n  diff=1  nodiff=1",
+      "stderr": "",
+      "extra": ""
+    },
+    {
+      "name": "skew score RQ3",
+      "status": 0,
+      "stdout": "model-accuracy=1  model-kappa=1  human-kappa=0 (n=40)",
+      "stderr": "",
+      "extra": ""
+    }
+  ],
+  "main": {
+    "rq2": {
+      "n": 30,
+      "kappa": {
+        "kappa": 0.2286,
+        "po": 0.7,
+        "pe": 0.6111,
+        "n": 30
+      },
+      "semantic_validity": 0.4,
+      "by_arm": {
+        "diff": {
+          "n": 15,
+          "kappa": {
+            "kappa": 0.4,
+            "po": 0.7333,
+            "pe": 0.5556,
+            "n": 15
+          },
+          "semantic_validity": 0.4667
+        },
+        "nodiff": {
+          "n": 15,
+          "kappa": {
+            "kappa": 0,
+            "po": 0.6667,
+            "pe": 0.6667,
+            "n": 15
+          },
+          "semantic_validity": 0.3333
+        }
+      }
+    },
+    "rq3": {
+      "n": 40,
+      "human_kappa": {
+        "kappa": 0.0671,
+        "po": 0.6,
+        "pe": 0.5713,
+        "n": 40
+      },
+      "model_kappa": {
+        "kappa": 0,
+        "po": 0.575,
+        "pe": 0.575,
+        "n": 40
+      },
+      "model_accuracy": 0.575
+    },
+    "rq2Calc": {
+      "n": 30,
+      "po": 0.7,
+      "pe": 0.6111,
+      "kappa": 0.2286,
+      "cm": {
+        "n": {
+          "n": 18,
+          "y": 7
+        },
+        "y": {
+          "n": 2,
+          "y": 3
+        }
+      }
+    },
+    "rq3Calc": {
+      "n": 40,
+      "po": 0.6,
+      "pe": 0.5713,
+      "kappa": 0.0671,
+      "cm": {
+        "STRUCTURAL_ONLY": {
+          "STRUCTURAL_ONLY": 23,
+          "SUSPECTED_REGRESSION": 6,
+          "EXPECTATION_CHANGE": 8
+        },
+        "SUSPECTED_REGRESSION": {
+          "STRUCTURAL_ONLY": 0,
+          "SUSPECTED_REGRESSION": 0,
+          "EXPECTATION_CHANGE": 1
+        },
+        "EXPECTATION_CHANGE": {
+          "STRUCTURAL_ONLY": 1,
+          "SUSPECTED_REGRESSION": 0,
+          "EXPECTATION_CHANGE": 1
+        }
+      }
+    },
+    "rq2DisRows": 17,
+    "rq3DisRows": 27
+  },
+  "short": {
+    "rq2": {
+      "n": 29,
+      "kappa": {
+        "kappa": 0.2209,
+        "po": 0.6897,
+        "pe": 0.6017,
+        "n": 29
+      },
+      "semantic_validity": 0.4138,
+      "by_arm": {
+        "diff": {
+          "n": 15,
+          "kappa": {
+            "kappa": 0.4,
+            "po": 0.7333,
+            "pe": 0.5556,
+            "n": 15
+          },
+          "semantic_validity": 0.4667
+        },
+        "nodiff": {
+          "n": 14,
+          "kappa": {
+            "kappa": 0,
+            "po": 0.6429,
+            "pe": 0.6429,
+            "n": 14
+          },
+          "semantic_validity": 0.3571
+        }
+      }
+    },
+    "rq3": {
+      "n": 39,
+      "human_kappa": {
+        "kappa": 0.0645,
+        "po": 0.5897,
+        "pe": 0.5615,
+        "n": 39
+      },
+      "model_kappa": {
+        "kappa": 0,
+        "po": 0.5641,
+        "pe": 0.5641,
+        "n": 39
+      },
+      "model_accuracy": 0.5641
+    }
+  },
+  "blankFinal": {
+    "rq2": {
+      "n": 30,
+      "kappa": {
+        "kappa": 0.2286,
+        "po": 0.7,
+        "pe": 0.6111,
+        "n": 30
+      },
+      "semantic_validity": 0.1,
+      "by_arm": {
+        "diff": {
+          "n": 15,
+          "kappa": {
+            "kappa": 0.4,
+            "po": 0.7333,
+            "pe": 0.5556,
+            "n": 15
+          },
+          "semantic_validity": 0.2
+        },
+        "nodiff": {
+          "n": 15,
+          "kappa": {
+            "kappa": 0,
+            "po": 0.6667,
+            "pe": 0.6667,
+            "n": 15
+          },
+          "semantic_validity": 0
+        }
+      }
+    },
+    "rq3": {
+      "n": 24,
+      "human_kappa": {
+        "kappa": 0.0671,
+        "po": 0.6,
+        "pe": 0.5713,
+        "n": 40
+      },
+      "model_kappa": {
+        "kappa": 0,
+        "po": 0.9583,
+        "pe": 0.9583,
+        "n": 24
+      },
+      "model_accuracy": 0.9583
+    },
+    "rq2Blank": 9,
+    "rq3Blank": 16
+  },
+  "invalid": {
+    "rq2": {
+      "n": 30,
+      "kappa": {
+        "kappa": 0.1852,
+        "po": 0.6333,
+        "pe": 0.55,
+        "n": 30
+      },
+      "semantic_validity": 0.4,
+      "by_arm": {
+        "diff": {
+          "n": 15,
+          "kappa": {
+            "kappa": 0.3478,
+            "po": 0.6667,
+            "pe": 0.4889,
+            "n": 15
+          },
+          "semantic_validity": 0.4667
+        },
+        "nodiff": {
+          "n": 15,
+          "kappa": {
+            "kappa": 0,
+            "po": 0.6,
+            "pe": 0.6,
+            "n": 15
+          },
+          "semantic_validity": 0.3333
+        }
+      }
+    },
+    "rq3": {
+      "n": 39,
+      "human_kappa": {
+        "kappa": 0.0621,
+        "po": 0.575,
+        "pe": 0.5469,
+        "n": 40
+      },
+      "model_kappa": {
+        "kappa": 0,
+        "po": 0.5641,
+        "pe": 0.5641,
+        "n": 39
+      },
+      "model_accuracy": 0.5641
+    }
+  },
+  "duplicate": {
+    "n": 30,
+    "kappa": {
+      "kappa": 0.2286,
+      "po": 0.7,
+      "pe": 0.6111,
+      "n": 30
+    },
+    "semantic_validity": 0.4,
+    "by_arm": {
+      "diff": {
+        "n": 15,
+        "kappa": {
+          "kappa": 0.4,
+          "po": 0.7333,
+          "pe": 0.5556,
+          "n": 15
+        },
+        "semantic_validity": 0.4667
+      },
+      "nodiff": {
+        "n": 15,
+        "kappa": {
+          "kappa": 0,
+          "po": 0.6667,
+          "pe": 0.6667,
+          "n": 15
+        },
+        "semantic_validity": 0.3333
+      }
+    }
+  },
+  "skew": {
+    "rq2": {
+      "n": 30,
+      "po": 0.1667,
+      "pe": 0.1667,
+      "kappa": 0,
+      "cm": {
+        "n": {
+          "n": 0,
+          "y": 25
+        },
+        "y": {
+          "n": 0,
+          "y": 5
+        }
+      }
+    },
+    "rq3": {
+      "n": 40,
+      "po": 0.925,
+      "pe": 0.925,
+      "kappa": 0,
+      "cm": {
+        "STRUCTURAL_ONLY": {
+          "STRUCTURAL_ONLY": 37,
+          "SUSPECTED_REGRESSION": 0,
+          "EXPECTATION_CHANGE": 0
+        },
+        "SUSPECTED_REGRESSION": {
+          "STRUCTURAL_ONLY": 1,
+          "SUSPECTED_REGRESSION": 0,
+          "EXPECTATION_CHANGE": 0
+        },
+        "EXPECTATION_CHANGE": {
+          "STRUCTURAL_ONLY": 2,
+          "SUSPECTED_REGRESSION": 0,
+          "EXPECTATION_CHANGE": 0
+        }
+      }
+    }
+  }
+}

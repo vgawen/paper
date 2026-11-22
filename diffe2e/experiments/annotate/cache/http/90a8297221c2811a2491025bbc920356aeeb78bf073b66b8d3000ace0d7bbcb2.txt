@@ -1,0 +1,942 @@
+From 623a8916f9acf76f3a49287f3d63af9f9dac591a Mon Sep 17 00:00:00 2001
+From: Pavel Feldman <pavel.feldman@gmail.com>
+Date: Thu, 17 Oct 2024 16:57:45 -0700
+Subject: [PATCH] chore: implement tree w/o list (#33167)
+
+---
+ .../src/ui/uiModeTestListView.css             |  12 +-
+ .../src/ui/uiModeTestListView.tsx             |   6 +-
+ packages/web/src/components/gridView.tsx      |   3 -
+ packages/web/src/components/listView.tsx      |  31 +--
+ packages/web/src/components/treeView.css      |  91 +++++++
+ packages/web/src/components/treeView.tsx      | 240 ++++++++++++++----
+ packages/web/src/uiUtils.ts                   |   9 +
+ tests/config/traceViewerFixtures.ts           |   4 +-
+ tests/playwright-test/ui-mode-fixtures.ts     |  16 +-
+ .../ui-mode-test-annotations.spec.ts          |   2 +-
+ .../ui-mode-test-filters.spec.ts              |   2 +-
+ .../ui-mode-test-progress.spec.ts             |  22 +-
+ .../playwright-test/ui-mode-test-run.spec.ts  |   4 +-
+ .../ui-mode-test-setup.spec.ts                |   2 +-
+ .../ui-mode-test-update.spec.ts               |   4 +-
+ .../ui-mode-test-watch.spec.ts                |  16 +-
+ tests/playwright-test/ui-mode-trace.spec.ts   |  14 +-
+ 17 files changed, 339 insertions(+), 139 deletions(-)
+ create mode 100644 packages/web/src/components/treeView.css
+
+diff --git a/packages/trace-viewer/src/ui/uiModeTestListView.css b/packages/trace-viewer/src/ui/uiModeTestListView.css
+index ae6fd624ee520..335daecfb1ad1 100644
+--- a/packages/trace-viewer/src/ui/uiModeTestListView.css
++++ b/packages/trace-viewer/src/ui/uiModeTestListView.css
+@@ -14,28 +14,28 @@
+   limitations under the License.
+ */
+ 
+-.ui-mode-list-item {
++.ui-mode-tree-item {
+   flex: auto;
+ }
+ 
+-.ui-mode-list-item-title {
++.ui-mode-tree-item-title {
+   flex: auto;
+   text-overflow: ellipsis;
+   overflow: hidden;
+ }
+ 
+-.ui-mode-list-item-time {
++.ui-mode-tree-item-time {
+   flex: none;
+   color: var(--vscode-editorCodeLens-foreground);
+   margin: 0 4px;
+   user-select: none;
+ }
+ 
+-.tests-list-view .list-view-entry.selected .ui-mode-list-item-time,
+-.tests-list-view .list-view-entry.highlighted .ui-mode-list-item-time {
++.tests-tree-view .tree-view-entry.selected .ui-mode-tree-item-time,
++.tests-tree-view .tree-view-entry.highlighted .ui-mode-tree-item-time {
+   display: none;
+ }
+ 
+-.tests-list-view .list-view-entry:not(.highlighted):not(.selected) .toolbar-button:not(.toggled) {
++.tests-tree-view .tree-view-entry:not(.highlighted):not(.selected) .toolbar-button:not(.toggled) {
+   display: none;
+ }
+diff --git a/packages/trace-viewer/src/ui/uiModeTestListView.tsx b/packages/trace-viewer/src/ui/uiModeTestListView.tsx
+index ce1c0fef373d9..96fbaadbf78ad 100644
+--- a/packages/trace-viewer/src/ui/uiModeTestListView.tsx
++++ b/packages/trace-viewer/src/ui/uiModeTestListView.tsx
+@@ -159,12 +159,12 @@ export const TestListView: React.FC<{
+     rootItem={testTree.rootItem}
+     dataTestId='test-tree'
+     render={treeItem => {
+-      return <div className='hbox ui-mode-list-item'>
+-        <div className='ui-mode-list-item-title'>
++      return <div className='hbox ui-mode-tree-item'>
++        <div className='ui-mode-tree-item-title'>
+           <span title={treeItem.title}>{treeItem.title}</span>
+           {treeItem.kind === 'case' ? treeItem.tags.map(tag => <TagView key={tag} tag={tag.slice(1)} onClick={e => handleTagClick(e, tag)} />) : null}
+         </div>
+-        {!!treeItem.duration && treeItem.status !== 'skipped' && <div className='ui-mode-list-item-time'>{msToString(treeItem.duration)}</div>}
++        {!!treeItem.duration && treeItem.status !== 'skipped' && <div className='ui-mode-tree-item-time'>{msToString(treeItem.duration)}</div>}
+         <Toolbar noMinHeight={true} noShadow={true}>
+           <ToolbarButton icon='play' title='Run' onClick={() => runTreeItem(treeItem)} disabled={!!runningState && !runningState.completed}></ToolbarButton>
+           <ToolbarButton icon='go-to-file' title='Show source' onClick={onRevealSource} style={(treeItem.kind === 'group' && treeItem.subKind === 'folder') ? { visibility: 'hidden' } : {}}></ToolbarButton>
+diff --git a/packages/web/src/components/gridView.tsx b/packages/web/src/components/gridView.tsx
+index 5d9b0a4c6cc9e..10fc48c247037 100644
+--- a/packages/web/src/components/gridView.tsx
++++ b/packages/web/src/components/gridView.tsx
+@@ -110,15 +110,12 @@ export function GridView<T>(model: GridViewProps<T>) {
+           </>;
+         }}
+         icon={model.icon}
+-        indent={model.indent}
+         isError={model.isError}
+         isWarning={model.isWarning}
+         isInfo={model.isInfo}
+         selectedItem={model.selectedItem}
+         onAccepted={model.onAccepted}
+         onSelected={model.onSelected}
+-        onLeftArrow={model.onLeftArrow}
+-        onRightArrow={model.onRightArrow}
+         onHighlighted={model.onHighlighted}
+         onIconClicked={model.onIconClicked}
+         noItemsMessage={model.noItemsMessage}
+diff --git a/packages/web/src/components/listView.tsx b/packages/web/src/components/listView.tsx
+index 4f2de5ae5447c..73f9b65b8f3d1 100644
+--- a/packages/web/src/components/listView.tsx
++++ b/packages/web/src/components/listView.tsx
+@@ -16,7 +16,7 @@
+ 
+ import * as React from 'react';
+ import './listView.css';
+-import { clsx } from '@web/uiUtils';
++import { clsx, scrollIntoViewIfNeeded } from '@web/uiUtils';
+ 
+ export type ListViewProps<T> = {
+   name: string,
+@@ -24,15 +24,12 @@ export type ListViewProps<T> = {
+   id?: (item: T, index: number) => string,
+   render: (item: T, index: number) => React.ReactNode,
+   icon?: (item: T, index: number) => string | undefined,
+-  indent?: (item: T, index: number) => number | undefined,
+   isError?: (item: T, index: number) => boolean,
+   isWarning?: (item: T, index: number) => boolean,
+   isInfo?: (item: T, index: number) => boolean,
+   selectedItem?: T,
+   onAccepted?: (item: T, index: number) => void,
+   onSelected?: (item: T, index: number) => void,
+-  onLeftArrow?: (item: T, index: number) => void,
+-  onRightArrow?: (item: T, index: number) => void,
+   onHighlighted?: (item: T | undefined) => void,
+   onIconClicked?: (item: T, index: number) => void,
+   noItemsMessage?: string,
+@@ -51,12 +48,9 @@ export function ListView<T>({
+   isError,
+   isWarning,
+   isInfo,
+-  indent,
+   selectedItem,
+   onAccepted,
+   onSelected,
+-  onLeftArrow,
+-  onRightArrow,
+   onHighlighted,
+   onIconClicked,
+   noItemsMessage,
+@@ -95,21 +89,12 @@ export function ListView<T>({
+           onAccepted?.(selectedItem, items.indexOf(selectedItem));
+           return;
+         }
+-        if (event.key !== 'ArrowDown' &&  event.key !== 'ArrowUp' && event.key !== 'ArrowLeft' &&  event.key !== 'ArrowRight')
++        if (event.key !== 'ArrowDown' &&  event.key !== 'ArrowUp')
+           return;
+ 
+         event.stopPropagation();
+         event.preventDefault();
+ 
+-        if (selectedItem && event.key === 'ArrowLeft') {
+-          onLeftArrow?.(selectedItem, items.indexOf(selectedItem));
+-          return;
+-        }
+-        if (selectedItem && event.key === 'ArrowRight') {
+-          onRightArrow?.(selectedItem, items.indexOf(selectedItem));
+-          return;
+-        }
+-
+         const index = selectedItem ? items.indexOf(selectedItem) : -1;
+         let newIndex = index;
+         if (event.key === 'ArrowDown') {
+@@ -135,7 +120,6 @@ export function ListView<T>({
+     >
+       {noItemsMessage && items.length === 0 && <div className='list-view-empty'>{noItemsMessage}</div>}
+       {items.map((item, index) => {
+-        const indentation = indent?.(item, index) || 0;
+         const rendered = render(item, index);
+         return <div
+           key={id?.(item, index) || index}
+@@ -152,8 +136,6 @@ export function ListView<T>({
+           onMouseEnter={() => setHighlightedItem(item)}
+           onMouseLeave={() => setHighlightedItem(undefined)}
+         >
+-          {/* eslint-disable-next-line react/jsx-key */}
+-          {indentation ? new Array(indentation).fill(0).map(() => <div className='list-view-indent'></div>) : undefined}
+           {icon && <div
+             className={'codicon ' + (icon(item, index) || 'codicon-blank')}
+             style={{ minWidth: 16, marginRight: 4 }}
+@@ -173,12 +155,3 @@ export function ListView<T>({
+     </div>
+   </div>;
+ }
+-
+-function scrollIntoViewIfNeeded(element: Element | undefined) {
+-  if (!element)
+-    return;
+-  if ((element as any)?.scrollIntoViewIfNeeded)
+-    (element as any).scrollIntoViewIfNeeded(false);
+-  else
+-    element?.scrollIntoView();
+-}
+diff --git a/packages/web/src/components/treeView.css b/packages/web/src/components/treeView.css
+new file mode 100644
+index 0000000000000..860d560fc9f92
+--- /dev/null
++++ b/packages/web/src/components/treeView.css
+@@ -0,0 +1,91 @@
++/*
++  Copyright (c) Microsoft Corporation.
++
++  Licensed under the Apache License, Version 2.0 (the "License");
++  you may not use this file except in compliance with the License.
++  You may obtain a copy of the License at
++
++      http://www.apache.org/licenses/LICENSE-2.0
++
++  Unless required by applicable law or agreed to in writing, software
++  distributed under the License is distributed on an "AS IS" BASIS,
++  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++  See the License for the specific language governing permissions and
++  limitations under the License.
++*/
++
++.tree-view-content {
++  display: flex;
++  flex-direction: column;
++  flex: auto;
++  position: relative;
++  user-select: none;
++  overflow: hidden auto;
++  outline: 1px solid transparent;
++}
++
++.tree-view-entry {
++  display: flex;
++  flex: none;
++  cursor: pointer;
++  align-items: center;
++  white-space: nowrap;
++  line-height: 28px;
++  padding-left: 5px;
++}
++
++.tree-view-content.not-selectable > .tree-view-entry {
++  cursor: inherit;
++}
++
++.tree-view-entry.highlighted:not(.selected) {
++  background-color: var(--vscode-list-inactiveSelectionBackground) !important;
++}
++
++.tree-view-entry.selected {
++  z-index: 10;
++}
++
++.tree-view-indent {
++  min-width: 16px;
++}
++
++.tree-view-content:focus .tree-view-entry.selected {
++  background-color: var(--vscode-list-activeSelectionBackground);
++  color: var(--vscode-list-activeSelectionForeground);
++  outline: 1px solid var(--vscode-focusBorder);
++}
++
++.tree-view-content .tree-view-entry.selected {
++  background-color: var(--vscode-list-inactiveSelectionBackground);
++}
++
++.tree-view-content:focus .tree-view-entry.selected * {
++  color: var(--vscode-list-activeSelectionForeground) !important;
++  background-color: transparent !important;
++}
++
++.tree-view-content:focus .tree-view-entry.selected .codicon {
++  color: var(--vscode-list-activeSelectionForeground) !important;
++}
++
++.tree-view-empty {
++  flex: auto;
++  display: flex;
++  align-items: center;
++  justify-content: center;
++}
++
++.tree-view-entry.error {
++  color: var(--vscode-list-errorForeground);
++  background-color: var(--vscode-inputValidation-errorBackground);
++}
++
++.tree-view-entry.warning {
++  color: var(--vscode-list-warningForeground);
++  background-color: var(--vscode-inputValidation-warningBackground);
++}
++
++.tree-view-entry.info {
++  background-color: var(--vscode-inputValidation-infoBackground);
++}
+diff --git a/packages/web/src/components/treeView.tsx b/packages/web/src/components/treeView.tsx
+index 8341056779bdb..6ad722145531f 100644
+--- a/packages/web/src/components/treeView.tsx
++++ b/packages/web/src/components/treeView.tsx
+@@ -15,7 +15,8 @@
+ */
+ 
+ import * as React from 'react';
+-import { ListView } from './listView';
++import { clsx, scrollIntoViewIfNeeded } from '@web/uiUtils';
++import './treeView.css';
+ 
+ export type TreeItem = {
+   id: string,
+@@ -45,7 +46,7 @@ export type TreeViewProps<T> = {
+   autoExpandDepth?: number,
+ };
+ 
+-const TreeListView = ListView<TreeItem>;
++const scrollPositions = new Map<string, number>();
+ 
+ export function TreeView<T extends TreeItem>({
+   name,
+@@ -97,61 +98,185 @@ export function TreeView<T extends TreeItem>({
+     return result;
+   }, [treeItems, isVisible]);
+ 
+-  return <TreeListView
+-    name={name}
+-    items={visibleItems}
+-    id={item => item.id}
+-    dataTestId={dataTestId || (name + '-tree')}
+-    render={item => {
+-      const rendered = render(item as T);
+-      return <>
+-        {icon && <div className={'codicon ' + (icon(item as T) || 'blank')} style={{ minWidth: 16, marginRight: 4 }}></div>}
+-        {typeof rendered === 'string' ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{rendered}</div> : rendered}
+-      </>;
+-    }}
+-    icon={item => {
+-      const expanded = treeItems.get(item as T)!.expanded;
+-      if (typeof expanded === 'boolean')
+-        return expanded ? 'codicon-chevron-down' : 'codicon-chevron-right';
+-    }}
+-    isError={item => isError?.(item as T) || false}
+-    indent={item => treeItems.get(item as T)!.depth}
+-    selectedItem={selectedItem}
+-    onAccepted={item => onAccepted?.(item as T)}
+-    onSelected={item => onSelected?.(item as T)}
+-    onHighlighted={item => onHighlighted?.(item as T)}
+-    onLeftArrow={item => {
+-      const { expanded, parent } = treeItems.get(item as T)!;
+-      if (expanded) {
+-        treeState.expandedItems.set(item.id, false);
+-        setTreeState({ ...treeState });
+-      } else if (parent) {
+-        onSelected?.(parent as T);
+-      }
+-    }}
+-    onRightArrow={item => {
+-      if (item.children.length) {
+-        treeState.expandedItems.set(item.id, true);
+-        setTreeState({ ...treeState });
++  const itemListRef = React.useRef<HTMLDivElement>(null);
++  const [highlightedItem, setHighlightedItem] = React.useState<any>();
++
++  React.useEffect(() => {
++    onHighlighted?.(highlightedItem);
++  }, [onHighlighted, highlightedItem]);
++
++  React.useEffect(() => {
++    const treeElem = itemListRef.current;
++    if (!treeElem)
++      return;
++    const saveScrollPosition = () => {
++      scrollPositions.set(name, treeElem.scrollTop);
++    };
++    treeElem.addEventListener('scroll', saveScrollPosition, { passive: true });
++    return () => treeElem.removeEventListener('scroll', saveScrollPosition);
++  }, [name]);
++
++  React.useEffect(() => {
++    if (itemListRef.current)
++      itemListRef.current.scrollTop = scrollPositions.get(name) || 0;
++  }, [name]);
++
++  const toggleExpanded = React.useCallback((item: T) => {
++    const { expanded } = treeItems.get(item)!;
++    if (expanded) {
++      // Move nested selection up.
++      for (let i: TreeItem | undefined = selectedItem; i; i = i.parent) {
++        if (i === item) {
++          onSelected?.(item as T);
++          break;
++        }
+       }
+-    }}
+-    onIconClicked={item => {
+-      const { expanded } = treeItems.get(item as T)!;
+-      if (expanded) {
+-        // Move nested selection up.
+-        for (let i: TreeItem | undefined = selectedItem; i; i = i.parent) {
+-          if (i === item) {
+-            onSelected?.(item as T);
+-            break;
++      treeState.expandedItems.set(item.id, false);
++    } else {
++      treeState.expandedItems.set(item.id, true);
++    }
++    setTreeState({ ...treeState });
++  }, [treeItems, selectedItem, onSelected, treeState, setTreeState]);
++
++  return <div className={clsx(`tree-view vbox`, name + '-tree-view')} role={'tree'} data-testid={dataTestId || (name + '-tree')}>
++    <div
++      className={clsx('tree-view-content')}
++      tabIndex={0}
++      onKeyDown={event => {
++        if (selectedItem && event.key === 'Enter') {
++          onAccepted?.(selectedItem);
++          return;
++        }
++        if (event.key !== 'ArrowDown' &&  event.key !== 'ArrowUp' && event.key !== 'ArrowLeft' &&  event.key !== 'ArrowRight')
++          return;
++
++        event.stopPropagation();
++        event.preventDefault();
++
++        if (selectedItem && event.key === 'ArrowLeft') {
++          const { expanded, parent } = treeItems.get(selectedItem)!;
++          if (expanded) {
++            treeState.expandedItems.set(selectedItem.id, false);
++            setTreeState({ ...treeState });
++          } else if (parent) {
++            onSelected?.(parent as T);
+           }
++          return;
+         }
+-        treeState.expandedItems.set(item.id, false);
+-      } else {
+-        treeState.expandedItems.set(item.id, true);
+-      }
+-      setTreeState({ ...treeState });
+-    }}
+-    noItemsMessage={noItemsMessage} />;
++        if (selectedItem && event.key === 'ArrowRight') {
++          if (selectedItem.children.length) {
++            treeState.expandedItems.set(selectedItem.id, true);
++            setTreeState({ ...treeState });
++          }
++          return;
++        }
++
++        const index = selectedItem ? visibleItems.indexOf(selectedItem) : -1;
++        let newIndex = index;
++        if (event.key === 'ArrowDown') {
++          if (index === -1)
++            newIndex = 0;
++          else
++            newIndex = Math.min(index + 1, visibleItems.length - 1);
++        }
++        if (event.key === 'ArrowUp') {
++          if (index === -1)
++            newIndex = visibleItems.length - 1;
++          else
++            newIndex = Math.max(index - 1, 0);
++        }
++
++        const element = itemListRef.current?.children.item(newIndex);
++        scrollIntoViewIfNeeded(element || undefined);
++        onHighlighted?.(undefined);
++        onSelected?.(visibleItems[newIndex]);
++        setHighlightedItem(undefined);
++      }}
++      ref={itemListRef}
++    >
++      {noItemsMessage && visibleItems.length === 0 && <div className='tree-view-empty'>{noItemsMessage}</div>}
++      {visibleItems.map(item => {
++        return <div key={item.id} role='treeitem' aria-selected={item === selectedItem}>
++          <TreeItemHeader
++            item={item}
++            itemData={treeItems.get(item)!}
++            selectedItem={selectedItem}
++            onSelected={onSelected}
++            onAccepted={onAccepted}
++            isError={isError}
++            toggleExpanded={toggleExpanded}
++            highlightedItem={highlightedItem}
++            setHighlightedItem={setHighlightedItem}
++            render={render}
++            icon={icon} />
++        </div>;
++      })}
++    </div>
++  </div>;
++}
++
++type TreeItemHeaderProps<T> = {
++  item: T,
++  itemData: TreeItemData,
++  selectedItem: T | undefined,
++  onSelected?: (item: T) => void,
++  toggleExpanded: (item: T) => void,
++  highlightedItem: T | undefined,
++  isError?: (item: T) => boolean,
++  onAccepted?: (item: T) => void,
++  setHighlightedItem: (item: T | undefined) => void,
++  render: (item: T) => React.ReactNode,
++  icon?: (item: T) => string | undefined,
++};
++
++export function TreeItemHeader<T extends TreeItem>({
++  item,
++  itemData,
++  selectedItem,
++  onSelected,
++  highlightedItem,
++  setHighlightedItem,
++  isError,
++  onAccepted,
++  toggleExpanded,
++  render,
++  icon }: TreeItemHeaderProps<T>) {
++
++  const indentation = itemData.depth;
++  const expanded = itemData.expanded;
++  let expandIcon = 'codicon-blank';
++  if (typeof expanded === 'boolean')
++    expandIcon = expanded ? 'codicon-chevron-down' : 'codicon-chevron-right';
++  const rendered = render(item);
++
++  return <div
++    onDoubleClick={() => onAccepted?.(item)}
++    className={clsx(
++        'tree-view-entry',
++        selectedItem === item && 'selected',
++        highlightedItem === item && 'highlighted',
++        isError?.(item) && 'error')}
++    onClick={() => onSelected?.(item)}
++    onMouseEnter={() => setHighlightedItem(item)}
++    onMouseLeave={() => setHighlightedItem(undefined)}
++  >
++    {indentation ? new Array(indentation).fill(0).map((_, i) => <div key={'indent-' + i} className='tree-view-indent'></div>) : undefined}
++    <div
++      className={'codicon ' + expandIcon}
++      style={{ minWidth: 16, marginRight: 4 }}
++      onDoubleClick={e => {
++        e.preventDefault();
++        e.stopPropagation();
++      }}
++      onClick={e => {
++        e.stopPropagation();
++        e.preventDefault();
++        toggleExpanded(item);
++      }}
++    />
++    {icon && <div className={'codicon ' + (icon(item) || 'codicon-blank')} style={{ minWidth: 16, marginRight: 4 }}></div>}
++    {typeof rendered === 'string' ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{rendered}</div> : rendered}
++  </div>;
+ }
+ 
+ type TreeItemData = {
+@@ -160,7 +285,12 @@ type TreeItemData = {
+   parent: TreeItem | null,
+ };
+ 
+-function flattenTree<T extends TreeItem>(rootItem: T, selectedItem: T | undefined, expandedItems: Map<string, boolean | undefined>, autoExpandDepth: number): Map<T, TreeItemData> {
++function flattenTree<T extends TreeItem>(
++  rootItem: T,
++  selectedItem: T | undefined,
++  expandedItems: Map<string, boolean | undefined>,
++  autoExpandDepth: number): Map<T, TreeItemData> {
++
+   const result = new Map<T, TreeItemData>();
+   const temporaryExpanded = new Set<string>();
+   for (let item: TreeItem | undefined = selectedItem?.parent; item; item = item.parent)
+diff --git a/packages/web/src/uiUtils.ts b/packages/web/src/uiUtils.ts
+index 2697177c6f624..ea714860146fb 100644
+--- a/packages/web/src/uiUtils.ts
++++ b/packages/web/src/uiUtils.ts
+@@ -208,5 +208,14 @@ export async function sha1(str: string): Promise<string> {
+   return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-1', buffer))).map(b => b.toString(16).padStart(2, '0')).join('');
+ }
+ 
++export function scrollIntoViewIfNeeded(element: Element | undefined) {
++  if (!element)
++    return;
++  if ((element as any)?.scrollIntoViewIfNeeded)
++    (element as any).scrollIntoViewIfNeeded(false);
++  else
++    element?.scrollIntoView();
++}
++
+ const kControlCodesRe = '\\u0000-\\u0020\\u007f-\\u009f';
+ export const kWebLinkRe = new RegExp('(?:[a-zA-Z][a-zA-Z0-9+.-]{2,}:\\/\\/|www\\.)[^\\s' + kControlCodesRe + '"]{2,}[^\\s' + kControlCodesRe + '"\')}\\],:;.!?]', 'ug');
+diff --git a/tests/config/traceViewerFixtures.ts b/tests/config/traceViewerFixtures.ts
+index 0fe4a9a5c9931..3eb3b11a153c7 100644
+--- a/tests/config/traceViewerFixtures.ts
++++ b/tests/config/traceViewerFixtures.ts
+@@ -62,13 +62,13 @@ class TraceViewerPage {
+   }
+ 
+   async actionIconsText(action: string) {
+-    const entry = await this.page.waitForSelector(`.list-view-entry:has-text("${action}")`);
++    const entry = await this.page.waitForSelector(`.tree-view-entry:has-text("${action}")`);
+     await entry.waitForSelector('.action-icon-value:visible');
+     return await entry.$$eval('.action-icon-value:visible', ee => ee.map(e => e.textContent));
+   }
+ 
+   async actionIcons(action: string) {
+-    return await this.page.waitForSelector(`.list-view-entry:has-text("${action}") .action-icons`);
++    return await this.page.waitForSelector(`.tree-view-entry:has-text("${action}") .action-icons`);
+   }
+ 
+   @step
+diff --git a/tests/playwright-test/ui-mode-fixtures.ts b/tests/playwright-test/ui-mode-fixtures.ts
+index 2952761d607d7..1e3b11a03ab09 100644
+--- a/tests/playwright-test/ui-mode-fixtures.ts
++++ b/tests/playwright-test/ui-mode-fixtures.ts
+@@ -66,16 +66,16 @@ export function dumpTestTree(page: Page, options: { time?: boolean } = {}): () =
+     }
+ 
+     const result: string[] = [];
+-    const listItems = treeElement.querySelectorAll('[role=listitem]');
+-    for (const listItem of listItems) {
+-      const iconElements = listItem.querySelectorAll('.codicon');
++    const treeItems = treeElement.querySelectorAll('[role=treeitem]');
++    for (const treeItem of treeItems) {
++      const iconElements = treeItem.querySelectorAll('.codicon');
+       const treeIcon = iconName(iconElements[0]);
+       const statusIcon = iconName(iconElements[1]);
+-      const indent = listItem.querySelectorAll('.list-view-indent').length;
+-      const watch = listItem.querySelector('.toolbar-button.eye.toggled') ? ' 👁' : '';
+-      const selected = listItem.classList.contains('selected') ? ' <=' : '';
+-      const title = listItem.querySelector('.ui-mode-list-item-title').childNodes[0].textContent;
+-      const timeElement = options.time ? listItem.querySelector('.ui-mode-list-item-time') : undefined;
++      const indent = treeItem.querySelectorAll('.tree-view-indent').length;
++      const watch = treeItem.querySelector('.toolbar-button.eye.toggled') ? ' 👁' : '';
++      const selected = treeItem.getAttribute('aria-selected') === 'true' ? ' <=' : '';
++      const title = treeItem.querySelector('.ui-mode-tree-item-title').childNodes[0].textContent;
++      const timeElement = options.time ? treeItem.querySelector('.ui-mode-tree-item-time') : undefined;
+       const time = timeElement ? ' ' + timeElement.textContent.replace(/[.\d]+m?s/, 'XXms') : '';
+       result.push('    ' + '  '.repeat(indent) + treeIcon + ' ' + statusIcon + ' ' + title + time + watch + selected);
+     }
+diff --git a/tests/playwright-test/ui-mode-test-annotations.spec.ts b/tests/playwright-test/ui-mode-test-annotations.spec.ts
+index 7a0dea8af10c5..f32d43aecfbab 100644
+--- a/tests/playwright-test/ui-mode-test-annotations.spec.ts
++++ b/tests/playwright-test/ui-mode-test-annotations.spec.ts
+@@ -33,7 +33,7 @@ test('should display annotations', async ({ runUITest }) => {
+   });
+   await page.getByTitle('Run all').click();
+   await expect(page.getByTestId('status-line')).toHaveText('1/1 passed (100%)');
+-  await page.getByRole('listitem').filter({ hasText: 'suite' }).locator('.codicon-chevron-right').click();
++  await page.getByRole('treeitem').filter({ hasText: 'suite' }).locator('.codicon-chevron-right').click();
+   await page.getByText('annotation test').click();
+   await page.getByText('Annotations', { exact: true }).click();
+ 
+diff --git a/tests/playwright-test/ui-mode-test-filters.spec.ts b/tests/playwright-test/ui-mode-test-filters.spec.ts
+index 5d70048473e5f..dd59c334b22c6 100644
+--- a/tests/playwright-test/ui-mode-test-filters.spec.ts
++++ b/tests/playwright-test/ui-mode-test-filters.spec.ts
+@@ -64,7 +64,7 @@ test('should display native tags and filter by them on click', async ({ runUITes
+       test('pwt', { tag: '@smoke' }, () => {});
+   `,
+   });
+-  await page.locator('.ui-mode-list-item-title').getByText('smoke').click();
++  await page.locator('.ui-mode-tree-item-title').getByText('smoke').click();
+   await expect(page.getByPlaceholder('Filter')).toHaveValue('@smoke');
+   await expect.poll(dumpTestTree(page)).toBe(`
+     ▼ ◯ a.test.ts
+diff --git a/tests/playwright-test/ui-mode-test-progress.spec.ts b/tests/playwright-test/ui-mode-test-progress.spec.ts
+index f87eaa8fbcd68..f2f01a79ce31f 100644
+--- a/tests/playwright-test/ui-mode-test-progress.spec.ts
++++ b/tests/playwright-test/ui-mode-test-progress.spec.ts
+@@ -47,7 +47,7 @@ test('should update trace live', async ({ runUITest, server }) => {
+   await page.getByText('live test').dblclick();
+ 
+   // It should halt on loading one.html.
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -57,11 +57,11 @@ test('should update trace live', async ({ runUITest, server }) => {
+   ]);
+ 
+   await expect(
+-      listItem.locator(':scope.selected'),
++      listItem.locator(':scope[aria-selected="true"]'),
+       'last action to be selected'
+   ).toHaveText(/page.goto/);
+   await expect(
+-      listItem.locator(':scope.selected .codicon.codicon-loading'),
++      listItem.locator(':scope[aria-selected="true"] .codicon.codicon-loading'),
+       'spinner'
+   ).toBeVisible();
+ 
+@@ -83,11 +83,11 @@ test('should update trace live', async ({ runUITest, server }) => {
+     /page.gotohttp:\/\/localhost:\d+\/two.html/
+   ]);
+   await expect(
+-      listItem.locator(':scope.selected'),
++      listItem.locator(':scope[aria-selected="true"]'),
+       'last action to be selected'
+   ).toHaveText(/page.goto/);
+   await expect(
+-      listItem.locator(':scope.selected .codicon.codicon-loading'),
++      listItem.locator(':scope[aria-selected="true"] .codicon.codicon-loading'),
+       'spinner'
+   ).toBeVisible();
+ 
+@@ -132,7 +132,7 @@ test('should preserve action list selection upon live trace update', async ({ ru
+   await page.getByText('live test').dblclick();
+ 
+   // It should wait on the latch.
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -157,7 +157,7 @@ test('should preserve action list selection upon live trace update', async ({ ru
+     /page.setContent[\d.]+m?s/,
+   ]);
+   await expect(
+-      listItem.locator(':scope.selected'),
++      listItem.locator(':scope[aria-selected="true"]'),
+       'selected action stays the same'
+   ).toHaveText(/page.goto/);
+ });
+@@ -193,7 +193,7 @@ test('should update tracing network live', async ({ runUITest, server }) => {
+   await page.getByText('live test').dblclick();
+ 
+   // It should wait on the latch.
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -233,7 +233,7 @@ test('should show trace w/ multiple contexts', async ({ runUITest, server, creat
+   await page.getByText('live test').dblclick();
+ 
+   // It should wait on the latch.
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -278,7 +278,7 @@ test('should show live trace for serial', async ({ runUITest, server, createLatc
+   await page.getByText('two', { exact: true }).click();
+   await page.getByTitle('Run all').click();
+ 
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -318,7 +318,7 @@ test('should show live trace from hooks', async ({ runUITest, createLatch }) =>
+   `);
+   await page.getByText('test one').dblclick();
+ 
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+diff --git a/tests/playwright-test/ui-mode-test-run.spec.ts b/tests/playwright-test/ui-mode-test-run.spec.ts
+index 5ead1889f0fbd..24731bcbb2173 100644
+--- a/tests/playwright-test/ui-mode-test-run.spec.ts
++++ b/tests/playwright-test/ui-mode-test-run.spec.ts
+@@ -93,7 +93,7 @@ test('should run on hover', async ({ runUITest }) => {
+   });
+ 
+   await page.getByText('passes').hover();
+-  await page.getByRole('listitem').filter({ hasText: 'passes' }).getByTitle('Run').click();
++  await page.getByRole('treeitem').filter({ hasText: 'passes' }).getByTitle('Run').click();
+ 
+   await expect.poll(dumpTestTree(page)).toBe(`
+     ▼ ◯ a.test.ts
+@@ -275,7 +275,7 @@ test('should run folder', async ({ runUITest }) => {
+   });
+ 
+   await page.getByText('folder-b').hover();
+-  await page.getByRole('listitem').filter({ hasText: 'folder-b' }).getByTitle('Run').click();
++  await page.getByRole('treeitem').filter({ hasText: 'folder-b' }).getByTitle('Run').click();
+ 
+   await expect.poll(dumpTestTree(page)).toContain(`
+     ▼ ✅ folder-b <=
+diff --git a/tests/playwright-test/ui-mode-test-setup.spec.ts b/tests/playwright-test/ui-mode-test-setup.spec.ts
+index cd5503427d1f4..f8de9e262a817 100644
+--- a/tests/playwright-test/ui-mode-test-setup.spec.ts
++++ b/tests/playwright-test/ui-mode-test-setup.spec.ts
+@@ -211,7 +211,7 @@ test('should run part of the setup only', async ({ runUITest }) => {
+   await page.getByLabel('test').setChecked(true);
+ 
+   await page.getByText('setup.ts').hover();
+-  await page.getByRole('listitem').filter({ hasText: 'setup.ts' }).getByTitle('Run').click();
++  await page.getByRole('treeitem').filter({ hasText: 'setup.ts' }).getByTitle('Run').click();
+ 
+   await expect.poll(dumpTestTree(page)).toBe(`
+     ▼ ✅ setup.ts <=
+diff --git a/tests/playwright-test/ui-mode-test-update.spec.ts b/tests/playwright-test/ui-mode-test-update.spec.ts
+index 61e2c89dc7e47..ae5752c3f0650 100644
+--- a/tests/playwright-test/ui-mode-test-update.spec.ts
++++ b/tests/playwright-test/ui-mode-test-update.spec.ts
+@@ -149,7 +149,7 @@ test('should not loose run information after execution if test wrote into testDi
+   await page.getByTitle('Run all').click();
+   await page.waitForTimeout(5_000);
+   await expect(page.getByText('Did not run')).toBeHidden();
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -215,7 +215,7 @@ test('should update test locations', async ({ runUITest, writeFiles }) => {
+   const messages: any[] = [];
+   await page.exposeBinding('__logForTest', (source, arg) => messages.push(arg));
+ 
+-  const passesItemLocator = page.getByRole('listitem').filter({ hasText: 'passes' });
++  const passesItemLocator = page.getByRole('treeitem').filter({ hasText: 'passes' });
+   await passesItemLocator.hover();
+   await passesItemLocator.getByTitle('Show source').click();
+   await page.getByTitle('Open in VS Code').click();
+diff --git a/tests/playwright-test/ui-mode-test-watch.spec.ts b/tests/playwright-test/ui-mode-test-watch.spec.ts
+index bd04750a1f2fe..893a0ef7acccb 100644
+--- a/tests/playwright-test/ui-mode-test-watch.spec.ts
++++ b/tests/playwright-test/ui-mode-test-watch.spec.ts
+@@ -28,14 +28,14 @@ test('should watch files', async ({ runUITest, writeFiles }) => {
+   });
+ 
+   await page.getByText('fails').click();
+-  await page.getByRole('listitem').filter({ hasText: 'fails' }).getByTitle('Watch').click();
++  await page.getByRole('treeitem').filter({ hasText: 'fails' }).getByTitle('Watch').click();
+   await expect.poll(dumpTestTree(page)).toBe(`
+     ▼ ◯ a.test.ts
+         ◯ passes
+         ◯ fails 👁 <=
+   `);
+ 
+-  await page.getByRole('listitem').filter({ hasText: 'fails' }).getByTitle('Run').click();
++  await page.getByRole('treeitem').filter({ hasText: 'fails' }).getByTitle('Run').click();
+ 
+   await expect.poll(dumpTestTree(page)).toBe(`
+     ▼ ❌ a.test.ts
+@@ -75,7 +75,7 @@ test('should watch e2e deps', async ({ runUITest, writeFiles }) => {
+   });
+ 
+   await page.getByText('answer').click();
+-  await page.getByRole('listitem').filter({ hasText: 'answer' }).getByTitle('Watch').click();
++  await page.getByRole('treeitem').filter({ hasText: 'answer' }).getByTitle('Watch').click();
+   await expect.poll(dumpTestTree(page)).toBe(`
+     ▼ ◯ a.test.ts
+         ◯ answer 👁 <=
+@@ -102,13 +102,13 @@ test('should batch watch updates', async ({ runUITest, writeFiles }) => {
+   });
+ 
+   await page.getByText('a.test.ts').click();
+-  await page.getByRole('listitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();
++  await page.getByRole('treeitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();
+   await page.getByText('b.test.ts').click();
+-  await page.getByRole('listitem').filter({ hasText: 'b.test.ts' }).getByTitle('Watch').click();
++  await page.getByRole('treeitem').filter({ hasText: 'b.test.ts' }).getByTitle('Watch').click();
+   await page.getByText('c.test.ts').click();
+-  await page.getByRole('listitem').filter({ hasText: 'c.test.ts' }).getByTitle('Watch').click();
++  await page.getByRole('treeitem').filter({ hasText: 'c.test.ts' }).getByTitle('Watch').click();
+   await page.getByText('d.test.ts').click();
+-  await page.getByRole('listitem').filter({ hasText: 'd.test.ts' }).getByTitle('Watch').click();
++  await page.getByRole('treeitem').filter({ hasText: 'd.test.ts' }).getByTitle('Watch').click();
+ 
+   await expect.poll(dumpTestTree(page)).toBe(`
+     ▼ ◯ a.test.ts 👁
+@@ -229,7 +229,7 @@ test('should run added test in watched file', async ({ runUITest, writeFiles })
+   });
+ 
+   await page.getByText('a.test.ts').click();
+-  await page.getByRole('listitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();
++  await page.getByRole('treeitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();
+ 
+   await expect.poll(dumpTestTree(page)).toBe(`
+     ▼ ◯ a.test.ts 👁 <=
+diff --git a/tests/playwright-test/ui-mode-trace.spec.ts b/tests/playwright-test/ui-mode-trace.spec.ts
+index 9f0749893e573..def44e9aeb451 100644
+--- a/tests/playwright-test/ui-mode-trace.spec.ts
++++ b/tests/playwright-test/ui-mode-trace.spec.ts
+@@ -34,7 +34,7 @@ test('should merge trace events', async ({ runUITest }) => {
+ 
+   await page.getByText('trace test').dblclick();
+ 
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -61,7 +61,7 @@ test('should merge web assertion events', async ({  runUITest }, testInfo) => {
+ 
+   await page.getByText('trace test').dblclick();
+ 
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -86,7 +86,7 @@ test('should merge screenshot assertions', async ({  runUITest }, testInfo) => {
+ 
+   await page.getByText('trace test').dblclick();
+ 
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -134,7 +134,7 @@ test('should show snapshots for sync assertions', async ({ runUITest }) => {
+ 
+   await page.getByText('trace test').dblclick();
+ 
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+   await expect(
+       listItem,
+       'action list'
+@@ -214,7 +214,7 @@ test('should not fail on internal page logs', async ({ runUITest, server }) => {
+   });
+ 
+   await page.getByText('pass').dblclick();
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+ 
+   await expect(
+       listItem,
+@@ -241,7 +241,7 @@ test('should not show caught errors in the errors tab', async ({ runUITest }, te
+   });
+ 
+   await page.getByText('pass').dblclick();
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+ 
+   await expect(
+       listItem,
+@@ -272,7 +272,7 @@ test('should reveal errors in the sourcetab', async ({ runUITest }) => {
+   });
+ 
+   await page.getByText('pass').dblclick();
+-  const listItem = page.getByTestId('actions-tree').getByRole('listitem');
++  const listItem = page.getByTestId('actions-tree').getByRole('treeitem');
+ 
+   await expect(
+       listItem,

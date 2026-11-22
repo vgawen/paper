@@ -1,0 +1,356 @@
+From 1072d14efc3a2dbce25d70b0dc0f516061ba4d9e Mon Sep 17 00:00:00 2001
+From: Max Schmitt <max@schmitt.mx>
+Date: Mon, 16 Jun 2025 17:24:02 +0200
+Subject: [PATCH] test: use role based selectors in trace-viewer tests (#36295)
+
+Signed-off-by: Max Schmitt <max@schmitt.mx>
+Co-authored-by: Dmitry Gozman <dgozman@gmail.com>
+---
+ packages/trace-viewer/src/ui/logTab.tsx       |  1 +
+ packages/trace-viewer/src/ui/metadataView.tsx |  2 +-
+ packages/trace-viewer/src/ui/networkTab.tsx   |  1 +
+ packages/trace-viewer/src/ui/stackTrace.tsx   |  1 +
+ packages/web/src/components/gridView.tsx      |  1 +
+ packages/web/src/components/listView.tsx      |  5 +-
+ tests/config/traceViewerFixtures.ts           | 52 ++++++++++---------
+ tests/library/trace-viewer.spec.ts            | 25 +++++----
+ tests/playwright-test/reporter-html.spec.ts   |  6 +--
+ .../ui-mode-test-network-tab.spec.ts          |  6 +--
+ 10 files changed, 55 insertions(+), 45 deletions(-)
+
+diff --git a/packages/trace-viewer/src/ui/logTab.tsx b/packages/trace-viewer/src/ui/logTab.tsx
+index 4fcb8a6f43bfd..89bf177461474 100644
+--- a/packages/trace-viewer/src/ui/logTab.tsx
++++ b/packages/trace-viewer/src/ui/logTab.tsx
+@@ -58,6 +58,7 @@ export const LogTab: React.FunctionComponent<{
+ 
+   return <LogList
+     name='log'
++    ariaLabel='Log entries'
+     items={entries}
+     render={entry => <div className='log-list-item'>
+       <span className='log-list-duration'>{entry.time}</span>
+diff --git a/packages/trace-viewer/src/ui/metadataView.tsx b/packages/trace-viewer/src/ui/metadataView.tsx
+index 88c2e2bf933fd..9d2e1c207cda4 100644
+--- a/packages/trace-viewer/src/ui/metadataView.tsx
++++ b/packages/trace-viewer/src/ui/metadataView.tsx
+@@ -27,7 +27,7 @@ export const MetadataView: React.FunctionComponent<{
+ 
+   const wallTime = model.wallTime !== undefined ? new Date(model.wallTime).toLocaleString(undefined, { timeZoneName: 'short' }) : undefined;
+ 
+-  return <div data-testid='metadata-view' className='vbox' style={{ flexShrink: 0 }}>
++  return <div className='vbox' style={{ flexShrink: 0 }}>
+     <div className='call-section' style={{ paddingTop: 2 }}>Time</div>
+     {!!wallTime && <div className='call-line'>start time:<span className='call-value datetime' title={wallTime}>{wallTime}</span></div>}
+     <div className='call-line'>duration:<span className='call-value number' title={msToString(model.endTime - model.startTime)}>{msToString(model.endTime - model.startTime)}</span></div>
+diff --git a/packages/trace-viewer/src/ui/networkTab.tsx b/packages/trace-viewer/src/ui/networkTab.tsx
+index 65faffd01b4a5..29624df2feb82 100644
+--- a/packages/trace-viewer/src/ui/networkTab.tsx
++++ b/packages/trace-viewer/src/ui/networkTab.tsx
+@@ -94,6 +94,7 @@ export const NetworkTab: React.FunctionComponent<{
+ 
+   const grid = <NetworkGridView
+     name='network'
++    ariaLabel='Network requests'
+     items={renderedEntries}
+     selectedItem={selectedEntry}
+     onSelected={item => setSelectedEntry(item)}
+diff --git a/packages/trace-viewer/src/ui/stackTrace.tsx b/packages/trace-viewer/src/ui/stackTrace.tsx
+index 6a0bad1672742..f0e79cd673b53 100644
+--- a/packages/trace-viewer/src/ui/stackTrace.tsx
++++ b/packages/trace-viewer/src/ui/stackTrace.tsx
+@@ -29,6 +29,7 @@ export const StackTraceView: React.FunctionComponent<{
+   const frames = stack || [];
+   return <StackFrameListView
+     name='stack-trace'
++    ariaLabel='Stack trace'
+     items={frames}
+     selectedItem={frames[selectedFrame]}
+     render={frame => {
+diff --git a/packages/web/src/components/gridView.tsx b/packages/web/src/components/gridView.tsx
+index 303de4b8d3600..58942e5527be7 100644
+--- a/packages/web/src/components/gridView.tsx
++++ b/packages/web/src/components/gridView.tsx
+@@ -92,6 +92,7 @@ export function GridView<T>(model: GridViewProps<T>) {
+       <ListView
+         name={model.name}
+         items={model.items}
++        ariaLabel={model.ariaLabel}
+         id={model.id}
+         render={(item, index) => {
+           return <>
+diff --git a/packages/web/src/components/listView.tsx b/packages/web/src/components/listView.tsx
+index 079936c4a12c6..fcf0a461e5ab6 100644
+--- a/packages/web/src/components/listView.tsx
++++ b/packages/web/src/components/listView.tsx
+@@ -27,6 +27,7 @@ export type ListViewProps<T> = {
+   isError?: (item: T, index: number) => boolean,
+   isWarning?: (item: T, index: number) => boolean,
+   isInfo?: (item: T, index: number) => boolean,
++  ariaLabel?: string,
+   selectedItem?: T,
+   onAccepted?: (item: T, index: number) => void,
+   onSelected?: (item: T, index: number) => void,
+@@ -56,6 +57,7 @@ export function ListView<T>({
+   noItemsMessage,
+   dataTestId,
+   notSelectable,
++  ariaLabel,
+ }: ListViewProps<T>) {
+   const itemListRef = React.useRef<HTMLDivElement>(null);
+   const [highlightedItem, setHighlightedItem] = React.useState<any>();
+@@ -80,7 +82,7 @@ export function ListView<T>({
+       itemListRef.current.scrollTop = scrollPositions.get(name) || 0;
+   }, [name]);
+ 
+-  return <div className={clsx(`list-view vbox`, name + '-list-view')} role={items.length > 0 ? 'list' : undefined} data-testid={dataTestId || (name + '-list')}>
++  return <div className={clsx(`list-view vbox`, name + '-list-view')} role={items.length > 0 ? 'list' : undefined} aria-label={ariaLabel}>
+     <div
+       className={clsx('list-view-content', notSelectable && 'not-selectable')}
+       tabIndex={0}
+@@ -132,6 +134,7 @@ export function ListView<T>({
+               isError?.(item, index) && 'error',
+               isWarning?.(item, index) && 'warning',
+               isInfo?.(item, index) && 'info')}
++          aria-selected={selectedItem === item}
+           onClick={() => onSelected?.(item, index)}
+           onMouseEnter={() => setHighlightedItem(item)}
+           onMouseLeave={() => setHighlightedItem(undefined)}
+diff --git a/tests/config/traceViewerFixtures.ts b/tests/config/traceViewerFixtures.ts
+index eb025c97dcc04..d4d6284c8b0a4 100644
+--- a/tests/config/traceViewerFixtures.ts
++++ b/tests/config/traceViewerFixtures.ts
+@@ -43,7 +43,6 @@ class TraceViewerPage {
+   errorMessages: Locator;
+   consoleLineMessages: Locator;
+   consoleStacks: Locator;
+-  stackFrames: Locator;
+   networkRequests: Locator;
+   metadataTab: Locator;
+   snapshotContainer: Locator;
+@@ -57,74 +56,79 @@ class TraceViewerPage {
+     this.actionTitles = page.locator('.action-title');
+     this.actionsTree = page.getByTestId('actions-tree');
+     this.callLines = page.locator('.call-tab .call-line');
+-    this.logLines = page.getByTestId('log-list').locator('.list-view-entry');
+-    this.consoleLines = page.locator('.console-line');
++    this.logLines = page.getByRole('list', { name: 'Log entries' }).getByRole('listitem');
++    this.consoleLines = page.getByRole('tabpanel', { name: 'Console' }).getByRole('listitem');
+     this.consoleLineMessages = page.locator('.console-line-message');
+     this.errorMessages = page.locator('.error-message');
+     this.consoleStacks = page.locator('.console-stack');
+-    this.stackFrames = page.getByTestId('stack-trace-list').locator('.list-view-entry');
+-    this.networkRequests = page.getByTestId('network-list').locator('.list-view-entry');
++    this.networkRequests = page.getByRole('list', { name: 'Network requests' }).getByRole('listitem');
+     this.snapshotContainer = page.locator('.snapshot-container iframe.snapshot-visible[name=snapshot]');
+-    this.metadataTab = page.getByTestId('metadata-view');
+-    this.sourceCodeTab = page.getByTestId('source-code');
++    this.metadataTab = page.getByRole('tabpanel', { name: 'Metadata' });
++    this.sourceCodeTab = page.getByRole('tabpanel', { name: 'Source' });
+ 
+     this.settingsDialog = page.getByTestId('settings-toolbar-dialog');
+     this.darkModeSetting = page.locator('.setting').getByText('Dark mode');
+     this.displayCanvasContentSetting = page.locator('.setting').getByText('Display canvas content');
+   }
+ 
+-  async actionIconsText(action: string) {
+-    const entry = await this.page.waitForSelector(`.tree-view-entry:has-text("${action}")`);
+-    await entry.waitForSelector('.action-icon-value:visible');
+-    return await entry.$$eval('.action-icon-value:visible', ee => ee.map(e => e.textContent));
++  stackFrames(options: { selected?: boolean } = {}) {
++    const entry = this.page.getByRole('list', { name: 'Stack trace' }).getByRole('listitem');
++    if (options.selected)
++      return entry.locator(':scope.selected');
++    return entry;
+   }
+ 
+-  async actionIcons(action: string) {
+-    return await this.page.waitForSelector(`.tree-view-entry:has-text("${action}") .action-icons`);
++  actionIconsText(action: string) {
++    const entry = this.actionsTree.getByRole('treeitem', { name: action });
++    return entry.locator('.action-icon-value').filter({ visible: true });
++  }
++
++  actionIcons(action: string) {
++    return this.actionsTree.getByRole('treeitem', { name: action }).locator('.action-icons').filter({ visible: true });
+   }
+ 
+   @step
+-  async expandAction(title: string, ordinal: number = 0) {
+-    await this.actionsTree.locator('.tree-view-entry', { hasText: title }).nth(ordinal).locator('.codicon-chevron-right').click();
++  async expandAction(title: string) {
++    await this.actionsTree.getByRole('treeitem', { name: title }).locator('.codicon-chevron-right').click();
+   }
+ 
+   @step
+   async selectAction(title: string, ordinal: number = 0) {
+-    await this.page.locator(`.action-title:has-text("${title}")`).nth(ordinal).click();
++    await this.actionsTree.getByTitle(title).nth(ordinal).click();
+   }
+ 
+   @step
+   async hoverAction(title: string, ordinal: number = 0) {
+-    await this.page.locator(`.action-title:has-text("${title}")`).nth(ordinal).hover();
++    await this.actionsTree.getByRole('treeitem', { name: title }).nth(ordinal).hover();
+   }
+ 
+   @step
+   async selectSnapshot(name: string) {
+-    await this.page.click(`.snapshot-tab .tabbed-pane-tab-label:has-text("${name}")`);
++    await this.page.getByRole('tab', { name }).click();
+   }
+ 
+   async showErrorsTab() {
+-    await this.page.click('text="Errors"');
++    await this.page.getByRole('tab', { name: 'Errors' }).click();
+   }
+ 
+   async showConsoleTab() {
+-    await this.page.click('text="Console"');
++    await this.page.getByRole('tab', { name: 'Console' }).click();
+   }
+ 
+   async showSourceTab() {
+-    await this.page.click('text="Source"');
++    await this.page.getByRole('tab', { name: 'Source' }).click();
+   }
+ 
+   async showNetworkTab() {
+-    await this.page.click('text="Network"');
++    await this.page.getByRole('tab', { name: 'Network' }).click();
+   }
+ 
+   async showMetadataTab() {
+-    await this.page.click('text="Metadata"');
++    await this.page.getByRole('tab', { name: 'Metadata' }).click();
+   }
+ 
+   async showSettings() {
+-    await this.page.locator('.settings-gear').click();
++    await this.page.getByRole('button', { name: 'Settings' }).click();
+   }
+ 
+   @step
+diff --git a/tests/library/trace-viewer.spec.ts b/tests/library/trace-viewer.spec.ts
+index ff50a454a5e16..16a36e5d59067 100644
+--- a/tests/library/trace-viewer.spec.ts
++++ b/tests/library/trace-viewer.spec.ts
+@@ -282,12 +282,12 @@ test('should render console', async ({ showTraceViewer, browserName }) => {
+   await expect(listViews.filter({ hasText: 'Cheers!' })).toHaveClass('list-view-entry');
+ });
+ 
+-test('should open console errors on click', async ({ showTraceViewer, browserName }) => {
++test('should open console errors on click', async ({ showTraceViewer }) => {
+   const traceViewer = await showTraceViewer([traceFile]);
+-  expect(await traceViewer.actionIconsText('Evaluate')).toEqual(['2', '1']);
+-  expect(await traceViewer.page.isHidden('.console-tab')).toBeTruthy();
+-  await (await traceViewer.actionIcons('Evaluate')).click();
+-  expect(await traceViewer.page.waitForSelector('.console-tab')).toBeTruthy();
++  await expect(traceViewer.actionIconsText('Evaluate')).toHaveText(['2', '1']);
++  await expect(traceViewer.page.getByRole('tabpanel', { name: 'Console' })).toBeHidden();
++  await traceViewer.actionIcons('Evaluate').click();
++  await traceViewer.page.getByRole('tabpanel', { name: 'Console' }).waitFor();
+ });
+ 
+ test('should show params and return value', async ({ showTraceViewer }) => {
+@@ -346,7 +346,7 @@ test('should have correct stack trace', async ({ showTraceViewer }) => {
+ 
+   await traceViewer.selectAction('Click');
+   await traceViewer.showSourceTab();
+-  await expect(traceViewer.stackFrames).toContainText([
++  await expect(traceViewer.stackFrames()).toContainText([
+     /doClick\s+trace-viewer.spec.ts\s+:\d+/,
+     /recordTrace\s+trace-viewer.spec.ts\s+:\d+/,
+   ], { useInnerText: true });
+@@ -977,14 +977,13 @@ test('should highlight expect failure', async ({ page, server, runAndTrace }) =>
+ test('should show action source', async ({ showTraceViewer }) => {
+   const traceViewer = await showTraceViewer([traceFile]);
+   await traceViewer.selectAction('Click');
+-  const page = traceViewer.page;
+ 
+-  await page.click('text=Source');
+-  await expect(page.locator('.source-line-running')).toContainText('await page.getByText(\'Click\').click()');
+-  await expect(page.getByTestId('stack-trace-list').locator('.list-view-entry.selected')).toHaveText(/doClick.*trace-viewer\.spec\.ts:[\d]+/);
++  await traceViewer.showSourceTab();
++  await expect(traceViewer.page.locator('.source-line-running')).toContainText('await page.getByText(\'Click\').click()');
++  await expect(traceViewer.stackFrames({ selected: true })).toHaveText(/doClick.*trace-viewer\.spec\.ts:[\d]+/);
+ 
+   await traceViewer.hoverAction('Wait for navigation');
+-  await expect(page.locator('.source-line-running')).toContainText('page.waitForNavigation()');
++  await expect(traceViewer.page.locator('.source-line-running')).toContainText('page.waitForNavigation()');
+ });
+ 
+ test('should follow redirects', async ({ page, runAndTrace, server, asset }) => {
+@@ -1015,7 +1014,7 @@ test('should follow redirects', async ({ page, runAndTrace, server, asset }) =>
+ 
+ test('should include metainfo', async ({ showTraceViewer }) => {
+   const traceViewer = await showTraceViewer([traceFile]);
+-  await traceViewer.page.locator('text=Metadata').click();
++  await traceViewer.page.getByRole('tab', { name: 'Metadata' }).click();
+   const callLine = traceViewer.metadataTab.locator('.call-line');
+   await expect(callLine.getByText('start time')).toHaveText(/start time:[\d/,: ]+/);
+   await expect(callLine.getByText('duration')).toHaveText(/duration:[\dms]+/);
+@@ -1065,7 +1064,7 @@ test('should open two trace files', async ({ context, page, request, server, sho
+     /Fetch "\/one-style\.css"/,
+   ]);
+ 
+-  await traceViewer.page.locator('text=Metadata').click();
++  await traceViewer.page.getByRole('tab', { name: 'Metadata' }).click();
+   const callLine = traceViewer.page.locator('.call-line');
+   // Should get metadata from the context trace
+   await expect(callLine.getByText('start time')).toHaveText(/start time:[\d/,: ]+/);
+diff --git a/tests/playwright-test/reporter-html.spec.ts b/tests/playwright-test/reporter-html.spec.ts
+index 92ee095e2d385..fc57ad7f7314b 100644
+--- a/tests/playwright-test/reporter-html.spec.ts
++++ b/tests/playwright-test/reporter-html.spec.ts
+@@ -543,7 +543,7 @@ for (const useIntermediateMergeReport of [true, false] as const) {
+       await page.getByRole('link', { name: 'passes' }).click();
+       await page.click('img');
+       await page.click('.action-title >> text=EVALUATE');
+-      await page.click('text=Source');
++      await page.getByRole('tab', { name: 'Source' }).click();
+ 
+       await expect(page.locator('.CodeMirror-line')).toContainText([
+         /import.*test/,
+@@ -551,10 +551,10 @@ for (const useIntermediateMergeReport of [true, false] as const) {
+       ]);
+       await expect(page.locator('.source-line-running')).toContainText('page.evaluate');
+ 
+-      await expect(page.getByTestId('stack-trace-list')).toContainText([
++      await expect(page.getByRole('list', { name: 'Stack trace' }).getByRole('listitem')).toContainText([
+         /a.test.js:[\d]+/,
+       ]);
+-      await expect(page.getByTestId('stack-trace-list').locator('.list-view-entry.selected')).toContainText('a.test.js');
++      await expect(page.getByRole('list', { name: 'Stack trace' }).getByRole('listitem').and(page.locator('.selected'))).toContainText('a.test.js');
+     });
+ 
+     test('should not show stack trace', async ({ runInlineTest, page, showReport }) => {
+diff --git a/tests/playwright-test/ui-mode-test-network-tab.spec.ts b/tests/playwright-test/ui-mode-test-network-tab.spec.ts
+index 30c63494c1f2a..10810d1616184 100644
+--- a/tests/playwright-test/ui-mode-test-network-tab.spec.ts
++++ b/tests/playwright-test/ui-mode-test-network-tab.spec.ts
+@@ -32,7 +32,7 @@ test('should filter network requests by resource type', async ({ runUITest, serv
+   await page.getByText('network tab test').dblclick();
+   await page.getByText('Network', { exact: true }).click();
+ 
+-  const networkItems = page.getByTestId('network-list').getByRole('listitem');
++  const networkItems = page.getByRole('list', { name: 'Network requests' }).getByRole('listitem');
+ 
+   await page.getByText('JS', { exact: true }).click();
+   await expect(networkItems).toHaveCount(1);
+@@ -73,7 +73,7 @@ test('should filter network requests by url', async ({ runUITest, server }) => {
+   await page.getByText('network tab test').dblclick();
+   await page.getByText('Network', { exact: true }).click();
+ 
+-  const networkItems = page.getByTestId('network-list').getByRole('listitem');
++  const networkItems = page.getByRole('list', { name: 'Network requests' }).getByRole('listitem');
+ 
+   await page.getByPlaceholder('Filter network').fill('script.');
+   await expect(networkItems).toHaveCount(1);
+@@ -198,5 +198,5 @@ test('should not duplicate network entries from beforeAll', {
+ 
+   await page.getByText('first test').dblclick();
+   await page.getByText('Network', { exact: true }).click();
+-  await expect(page.getByTestId('network-list').getByText('empty.html')).toHaveCount(1);
++  await expect(page.getByRole('list', { name: 'Network requests' }).getByText('empty.html')).toHaveCount(1);
+ });

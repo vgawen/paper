@@ -1,0 +1,233 @@
+{
+  "sha": "2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+  "node_id": "C_kwDODTssw9oAKDJlOGU3YTY2Y2Q5ZDZkYWU4ZjRhOWQyYTYwMzMxYmNjNGM3ZDI0ZjA",
+  "commit": {
+    "author": {
+      "name": "Pavel Feldman",
+      "email": "pavel.feldman@gmail.com",
+      "date": "2024-10-18T20:50:43Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2024-10-18T20:50:43Z"
+    },
+    "message": "chore: implement tree w/o list (#33169)",
+    "tree": {
+      "sha": "29159659aeec30c99fe50915f4f29ec70340d374",
+      "url": "https://api.github.com/repos/microsoft/playwright/git/trees/29159659aeec30c99fe50915f4f29ec70340d374"
+    },
+    "url": "https://api.github.com/repos/microsoft/playwright/git/commits/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJnEsojCRC1aQ7uu5UhlAAA4Y8QAG9gqPqL0StQMAPBxhVHwlKS\nVFHltOWMs36hsGdfZgGXpAX65a/gu3cVnukyRrIHFIUAm58B28QEevBeRCTC0LP/\n1CdRPELuGzF7zJAETyaZx7YYBYXNs0FNXtF4pcRzZp4OIdhv6q5iQ75PTm++DH0F\njFE1xEg3d0bXzi2X+KEKPwzWPH8bDQ/IW7JeUkVTlK/QT0Yid7naLeZJL7XxpAdm\nitns5JjHhrZHgaVqKatX2pGCZKLj3zAvIH15/z2ipH5CL6KKB1GaVy+VU18P+Zv2\nZYapsHHPDjWtmLIFcKCVFZyyO6zq9we3x1DRICSJKgKYF4sUGeM8WmScsZDHkMpg\nHiB0HMvxD5vuPsnyifegRSrlVgOdTf2cDYgipTVz3Oxo+5mJRAk10X/Dy+pEhhiK\nMz2WKlnMgLOUpLOzO2oCygcw4RlYpHHsByje8NwZXxFMDq1INRpOk42VW1YO+sqp\nFNs/QWDElSNSGJjt8ClZMW21PbmWYG9Py3/xUIWU5UWtaf7i0gYt7GKuS72gQM5k\ncPdFMCwe9IU7udJ14dl+EZlyfLB8C/KbSE6i4hlHEfrW32Hzca8WGwQrZEzjIcxb\nxvdQPK82BtH0+8Wzfgf8XzGMHVAd0gdvcZisSvk+KYOZldGP9+fG7FnwfnWPgxu7\n5Mqo2Um3cUcB5drtl+wI\n=RZCs\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree 29159659aeec30c99fe50915f4f29ec70340d374\nparent 6ea17a5d82e8a9f783a86f76f7a0c1219d4a495a\nauthor Pavel Feldman <pavel.feldman@gmail.com> 1729284643 -0700\ncommitter GitHub <noreply@github.com> 1729284643 -0700\n\nchore: implement tree w/o list (#33169)\n\n",
+      "verified_at": "2024-11-04T22:09:44Z"
+    }
+  },
+  "url": "https://api.github.com/repos/microsoft/playwright/commits/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+  "html_url": "https://github.com/microsoft/playwright/commit/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+  "comments_url": "https://api.github.com/repos/microsoft/playwright/commits/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/comments",
+  "author": {
+    "login": "pavelfeldman",
+    "id": 883973,
+    "node_id": "MDQ6VXNlcjg4Mzk3Mw==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/883973?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/pavelfeldman",
+    "html_url": "https://github.com/pavelfeldman",
+    "followers_url": "https://api.github.com/users/pavelfeldman/followers",
+    "following_url": "https://api.github.com/users/pavelfeldman/following{/other_user}",
+    "gists_url": "https://api.github.com/users/pavelfeldman/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/pavelfeldman/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/pavelfeldman/subscriptions",
+    "organizations_url": "https://api.github.com/users/pavelfeldman/orgs",
+    "repos_url": "https://api.github.com/users/pavelfeldman/repos",
+    "events_url": "https://api.github.com/users/pavelfeldman/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/pavelfeldman/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "6ea17a5d82e8a9f783a86f76f7a0c1219d4a495a",
+      "url": "https://api.github.com/repos/microsoft/playwright/commits/6ea17a5d82e8a9f783a86f76f7a0c1219d4a495a",
+      "html_url": "https://github.com/microsoft/playwright/commit/6ea17a5d82e8a9f783a86f76f7a0c1219d4a495a"
+    }
+  ],
+  "stats": {
+    "total": 363,
+    "additions": 221,
+    "deletions": 142
+  },
+  "files": [
+    {
+      "sha": "5b2c2044106dbedc18c329491fea6fb40df28e07",
+      "filename": "packages/playwright/src/matchers/toMatchAriaSnapshot.ts",
+      "status": "modified",
+      "additions": 16,
+      "deletions": 2,
+      "changes": 18,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Fplaywright%2Fsrc%2Fmatchers%2FtoMatchAriaSnapshot.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Fplaywright%2Fsrc%2Fmatchers%2FtoMatchAriaSnapshot.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fplaywright%2Fsrc%2Fmatchers%2FtoMatchAriaSnapshot.ts?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -49,8 +49,8 @@ export async function toMatchAriaSnapshot(\n \n   const messagePrefix = matcherHint(this, receiver, matcherName, 'locator', undefined, matcherOptions, timedOut ? timeout : undefined);\n   const notFound = received === kNoElementsFoundError;\n-  const escapedExpected = escapePrivateUsePoints(expected);\n-  const escapedReceived = escapePrivateUsePoints(received);\n+  const escapedExpected = unshift(escapePrivateUsePoints(expected));\n+  const escapedReceived = unshift(escapePrivateUsePoints(received));\n   const message = () => {\n     if (pass) {\n       if (notFound)\n@@ -79,3 +79,17 @@ export async function toMatchAriaSnapshot(\n function escapePrivateUsePoints(str: string) {\n   return str.replace(/[\\uE000-\\uF8FF]/g, char => `\\\\u${char.charCodeAt(0).toString(16).padStart(4, '0')}`);\n }\n+\n+function unshift(snapshot: string): string {\n+  const lines = snapshot.split('\\n');\n+  let whitespacePrefixLength = 100;\n+  for (const line of lines) {\n+    if (!line.trim())\n+      continue;\n+    const match = line.match(/^(\\s*)/);\n+    if (match && match[1].length < whitespacePrefixLength)\n+      whitespacePrefixLength = match[1].length;\n+    break;\n+  }\n+  return lines.filter(t => t.trim()).map(line => line.substring(whitespacePrefixLength)).join('\\n');\n+}"
+    },
+    {
+      "sha": "d369aeede3ef8d1468aafe57bbe9ed262e4f6e01",
+      "filename": "packages/trace-viewer/src/ui/actionList.tsx",
+      "status": "modified",
+      "additions": 30,
+      "deletions": 6,
+      "changes": 36,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Ftrace-viewer%2Fsrc%2Fui%2FactionList.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Ftrace-viewer%2Fsrc%2Fui%2FactionList.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FactionList.tsx?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -59,6 +59,30 @@ export const ActionList: React.FC<ActionListProps> = ({\n     return { selectedItem };\n   }, [itemMap, selectedAction]);\n \n+  const isError = React.useCallback((item: ActionTreeItem) => {\n+    return !!item.action?.error?.message;\n+  }, []);\n+\n+  const onAccepted = React.useCallback((item: ActionTreeItem) => {\n+    return setSelectedTime({ minimum: item.action!.startTime, maximum: item.action!.endTime });\n+  }, [setSelectedTime]);\n+\n+  const render = React.useCallback((item: ActionTreeItem) => {\n+    return renderAction(item.action!, { sdkLanguage, revealConsole, isLive, showDuration: true, showBadges: true });\n+  }, [isLive, revealConsole, sdkLanguage]);\n+\n+  const isVisible = React.useCallback((item: ActionTreeItem) => {\n+    return !selectedTime || !item.action || (item.action!.startTime <= selectedTime.maximum && item.action!.endTime >= selectedTime.minimum);\n+  }, [selectedTime]);\n+\n+  const onSelectedAction = React.useCallback((item: ActionTreeItem) => {\n+    onSelected?.(item.action!);\n+  }, [onSelected]);\n+\n+  const onHighlightedAction = React.useCallback((item: ActionTreeItem | undefined) => {\n+    onHighlighted?.(item?.action);\n+  }, [onHighlighted]);\n+\n   return <div className='vbox'>\n     {selectedTime && <div className='action-list-show-all' onClick={() => setSelectedTime(undefined)}><span className='codicon codicon-triangle-left'></span>Show all</div>}\n     <ActionTreeView\n@@ -67,12 +91,12 @@ export const ActionList: React.FC<ActionListProps> = ({\n       treeState={treeState}\n       setTreeState={setTreeState}\n       selectedItem={selectedItem}\n-      onSelected={item => onSelected?.(item.action!)}\n-      onHighlighted={item => onHighlighted?.(item?.action)}\n-      onAccepted={item => setSelectedTime({ minimum: item.action!.startTime, maximum: item.action!.endTime })}\n-      isError={item => !!item.action?.error?.message}\n-      isVisible={item => !selectedTime || (item.action!.startTime <= selectedTime.maximum && item.action!.endTime >= selectedTime.minimum)}\n-      render={item => renderAction(item.action!, { sdkLanguage, revealConsole, isLive, showDuration: true, showBadges: true })}\n+      onSelected={onSelectedAction}\n+      onHighlighted={onHighlightedAction}\n+      onAccepted={onAccepted}\n+      isError={isError}\n+      isVisible={isVisible}\n+      render={render}\n     />\n   </div>;\n };"
+    },
+    {
+      "sha": "e0ef2a8bcac6651caee12b7a2eba5ff60cc7febc",
+      "filename": "packages/trace-viewer/src/ui/uiModeTestListView.tsx",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 1,
+      "changes": 3,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeTestListView.tsx?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -161,7 +161,7 @@ export const TestListView: React.FC<{\n     render={treeItem => {\n       return <div className='hbox ui-mode-tree-item'>\n         <div className='ui-mode-tree-item-title'>\n-          <span title={treeItem.title}>{treeItem.title}</span>\n+          <span>{treeItem.title}</span>\n           {treeItem.kind === 'case' ? treeItem.tags.map(tag => <TagView key={tag} tag={tag.slice(1)} onClick={e => handleTagClick(e, tag)} />) : null}\n         </div>\n         {!!treeItem.duration && treeItem.status !== 'skipped' && <div className='ui-mode-tree-item-time'>{msToString(treeItem.duration)}</div>}\n@@ -179,6 +179,7 @@ export const TestListView: React.FC<{\n       </div>;\n     }}\n     icon={treeItem => testStatusIcon(treeItem.status)}\n+    title={treeItem => treeItem.title}\n     selectedItem={selectedTreeItem}\n     onAccepted={runTreeItem}\n     onSelected={treeItem => {"
+    },
+    {
+      "sha": "2cdd85b9b7bff35c76a2b396ef9cea0a0cbac0b2",
+      "filename": "packages/web/src/components/toolbarButton.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Fweb%2Fsrc%2Fcomponents%2FtoolbarButton.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Fweb%2Fsrc%2Fcomponents%2FtoolbarButton.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FtoolbarButton.tsx?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -52,7 +52,7 @@ export const ToolbarButton: React.FC<React.PropsWithChildren<ToolbarButtonProps>\n     disabled={!!disabled}\n     style={style}\n     data-testid={testId}\n-    aria-label={ariaLabel}\n+    aria-label={ariaLabel || title}\n   >\n     {icon && <span className={`codicon codicon-${icon}`} style={children ? { marginRight: 5 } : {}}></span>}\n     {children}"
+    },
+    {
+      "sha": "9af8609f3b86be5c61528f8ebb97f288e8ce6bf1",
+      "filename": "packages/web/src/components/treeView.tsx",
+      "status": "modified",
+      "additions": 136,
+      "deletions": 95,
+      "changes": 231,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -32,6 +32,7 @@ export type TreeViewProps<T> = {\n   name: string,\n   rootItem: T,\n   render: (item: T) => React.ReactNode,\n+  title?: (item: T) => string,\n   icon?: (item: T) => string | undefined,\n   isError?: (item: T) => boolean,\n   isVisible?: (item: T) => boolean,\n@@ -52,6 +53,7 @@ export function TreeView<T extends TreeItem>({\n   name,\n   rootItem,\n   render,\n+  title,\n   icon,\n   isError,\n   isVisible,\n@@ -66,40 +68,12 @@ export function TreeView<T extends TreeItem>({\n   autoExpandDepth,\n }: TreeViewProps<T>) {\n   const treeItems = React.useMemo(() => {\n-    return flattenTree<T>(rootItem, selectedItem, treeState.expandedItems, autoExpandDepth || 0);\n-  }, [rootItem, selectedItem, treeState, autoExpandDepth]);\n-\n-  // Filter visible items.\n-  const visibleItems = React.useMemo(() => {\n-    if (!isVisible)\n-      return [...treeItems.keys()];\n-    const cachedVisible = new Map<TreeItem, boolean>();\n-    const visit = (item: TreeItem): boolean => {\n-      const cachedResult = cachedVisible.get(item);\n-      if (cachedResult !== undefined)\n-        return cachedResult;\n-\n-      let hasVisibleChildren = item.children.some(child => visit(child));\n-      for (const child of item.children) {\n-        const result = visit(child);\n-        hasVisibleChildren = hasVisibleChildren || result;\n-      }\n-      const result = isVisible(item as T) || hasVisibleChildren;\n-      cachedVisible.set(item, result);\n-      return result;\n-    };\n-    for (const item of treeItems.keys())\n-      visit(item);\n-    const result: T[] = [];\n-    for (const item of treeItems.keys()) {\n-      if (isVisible(item))\n-        result.push(item);\n-    }\n-    return result;\n-  }, [treeItems, isVisible]);\n+    return indexTree<T>(rootItem, selectedItem, treeState.expandedItems, autoExpandDepth || 0, isVisible);\n+  }, [rootItem, selectedItem, treeState, autoExpandDepth, isVisible]);\n \n   const itemListRef = React.useRef<HTMLDivElement>(null);\n   const [highlightedItem, setHighlightedItem] = React.useState<any>();\n+  const [isKeyboardNavigation, setIsKeyboardNavigation] = React.useState(false);\n \n   React.useEffect(() => {\n     onHighlighted?.(highlightedItem);\n@@ -171,53 +145,63 @@ export function TreeView<T extends TreeItem>({\n           return;\n         }\n \n-        const index = selectedItem ? visibleItems.indexOf(selectedItem) : -1;\n-        let newIndex = index;\n+        let newSelectedItem: T | undefined = selectedItem;\n         if (event.key === 'ArrowDown') {\n-          if (index === -1)\n-            newIndex = 0;\n-          else\n-            newIndex = Math.min(index + 1, visibleItems.length - 1);\n+          if (selectedItem) {\n+            const itemData = treeItems.get(selectedItem)!;\n+            newSelectedItem = itemData.next as T;\n+          } else if (treeItems.size) {\n+            const itemList = [...treeItems.keys()];\n+            newSelectedItem = itemList[0];\n+          }\n         }\n         if (event.key === 'ArrowUp') {\n-          if (index === -1)\n-            newIndex = visibleItems.length - 1;\n-          else\n-            newIndex = Math.max(index - 1, 0);\n+          if (selectedItem) {\n+            const itemData = treeItems.get(selectedItem)!;\n+            newSelectedItem = itemData.prev as T;\n+          } else if (treeItems.size) {\n+            const itemList = [...treeItems.keys()];\n+            newSelectedItem = itemList[itemList.length - 1];\n+          }\n         }\n \n-        const element = itemListRef.current?.children.item(newIndex);\n-        scrollIntoViewIfNeeded(element || undefined);\n+        // scrollIntoViewIfNeeded(element || undefined);\n         onHighlighted?.(undefined);\n-        onSelected?.(visibleItems[newIndex]);\n+        if (newSelectedItem) {\n+          setIsKeyboardNavigation(true);\n+          onSelected?.(newSelectedItem);\n+        }\n         setHighlightedItem(undefined);\n       }}\n       ref={itemListRef}\n     >\n-      {noItemsMessage && visibleItems.length === 0 && <div className='tree-view-empty'>{noItemsMessage}</div>}\n-      {visibleItems.map(item => {\n-        return <div key={item.id} role='treeitem' aria-selected={item === selectedItem}>\n-          <TreeItemHeader\n-            item={item}\n-            itemData={treeItems.get(item)!}\n-            selectedItem={selectedItem}\n-            onSelected={onSelected}\n-            onAccepted={onAccepted}\n-            isError={isError}\n-            toggleExpanded={toggleExpanded}\n-            highlightedItem={highlightedItem}\n-            setHighlightedItem={setHighlightedItem}\n-            render={render}\n-            icon={icon} />\n-        </div>;\n+      {noItemsMessage && treeItems.size === 0 && <div className='tree-view-empty'>{noItemsMessage}</div>}\n+      {rootItem.children.map(child => {\n+        const itemData = treeItems.get(child as T);\n+        return itemData && <TreeItemHeader\n+          key={child.id}\n+          item={child}\n+          treeItems={treeItems}\n+          selectedItem={selectedItem}\n+          onSelected={onSelected}\n+          onAccepted={onAccepted}\n+          isError={isError}\n+          toggleExpanded={toggleExpanded}\n+          highlightedItem={highlightedItem}\n+          setHighlightedItem={setHighlightedItem}\n+          render={render}\n+          icon={icon}\n+          title={title}\n+          isKeyboardNavigation={isKeyboardNavigation}\n+          setIsKeyboardNavigation={setIsKeyboardNavigation} />;\n       })}\n     </div>\n   </div>;\n }\n \n type TreeItemHeaderProps<T> = {\n   item: T,\n-  itemData: TreeItemData,\n+  treeItems: Map<T, TreeItemData>,\n   selectedItem: T | undefined,\n   onSelected?: (item: T) => void,\n   toggleExpanded: (item: T) => void,\n@@ -226,12 +210,15 @@ type TreeItemHeaderProps<T> = {\n   onAccepted?: (item: T) => void,\n   setHighlightedItem: (item: T | undefined) => void,\n   render: (item: T) => React.ReactNode,\n+  title?: (item: T) => string,\n   icon?: (item: T) => string | undefined,\n+  isKeyboardNavigation: boolean,\n+  setIsKeyboardNavigation: (value: boolean) => void,\n };\n \n export function TreeItemHeader<T extends TreeItem>({\n   item,\n-  itemData,\n+  treeItems,\n   selectedItem,\n   onSelected,\n   highlightedItem,\n@@ -240,68 +227,122 @@ export function TreeItemHeader<T extends TreeItem>({\n   onAccepted,\n   toggleExpanded,\n   render,\n-  icon }: TreeItemHeaderProps<T>) {\n+  title,\n+  icon,\n+  isKeyboardNavigation,\n+  setIsKeyboardNavigation }: TreeItemHeaderProps<T>) {\n+  const itemRef = React.useRef(null);\n \n+  React.useEffect(() => {\n+    if (selectedItem === item && isKeyboardNavigation && itemRef.current) {\n+      scrollIntoViewIfNeeded(itemRef.current);\n+      setIsKeyboardNavigation(false);\n+    }\n+  }, [item, selectedItem, isKeyboardNavigation, setIsKeyboardNavigation]);\n+\n+  const itemData = treeItems.get(item)!;\n   const indentation = itemData.depth;\n   const expanded = itemData.expanded;\n   let expandIcon = 'codicon-blank';\n   if (typeof expanded === 'boolean')\n     expandIcon = expanded ? 'codicon-chevron-down' : 'codicon-chevron-right';\n   const rendered = render(item);\n+  const children = expanded && item.children.length ? item.children as T[] : [];\n+  const titled = title?.(item);\n \n-  return <div\n-    onDoubleClick={() => onAccepted?.(item)}\n-    className={clsx(\n-        'tree-view-entry',\n-        selectedItem === item && 'selected',\n-        highlightedItem === item && 'highlighted',\n-        isError?.(item) && 'error')}\n-    onClick={() => onSelected?.(item)}\n-    onMouseEnter={() => setHighlightedItem(item)}\n-    onMouseLeave={() => setHighlightedItem(undefined)}\n-  >\n-    {indentation ? new Array(indentation).fill(0).map((_, i) => <div key={'indent-' + i} className='tree-view-indent'></div>) : undefined}\n+  return <div ref={itemRef} role='treeitem' aria-selected={item === selectedItem} aria-expanded={expanded} aria-label={titled} title={titled} className='vbox' style={{ flex: 'none' }}>\n     <div\n-      className={'codicon ' + expandIcon}\n-      style={{ minWidth: 16, marginRight: 4 }}\n-      onDoubleClick={e => {\n-        e.preventDefault();\n-        e.stopPropagation();\n-      }}\n-      onClick={e => {\n-        e.stopPropagation();\n-        e.preventDefault();\n-        toggleExpanded(item);\n-      }}\n-    />\n-    {icon && <div className={'codicon ' + (icon(item) || 'codicon-blank')} style={{ minWidth: 16, marginRight: 4 }}></div>}\n-    {typeof rendered === 'string' ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{rendered}</div> : rendered}\n+      onDoubleClick={() => onAccepted?.(item)}\n+      className={clsx(\n+          'tree-view-entry',\n+          selectedItem === item && 'selected',\n+          highlightedItem === item && 'highlighted',\n+          isError?.(item) && 'error')}\n+      onClick={() => onSelected?.(item)}\n+      onMouseEnter={() => setHighlightedItem(item)}\n+      onMouseLeave={() => setHighlightedItem(undefined)}\n+    >\n+      {indentation ? new Array(indentation).fill(0).map((_, i) => <div key={'indent-' + i} className='tree-view-indent'></div>) : undefined}\n+      <div\n+        aria-hidden='true'\n+        className={'codicon ' + expandIcon}\n+        style={{ minWidth: 16, marginRight: 4 }}\n+        onDoubleClick={e => {\n+          e.preventDefault();\n+          e.stopPropagation();\n+        }}\n+        onClick={e => {\n+          e.stopPropagation();\n+          e.preventDefault();\n+          toggleExpanded(item);\n+        }}\n+      />\n+      {icon && <div className={'codicon ' + (icon(item) || 'codicon-blank')} style={{ minWidth: 16, marginRight: 4 }} aria-hidden='true'></div>}\n+      {typeof rendered === 'string' ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{rendered}</div> : rendered}\n+    </div>\n+    {!!children.length && <div aria-label='group'>\n+      {children.map(child => {\n+        const itemData = treeItems.get(child);\n+        return itemData && <TreeItemHeader\n+          key={child.id}\n+          item={child}\n+          treeItems={treeItems}\n+          selectedItem={selectedItem}\n+          onSelected={onSelected}\n+          onAccepted={onAccepted}\n+          isError={isError}\n+          toggleExpanded={toggleExpanded}\n+          highlightedItem={highlightedItem}\n+          setHighlightedItem={setHighlightedItem}\n+          render={render}\n+          title={title}\n+          icon={icon}\n+          isKeyboardNavigation={isKeyboardNavigation}\n+          setIsKeyboardNavigation={setIsKeyboardNavigation} />;\n+      })}\n+    </div>}\n   </div>;\n }\n \n type TreeItemData = {\n-  depth: number,\n-  expanded: boolean | undefined,\n-  parent: TreeItem | null,\n+  depth: number;\n+  expanded: boolean | undefined;\n+  parent: TreeItem | null;\n+  next: TreeItem | null;\n+  prev: TreeItem | null;\n };\n \n-function flattenTree<T extends TreeItem>(\n+function indexTree<T extends TreeItem>(\n   rootItem: T,\n   selectedItem: T | undefined,\n   expandedItems: Map<string, boolean | undefined>,\n-  autoExpandDepth: number): Map<T, TreeItemData> {\n+  autoExpandDepth: number,\n+  isVisible?: (item: T) => boolean): Map<T, TreeItemData> {\n \n   const result = new Map<T, TreeItemData>();\n   const temporaryExpanded = new Set<string>();\n   for (let item: TreeItem | undefined = selectedItem?.parent; item; item = item.parent)\n     temporaryExpanded.add(item.id);\n+  let lastItem: T | null = null;\n \n   const appendChildren = (parent: T, depth: number) => {\n+    if (isVisible && !isVisible(parent))\n+      return;\n     for (const item of parent.children as T[]) {\n       const expandState = temporaryExpanded.has(item.id) || expandedItems.get(item.id);\n       const autoExpandMatches = autoExpandDepth > depth && result.size < 25 && expandState !== false;\n       const expanded = item.children.length ? expandState ?? autoExpandMatches : undefined;\n-      result.set(item, { depth, expanded, parent: rootItem === parent ? null : parent });\n+      const itemData: TreeItemData = {\n+        depth,\n+        expanded,\n+        parent: rootItem === parent ? null : parent,\n+        next: null,\n+        prev: lastItem,\n+      };\n+      if (lastItem)\n+        result.get(lastItem)!.next = item;\n+      lastItem = item;\n+      result.set(item, itemData);\n       if (expanded)\n         appendChildren(item, depth + 1);\n     }"
+    },
+    {
+      "sha": "3de7b6a9d44578ac12b4f89f652e811849d8bf22",
+      "filename": "tests/page/to-match-aria-snapshot.spec.ts",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 5,
+      "changes": 8,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fpage%2Fto-match-aria-snapshot.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fpage%2Fto-match-aria-snapshot.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fpage%2Fto-match-aria-snapshot.spec.ts?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -181,14 +181,12 @@ test('expected formatter', async ({ page }) => {\n \n   expect(stripAnsi(error.message)).toContain(`\n Locator: locator('body')\n-- Expected         - 4\n+- Expected         - 2\n + Received string  + 3\n \n--\n+- - heading \"todos\"\n + - banner:\n--     - heading \"todos\"\n +   - heading \"todos\"\n--     - textbox \"Wrong text\"\n--   \n+- - textbox \"Wrong text\"\n +   - textbox \"What needs to be done?\"`);\n });"
+    },
+    {
+      "sha": "7ae98bb6624ecb99c6807e786bf4485a2863e020",
+      "filename": "tests/playwright-test/ui-mode-fixtures.ts",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 5,
+      "changes": 11,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-fixtures.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-fixtures.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-fixtures.ts?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -68,14 +68,15 @@ export function dumpTestTree(page: Page, options: { time?: boolean } = {}): () =\n     const result: string[] = [];\n     const treeItems = treeElement.querySelectorAll('[role=treeitem]');\n     for (const treeItem of treeItems) {\n-      const iconElements = treeItem.querySelectorAll('.codicon');\n+      const treeItemHeader = treeItem.querySelector('.tree-view-entry');\n+      const iconElements = treeItemHeader.querySelectorAll('.codicon');\n       const treeIcon = iconName(iconElements[0]);\n       const statusIcon = iconName(iconElements[1]);\n-      const indent = treeItem.querySelectorAll('.tree-view-indent').length;\n-      const watch = treeItem.querySelector('.toolbar-button.eye.toggled') ? ' 👁' : '';\n+      const indent = treeItemHeader.querySelectorAll('.tree-view-indent').length;\n+      const watch = treeItemHeader.querySelector('.toolbar-button.eye.toggled') ? ' 👁' : '';\n       const selected = treeItem.getAttribute('aria-selected') === 'true' ? ' <=' : '';\n-      const title = treeItem.querySelector('.ui-mode-tree-item-title').childNodes[0].textContent;\n-      const timeElement = options.time ? treeItem.querySelector('.ui-mode-tree-item-time') : undefined;\n+      const title = treeItemHeader.querySelector('.ui-mode-tree-item-title').childNodes[0].textContent;\n+      const timeElement = options.time ? treeItemHeader.querySelector('.ui-mode-tree-item-time') : undefined;\n       const time = timeElement ? ' ' + timeElement.textContent.replace(/[.\\d]+m?s/, 'XXms') : '';\n       result.push('    ' + '  '.repeat(indent) + treeIcon + ' ' + statusIcon + ' ' + title + time + watch + selected);\n     }"
+    },
+    {
+      "sha": "eeff6a5aca9bb9d0cceca24f81a9d7e6f810930b",
+      "filename": "tests/playwright-test/ui-mode-test-annotations.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-annotations.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-annotations.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-annotations.spec.ts?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -33,7 +33,7 @@ test('should display annotations', async ({ runUITest }) => {\n   });\n   await page.getByTitle('Run all').click();\n   await expect(page.getByTestId('status-line')).toHaveText('1/1 passed (100%)');\n-  await page.getByRole('treeitem').filter({ hasText: 'suite' }).locator('.codicon-chevron-right').click();\n+  await page.getByRole('treeitem', { name: 'suite' }).locator('.codicon-chevron-right').click();\n   await page.getByText('annotation test').click();\n   await page.getByText('Annotations', { exact: true }).click();\n "
+    },
+    {
+      "sha": "1120cede6b8f77e4e19c15378ca769f1a2db51bb",
+      "filename": "tests/playwright-test/ui-mode-test-run.spec.ts",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 4,
+      "changes": 8,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-run.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-run.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-run.spec.ts?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -93,7 +93,7 @@ test('should run on hover', async ({ runUITest }) => {\n   });\n \n   await page.getByText('passes').hover();\n-  await page.getByRole('treeitem').filter({ hasText: 'passes' }).getByTitle('Run').click();\n+  await page.getByRole('treeitem', { name: 'passes' }).getByRole('button', { name: 'Run' }).click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts\n@@ -275,7 +275,7 @@ test('should run folder', async ({ runUITest }) => {\n   });\n \n   await page.getByText('folder-b').hover();\n-  await page.getByRole('treeitem').filter({ hasText: 'folder-b' }).getByTitle('Run').click();\n+  await page.getByRole('treeitem', { name: 'folder-b' }).getByRole('button', { name: 'Run' }).click();\n \n   await expect.poll(dumpTestTree(page)).toContain(`\n     ▼ ✅ folder-b <=\n@@ -421,8 +421,8 @@ test('should show proper total when using deps', async ({ runUITest }) => {\n \n \n   await page.getByText('Status:').click();\n-  await page.getByLabel('setup').setChecked(true);\n-  await page.getByLabel('chromium').setChecked(true);\n+  await page.getByRole('checkbox', { name: 'setup' }).setChecked(true);\n+  await page.getByRole('checkbox', { name: 'chromium' }).setChecked(true);\n \n   await expect.poll(dumpTestTree(page)).toContain(`\n     ▼ ◯ a.test.ts"
+    },
+    {
+      "sha": "65c6aa25330a6b2b08cfab91b97ca58c8dc2cb25",
+      "filename": "tests/playwright-test/ui-mode-test-setup.spec.ts",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 13,
+      "changes": 26,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-setup.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-setup.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-setup.spec.ts?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -140,9 +140,9 @@ const testsWithSetup = {\n test('should run setup and teardown projects (1)', async ({ runUITest }) => {\n   const { page } = await runUITest(testsWithSetup);\n   await page.getByText('Status:').click();\n-  await page.getByLabel('setup').setChecked(false);\n-  await page.getByLabel('teardown').setChecked(false);\n-  await page.getByLabel('test').setChecked(false);\n+  await page.getByRole('checkbox', { name: 'setup' }).setChecked(false);\n+  await page.getByRole('checkbox', { name: 'teardown' }).setChecked(false);\n+  await page.getByRole('checkbox', { name: 'test' }).setChecked(false);\n \n   await page.getByTitle('Run all').click();\n \n@@ -164,9 +164,9 @@ test('should run setup and teardown projects (1)', async ({ runUITest }) => {\n test('should run setup and teardown projects (2)', async ({ runUITest }) => {\n   const { page } = await runUITest(testsWithSetup);\n   await page.getByText('Status:').click();\n-  await page.getByLabel('setup').setChecked(false);\n-  await page.getByLabel('teardown').setChecked(true);\n-  await page.getByLabel('test').setChecked(true);\n+  await page.getByRole('checkbox', { name: 'setup' }).setChecked(false);\n+  await page.getByRole('checkbox', { name: 'teardown' }).setChecked(true);\n+  await page.getByRole('checkbox', { name: 'test' }).setChecked(true);\n \n   await page.getByTitle('Run all').click();\n \n@@ -186,9 +186,9 @@ test('should run setup and teardown projects (2)', async ({ runUITest }) => {\n test('should run setup and teardown projects (3)', async ({ runUITest }) => {\n   const { page } = await runUITest(testsWithSetup);\n   await page.getByText('Status:').click();\n-  await page.getByLabel('setup').setChecked(false);\n-  await page.getByLabel('teardown').setChecked(false);\n-  await page.getByLabel('test').setChecked(true);\n+  await page.getByRole('checkbox', { name: 'setup' }).setChecked(false);\n+  await page.getByRole('checkbox', { name: 'teardown' }).setChecked(false);\n+  await page.getByRole('checkbox', { name: 'test' }).setChecked(true);\n \n   await page.getByTitle('Run all').click();\n \n@@ -206,12 +206,12 @@ test('should run setup and teardown projects (3)', async ({ runUITest }) => {\n test('should run part of the setup only', async ({ runUITest }) => {\n   const { page } = await runUITest(testsWithSetup);\n   await page.getByText('Status:').click();\n-  await page.getByLabel('setup').setChecked(true);\n-  await page.getByLabel('teardown').setChecked(true);\n-  await page.getByLabel('test').setChecked(true);\n+  await page.getByRole('checkbox', { name: 'setup' }).setChecked(true);\n+  await page.getByRole('checkbox', { name: 'teardown' }).setChecked(true);\n+  await page.getByRole('checkbox', { name: 'test' }).setChecked(true);\n \n   await page.getByText('setup.ts').hover();\n-  await page.getByRole('treeitem').filter({ hasText: 'setup.ts' }).getByTitle('Run').click();\n+  await page.getByRole('treeitem', { name: 'setup.ts' }).getByRole('button', { name: 'Run' }).click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ✅ setup.ts <="
+    },
+    {
+      "sha": "67d0626a5f7732dd86599e911a5a8eefc50853cc",
+      "filename": "tests/playwright-test/ui-mode-test-update.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-update.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-update.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-update.spec.ts?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -215,7 +215,7 @@ test('should update test locations', async ({ runUITest, writeFiles }) => {\n   const messages: any[] = [];\n   await page.exposeBinding('__logForTest', (source, arg) => messages.push(arg));\n \n-  const passesItemLocator = page.getByRole('treeitem').filter({ hasText: 'passes' });\n+  const passesItemLocator = page.getByRole('treeitem', { name: 'passes' });\n   await passesItemLocator.hover();\n   await passesItemLocator.getByTitle('Show source').click();\n   await page.getByTitle('Open in VS Code').click();"
+    },
+    {
+      "sha": "9bbbdc0ec066c2b36f1a639242a7b7d9a01230e9",
+      "filename": "tests/playwright-test/ui-mode-test-watch.spec.ts",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 8,
+      "changes": 16,
+      "blob_url": "https://github.com/microsoft/playwright/blob/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-watch.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0/tests%2Fplaywright-test%2Fui-mode-test-watch.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-watch.spec.ts?ref=2e8e7a66cd9d6dae8f4a9d2a60331bcc4c7d24f0",
+      "patch": "@@ -28,14 +28,14 @@ test('should watch files', async ({ runUITest, writeFiles }) => {\n   });\n \n   await page.getByText('fails').click();\n-  await page.getByRole('treeitem').filter({ hasText: 'fails' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem', { name: 'fails' }).getByRole('button', { name: 'Watch' }).click();\n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts\n         ◯ passes\n         ◯ fails 👁 <=\n   `);\n \n-  await page.getByRole('treeitem').filter({ hasText: 'fails' }).getByTitle('Run').click();\n+  await page.getByRole('treeitem', { name: 'fails' }).getByRole('button', { name: 'Run' }).click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ❌ a.test.ts\n@@ -75,7 +75,7 @@ test('should watch e2e deps', async ({ runUITest, writeFiles }) => {\n   });\n \n   await page.getByText('answer').click();\n-  await page.getByRole('treeitem').filter({ hasText: 'answer' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem', { name: 'answer' }).getByRole('button', { name: 'Watch' }).click();\n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts\n         ◯ answer 👁 <=\n@@ -102,13 +102,13 @@ test('should batch watch updates', async ({ runUITest, writeFiles }) => {\n   });\n \n   await page.getByText('a.test.ts').click();\n-  await page.getByRole('treeitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem', { name: 'a.test.ts' }).getByRole('button', { name: 'Watch' }).click();\n   await page.getByText('b.test.ts').click();\n-  await page.getByRole('treeitem').filter({ hasText: 'b.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem', { name: 'b.test.ts' }).getByRole('button', { name: 'Watch' }).click();\n   await page.getByText('c.test.ts').click();\n-  await page.getByRole('treeitem').filter({ hasText: 'c.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem', { name: 'c.test.ts' }).getByRole('button', { name: 'Watch' }).click();\n   await page.getByText('d.test.ts').click();\n-  await page.getByRole('treeitem').filter({ hasText: 'd.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem', { name: 'd.test.ts' }).getByRole('button', { name: 'Watch' }).click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts 👁\n@@ -229,7 +229,7 @@ test('should run added test in watched file', async ({ runUITest, writeFiles })\n   });\n \n   await page.getByText('a.test.ts').click();\n-  await page.getByRole('treeitem').filter({ hasText: 'a.test.ts' }).getByTitle('Watch').click();\n+  await page.getByRole('treeitem', { name: 'a.test.ts' }).getByRole('button', { name: 'Watch' }).click();\n \n   await expect.poll(dumpTestTree(page)).toBe(`\n     ▼ ◯ a.test.ts 👁 <="
+    }
+  ]
+}

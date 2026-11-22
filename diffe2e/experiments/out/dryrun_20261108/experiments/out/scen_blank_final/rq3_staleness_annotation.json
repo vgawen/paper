@@ -1,0 +1,16 @@
+{
+  "n": 24,
+  "human_kappa": {
+    "kappa": 0.0671,
+    "po": 0.6,
+    "pe": 0.5713,
+    "n": 40
+  },
+  "model_kappa": {
+    "kappa": 0,
+    "po": 0.9583,
+    "pe": 0.9583,
+    "n": 24
+  },
+  "model_accuracy": 0.9583
+}

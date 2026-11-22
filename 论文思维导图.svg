@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 692" width="720" height="692" role="img" aria-label="DiffE2E 论文结构思维导图：根节点连接七个章节与附录 A，第五章实验结果为焦点">
+  <style>
+    :root { color-scheme: light; }
+    .bg { fill: #EFEFF2; }
+    .gridDot { fill: rgba(82, 82, 91, 0.28); }
+    .title { fill: #171717; font: 500 16px/24px "SF Pro Text", "PingFang SC", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .countPill { fill: #EFEFF2; stroke: rgba(23, 23, 23, 0.12); }
+    .countText { fill: #004D26; font: 500 12px/18px "SF Pro Text", "PingFang SC", system-ui, sans-serif; }
+    .edge { fill: none; stroke: rgba(82, 82, 91, 0.58); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .edgeFocus { fill: none; stroke: #0FDC78; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .nodeBox { fill: #F7F7F8; stroke: rgba(23, 23, 23, 0.12); stroke-width: 1; }
+    .nodeBoxRoot { fill: rgba(15, 220, 120, 0.07); fill: color-mix(in srgb, #0FDC78 7%, #F7F7F8); stroke: rgba(15, 220, 120, 0.72); stroke-width: 1; }
+    .nodeBoxFocus { fill: rgba(15, 220, 120, 0.06); fill: color-mix(in srgb, #0FDC78 6%, #F7F7F8); stroke: rgba(15, 220, 120, 0.72); stroke-width: 1.5; }
+    .nodeTitle { fill: #171717; font: 500 14px/20px "SF Pro Text", "PingFang SC", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .nodeTitleBrand { fill: #004D26; font: 500 14px/20px "SF Pro Text", "PingFang SC", system-ui, sans-serif; }
+    .nodeCaption { fill: #52525B; font: 400 12px/18px "SF Pro Text", "PingFang SC", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    .chipBox { fill: #EFEFF2; stroke: rgba(23, 23, 23, 0.10); }
+    .chipText { fill: #171717; font: 400 12px/18px "SF Pro Text", "PingFang SC", system-ui, sans-serif; }
+  </style>
+  <defs>
+    <pattern id="mindGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <circle class="gridDot" cx="1" cy="1" r="1" />
+    </pattern>
+  </defs>
+  <rect class="bg" x="0" y="0" width="720" height="692" />
+  <rect x="0" y="0" width="720" height="692" fill="url(#mindGrid)" />
+  <text class="title" x="24" y="34">论文结构思维导图 · DiffE2E</text>
+  <rect class="countPill" x="596" y="14" width="100" height="26" rx="13" />
+  <text class="countText" x="646" y="31" text-anchor="middle">7 章 + 附录 A</text>
+
+  <path class="edge" d="M152 368 H164 Q172 368 172 360 V98 Q172 90 180 90 H196" />
+  <path class="edge" d="M152 368 H164 Q172 368 172 360 V162 Q172 154 180 154 H196" />
+  <path class="edge" d="M152 368 H164 Q172 368 172 360 V246 Q172 238 180 238 H196" />
+  <path class="edge" d="M152 368 H164 Q172 368 172 360 V326 Q172 318 180 318 H196" />
+  <path class="edgeFocus" d="M152 368 H164 Q172 368 172 376 V410 Q172 418 180 418 H196" />
+  <path class="edge" d="M152 368 H164 Q172 368 172 376 V510 Q172 518 180 518 H196" />
+  <path class="edge" d="M152 368 H164 Q172 368 172 376 V574 Q172 582 180 582 H196" />
+  <path class="edge" d="M152 368 H164 Q172 368 172 376 V638 Q172 646 180 646 H196" />
+
+  <g>
+    <rect class="nodeBoxRoot" x="24" y="334" width="128" height="68" rx="10" />
+    <text class="nodeTitleBrand" x="88" y="366" text-anchor="middle">DiffE2E</text>
+    <text class="nodeCaption" x="88" y="386" text-anchor="middle">论文主稿</text>
+  </g>
+
+  <g>
+    <rect class="nodeBox" x="196" y="64" width="248" height="52" rx="8" />
+    <text class="nodeTitle" x="208" y="87">第 1 章 绪论</text>
+    <text class="nodeCaption" x="208" y="106">背景 · 问题 · 贡献 · 组织</text>
+  </g>
+
+  <g>
+    <rect class="nodeBox" x="196" y="128" width="248" height="52" rx="8" />
+    <text class="nodeTitle" x="208" y="151">第 2 章 相关工作</text>
+    <text class="nodeCaption" x="208" y="170">A0–A2 选择 · B0–B1 修复 · 66 篇</text>
+  </g>
+
+  <g>
+    <rect class="nodeBox" x="196" y="192" width="248" height="92" rx="8" />
+    <text class="nodeTitle" x="208" y="215">第 3 章 方法设计</text>
+    <text class="nodeCaption" x="208" y="236">五步闭环 · 映射器 · SUD</text>
+    <text class="nodeCaption" x="208" y="255">安全命题 · 副作用闭包 · 成本模型</text>
+    <text class="nodeCaption" x="208" y="274">判定规则 · prompt · 可复现参数</text>
+  </g>
+
+  <g>
+    <rect class="nodeBox" x="196" y="292" width="248" height="52" rx="8" />
+    <text class="nodeTitle" x="208" y="315">第 4 章 实现与实验设置</text>
+    <text class="nodeCaption" x="208" y="334">DiffE2E 原型 · 五个组成部分</text>
+  </g>
+
+  <g>
+    <rect class="nodeBoxFocus" x="196" y="356" width="500" height="124" rx="8" />
+    <text class="nodeTitleBrand" x="208" y="380">第 5 章 实验结果</text>
+    <rect class="chipBox" x="208" y="392" width="236" height="32" rx="6" />
+    <text class="chipText" x="220" y="412">RQ1 选择：S=1.0 · R=0.625</text>
+    <rect class="chipBox" x="452" y="392" width="236" height="32" rx="6" />
+    <text class="chipText" x="464" y="412">RQ2 生成：自动 1.0 · 人工 0/30</text>
+    <rect class="chipBox" x="208" y="432" width="236" height="32" rx="6" />
+    <text class="chipText" x="220" y="452">RQ3 修复：3.38% / 5.56%</text>
+    <rect class="chipBox" x="452" y="432" width="236" height="32" rx="6" />
+    <text class="chipText" x="464" y="452">RQ4 成本：NetSaving · κ 校准</text>
+  </g>
+
+  <g>
+    <rect class="nodeBox" x="196" y="492" width="248" height="52" rx="8" />
+    <text class="nodeTitle" x="208" y="515">第 6 章 讨论与有效性威胁</text>
+    <text class="nodeCaption" x="208" y="534">四类效度威胁 · 外部效度限定</text>
+  </g>
+
+  <g>
+    <rect class="nodeBox" x="196" y="556" width="248" height="52" rx="8" />
+    <text class="nodeTitle" x="208" y="579">第 7 章 结论与展望</text>
+    <text class="nodeCaption" x="208" y="598">结论 · 优先级展望</text>
+  </g>
+
+  <g>
+    <rect class="nodeBox" x="196" y="620" width="248" height="52" rx="8" />
+    <text class="nodeTitle" x="208" y="643">附录 A 复现材料</text>
+    <text class="nodeCaption" x="208" y="662">复现命令 · 产物映射 · 审计链</text>
+  </g>
+</svg>

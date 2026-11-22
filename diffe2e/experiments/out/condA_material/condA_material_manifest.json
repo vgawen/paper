@@ -1,0 +1,450 @@
+{
+  "schema": "condA_material/v1",
+  "generated_at": "2026-11-08T04:04:42.711Z",
+  "condition": "approx_original_information",
+  "note": "近似重建，不是原第一列的原始材料；无法复原的维度见 known_deviations。",
+  "source_files": [
+    {
+      "path": "experiments/out/rq2_real_to_annotate.csv",
+      "sha256": "fcdf084a17bc317a69e1932ce1f2e46ac248f3bb3209e9a2c5eeebfd8ffa58cf"
+    },
+    {
+      "path": "experiments/annotate/context/rq3_context.json",
+      "sha256": "7c6a45179a9b2133dbab77162576eab22e891959b0637d805e69c2d8852a3cb8"
+    }
+  ],
+  "rq2": {
+    "n": 30,
+    "file": "experiments/out/condA_material/rq2_condA.md",
+    "sha256": "1944694bbb86f76e10fa467c2c68931126e0f83786eb36bcaf206fb2d4268f18"
+  },
+  "rq3": {
+    "n": 40,
+    "file": "experiments/out/condA_material/rq3_condA.md",
+    "sha256": "9434c8a535026215b8c87030bfcc4c529e5f82009f3775a76692e483b246c08c",
+    "new_locator_present": 40,
+    "unredacted_diff_reconstructed_from_compare_cache": 40,
+    "unredacted_diff_no_test_change": 0,
+    "unredacted_diff_scope_counts": {
+      "same_hunk": 40
+    },
+    "old_test_line_fallback": 0,
+    "old_test_line_source_counts": {
+      "old_test_file_line_no": 29,
+      "old_test_file_match": 11
+    }
+  },
+  "per_case": [
+    {
+      "case_id": "rb001",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "cec6bf50eda802718e0a09ba760530830391a2daec5a46061ead1213fdc7e62d"
+    },
+    {
+      "case_id": "rb002",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "27aca93fb00503a3dd24dae1e70d810b68e3dbc6d7402746fdb64c65a48c5e41"
+    },
+    {
+      "case_id": "rb003",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "49aaf00a2640c00435b7cc7af353bd8c549c5a8f734802a2505819a7692897d7"
+    },
+    {
+      "case_id": "rb004",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "dcf0a3f3fd4ff029d327add97cb257a7c2708d88564de003bffa6d466b2d5924"
+    },
+    {
+      "case_id": "rb005",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "2c6c628ee20173281fbf13b0c7fac881fbb8cae99663e0c62c7f780b860a4aba"
+    },
+    {
+      "case_id": "rb006",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "e0f49ecbad86bc1aacd5421fa165db77b28f01b85e27e0b87db55535543481b5"
+    },
+    {
+      "case_id": "rb007",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "53dca5e3fa8206eb937e92275010d034c07c158e43b8ad070332af2c750bac53"
+    },
+    {
+      "case_id": "rb008",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "7f8b8aabef082d5439493c883760a34cf3ea3d154214455ae04efda28e0c8378"
+    },
+    {
+      "case_id": "rb009",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 37,
+      "assertion_removed": 37,
+      "sha256_section": "dc95fbab404cdc7b6cb489ed47acda47bdeb278fd41ffee419032eca18df878f"
+    },
+    {
+      "case_id": "rb010",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 3,
+      "assertion_removed": 3,
+      "sha256_section": "67b529d6b69789bb73d095a096c5655c99b0bc94e25e375c20e642f9ab91ff61"
+    },
+    {
+      "case_id": "rb011",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "77e4e39429335e0bb6fced45c1095603e7a2d80845814d1980e708b8e7ccf4ae"
+    },
+    {
+      "case_id": "rb012",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "3fa665c974060e1b1ae24357646a81dc87044b147022bace4691bbc1f0174cbd"
+    },
+    {
+      "case_id": "rb013",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "fc94d14a0eeff3a44228540277e900f0734596a56a85d9c592053f1ec33fd4dd"
+    },
+    {
+      "case_id": "rb014",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "9819c6ee527a299206a3985450ca3c1a2cc17d3b4f98d37b7668cb42c5f53849"
+    },
+    {
+      "case_id": "rb015",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "cd77e970abcdf4a7aa4deb5c6cd52712272e32dcb029a7bb8f49e2d8badf5ea5"
+    },
+    {
+      "case_id": "rb016",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "6e3bc5e83d8d2be65b37f83ef479afcfa08c173251404758fdd2d33f5f9fdd9b"
+    },
+    {
+      "case_id": "rb017",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "5745e6900b36145abb335d81983b0a5195283ee8b016ade5fa0426632656ca38"
+    },
+    {
+      "case_id": "rb018",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "1a9c0a4a1e191c6a32e24296333563f60d8ea983b33a865a58ea3ad778e4d449"
+    },
+    {
+      "case_id": "rb019",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "ae7711ba8cbbef9dd99eb3c292d93aa6ee6b4b6e6a741df98413a52ac6302288"
+    },
+    {
+      "case_id": "rb020",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "60ef02dc26667bea6c3753eb728b20addd960a5b3ee81a38881a4055e6f07a23"
+    },
+    {
+      "case_id": "rb021",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 88,
+      "assertion_removed": 88,
+      "sha256_section": "b536940c7ff48d9e9e54d285d3a4c4af53e4a9b1391ea232abf2403c9aee9770"
+    },
+    {
+      "case_id": "rb022",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 22,
+      "assertion_removed": 22,
+      "sha256_section": "2757a179094343545b9648513dd2683a95f526ff70246776363f08dcdfbd281e"
+    },
+    {
+      "case_id": "rb023",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 22,
+      "assertion_removed": 22,
+      "sha256_section": "b0988c41efeccfbea0ae0f4d14a8d7d828d6d3a5588de8a6050731c03611ab6a"
+    },
+    {
+      "case_id": "rb024",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 22,
+      "assertion_removed": 22,
+      "sha256_section": "5c14de62ddbc9b5890dd0581f73b9aa00f870f2172bf5b7dcab898a19489fa9c"
+    },
+    {
+      "case_id": "rb025",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "e0e969cbbba4cf7c9926f7b8afaa9661eae1325fe80591e6c618fe9a34cc6bdd"
+    },
+    {
+      "case_id": "rb026",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "8982e8375bf6262eb242345b0440857a8ad18f132216f4b59694c27305ee92b3"
+    },
+    {
+      "case_id": "rb027",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 3,
+      "assertion_removed": 2,
+      "sha256_section": "31215c219971ba9052c7d8d73dcf509f0e5198ef4458c94db15ac8994103cc73"
+    },
+    {
+      "case_id": "rb028",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "2a27c6eab614ab78d6512837edcd684563845309360649838f2f894655cbcae1"
+    },
+    {
+      "case_id": "rb029",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "4ce172a25c02cc951cfc5b745208181d5ebebb56a6acb09444da441e11cbc5ca"
+    },
+    {
+      "case_id": "rb030",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 0,
+      "assertion_removed": 0,
+      "sha256_section": "cad3218643319c2256f4aaad6ee0f705f2e4b9cfd1c1b35f377c8f3eeb2dbb4c"
+    },
+    {
+      "case_id": "rb031",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "51eddf0bcd56d20d3f76beac18b146bb30bda62c5d8707157b6b99648b073a5a"
+    },
+    {
+      "case_id": "rb032",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 5,
+      "assertion_removed": 5,
+      "sha256_section": "3259475a5dcd9a1ec053c313e6573ea501ff242116e15df0ddc7f6738a4f933c"
+    },
+    {
+      "case_id": "rb033",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 1,
+      "assertion_removed": 1,
+      "sha256_section": "6e2241b78cab6d84b706b0bb3d9e355b403109a7280d05386dbd4ba168eaf338"
+    },
+    {
+      "case_id": "rb034",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_match",
+      "assertion_added": 14,
+      "assertion_removed": 14,
+      "sha256_section": "ebc932ca9ff66ef6eeaaab346c5436faa75a6537f966d7792adbdff654a2742e"
+    },
+    {
+      "case_id": "rb035",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 1,
+      "assertion_removed": 0,
+      "sha256_section": "7fb2ff7087f1241ea2188d564c74a587b9269d21c704fe5f281fd520250ea457"
+    },
+    {
+      "case_id": "rb036",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 10,
+      "assertion_removed": 10,
+      "sha256_section": "8e8ba8f18f33f9eeaaca01c35422ff9480b06c82e6fed097a21fa6dd0ff9a3cf"
+    },
+    {
+      "case_id": "rb037",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 10,
+      "assertion_removed": 10,
+      "sha256_section": "3f5ea01d2ef8f96cc0b0cfe9e5303da1513107faf927989548e1ec0668d554d5"
+    },
+    {
+      "case_id": "rb038",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 10,
+      "assertion_removed": 10,
+      "sha256_section": "edfcc5f1c1e53c693bc0825ac8d2b79f5893817f3da0486b3b7b318cdf6f04b3"
+    },
+    {
+      "case_id": "rb039",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 1,
+      "assertion_removed": 0,
+      "sha256_section": "3622f6cd68d87bd5c187e89c26331fd96dfb512945e9dd5fb0652a2d09f4c429"
+    },
+    {
+      "case_id": "rb040",
+      "new_locator_present": true,
+      "unredacted_diff_source": "compare_cache",
+      "unredacted_diff_scope": "same_hunk",
+      "old_line_source": "old_test_file_line_no",
+      "assertion_added": 1,
+      "assertion_removed": 0,
+      "sha256_section": "fc9f37c57e244ac9edd8db3ea4daadee4a7875c5444cf9587eec930d21234d8d"
+    }
+  ],
+  "known_deviations": [
+    "原 prompt 文本不可知：条件 A 与 masked 使用同一份中性 prompt，因此不等同于原 prompt。",
+    "原模型、版本、温度、max_tokens、重试策略均无记录；条件 A 固定为 deepseek-v4-flash、temperature=0、max_tokens=500、retries=3。",
+    "原 RQ3 “旧测试行”的确切截取范围不可知；条件 A 用旧测试文件中 old_locator 所在单行近似，不是完整 it 块。",
+    "原 RQ3 是否展示未遮蔽的断言级 diff 只能由 rationale 推断；条件 A 的 diff 由 compare 缓存重算，并优先限定到包含 old_locator/new_locator 的 hunk，定位不到时展示整文件断言变化；展示形式仍可能与当时不同。",
+    "原 RQ2 是否看到应用源码 diff 不可知；条件 A 按“不提供”处理。",
+    "原标注流程是否读取过 unblind key（含 arm / model_label）不可知；条件 A 不提供这些字段。",
+    "原标注是否逐条独立调用、是否有人工对话上下文不可知；条件 A 为逐条独立调用。",
+    "原 RQ3 的应用改动文件列表格式（是否截断、排序）不可知；条件 A 使用未截断列表。",
+    "原 RQ2 的 spec 视为与当前 CSV 一致；CSV 在工作区被改过（增加标签与引号），但 spec 文本未变化，仍记录输入哈希。"
+  ]
+}

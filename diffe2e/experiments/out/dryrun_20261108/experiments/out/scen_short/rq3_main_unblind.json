@@ -1,0 +1,322 @@
+{
+  "rb001": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1169,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 4,
+    "rule": false,
+    "llm": false
+  },
+  "rb002": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1180,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb003": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1181,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb004": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1182,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb005": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1183,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb006": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1184,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb007": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1185,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb008": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1186,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb009": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1452,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb010": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 1481,
+    "repo": "ghiscoding/angular-slickgrid",
+    "app_files": 17,
+    "rule": false,
+    "llm": false
+  },
+  "rb011": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5435,
+    "repo": "microsoft/playwright",
+    "app_files": 28,
+    "rule": false,
+    "llm": false
+  },
+  "rb012": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5650,
+    "repo": "microsoft/playwright",
+    "app_files": 5,
+    "rule": false,
+    "llm": false
+  },
+  "rb013": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5651,
+    "repo": "microsoft/playwright",
+    "app_files": 7,
+    "rule": false,
+    "llm": true
+  },
+  "rb014": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5656,
+    "repo": "microsoft/playwright",
+    "app_files": 5,
+    "rule": false,
+    "llm": false
+  },
+  "rb015": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5657,
+    "repo": "microsoft/playwright",
+    "app_files": 5,
+    "rule": false,
+    "llm": false
+  },
+  "rb016": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5662,
+    "repo": "microsoft/playwright",
+    "app_files": 7,
+    "rule": false,
+    "llm": true
+  },
+  "rb017": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5664,
+    "repo": "microsoft/playwright",
+    "app_files": 7,
+    "rule": false,
+    "llm": true
+  },
+  "rb018": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5665,
+    "repo": "microsoft/playwright",
+    "app_files": 7,
+    "rule": false,
+    "llm": true
+  },
+  "rb019": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5666,
+    "repo": "microsoft/playwright",
+    "app_files": 7,
+    "rule": false,
+    "llm": true
+  },
+  "rb020": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 5667,
+    "repo": "microsoft/playwright",
+    "app_files": 7,
+    "rule": false,
+    "llm": true
+  },
+  "rb021": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3458,
+    "repo": "nasa/openmct",
+    "app_files": 27,
+    "rule": false,
+    "llm": false
+  },
+  "rb022": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3484,
+    "repo": "nasa/openmct",
+    "app_files": 5,
+    "rule": false,
+    "llm": false
+  },
+  "rb023": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3488,
+    "repo": "nasa/openmct",
+    "app_files": 5,
+    "rule": false,
+    "llm": false
+  },
+  "rb024": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3489,
+    "repo": "nasa/openmct",
+    "app_files": 5,
+    "rule": false,
+    "llm": false
+  },
+  "rb025": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3514,
+    "repo": "nasa/openmct",
+    "app_files": 27,
+    "rule": false,
+    "llm": false
+  },
+  "rb026": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3515,
+    "repo": "nasa/openmct",
+    "app_files": 27,
+    "rule": false,
+    "llm": false
+  },
+  "rb027": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3550,
+    "repo": "nasa/openmct",
+    "app_files": 27,
+    "rule": false,
+    "llm": false
+  },
+  "rb028": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3556,
+    "repo": "nasa/openmct",
+    "app_files": 1,
+    "rule": false,
+    "llm": false
+  },
+  "rb029": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3558,
+    "repo": "nasa/openmct",
+    "app_files": 27,
+    "rule": true,
+    "llm": true
+  },
+  "rb030": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 3559,
+    "repo": "nasa/openmct",
+    "app_files": 16,
+    "rule": false,
+    "llm": false
+  },
+  "rb031": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 616,
+    "repo": "tryghost/koenig",
+    "app_files": 3,
+    "rule": false,
+    "llm": false
+  },
+  "rb032": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 619,
+    "repo": "tryghost/koenig",
+    "app_files": 3,
+    "rule": false,
+    "llm": false
+  },
+  "rb033": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 621,
+    "repo": "tryghost/koenig",
+    "app_files": 0,
+    "rule": false,
+    "llm": false
+  },
+  "rb034": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 660,
+    "repo": "tryghost/koenig",
+    "app_files": 3,
+    "rule": false,
+    "llm": false
+  },
+  "rb035": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 685,
+    "repo": "tryghost/koenig",
+    "app_files": 0,
+    "rule": false,
+    "llm": false
+  },
+  "rb036": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 688,
+    "repo": "tryghost/koenig",
+    "app_files": 1,
+    "rule": true,
+    "llm": false
+  },
+  "rb037": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 689,
+    "repo": "tryghost/koenig",
+    "app_files": 1,
+    "rule": true,
+    "llm": false
+  },
+  "rb038": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 690,
+    "repo": "tryghost/koenig",
+    "app_files": 1,
+    "rule": true,
+    "llm": false
+  },
+  "rb039": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 698,
+    "repo": "tryghost/koenig",
+    "app_files": 0,
+    "rule": false,
+    "llm": false
+  },
+  "rb040": {
+    "model_label": "STRUCTURAL_ONLY",
+    "rb_id": 699,
+    "repo": "tryghost/koenig",
+    "app_files": 0,
+    "rule": false,
+    "llm": false
+  }
+}

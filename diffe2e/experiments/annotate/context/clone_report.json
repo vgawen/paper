@@ -1,0 +1,44 @@
+[
+  {
+    "repo": "actualbudget/actual",
+    "dir": "real/actual",
+    "mode": "existing",
+    "needed": 8,
+    "missing": 0
+  },
+  {
+    "repo": "mermaid-js/mermaid-live-editor",
+    "dir": "real/mermaid-live-editor",
+    "mode": "existing",
+    "needed": 2,
+    "missing": 0
+  },
+  {
+    "repo": "ghiscoding/angular-slickgrid",
+    "dir": "realproj/clones/aut/ghiscoding__angular-slickgrid",
+    "mode": "existing",
+    "needed": 4,
+    "missing": 0
+  },
+  {
+    "repo": "tryghost/koenig",
+    "dir": "realproj/clones/aut/tryghost__koenig",
+    "mode": "existing",
+    "needed": 8,
+    "missing": 0
+  },
+  {
+    "repo": "nasa/openmct",
+    "dir": "realproj/clones/aut/nasa__openmct",
+    "mode": "existing",
+    "needed": 8,
+    "missing": 0
+  },
+  {
+    "repo": "microsoft/playwright",
+    "dir": "realproj/clones/aut/microsoft__playwright",
+    "mode": "existing",
+    "needed": 6,
+    "missing": 0
+  }
+]

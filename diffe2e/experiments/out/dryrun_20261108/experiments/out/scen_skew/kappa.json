@@ -1,0 +1,41 @@
+{
+  "rq2": {
+    "n": 30,
+    "po": 0.1667,
+    "pe": 0.1667,
+    "kappa": 0,
+    "cm": {
+      "n": {
+        "n": 0,
+        "y": 25
+      },
+      "y": {
+        "n": 0,
+        "y": 5
+      }
+    }
+  },
+  "rq3": {
+    "n": 40,
+    "po": 0.925,
+    "pe": 0.925,
+    "kappa": 0,
+    "cm": {
+      "STRUCTURAL_ONLY": {
+        "STRUCTURAL_ONLY": 37,
+        "SUSPECTED_REGRESSION": 0,
+        "EXPECTATION_CHANGE": 0
+      },
+      "SUSPECTED_REGRESSION": {
+        "STRUCTURAL_ONLY": 1,
+        "SUSPECTED_REGRESSION": 0,
+        "EXPECTATION_CHANGE": 0
+      },
+      "EXPECTATION_CHANGE": {
+        "STRUCTURAL_ONLY": 2,
+        "SUSPECTED_REGRESSION": 0,
+        "EXPECTATION_CHANGE": 0
+      }
+    }
+  }
+}

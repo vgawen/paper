@@ -1,0 +1,257 @@
+{
+  "sha": "167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+  "node_id": "C_kwDODTssw9oAKDE2N2MzNWNhNjYwMGJiMWEzNzIyYjBjMGVjZTQyMDFjZTc3NmU0NGQ",
+  "commit": {
+    "author": {
+      "name": "Pavel Feldman",
+      "email": "pavel.feldman@gmail.com",
+      "date": "2023-09-08T00:14:39Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2023-09-08T00:14:39Z"
+    },
+    "message": "chore: store scroll positions in trace viewer (#26938)",
+    "tree": {
+      "sha": "15e72200e383cc7ea16fd29babbddc29ba74641d",
+      "url": "https://api.github.com/repos/microsoft/playwright/git/trees/15e72200e383cc7ea16fd29babbddc29ba74641d"
+    },
+    "url": "https://api.github.com/repos/microsoft/playwright/git/commits/167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJk+mdvCRBK7hj4Ov3rIwAAFJsIAELXNEobHqFw6hLJSR/byGp4\nh2jTywZqoTW2nLlQ57ZM8IlAxD8KKTNN+VabkVSjQt2ZW3LKCxwB92QDnlgqgf6G\n8OQXe2/jXzxbh/lhcLyWo1hn5o5aPvYo2moGrJLmoNRmpfEsEOvEueDioRVZuEZ/\nAmcBsKjfiTFjPQYXKeFbpmN0vHQ+BZQrelcgz7AbxM/4qwV53yn6BpN3XMSZUGaT\nNzscupP16c+llZw98ht6cL++EvmXUYF1pb0RGqRdqT9R0/Y5ONPGNPghNIjC7N/e\nKbcOxjZU9bTGt/NKrEpl9RanM7QQ2wwrrlK4aalwzPnErIOGPq/cfsbp2A+ALCU=\n=0TUY\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree 15e72200e383cc7ea16fd29babbddc29ba74641d\nparent aa3f4f208e3a1a97b213ee1e7593859691353d15\nauthor Pavel Feldman <pavel.feldman@gmail.com> 1694132079 -0700\ncommitter GitHub <noreply@github.com> 1694132079 -0700\n\nchore: store scroll positions in trace viewer (#26938)\n\n",
+      "verified_at": "2024-01-16T19:59:59Z"
+    }
+  },
+  "url": "https://api.github.com/repos/microsoft/playwright/commits/167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+  "html_url": "https://github.com/microsoft/playwright/commit/167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+  "comments_url": "https://api.github.com/repos/microsoft/playwright/commits/167c35ca6600bb1a3722b0c0ece4201ce776e44d/comments",
+  "author": {
+    "login": "pavelfeldman",
+    "id": 883973,
+    "node_id": "MDQ6VXNlcjg4Mzk3Mw==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/883973?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/pavelfeldman",
+    "html_url": "https://github.com/pavelfeldman",
+    "followers_url": "https://api.github.com/users/pavelfeldman/followers",
+    "following_url": "https://api.github.com/users/pavelfeldman/following{/other_user}",
+    "gists_url": "https://api.github.com/users/pavelfeldman/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/pavelfeldman/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/pavelfeldman/subscriptions",
+    "organizations_url": "https://api.github.com/users/pavelfeldman/orgs",
+    "repos_url": "https://api.github.com/users/pavelfeldman/repos",
+    "events_url": "https://api.github.com/users/pavelfeldman/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/pavelfeldman/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "aa3f4f208e3a1a97b213ee1e7593859691353d15",
+      "url": "https://api.github.com/repos/microsoft/playwright/commits/aa3f4f208e3a1a97b213ee1e7593859691353d15",
+      "html_url": "https://github.com/microsoft/playwright/commit/aa3f4f208e3a1a97b213ee1e7593859691353d15"
+    }
+  ],
+  "stats": {
+    "total": 71,
+    "additions": 48,
+    "deletions": 23
+  },
+  "files": [
+    {
+      "sha": "e6dd6a557787b01b061e1a15ad9208d2f9b292d3",
+      "filename": "packages/trace-viewer/src/ui/actionList.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FactionList.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FactionList.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FactionList.tsx?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -62,7 +62,7 @@ export const ActionList: React.FC<ActionListProps> = ({\n   return <div className='vbox'>\n     {selectedTime && <div className='action-list-show-all' onClick={() => setSelectedTime(undefined)}><span className='codicon codicon-triangle-left'></span>Show all</div>}\n     <ActionTreeView\n-      dataTestId='action-list'\n+      name='actions'\n       rootItem={rootItem}\n       treeState={treeState}\n       setTreeState={setTreeState}"
+    },
+    {
+      "sha": "fcb1cd79cc77e48a60564b08561a8150d4beceeb",
+      "filename": "packages/trace-viewer/src/ui/consoleTab.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FconsoleTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FconsoleTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FconsoleTab.tsx?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -119,6 +119,7 @@ export const ConsoleTab: React.FunctionComponent<{\n \n   return <div className='console-tab'>\n     <ConsoleListView\n+      name='console'\n       items={consoleModel.entries}\n       isError={entry => entry.isError}\n       isWarning={entry => entry.isWarning}"
+    },
+    {
+      "sha": "0fac986a075c0916d3cac8a8904e69e2e4d29598",
+      "filename": "packages/trace-viewer/src/ui/logTab.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FlogTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FlogTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FlogTab.tsx?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -27,7 +27,7 @@ export const LogTab: React.FunctionComponent<{\n   if (!action?.log.length)\n     return <PlaceholderPanel text='No log entries' />;\n   return <LogList\n-    dataTestId='log-list'\n+    name='log'\n     items={action?.log || []}\n     render={logLine => logLine}\n   />;"
+    },
+    {
+      "sha": "02820f1843ed841f24cd4c2a19436e54c6ee9882",
+      "filename": "packages/trace-viewer/src/ui/networkTab.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FnetworkTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FnetworkTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FnetworkTab.tsx?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -69,7 +69,7 @@ export const NetworkTab: React.FunctionComponent<{\n     {!resource && <div className='vbox'>\n       <NetworkHeader sorting={sorting} toggleSorting={toggleSorting} />\n       <NetworkListView\n-        dataTestId='network-request-list'\n+        name='network'\n         items={networkModel.resources}\n         render={entry => <NetworkResource boundaries={boundaries} resource={entry}></NetworkResource>}\n         onSelected={setResource}"
+    },
+    {
+      "sha": "4e35946d84a1293d27a7d02e80f573f4ef23f5e4",
+      "filename": "packages/trace-viewer/src/ui/stackTrace.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -29,7 +29,7 @@ export const StackTraceView: React.FunctionComponent<{\n }> = ({ action, setSelectedFrame, selectedFrame }) => {\n   const frames = action?.stack || [];\n   return <StackFrameListView\n-    dataTestId='stack-trace'\n+    name='stack-trace'\n     items={frames}\n     selectedItem={frames[selectedFrame]}\n     render={frame => {"
+    },
+    {
+      "sha": "3fd5ce588bee77559c441fe7aae4383ff5f80254",
+      "filename": "packages/trace-viewer/src/ui/uiModeView.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeView.tsx?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -467,6 +467,7 @@ const TestList: React.FC<{\n   };\n \n   return <TestTreeView\n+    name='tests'\n     treeState={treeState}\n     setTreeState={setTreeState}\n     rootItem={rootItem}"
+    },
+    {
+      "sha": "28bd4e4dd7dfc84c1973b8ad55baabd7f4e45607",
+      "filename": "packages/web/src/components/listView.tsx",
+      "status": "modified",
+      "additions": 21,
+      "deletions": 1,
+      "changes": 22,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -18,6 +18,7 @@ import * as React from 'react';\n import './listView.css';\n \n export type ListViewProps<T> = {\n+  name: string,\n   items: T[],\n   id?: (item: T, index: number) => string,\n   render: (item: T, index: number) => React.ReactNode,\n@@ -36,7 +37,10 @@ export type ListViewProps<T> = {\n   dataTestId?: string,\n };\n \n+const scrollPositions = new Map<string, number>();\n+\n export function ListView<T>({\n+  name,\n   items = [],\n   id,\n   render,\n@@ -61,7 +65,23 @@ export function ListView<T>({\n     onHighlighted?.(highlightedItem);\n   }, [onHighlighted, highlightedItem]);\n \n-  return <div className='list-view vbox' role='list' data-testid={dataTestId}>\n+  React.useEffect(() => {\n+    const listElem = itemListRef.current;\n+    if (!listElem)\n+      return;\n+    const saveScrollPosition = () => {\n+      scrollPositions.set(name, listElem.scrollTop);\n+    };\n+    listElem.addEventListener('scroll', saveScrollPosition, { passive: true });\n+    return () => listElem.removeEventListener('scroll', saveScrollPosition);\n+  }, [name]);\n+\n+  React.useEffect(() => {\n+    if (itemListRef.current)\n+      itemListRef.current.scrollTop = scrollPositions.get(name) || 0;\n+  }, [name]);\n+\n+  return <div className='list-view vbox' role='list' data-testid={dataTestId || (name + '-list')}>\n     <div\n       className='list-view-content'\n       tabIndex={0}"
+    },
+    {
+      "sha": "8341056779bdb3c810f4a917571365faafece5ed",
+      "filename": "packages/web/src/components/treeView.tsx",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 1,
+      "changes": 5,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FtreeView.tsx?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -28,6 +28,7 @@ export type TreeState = {\n };\n \n export type TreeViewProps<T> = {\n+  name: string,\n   rootItem: T,\n   render: (item: T) => React.ReactNode,\n   icon?: (item: T) => string | undefined,\n@@ -47,6 +48,7 @@ export type TreeViewProps<T> = {\n const TreeListView = ListView<TreeItem>;\n \n export function TreeView<T extends TreeItem>({\n+  name,\n   rootItem,\n   render,\n   icon,\n@@ -96,9 +98,10 @@ export function TreeView<T extends TreeItem>({\n   }, [treeItems, isVisible]);\n \n   return <TreeListView\n+    name={name}\n     items={visibleItems}\n     id={item => item.id}\n-    dataTestId={dataTestId}\n+    dataTestId={dataTestId || (name + '-tree')}\n     render={item => {\n       const rendered = render(item as T);\n       return <>"
+    },
+    {
+      "sha": "16d58d761d04283bae66d46cce19f8955200750f",
+      "filename": "tests/config/traceViewerFixtures.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fconfig%2FtraceViewerFixtures.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fconfig%2FtraceViewerFixtures.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fconfig%2FtraceViewerFixtures.ts?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -52,8 +52,8 @@ class TraceViewerPage {\n     this.consoleLines = page.locator('.console-line');\n     this.consoleLineMessages = page.locator('.console-line-message');\n     this.consoleStacks = page.locator('.console-stack');\n-    this.stackFrames = page.getByTestId('stack-trace').locator('.list-view-entry');\n-    this.networkRequests = page.getByTestId('network-request-list').locator('.list-view-entry');\n+    this.stackFrames = page.getByTestId('stack-trace-list').locator('.list-view-entry');\n+    this.networkRequests = page.getByTestId('network-list').locator('.list-view-entry');\n     this.snapshotContainer = page.locator('.snapshot-container iframe.snapshot-visible[name=snapshot]');\n   }\n "
+    },
+    {
+      "sha": "c706ea6e1a8c9836031e1406c9214888cb8be386",
+      "filename": "tests/library/trace-viewer.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Flibrary%2Ftrace-viewer.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Flibrary%2Ftrace-viewer.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Flibrary%2Ftrace-viewer.spec.ts?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -674,7 +674,7 @@ test('should show action source', async ({ showTraceViewer }) => {\n \n   await page.click('text=Source');\n   await expect(page.locator('.source-line-running')).toContainText('await page.getByText(\\'Click\\').click()');\n-  await expect(page.getByTestId('stack-trace').locator('.list-view-entry.selected')).toHaveText(/doClick.*trace-viewer\\.spec\\.ts:[\\d]+/);\n+  await expect(page.getByTestId('stack-trace-list').locator('.list-view-entry.selected')).toHaveText(/doClick.*trace-viewer\\.spec\\.ts:[\\d]+/);\n });\n \n test('should follow redirects', async ({ page, runAndTrace, server, asset }) => {"
+    },
+    {
+      "sha": "f74626f2942c3a240029ad92500ba1928704503f",
+      "filename": "tests/playwright-test/reporter-blob.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fplaywright-test%2Freporter-blob.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fplaywright-test%2Freporter-blob.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Freporter-blob.spec.ts?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -668,7 +668,7 @@ test('generate html with attachment urls', async ({ runInlineTest, mergeReports,\n   // Check that trace loads.\n   await page.locator('div').filter({ hasText: /^a\\.test\\.js:13$/ }).getByRole('link', { name: 'View trace' }).click();\n   await expect(page).toHaveTitle('Playwright Trace Viewer');\n-  await expect(page.getByTestId('action-list').locator('div').filter({ hasText: /^expect\\.toBe$/ })).toBeVisible();\n+  await expect(page.getByTestId('actions-tree').locator('div').filter({ hasText: /^expect\\.toBe$/ })).toBeVisible();\n });\n \n test('resource names should not clash between runs', async ({ runInlineTest, showReport, mergeReports, page }) => {"
+    },
+    {
+      "sha": "a2c1bec167c8ce2ff94e8e56d062970a2643bf9d",
+      "filename": "tests/playwright-test/reporter-html.spec.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fplaywright-test%2Freporter-html.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fplaywright-test%2Freporter-html.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Freporter-html.spec.ts?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -454,10 +454,10 @@ for (const useIntermediateMergeReport of [false] as const) {\n       ]);\n       await expect(page.locator('.source-line-running')).toContainText('page.evaluate');\n \n-      await expect(page.getByTestId('stack-trace')).toContainText([\n+      await expect(page.getByTestId('stack-trace-list')).toContainText([\n         /a.test.js:[\\d]+/,\n       ]);\n-      await expect(page.getByTestId('stack-trace').locator('.list-view-entry.selected')).toContainText('a.test.js');\n+      await expect(page.getByTestId('stack-trace-list').locator('.list-view-entry.selected')).toContainText('a.test.js');\n     });\n \n     test('should show trace title', async ({ runInlineTest, page, showReport }) => {"
+    },
+    {
+      "sha": "16c88290c1de938dd5536613a6685aa99b511d1d",
+      "filename": "tests/playwright-test/ui-mode-test-progress.spec.ts",
+      "status": "modified",
+      "additions": 7,
+      "deletions": 7,
+      "changes": 14,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fplaywright-test%2Fui-mode-test-progress.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fplaywright-test%2Fui-mode-test-progress.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-progress.spec.ts?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -47,7 +47,7 @@ test('should update trace live', async ({ runUITest, server }) => {\n   await page.getByText('live test').dblclick();\n \n   // It should halt on loading one.html.\n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -134,7 +134,7 @@ test('should preserve action list selection upon live trace update', async ({ ru\n   await page.getByText('live test').dblclick();\n \n   // It should wait on the latch.\n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -145,7 +145,7 @@ test('should preserve action list selection upon live trace update', async ({ ru\n   ]);\n \n   // Manually select page.goto.\n-  await page.getByTestId('action-list').getByText('page.goto').click();\n+  await page.getByTestId('actions-tree').getByText('page.goto').click();\n \n   // Generate more actions and check that we are still on the page.goto action.\n   latch.open();\n@@ -195,7 +195,7 @@ test('should update tracing network live', async ({ runUITest, server }) => {\n   await page.getByText('live test').dblclick();\n \n   // It should wait on the latch.\n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -207,7 +207,7 @@ test('should update tracing network live', async ({ runUITest, server }) => {\n \n   // Once page.setContent is visible, we can be sure that page.goto has all required\n   // resources in the trace. Switch to it and check that everything renders.\n-  await page.getByTestId('action-list').getByText('page.goto').click();\n+  await page.getByTestId('actions-tree').getByText('page.goto').click();\n \n   await expect(\n       page.frameLocator('iframe.snapshot-visible[name=snapshot]').locator('body'),\n@@ -235,7 +235,7 @@ test('should show trace w/ multiple contexts', async ({ runUITest, server, creat\n   await page.getByText('live test').dblclick();\n \n   // It should wait on the latch.\n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -280,7 +280,7 @@ test('should show live trace for serial', async ({ runUITest, server, createLatc\n   await page.getByText('two', { exact: true }).click();\n   await page.getByTitle('Run all').click();\n \n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'"
+    },
+    {
+      "sha": "c3dad2b78665fd64d7e9e71571a7bf0681825394",
+      "filename": "tests/playwright-test/ui-mode-trace.spec.ts",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 4,
+      "changes": 8,
+      "blob_url": "https://github.com/microsoft/playwright/blob/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/167c35ca6600bb1a3722b0c0ece4201ce776e44d/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-trace.spec.ts?ref=167c35ca6600bb1a3722b0c0ece4201ce776e44d",
+      "patch": "@@ -34,7 +34,7 @@ test('should merge trace events', async ({ runUITest, server }) => {\n \n   await page.getByText('trace test').dblclick();\n \n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -63,7 +63,7 @@ test('should merge web assertion events', async ({  runUITest }, testInfo) => {\n \n   await page.getByText('trace test').dblclick();\n \n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -90,7 +90,7 @@ test('should merge screenshot assertions', async ({  runUITest }, testInfo) => {\n \n   await page.getByText('trace test').dblclick();\n \n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'\n@@ -137,7 +137,7 @@ test('should show snapshots for sync assertions', async ({ runUITest, server })\n \n   await page.getByText('trace test').dblclick();\n \n-  const listItem = page.getByTestId('action-list').getByRole('listitem');\n+  const listItem = page.getByTestId('actions-tree').getByRole('listitem');\n   await expect(\n       listItem,\n       'action list'"
+    }
+  ]
+}

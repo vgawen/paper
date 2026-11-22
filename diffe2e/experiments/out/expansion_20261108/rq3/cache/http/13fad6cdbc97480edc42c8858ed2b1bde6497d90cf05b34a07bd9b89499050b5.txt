@@ -1,0 +1,327 @@
+From 5e0574dc4417f881442f465b8d4d2b6af74ce19a Mon Sep 17 00:00:00 2001
+From: Pavel Feldman <pavel.feldman@gmail.com>
+Date: Tue, 9 May 2023 17:53:01 -0700
+Subject: [PATCH] chore: list attachments in the trace (#22919)
+
+Fixes https://github.com/microsoft/playwright/issues/22736
+---
+ .../playwright-core/src/utils/traceUtils.ts   |  4 +-
+ .../playwright-test/src/worker/testInfo.ts    |  6 ++
+ .../trace-viewer/src/ui/attachmentsTab.css    | 40 +++++++++++++
+ .../trace-viewer/src/ui/attachmentsTab.tsx    | 59 +++++++++++++++++++
+ packages/trace-viewer/src/ui/callTab.tsx      | 25 --------
+ packages/trace-viewer/src/ui/sourceTab.tsx    |  2 +-
+ packages/trace-viewer/src/ui/workbench.tsx    |  8 +++
+ .../ui-mode-test-attachments.spec.ts          | 41 +++++++++++++
+ tests/playwright-test/ui-mode-trace.spec.ts   |  2 +-
+ 9 files changed, 158 insertions(+), 29 deletions(-)
+ create mode 100644 packages/trace-viewer/src/ui/attachmentsTab.css
+ create mode 100644 packages/trace-viewer/src/ui/attachmentsTab.tsx
+ create mode 100644 tests/playwright-test/ui-mode-test-attachments.spec.ts
+
+diff --git a/packages/playwright-core/src/utils/traceUtils.ts b/packages/playwright-core/src/utils/traceUtils.ts
+index 2f7cb1cda208d..b39d7c9998fcd 100644
+--- a/packages/playwright-core/src/utils/traceUtils.ts
++++ b/packages/playwright-core/src/utils/traceUtils.ts
+@@ -119,12 +119,12 @@ export async function saveTraceFile(fileName: string, traceEvents: TraceEvent[],
+     for (const attachment of (event.attachments || []).filter(a => !!a.path)) {
+       await fs.promises.readFile(attachment.path!).then(content => {
+         const sha1 = calculateSha1(content);
++        attachment.sha1 = sha1;
++        delete attachment.path;
+         if (sha1s.has(sha1))
+           return;
+         sha1s.add(sha1);
+         zipFile.addBuffer(content, 'resources/' + sha1);
+-        attachment.sha1 = sha1;
+-        delete attachment.path;
+       }).catch();
+     }
+   }
+diff --git a/packages/playwright-test/src/worker/testInfo.ts b/packages/playwright-test/src/worker/testInfo.ts
+index 957f64d76088e..110657222a674 100644
+--- a/packages/playwright-test/src/worker/testInfo.ts
++++ b/packages/playwright-test/src/worker/testInfo.ts
+@@ -331,7 +331,13 @@ export class TestInfoImpl implements TestInfo {
+   // ------------ TestInfo methods ------------
+ 
+   async attach(name: string, options: { path?: string, body?: string | Buffer, contentType?: string } = {}) {
++    const step = this._addStep({
++      title: 'attach',
++      category: 'attach',
++      wallTime: Date.now(),
++    });
+     this.attachments.push(await normalizeAndSaveAttachment(this.outputPath(), name, options));
++    step.complete({});
+   }
+ 
+   outputPath(...pathSegments: string[]){
+diff --git a/packages/trace-viewer/src/ui/attachmentsTab.css b/packages/trace-viewer/src/ui/attachmentsTab.css
+new file mode 100644
+index 0000000000000..46eae4326b0ee
+--- /dev/null
++++ b/packages/trace-viewer/src/ui/attachmentsTab.css
+@@ -0,0 +1,40 @@
++/*
++  Copyright (c) Microsoft Corporation.
++
++  Licensed under the Apache License, Version 2.0 (the "License");
++  you may not use this file except in compliance with the License.
++  You may obtain a copy of the License at
++
++      http://www.apache.org/licenses/LICENSE-2.0
++
++  Unless required by applicable law or agreed to in writing, software
++  distributed under the License is distributed on an "AS IS" BASIS,
++  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++  See the License for the specific language governing permissions and
++  limitations under the License.
++*/
++
++.attachments-tab {
++  flex: auto;
++  line-height: 24px;
++  white-space: pre;
++  overflow: auto;
++  user-select: text;
++}
++
++.attachments-section {
++  padding-left: 6px;
++  font-weight: bold;
++  text-transform: uppercase;
++  font-size: 10px;
++  color: var(--vscode-sideBarTitle-foreground);
++  line-height: 24px;
++}
++
++.attachments-section:not(:first-child) {
++  border-top: 1px solid var(--vscode-panel-border);
++}
++
++.attachment-item {
++  margin: 4px 8px;
++}
+diff --git a/packages/trace-viewer/src/ui/attachmentsTab.tsx b/packages/trace-viewer/src/ui/attachmentsTab.tsx
+new file mode 100644
+index 0000000000000..c74cea8b6f59c
+--- /dev/null
++++ b/packages/trace-viewer/src/ui/attachmentsTab.tsx
+@@ -0,0 +1,59 @@
++/**
++ * Copyright (c) Microsoft Corporation.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import type { ActionTraceEvent } from '@trace/trace';
++import * as React from 'react';
++import './attachmentsTab.css';
++import { ImageDiffView } from '@web/components/imageDiffView';
++import type { TestAttachment } from '@web/components/imageDiffView';
++
++export const AttachmentsTab: React.FunctionComponent<{
++  action: ActionTraceEvent | undefined,
++}> = ({ action }) => {
++  if (!action)
++    return null;
++  const expected = action.attachments?.find(a => a.name.endsWith('-expected.png') && (a.path || a.sha1)) as TestAttachment | undefined;
++  const actual = action.attachments?.find(a => a.name.endsWith('-actual.png') && (a.path || a.sha1)) as TestAttachment | undefined;
++  const diff = action.attachments?.find(a => a.name.endsWith('-diff.png') && (a.path || a.sha1)) as TestAttachment | undefined;
++
++  return <div className='attachments-tab'>
++    {expected && actual && <div className='attachments-section'>Image diff</div>}
++    {expected && actual && <ImageDiffView imageDiff={{
++      name: 'Image diff',
++      expected: { attachment: { ...expected, path: attachmentURL(expected) }, title: 'Expected' },
++      actual: { attachment: { ...actual, path: attachmentURL(actual) } },
++      diff: diff ? { attachment: { ...diff, path: attachmentURL(diff) } } : undefined,
++    }} />}
++    {<div className='attachments-section'>Attachments</div>}
++    {action.attachments?.map(a => {
++      return <div className='attachment-item'>
++        <a target='_blank' href={`sha1/${a.sha1}`}>{a.name}</a>
++      </div>;
++    })}
++  </div>;
++};
++
++function attachmentURL(attachment: {
++  name: string;
++  contentType: string;
++  path?: string;
++  sha1?: string;
++  body?: string;
++}) {
++  if (attachment.sha1)
++    return 'sha1/' + attachment.sha1;
++  return 'file?path=' + attachment.path;
++}
+diff --git a/packages/trace-viewer/src/ui/callTab.tsx b/packages/trace-viewer/src/ui/callTab.tsx
+index b333c56cab39e..e589709882473 100644
+--- a/packages/trace-viewer/src/ui/callTab.tsx
++++ b/packages/trace-viewer/src/ui/callTab.tsx
+@@ -23,8 +23,6 @@ import { CopyToClipboard } from './copyToClipboard';
+ import { asLocator } from '@isomorphic/locatorGenerators';
+ import type { Language } from '@isomorphic/locatorGenerators';
+ import { ErrorMessage } from '@web/components/errorMessage';
+-import { ImageDiffView } from '@web/components/imageDiffView';
+-import type { TestAttachment } from '@web/components/imageDiffView';
+ 
+ export const CallTab: React.FunctionComponent<{
+   action: ActionTraceEvent | undefined,
+@@ -41,18 +39,7 @@ export const CallTab: React.FunctionComponent<{
+   const wallTime = action.wallTime ? new Date(action.wallTime).toLocaleString() : null;
+   const duration = action.endTime ? msToString(action.endTime - action.startTime) : 'Timed Out';
+ 
+-  const expected = action.attachments?.find(a => a.name.endsWith('-expected.png') && (a.path || a.sha1)) as TestAttachment | undefined;
+-  const actual = action.attachments?.find(a => a.name.endsWith('-actual.png') && (a.path || a.sha1)) as TestAttachment | undefined;
+-  const diff = action.attachments?.find(a => a.name.endsWith('-diff.png') && (a.path || a.sha1)) as TestAttachment | undefined;
+-
+   return <div className='call-tab'>
+-    { expected && actual && <div className='call-section'>Image diff</div> }
+-    { expected && actual && <ImageDiffView imageDiff={{
+-      name: 'Image diff',
+-      expected: { attachment: { ...expected, path: attachmentURL(expected) }, title: 'Expected' },
+-      actual: { attachment: { ...actual, path: attachmentURL(actual) } },
+-      diff: diff ? { attachment: { ...diff, path: attachmentURL(diff) } } : undefined,
+-    }} /> }
+     {!!error && <ErrorMessage error={error} />}
+     {!!error && <div className='call-section'>Call</div>}
+     <div className='call-line'>{action.apiName}</div>
+@@ -160,15 +147,3 @@ function parseSerializedValue(value: SerializedValue, handles: any[] | undefined
+   }
+   return '<object>';
+ }
+-
+-function attachmentURL(attachment: {
+-  name: string;
+-  contentType: string;
+-  path?: string;
+-  sha1?: string;
+-  body?: string;
+-}) {
+-  if (attachment.sha1)
+-    return 'sha1/' + attachment.sha1;
+-  return 'file?path=' + attachment.path;
+-}
+diff --git a/packages/trace-viewer/src/ui/sourceTab.tsx b/packages/trace-viewer/src/ui/sourceTab.tsx
+index 5beb4bdda6fdb..0b244b4404bab 100644
+--- a/packages/trace-viewer/src/ui/sourceTab.tsx
++++ b/packages/trace-viewer/src/ui/sourceTab.tsx
+@@ -44,7 +44,7 @@ export const SourceTab: React.FunctionComponent<{
+   const { source, highlight, targetLine, fileName } = useAsyncMemo<{ source: SourceModel, targetLine?: number, fileName?: string, highlight: SourceHighlight[] }>(async () => {
+     const actionLocation = action?.stack?.[selectedFrame];
+     const shouldUseFallback = !actionLocation?.file;
+-    if (shouldUseFallback && !shouldUseFallback)
++    if (shouldUseFallback && !fallbackLocation)
+       return { source: { file: '', errors: [], content: undefined }, targetLine: 0, highlight: [] };
+ 
+     const file = shouldUseFallback ? fallbackLocation!.file : actionLocation.file;
+diff --git a/packages/trace-viewer/src/ui/workbench.tsx b/packages/trace-viewer/src/ui/workbench.tsx
+index 0aebc36c34019..025501345e984 100644
+--- a/packages/trace-viewer/src/ui/workbench.tsx
++++ b/packages/trace-viewer/src/ui/workbench.tsx
+@@ -30,6 +30,7 @@ import type { TabbedPaneTabModel } from '@web/components/tabbedPane';
+ import { Timeline } from './timeline';
+ import './workbench.css';
+ import { MetadataView } from './metadataView';
++import { AttachmentsTab } from './attachmentsTab';
+ 
+ export const Workbench: React.FunctionComponent<{
+   model?: MultiTraceModel,
+@@ -98,17 +99,24 @@ export const Workbench: React.FunctionComponent<{
+     count: networkCount,
+     render: () => <NetworkTab action={activeAction} />
+   };
++  const attachmentsTab: TabbedPaneTabModel = {
++    id: 'attachments',
++    title: 'Attachments',
++    render: () => <AttachmentsTab action={activeAction} />
++  };
+ 
+   const tabs: TabbedPaneTabModel[] = showSourcesFirst ? [
+     sourceTab,
+     consoleTab,
+     networkTab,
+     callTab,
++    attachmentsTab,
+   ] : [
+     callTab,
+     consoleTab,
+     networkTab,
+     sourceTab,
++    attachmentsTab,
+   ];
+ 
+   return <div className='vbox'>
+diff --git a/tests/playwright-test/ui-mode-test-attachments.spec.ts b/tests/playwright-test/ui-mode-test-attachments.spec.ts
+new file mode 100644
+index 0000000000000..d4dcfa45da3d7
+--- /dev/null
++++ b/tests/playwright-test/ui-mode-test-attachments.spec.ts
+@@ -0,0 +1,41 @@
++/**
++ * Copyright (c) Microsoft Corporation.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import { test, expect } from './ui-mode-fixtures';
++
++test.describe.configure({ mode: 'parallel' });
++
++test('should contain attachments', async ({ runUITest }) => {
++  const { page } = await runUITest({
++    'a.test.ts': `
++      import { test } from '@playwright/test';
++      test('attach test', async () => {
++        await test.info().attach('note', { path: __filename });
++      });
++    `,
++  });
++  await page.getByText('attach test').click();
++  await page.getByTitle('Run all').click();
++  await expect(page.getByTestId('status-line')).toHaveText('1/1 passed (100%)');
++  await page.getByText('Attachments').click();
++  await page.getByText('attach', { exact: true }).click();
++  const popupPromise = page.waitForEvent('popup');
++  await page.getByRole('link', { name: 'note' }).click();
++  const popup = await popupPromise;
++  await popup.waitForLoadState();
++  const content = await popup.content();
++  expect(content).toContain('attach test');
++});
+diff --git a/tests/playwright-test/ui-mode-trace.spec.ts b/tests/playwright-test/ui-mode-trace.spec.ts
+index 9d96621a079e5..c7e9c08f345cb 100644
+--- a/tests/playwright-test/ui-mode-trace.spec.ts
++++ b/tests/playwright-test/ui-mode-trace.spec.ts
+@@ -176,7 +176,7 @@ test('should show image diff', async ({ runUITest, server }) => {
+   });
+ 
+   await page.getByText('vrt test').dblclick();
+-  await page.getByText(/Log/).click();
++  await page.getByText(/Attachments/).click();
+   await expect(page.getByText('Diff', { exact: true })).toBeVisible();
+   await expect(page.getByText('Actual', { exact: true })).toBeVisible();
+   await expect(page.getByText('Expected', { exact: true })).toBeVisible();

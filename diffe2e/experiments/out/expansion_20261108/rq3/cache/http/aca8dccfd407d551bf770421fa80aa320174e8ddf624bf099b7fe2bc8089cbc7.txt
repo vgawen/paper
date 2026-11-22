@@ -1,0 +1,557 @@
+From 8f31191637bca917b90a15e589b5734aa379fa41 Mon Sep 17 00:00:00 2001
+From: Pavel Feldman <pavel.feldman@gmail.com>
+Date: Fri, 18 Aug 2023 17:53:03 -0700
+Subject: [PATCH] chore: pick locator tab (#26532)
+
+---
+ packages/trace-viewer/src/ui/browserFrame.css | 59 ++++++++++++
+ packages/trace-viewer/src/ui/browserFrame.tsx | 38 ++++++++
+ packages/trace-viewer/src/ui/filmStrip.css    |  3 +-
+ packages/trace-viewer/src/ui/filmStrip.tsx    |  2 +-
+ packages/trace-viewer/src/ui/inspectorTab.tsx | 42 +++++++++
+ packages/trace-viewer/src/ui/snapshotTab.css  | 44 ---------
+ packages/trace-viewer/src/ui/snapshotTab.tsx  | 47 ++--------
+ packages/trace-viewer/src/ui/sourceTab.tsx    |  2 +-
+ packages/trace-viewer/src/ui/uiModeView.tsx   |  3 +-
+ packages/trace-viewer/src/ui/workbench.tsx    | 93 +++++++++++++------
+ tests/library/trace-viewer.spec.ts            |  4 +-
+ 11 files changed, 218 insertions(+), 119 deletions(-)
+ create mode 100644 packages/trace-viewer/src/ui/browserFrame.css
+ create mode 100644 packages/trace-viewer/src/ui/browserFrame.tsx
+ create mode 100644 packages/trace-viewer/src/ui/inspectorTab.tsx
+
+diff --git a/packages/trace-viewer/src/ui/browserFrame.css b/packages/trace-viewer/src/ui/browserFrame.css
+new file mode 100644
+index 0000000000000..9293e1a1d82bf
+--- /dev/null
++++ b/packages/trace-viewer/src/ui/browserFrame.css
+@@ -0,0 +1,59 @@
++/*
++  Copyright (c) Microsoft Corporation.
++
++  Licensed under the Apache License, Version 2.0 (the "License");
++  you may not use this file except in compliance with the License.
++  You may obtain a copy of the License at
++
++      http://www.apache.org/licenses/LICENSE-2.0
++
++  Unless required by applicable law or agreed to in writing, software
++  distributed under the License is distributed on an "AS IS" BASIS,
++  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++  See the License for the specific language governing permissions and
++  limitations under the License.
++*/
++
++.browser-frame-dot {
++  border-radius: 50%;
++  display: inline-block;
++  height: 12px;
++  margin-right: 6px;
++  margin-top: 4px;
++  width: 12px;
++}
++
++.browser-frame-address-bar {
++  background-color: var(--vscode-input-background);
++  border-radius: 12.5px;
++  color: var(--vscode-input-foreground);
++  flex: 1 0;
++  font: 400 16px Arial,sans-serif;
++  margin: 0 16px 0 8px;
++  padding: 5px 15px;
++  overflow: hidden;
++  text-overflow: ellipsis;
++  white-space: nowrap;
++}
++
++.browser-frame-menu-bar {
++  background-color: #aaa;
++  display: block;
++  height: 3px;
++  margin: 3px 0;
++  width: 17px;
++}
++
++.browser-frame-header {
++  align-items: center;
++  background: #ebedf0;
++  display: flex;
++  padding: 8px 16px;
++  border-top-left-radius: 6px;
++  border-top-right-radius: 6px;
++  height: var(--browser-frame-header-height);
++}
++
++body.dark-mode .browser-frame-header {
++  background: #444950;
++}
+diff --git a/packages/trace-viewer/src/ui/browserFrame.tsx b/packages/trace-viewer/src/ui/browserFrame.tsx
+new file mode 100644
+index 0000000000000..53cece1c8f265
+--- /dev/null
++++ b/packages/trace-viewer/src/ui/browserFrame.tsx
+@@ -0,0 +1,38 @@
++/**
++ * Copyright (c) Microsoft Corporation.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import './browserFrame.css';
++import * as React from 'react';
++
++export const BrowserFrame: React.FunctionComponent<{
++  url?: string,
++}> = ({ url }) => {
++  return <div className='browser-frame-header'>
++    <div style={{ whiteSpace: 'nowrap' }}>
++      <span className='browser-frame-dot' style={{ backgroundColor: 'rgb(242, 95, 88)' }}></span>
++      <span className='browser-frame-dot' style={{ backgroundColor: 'rgb(251, 190, 60)' }}></span>
++      <span className='browser-frame-dot' style={{ backgroundColor: 'rgb(88, 203, 66)' }}></span>
++    </div>
++    <div className='browser-frame-address-bar' title={url || 'about:blank'}>{url || 'about:blank'}</div>
++    <div style={{ marginLeft: 'auto' }}>
++      <div>
++        <span className='browser-frame-menu-bar'></span>
++        <span className='browser-frame-menu-bar'></span>
++        <span className='browser-frame-menu-bar'></span>
++      </div>
++    </div>
++  </div>;
++};
+diff --git a/packages/trace-viewer/src/ui/filmStrip.css b/packages/trace-viewer/src/ui/filmStrip.css
+index 2c82d15234561..16190dff4eece 100644
+--- a/packages/trace-viewer/src/ui/filmStrip.css
++++ b/packages/trace-viewer/src/ui/filmStrip.css
+@@ -46,7 +46,7 @@
+   position: absolute;
+   top: 0;
+   left: 0;
+-  background-color: white;
++  background-color: var(--vscode-panel-background);
+   box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 10px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 10px 0px;
+   z-index: 200;
+   pointer-events: none;
+@@ -56,4 +56,5 @@
+   padding: 2px 4px;
+   display: flex;
+   align-items: center;
++  overflow: hidden;
+ }
+diff --git a/packages/trace-viewer/src/ui/filmStrip.tsx b/packages/trace-viewer/src/ui/filmStrip.tsx
+index b29e7c8147e68..d5688354a2aa1 100644
+--- a/packages/trace-viewer/src/ui/filmStrip.tsx
++++ b/packages/trace-viewer/src/ui/filmStrip.tsx
+@@ -75,10 +75,10 @@ export const FilmStrip: React.FunctionComponent<{
+         top: measure.bottom + 5,
+         left: Math.min(previewPoint!.x, measure.width - previewSize.width - 10),
+       }}>
++        {previewPoint.action && <div className='film-strip-hover-title'>{renderAction(previewPoint.action, previewPoint.sdkLanguage)}</div>}
+         <div style={{ width: previewSize.width, height: previewSize.height }}>
+           <img src={`sha1/${previewImage.sha1}`} width={previewSize.width} height={previewSize.height} />
+         </div>
+-        {previewPoint.action && <div className='film-strip-hover-title'>{renderAction(previewPoint.action, previewPoint.sdkLanguage)}</div>}
+       </div>
+     }
+   </div>;
+diff --git a/packages/trace-viewer/src/ui/inspectorTab.tsx b/packages/trace-viewer/src/ui/inspectorTab.tsx
+new file mode 100644
+index 0000000000000..3e096032df2fa
+--- /dev/null
++++ b/packages/trace-viewer/src/ui/inspectorTab.tsx
+@@ -0,0 +1,42 @@
++/**
++ * Copyright (c) Microsoft Corporation.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *     http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import { CodeMirrorWrapper } from '@web/components/codeMirrorWrapper';
++import type { Language } from '@web/components/codeMirrorWrapper';
++import { ToolbarButton } from '@web/components/toolbarButton';
++import { copy } from '@web/uiUtils';
++import * as React from 'react';
++import './sourceTab.css';
++
++export const InspectorTab: React.FunctionComponent<{
++  sdkLanguage: Language,
++  setIsInspecting: (isInspecting: boolean) => void,
++  highlightedLocator: string,
++  setHighlightedLocator: (locator: string) => void,
++}> = ({ sdkLanguage, setIsInspecting, highlightedLocator, setHighlightedLocator }) => {
++  return <div className='vbox'>
++    <CodeMirrorWrapper text={highlightedLocator} language={sdkLanguage} focusOnChange={true} wrapLines={true} onChange={text => {
++      // Updating text needs to go first - react can squeeze a render between the state updates.
++      setHighlightedLocator(text);
++      setIsInspecting(false);
++    }}></CodeMirrorWrapper>
++    <div style={{ position: 'absolute', right: '0', top: '0' }}>
++      <ToolbarButton icon='files' title='Copy locator' onClick={() => {
++        copy(highlightedLocator);
++      }}></ToolbarButton>
++    </div>
++  </div>;
++};
+diff --git a/packages/trace-viewer/src/ui/snapshotTab.css b/packages/trace-viewer/src/ui/snapshotTab.css
+index a874fa58dbd50..4e091f31d7452 100644
+--- a/packages/trace-viewer/src/ui/snapshotTab.css
++++ b/packages/trace-viewer/src/ui/snapshotTab.css
+@@ -125,50 +125,6 @@ iframe.snapshot-visible[name=snapshot] {
+   opacity: var(--vscode-disabledForeground);
+ }
+ 
+-.window-dot {
+-  border-radius: 50%;
+-  display: inline-block;
+-  height: 12px;
+-  margin-right: 6px;
+-  margin-top: 4px;
+-  width: 12px;
+-}
+-
+-.window-address-bar {
+-  background-color: var(--vscode-input-background);
+-  border-radius: 12.5px;
+-  color: var(--vscode-input-foreground);
+-  flex: 1 0;
+-  font: 400 16px Arial,sans-serif;
+-  margin: 0 16px 0 8px;
+-  padding: 5px 15px;
+-  overflow: hidden;
+-  text-overflow: ellipsis;
+-  white-space: nowrap;
+-}
+-
+-.window-menu-bar {
+-  background-color: #aaa;
+-  display: block;
+-  height: 3px;
+-  margin: 3px 0;
+-  width: 17px;
+-}
+-
+-.window-header {
+-  align-items: center;
+-  background: #ebedf0;
+-  display: flex;
+-  padding: 8px 16px;
+-  border-top-left-radius: 6px;
+-  border-top-right-radius: 6px;
+-  height: var(--window-header-height);
+-}
+-
+-body.dark-mode .window-header {
+-  background: #444950;
+-}
+-
+ .snapshot-tab .cm-wrapper {
+   line-height: 23px;
+   margin-right: 4px;
+diff --git a/packages/trace-viewer/src/ui/snapshotTab.tsx b/packages/trace-viewer/src/ui/snapshotTab.tsx
+index cef3a3535801b..bbfc1e1f8da32 100644
+--- a/packages/trace-viewer/src/ui/snapshotTab.tsx
++++ b/packages/trace-viewer/src/ui/snapshotTab.tsx
+@@ -18,10 +18,9 @@ import './snapshotTab.css';
+ import * as React from 'react';
+ import type { ActionTraceEvent } from '@trace/trace';
+ import { context, prevInList } from './modelUtil';
+-import { CodeMirrorWrapper } from '@web/components/codeMirrorWrapper';
+ import { Toolbar } from '@web/components/toolbar';
+ import { ToolbarButton } from '@web/components/toolbarButton';
+-import { copy, useMeasure } from '@web/uiUtils';
++import { useMeasure } from '@web/uiUtils';
+ import { InjectedScript } from '@injected/injectedScript';
+ import { Recorder  } from '@injected/recorder';
+ import ConsoleAPI from '@injected/consoleApi';
+@@ -29,17 +28,19 @@ import { asLocator } from '@isomorphic/locatorGenerators';
+ import type { Language } from '@isomorphic/locatorGenerators';
+ import { locatorOrSelectorAsSelector } from '@isomorphic/locatorParser';
+ import { TabbedPaneTab } from '@web/components/tabbedPane';
++import { BrowserFrame } from './browserFrame';
+ 
+ export const SnapshotTab: React.FunctionComponent<{
+   action: ActionTraceEvent | undefined,
+   sdkLanguage: Language,
+   testIdAttributeName: string,
+-}> = ({ action, sdkLanguage, testIdAttributeName }) => {
++  isInspecting: boolean,
++  setIsInspecting: (isInspecting: boolean) => void,
++  highlightedLocator: string,
++  setHighlightedLocator: (locator: string) => void,
++}> = ({ action, sdkLanguage, testIdAttributeName, isInspecting, setIsInspecting, highlightedLocator, setHighlightedLocator }) => {
+   const [measure, ref] = useMeasure<HTMLDivElement>();
+   const [snapshotTab, setSnapshotTab] = React.useState<'action'|'before'|'after'>('action');
+-  const [isInspecting, setIsInspecting] = React.useState(false);
+-  const [highlightedLocator, setHighlightedLocator] = React.useState<string>('');
+-  const [pickerVisible, setPickerVisible] = React.useState(false);
+ 
+   const { snapshots } = React.useMemo(() => {
+     if (!action)
+@@ -171,11 +172,6 @@ export const SnapshotTab: React.FunctionComponent<{
+       iframe={iframeRef1.current}
+       iteration={loadingRef.current.iteration} />
+     <Toolbar>
+-      <ToolbarButton title='Pick locator' disabled={!popoutUrl} toggled={pickerVisible} onClick={() => {
+-        setPickerVisible(!pickerVisible);
+-        setHighlightedLocator('');
+-        setIsInspecting(!pickerVisible);
+-      }}>Pick locator</ToolbarButton>
+       {['action', 'before', 'after'].map(tab => {
+         return <TabbedPaneTab
+           id={tab}
+@@ -193,40 +189,13 @@ export const SnapshotTab: React.FunctionComponent<{
+         });
+       }}></ToolbarButton>
+     </Toolbar>
+-    {pickerVisible && <Toolbar noMinHeight={true}>
+-      <ToolbarButton icon='microscope' title='Pick locator' disabled={!popoutUrl} toggled={isInspecting} onClick={() => {
+-        setIsInspecting(!isInspecting);
+-      }}></ToolbarButton>
+-      <CodeMirrorWrapper text={highlightedLocator} language={sdkLanguage} readOnly={!popoutUrl} focusOnChange={true} wrapLines={true} onChange={text => {
+-        // Updating text needs to go first - react can squeeze a render between the state updates.
+-        setHighlightedLocator(text);
+-        setIsInspecting(false);
+-      }}></CodeMirrorWrapper>
+-      <ToolbarButton icon='files' title='Copy locator' disabled={!popoutUrl} onClick={() => {
+-        copy(highlightedLocator);
+-      }}></ToolbarButton>
+-    </Toolbar>}
+     <div ref={ref} className='snapshot-wrapper'>
+       <div className='snapshot-container' style={{
+         width: snapshotContainerSize.width + 'px',
+         height: snapshotContainerSize.height + 'px',
+         transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,
+       }}>
+-        <div className='window-header'>
+-          <div style={{ whiteSpace: 'nowrap' }}>
+-            <span className='window-dot' style={{ backgroundColor: 'rgb(242, 95, 88)' }}></span>
+-            <span className='window-dot' style={{ backgroundColor: 'rgb(251, 190, 60)' }}></span>
+-            <span className='window-dot' style={{ backgroundColor: 'rgb(88, 203, 66)' }}></span>
+-          </div>
+-          <div className='window-address-bar' title={snapshotInfo.url || 'about:blank'}>{snapshotInfo.url || 'about:blank'}</div>
+-          <div style={{ marginLeft: 'auto' }}>
+-            <div>
+-              <span className='window-menu-bar'></span>
+-              <span className='window-menu-bar'></span>
+-              <span className='window-menu-bar'></span>
+-            </div>
+-          </div>
+-        </div>
++        <BrowserFrame url={snapshotInfo.url} />
+         <div className='snapshot-switcher'>
+           <iframe ref={iframeRef0} name='snapshot' className={loadingRef.current.visibleIframe === 0 ? 'snapshot-visible' : ''}></iframe>
+           <iframe ref={iframeRef1} name='snapshot' className={loadingRef.current.visibleIframe === 1 ? 'snapshot-visible' : ''}></iframe>
+diff --git a/packages/trace-viewer/src/ui/sourceTab.tsx b/packages/trace-viewer/src/ui/sourceTab.tsx
+index 132baffbdfef0..50d96f8ee3f09 100644
+--- a/packages/trace-viewer/src/ui/sourceTab.tsx
++++ b/packages/trace-viewer/src/ui/sourceTab.tsx
+@@ -75,7 +75,7 @@ export const SourceTab: React.FunctionComponent<{
+     return { source, highlight, targetLine, fileName };
+   }, [action, selectedFrame, rootDir, fallbackLocation], { source: { errors: [], content: 'Loading\u2026' }, highlight: [] });
+ 
+-  return <SplitView sidebarSize={200} orientation='vertical' sidebarHidden={hideStackFrames}>
++  return <SplitView sidebarSize={200} orientation='horizontal' sidebarHidden={hideStackFrames}>
+     <div className='vbox' data-testid='source-code'>
+       {fileName && <div className='source-tab-file-name'>{fileName}</div>}
+       <CodeMirrorWrapper text={source.content || ''} language='javascript' highlight={highlight} revealLine={targetLine} readOnly={true} lineNumbers={true} />
+diff --git a/packages/trace-viewer/src/ui/uiModeView.tsx b/packages/trace-viewer/src/ui/uiModeView.tsx
+index 219fcd06be91f..01ecef3cc8af4 100644
+--- a/packages/trace-viewer/src/ui/uiModeView.tsx
++++ b/packages/trace-viewer/src/ui/uiModeView.tsx
+@@ -570,8 +570,7 @@ const TraceView: React.FC<{
+     initialSelection={initialSelection}
+     onSelectionChanged={onSelectionChanged}
+     fallbackLocation={item.testFile}
+-    isLive={model?.isLive}
+-    drawer='bottom' />;
++    isLive={model?.isLive} />;
+ };
+ 
+ let receiver: TeleReporterReceiver | undefined;
+diff --git a/packages/trace-viewer/src/ui/workbench.tsx b/packages/trace-viewer/src/ui/workbench.tsx
+index fee815fb593d2..b25bf061ea2bd 100644
+--- a/packages/trace-viewer/src/ui/workbench.tsx
++++ b/packages/trace-viewer/src/ui/workbench.tsx
+@@ -30,6 +30,8 @@ import { Timeline } from './timeline';
+ import { MetadataView } from './metadataView';
+ import { AttachmentsTab } from './attachmentsTab';
+ import type { Boundaries } from '../geometry';
++import { InspectorTab } from './inspectorTab';
++import { ToolbarButton } from '@web/components/toolbarButton';
+ 
+ export const Workbench: React.FunctionComponent<{
+   model?: MultiTraceModel,
+@@ -40,12 +42,13 @@ export const Workbench: React.FunctionComponent<{
+   initialSelection?: ActionTraceEventInContext,
+   onSelectionChanged?: (action: ActionTraceEventInContext) => void,
+   isLive?: boolean,
+-  drawer?: 'bottom' | 'right',
+-}> = ({ model, hideStackFrames, showSourcesFirst, rootDir, fallbackLocation, initialSelection, onSelectionChanged, isLive, drawer }) => {
++}> = ({ model, hideStackFrames, showSourcesFirst, rootDir, fallbackLocation, initialSelection, onSelectionChanged, isLive }) => {
+   const [selectedAction, setSelectedAction] = React.useState<ActionTraceEventInContext | undefined>(undefined);
+   const [highlightedAction, setHighlightedAction] = React.useState<ActionTraceEventInContext | undefined>();
+   const [selectedNavigatorTab, setSelectedNavigatorTab] = React.useState<string>('actions');
+   const [selectedPropertiesTab, setSelectedPropertiesTab] = React.useState<string>(showSourcesFirst ? 'source' : 'call');
++  const [isInspecting, setIsInspecting] = React.useState(false);
++  const [highlightedLocator, setHighlightedLocator] = React.useState<string>('');
+   const activeAction = model ? highlightedAction || selectedAction : undefined;
+   const [selectedTime, setSelectedTime] = React.useState<Boundaries | undefined>();
+ 
+@@ -68,8 +71,22 @@ export const Workbench: React.FunctionComponent<{
+     onSelectionChanged?.(action);
+   }, [setSelectedAction, onSelectionChanged]);
+ 
++  const locatorPicked = React.useCallback((locator: string) => {
++    setHighlightedLocator(locator);
++    setSelectedPropertiesTab('inspector');
++  }, []);
++
+   const sdkLanguage = model?.sdkLanguage || 'javascript';
+ 
++  const inspectorTab: TabbedPaneTabModel = {
++    id: 'inspector',
++    title: 'Locator',
++    render: () => <InspectorTab
++      sdkLanguage={sdkLanguage}
++      setIsInspecting={setIsInspecting}
++      highlightedLocator={highlightedLocator}
++      setHighlightedLocator={setHighlightedLocator} />,
++  };
+   const callTab: TabbedPaneTabModel = {
+     id: 'call',
+     title: 'Call',
+@@ -102,12 +119,14 @@ export const Workbench: React.FunctionComponent<{
+   };
+ 
+   const tabs: TabbedPaneTabModel[] = showSourcesFirst ? [
++    inspectorTab,
+     sourceTab,
+     consoleTab,
+     networkTab,
+     callTab,
+     attachmentsTab,
+   ] : [
++    inspectorTab,
+     callTab,
+     consoleTab,
+     networkTab,
+@@ -135,34 +154,50 @@ export const Workbench: React.FunctionComponent<{
+       selectedTime={selectedTime}
+       setSelectedTime={setSelectedTime}
+     />
+-    <SplitView sidebarSize={drawer === 'bottom' ? 250 : 400} orientation={drawer === 'bottom' ? 'vertical' : 'horizontal'}>
+-      <SplitView sidebarSize={250} orientation='horizontal' sidebarIsFirst={true}>
+-        <SnapshotTab action={activeAction} sdkLanguage={sdkLanguage} testIdAttributeName={model?.testIdAttributeName || 'data-testid'} />
+-        <TabbedPane tabs={
+-          [
+-            {
+-              id: 'actions',
+-              title: 'Actions',
+-              component: <ActionList
+-                sdkLanguage={sdkLanguage}
+-                actions={model?.actions || []}
+-                selectedAction={model ? selectedAction : undefined}
+-                selectedTime={selectedTime}
+-                onSelected={onActionSelected}
+-                onHighlighted={setHighlightedAction}
+-                revealConsole={() => setSelectedPropertiesTab('console')}
+-                isLive={isLive}
+-              />
+-            },
+-            {
+-              id: 'metadata',
+-              title: 'Metadata',
+-              component: <MetadataView model={model}/>
+-            },
+-          ]
+-        } selectedTab={selectedNavigatorTab} setSelectedTab={setSelectedNavigatorTab}/>
++    <SplitView sidebarSize={400} orientation='horizontal' sidebarIsFirst={true}>
++      <SplitView sidebarSize={250} orientation='vertical'>
++        <SnapshotTab
++          action={activeAction}
++          sdkLanguage={sdkLanguage}
++          testIdAttributeName={model?.testIdAttributeName || 'data-testid'}
++          isInspecting={isInspecting}
++          setIsInspecting={setIsInspecting}
++          highlightedLocator={highlightedLocator}
++          setHighlightedLocator={locatorPicked} />
++        <TabbedPane
++          tabs={tabs}
++          selectedTab={selectedPropertiesTab}
++          setSelectedTab={setSelectedPropertiesTab}
++          leftToolbar={[
++            <ToolbarButton icon='microscope' title='Pick locator' toggled={isInspecting} onClick={() => {
++              setIsInspecting(!isInspecting);
++            }}></ToolbarButton>
++          ]}
++        />
+       </SplitView>
+-      <TabbedPane tabs={tabs} selectedTab={selectedPropertiesTab} setSelectedTab={setSelectedPropertiesTab} />
++      <TabbedPane
++        tabs={[
++          {
++            id: 'actions',
++            title: 'Actions',
++            component: <ActionList
++              sdkLanguage={sdkLanguage}
++              actions={model?.actions || []}
++              selectedAction={model ? selectedAction : undefined}
++              selectedTime={selectedTime}
++              onSelected={onActionSelected}
++              onHighlighted={setHighlightedAction}
++              revealConsole={() => setSelectedPropertiesTab('console')}
++              isLive={isLive}
++            />
++          },
++          {
++            id: 'metadata',
++            title: 'Metadata',
++            component: <MetadataView model={model}/>
++          },
++        ]}
++        selectedTab={selectedNavigatorTab} setSelectedTab={setSelectedNavigatorTab}/>
+     </SplitView>
+   </div>;
+ };
+diff --git a/tests/library/trace-viewer.spec.ts b/tests/library/trace-viewer.spec.ts
+index 712f9bfa96a05..e65e7ce22da70 100644
+--- a/tests/library/trace-viewer.spec.ts
++++ b/tests/library/trace-viewer.spec.ts
+@@ -274,7 +274,7 @@ test('should show snapshot URL', async ({ page, runAndTrace, server }) => {
+     await page.evaluate('2+2');
+   });
+   await traceViewer.snapshotFrame('page.evaluate');
+-  await expect(traceViewer.page.locator('.window-address-bar')).toHaveText(server.EMPTY_PAGE);
++  await expect(traceViewer.page.locator('.browser-frame-address-bar')).toHaveText(server.EMPTY_PAGE);
+ });
+ 
+ test('should popup snapshot', async ({ page, runAndTrace, server }) => {
+@@ -862,7 +862,7 @@ test('should update highlight when typing', async ({ page, runAndTrace, server }
+     await page.setContent('<button>Submit</button>');
+   });
+   const snapshot = await traceViewer.snapshotFrame('page.setContent');
+-  await traceViewer.page.getByTitle('Pick locator').click();
++  await traceViewer.page.getByText('Locator').click();
+   await traceViewer.page.locator('.CodeMirror').click();
+   await traceViewer.page.keyboard.type('button');
+   await expect(snapshot.locator('x-pw-glass')).toBeVisible();

@@ -1,0 +1,209 @@
+{
+  "sha": "1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+  "node_id": "C_kwDODTssw9oAKDEwNzJkMTRlZmMzYTJkYmNlMjVkNzBiMGRjMGY1MTYwNjFiYTRkOWU",
+  "commit": {
+    "author": {
+      "name": "Max Schmitt",
+      "email": "max@schmitt.mx",
+      "date": "2025-06-16T15:24:02Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2025-06-16T15:24:02Z"
+    },
+    "message": "test: use role based selectors in trace-viewer tests (#36295)\n\nSigned-off-by: Max Schmitt <max@schmitt.mx>\nCo-authored-by: Dmitry Gozman <dgozman@gmail.com>",
+    "tree": {
+      "sha": "10834bbcb37ed26915b33d58db96bb588b4dfa8d",
+      "url": "https://api.github.com/repos/microsoft/playwright/git/trees/10834bbcb37ed26915b33d58db96bb588b4dfa8d"
+    },
+    "url": "https://api.github.com/repos/microsoft/playwright/git/commits/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsFcBAABCAAQBQJoUDcSCRC1aQ7uu5UhlAAAA78QAKXanf0ELt6pB9eV9ZBbNWfH\nHRuTNAVluzdR13RRZlzJl2Bgvu+zqxjhhYyWkSbtLDHWtyITXLXEB+oL4xK+O54b\nfUt2KFIwONiOL2b84w4mIXkOFh2rCfo3+XGvOk0/vyaApo7/ZrRIrvvc5uJ+eE6o\nz4alv8fkE7mgQ23aMQMCqTJBB7nOpKgu4xCmUPt4g7UIxz8TBfWYnkOR4nogM0C3\nqk1U5il+98n5HKhITeMpLGwdlKyTNaLtm0cH11aUj8nWQTD1j25YeEj70sRXqpBz\n5JuCP5HvmWk6W8JxymHgoIq21XgEtiHnOb7NPKlH9RzCGG+w1D1McHcfq6nYFD9v\n1ghTC+JSiw/4jdyWYRNobqc5QXriVKvvve11T7JlNYh1OXHE+3NZoXk58UGHugiD\nKwi3i4bY7/GebFKUr96gOUCfsOSzeNDCP5NZ+UMcPeb9T8pQWG/nPnFFnsol3WLD\n94Ixq/aGA0fS4olEPfhwnbS5ObzxCr7oCLN60KC/p/m1yJklE3U3VaX6/OoBnqsb\nVzJFY4OzYUWssPd8LSEIF09EtS6PB5PNqPWd+VMGVzk/fkz5v6op5BzOIaGQwEs5\ng4GE8aouu1EhU6HgRLW75xzcpjjQ8DG5vc6OEufkQEchX3cNU+fDNIBgrLctsoo5\nN0p4LDJLcCp8gigzWL/6\n=iMES\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree 10834bbcb37ed26915b33d58db96bb588b4dfa8d\nparent baded7263b64ee244781b0e3222a5dc89d1f5fb4\nauthor Max Schmitt <max@schmitt.mx> 1750087442 +0200\ncommitter GitHub <noreply@github.com> 1750087442 +0200\n\ntest: use role based selectors in trace-viewer tests (#36295)\n\nSigned-off-by: Max Schmitt <max@schmitt.mx>\nCo-authored-by: Dmitry Gozman <dgozman@gmail.com>",
+      "verified_at": "2025-06-16T15:24:04Z"
+    }
+  },
+  "url": "https://api.github.com/repos/microsoft/playwright/commits/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+  "html_url": "https://github.com/microsoft/playwright/commit/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+  "comments_url": "https://api.github.com/repos/microsoft/playwright/commits/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/comments",
+  "author": {
+    "login": "mxschmitt",
+    "id": 17984549,
+    "node_id": "MDQ6VXNlcjE3OTg0NTQ5",
+    "avatar_url": "https://avatars.githubusercontent.com/u/17984549?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/mxschmitt",
+    "html_url": "https://github.com/mxschmitt",
+    "followers_url": "https://api.github.com/users/mxschmitt/followers",
+    "following_url": "https://api.github.com/users/mxschmitt/following{/other_user}",
+    "gists_url": "https://api.github.com/users/mxschmitt/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/mxschmitt/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/mxschmitt/subscriptions",
+    "organizations_url": "https://api.github.com/users/mxschmitt/orgs",
+    "repos_url": "https://api.github.com/users/mxschmitt/repos",
+    "events_url": "https://api.github.com/users/mxschmitt/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/mxschmitt/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "baded7263b64ee244781b0e3222a5dc89d1f5fb4",
+      "url": "https://api.github.com/repos/microsoft/playwright/commits/baded7263b64ee244781b0e3222a5dc89d1f5fb4",
+      "html_url": "https://github.com/microsoft/playwright/commit/baded7263b64ee244781b0e3222a5dc89d1f5fb4"
+    }
+  ],
+  "stats": {
+    "total": 100,
+    "additions": 55,
+    "deletions": 45
+  },
+  "files": [
+    {
+      "sha": "89bf1774614740a68980612db99166e57a7c045e",
+      "filename": "packages/trace-viewer/src/ui/logTab.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Ftrace-viewer%2Fsrc%2Fui%2FlogTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Ftrace-viewer%2Fsrc%2Fui%2FlogTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FlogTab.tsx?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -58,6 +58,7 @@ export const LogTab: React.FunctionComponent<{\n \n   return <LogList\n     name='log'\n+    ariaLabel='Log entries'\n     items={entries}\n     render={entry => <div className='log-list-item'>\n       <span className='log-list-duration'>{entry.time}</span>"
+    },
+    {
+      "sha": "9d2e1c207cda4663a0a3457d272b8211a3467591",
+      "filename": "packages/trace-viewer/src/ui/metadataView.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Ftrace-viewer%2Fsrc%2Fui%2FmetadataView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Ftrace-viewer%2Fsrc%2Fui%2FmetadataView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FmetadataView.tsx?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -27,7 +27,7 @@ export const MetadataView: React.FunctionComponent<{\n \n   const wallTime = model.wallTime !== undefined ? new Date(model.wallTime).toLocaleString(undefined, { timeZoneName: 'short' }) : undefined;\n \n-  return <div data-testid='metadata-view' className='vbox' style={{ flexShrink: 0 }}>\n+  return <div className='vbox' style={{ flexShrink: 0 }}>\n     <div className='call-section' style={{ paddingTop: 2 }}>Time</div>\n     {!!wallTime && <div className='call-line'>start time:<span className='call-value datetime' title={wallTime}>{wallTime}</span></div>}\n     <div className='call-line'>duration:<span className='call-value number' title={msToString(model.endTime - model.startTime)}>{msToString(model.endTime - model.startTime)}</span></div>"
+    },
+    {
+      "sha": "29624df2feb8280d18cdef6f5067a10b46691036",
+      "filename": "packages/trace-viewer/src/ui/networkTab.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Ftrace-viewer%2Fsrc%2Fui%2FnetworkTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Ftrace-viewer%2Fsrc%2Fui%2FnetworkTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FnetworkTab.tsx?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -94,6 +94,7 @@ export const NetworkTab: React.FunctionComponent<{\n \n   const grid = <NetworkGridView\n     name='network'\n+    ariaLabel='Network requests'\n     items={renderedEntries}\n     selectedItem={selectedEntry}\n     onSelected={item => setSelectedEntry(item)}"
+    },
+    {
+      "sha": "f0e79cd673b533087ede4b55ff69bff11eda1a61",
+      "filename": "packages/trace-viewer/src/ui/stackTrace.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -29,6 +29,7 @@ export const StackTraceView: React.FunctionComponent<{\n   const frames = stack || [];\n   return <StackFrameListView\n     name='stack-trace'\n+    ariaLabel='Stack trace'\n     items={frames}\n     selectedItem={frames[selectedFrame]}\n     render={frame => {"
+    },
+    {
+      "sha": "58942e5527be7bd672a3ff7bf5b2e33732d70118",
+      "filename": "packages/web/src/components/gridView.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0,
+      "changes": 1,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Fweb%2Fsrc%2Fcomponents%2FgridView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Fweb%2Fsrc%2Fcomponents%2FgridView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FgridView.tsx?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -92,6 +92,7 @@ export function GridView<T>(model: GridViewProps<T>) {\n       <ListView\n         name={model.name}\n         items={model.items}\n+        ariaLabel={model.ariaLabel}\n         id={model.id}\n         render={(item, index) => {\n           return <>"
+    },
+    {
+      "sha": "fcf0a461e5ab69c2a3d83492587e7ca3078bc01b",
+      "filename": "packages/web/src/components/listView.tsx",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 1,
+      "changes": 5,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -27,6 +27,7 @@ export type ListViewProps<T> = {\n   isError?: (item: T, index: number) => boolean,\n   isWarning?: (item: T, index: number) => boolean,\n   isInfo?: (item: T, index: number) => boolean,\n+  ariaLabel?: string,\n   selectedItem?: T,\n   onAccepted?: (item: T, index: number) => void,\n   onSelected?: (item: T, index: number) => void,\n@@ -56,6 +57,7 @@ export function ListView<T>({\n   noItemsMessage,\n   dataTestId,\n   notSelectable,\n+  ariaLabel,\n }: ListViewProps<T>) {\n   const itemListRef = React.useRef<HTMLDivElement>(null);\n   const [highlightedItem, setHighlightedItem] = React.useState<any>();\n@@ -80,7 +82,7 @@ export function ListView<T>({\n       itemListRef.current.scrollTop = scrollPositions.get(name) || 0;\n   }, [name]);\n \n-  return <div className={clsx(`list-view vbox`, name + '-list-view')} role={items.length > 0 ? 'list' : undefined} data-testid={dataTestId || (name + '-list')}>\n+  return <div className={clsx(`list-view vbox`, name + '-list-view')} role={items.length > 0 ? 'list' : undefined} aria-label={ariaLabel}>\n     <div\n       className={clsx('list-view-content', notSelectable && 'not-selectable')}\n       tabIndex={0}\n@@ -132,6 +134,7 @@ export function ListView<T>({\n               isError?.(item, index) && 'error',\n               isWarning?.(item, index) && 'warning',\n               isInfo?.(item, index) && 'info')}\n+          aria-selected={selectedItem === item}\n           onClick={() => onSelected?.(item, index)}\n           onMouseEnter={() => setHighlightedItem(item)}\n           onMouseLeave={() => setHighlightedItem(undefined)}"
+    },
+    {
+      "sha": "d4d6284c8b0a4a1e1f1e538e393bbe0d4b1b8ec6",
+      "filename": "tests/config/traceViewerFixtures.ts",
+      "status": "modified",
+      "additions": 28,
+      "deletions": 24,
+      "changes": 52,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/tests%2Fconfig%2FtraceViewerFixtures.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/tests%2Fconfig%2FtraceViewerFixtures.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fconfig%2FtraceViewerFixtures.ts?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -43,7 +43,6 @@ class TraceViewerPage {\n   errorMessages: Locator;\n   consoleLineMessages: Locator;\n   consoleStacks: Locator;\n-  stackFrames: Locator;\n   networkRequests: Locator;\n   metadataTab: Locator;\n   snapshotContainer: Locator;\n@@ -57,74 +56,79 @@ class TraceViewerPage {\n     this.actionTitles = page.locator('.action-title');\n     this.actionsTree = page.getByTestId('actions-tree');\n     this.callLines = page.locator('.call-tab .call-line');\n-    this.logLines = page.getByTestId('log-list').locator('.list-view-entry');\n-    this.consoleLines = page.locator('.console-line');\n+    this.logLines = page.getByRole('list', { name: 'Log entries' }).getByRole('listitem');\n+    this.consoleLines = page.getByRole('tabpanel', { name: 'Console' }).getByRole('listitem');\n     this.consoleLineMessages = page.locator('.console-line-message');\n     this.errorMessages = page.locator('.error-message');\n     this.consoleStacks = page.locator('.console-stack');\n-    this.stackFrames = page.getByTestId('stack-trace-list').locator('.list-view-entry');\n-    this.networkRequests = page.getByTestId('network-list').locator('.list-view-entry');\n+    this.networkRequests = page.getByRole('list', { name: 'Network requests' }).getByRole('listitem');\n     this.snapshotContainer = page.locator('.snapshot-container iframe.snapshot-visible[name=snapshot]');\n-    this.metadataTab = page.getByTestId('metadata-view');\n-    this.sourceCodeTab = page.getByTestId('source-code');\n+    this.metadataTab = page.getByRole('tabpanel', { name: 'Metadata' });\n+    this.sourceCodeTab = page.getByRole('tabpanel', { name: 'Source' });\n \n     this.settingsDialog = page.getByTestId('settings-toolbar-dialog');\n     this.darkModeSetting = page.locator('.setting').getByText('Dark mode');\n     this.displayCanvasContentSetting = page.locator('.setting').getByText('Display canvas content');\n   }\n \n-  async actionIconsText(action: string) {\n-    const entry = await this.page.waitForSelector(`.tree-view-entry:has-text(\"${action}\")`);\n-    await entry.waitForSelector('.action-icon-value:visible');\n-    return await entry.$$eval('.action-icon-value:visible', ee => ee.map(e => e.textContent));\n+  stackFrames(options: { selected?: boolean } = {}) {\n+    const entry = this.page.getByRole('list', { name: 'Stack trace' }).getByRole('listitem');\n+    if (options.selected)\n+      return entry.locator(':scope.selected');\n+    return entry;\n   }\n \n-  async actionIcons(action: string) {\n-    return await this.page.waitForSelector(`.tree-view-entry:has-text(\"${action}\") .action-icons`);\n+  actionIconsText(action: string) {\n+    const entry = this.actionsTree.getByRole('treeitem', { name: action });\n+    return entry.locator('.action-icon-value').filter({ visible: true });\n+  }\n+\n+  actionIcons(action: string) {\n+    return this.actionsTree.getByRole('treeitem', { name: action }).locator('.action-icons').filter({ visible: true });\n   }\n \n   @step\n-  async expandAction(title: string, ordinal: number = 0) {\n-    await this.actionsTree.locator('.tree-view-entry', { hasText: title }).nth(ordinal).locator('.codicon-chevron-right').click();\n+  async expandAction(title: string) {\n+    await this.actionsTree.getByRole('treeitem', { name: title }).locator('.codicon-chevron-right').click();\n   }\n \n   @step\n   async selectAction(title: string, ordinal: number = 0) {\n-    await this.page.locator(`.action-title:has-text(\"${title}\")`).nth(ordinal).click();\n+    await this.actionsTree.getByTitle(title).nth(ordinal).click();\n   }\n \n   @step\n   async hoverAction(title: string, ordinal: number = 0) {\n-    await this.page.locator(`.action-title:has-text(\"${title}\")`).nth(ordinal).hover();\n+    await this.actionsTree.getByRole('treeitem', { name: title }).nth(ordinal).hover();\n   }\n \n   @step\n   async selectSnapshot(name: string) {\n-    await this.page.click(`.snapshot-tab .tabbed-pane-tab-label:has-text(\"${name}\")`);\n+    await this.page.getByRole('tab', { name }).click();\n   }\n \n   async showErrorsTab() {\n-    await this.page.click('text=\"Errors\"');\n+    await this.page.getByRole('tab', { name: 'Errors' }).click();\n   }\n \n   async showConsoleTab() {\n-    await this.page.click('text=\"Console\"');\n+    await this.page.getByRole('tab', { name: 'Console' }).click();\n   }\n \n   async showSourceTab() {\n-    await this.page.click('text=\"Source\"');\n+    await this.page.getByRole('tab', { name: 'Source' }).click();\n   }\n \n   async showNetworkTab() {\n-    await this.page.click('text=\"Network\"');\n+    await this.page.getByRole('tab', { name: 'Network' }).click();\n   }\n \n   async showMetadataTab() {\n-    await this.page.click('text=\"Metadata\"');\n+    await this.page.getByRole('tab', { name: 'Metadata' }).click();\n   }\n \n   async showSettings() {\n-    await this.page.locator('.settings-gear').click();\n+    await this.page.getByRole('button', { name: 'Settings' }).click();\n   }\n \n   @step"
+    },
+    {
+      "sha": "16a36e5d59067b4a88318ac561bee8af70911947",
+      "filename": "tests/library/trace-viewer.spec.ts",
+      "status": "modified",
+      "additions": 12,
+      "deletions": 13,
+      "changes": 25,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/tests%2Flibrary%2Ftrace-viewer.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/tests%2Flibrary%2Ftrace-viewer.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Flibrary%2Ftrace-viewer.spec.ts?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -282,12 +282,12 @@ test('should render console', async ({ showTraceViewer, browserName }) => {\n   await expect(listViews.filter({ hasText: 'Cheers!' })).toHaveClass('list-view-entry');\n });\n \n-test('should open console errors on click', async ({ showTraceViewer, browserName }) => {\n+test('should open console errors on click', async ({ showTraceViewer }) => {\n   const traceViewer = await showTraceViewer([traceFile]);\n-  expect(await traceViewer.actionIconsText('Evaluate')).toEqual(['2', '1']);\n-  expect(await traceViewer.page.isHidden('.console-tab')).toBeTruthy();\n-  await (await traceViewer.actionIcons('Evaluate')).click();\n-  expect(await traceViewer.page.waitForSelector('.console-tab')).toBeTruthy();\n+  await expect(traceViewer.actionIconsText('Evaluate')).toHaveText(['2', '1']);\n+  await expect(traceViewer.page.getByRole('tabpanel', { name: 'Console' })).toBeHidden();\n+  await traceViewer.actionIcons('Evaluate').click();\n+  await traceViewer.page.getByRole('tabpanel', { name: 'Console' }).waitFor();\n });\n \n test('should show params and return value', async ({ showTraceViewer }) => {\n@@ -346,7 +346,7 @@ test('should have correct stack trace', async ({ showTraceViewer }) => {\n \n   await traceViewer.selectAction('Click');\n   await traceViewer.showSourceTab();\n-  await expect(traceViewer.stackFrames).toContainText([\n+  await expect(traceViewer.stackFrames()).toContainText([\n     /doClick\\s+trace-viewer.spec.ts\\s+:\\d+/,\n     /recordTrace\\s+trace-viewer.spec.ts\\s+:\\d+/,\n   ], { useInnerText: true });\n@@ -977,14 +977,13 @@ test('should highlight expect failure', async ({ page, server, runAndTrace }) =>\n test('should show action source', async ({ showTraceViewer }) => {\n   const traceViewer = await showTraceViewer([traceFile]);\n   await traceViewer.selectAction('Click');\n-  const page = traceViewer.page;\n \n-  await page.click('text=Source');\n-  await expect(page.locator('.source-line-running')).toContainText('await page.getByText(\\'Click\\').click()');\n-  await expect(page.getByTestId('stack-trace-list').locator('.list-view-entry.selected')).toHaveText(/doClick.*trace-viewer\\.spec\\.ts:[\\d]+/);\n+  await traceViewer.showSourceTab();\n+  await expect(traceViewer.page.locator('.source-line-running')).toContainText('await page.getByText(\\'Click\\').click()');\n+  await expect(traceViewer.stackFrames({ selected: true })).toHaveText(/doClick.*trace-viewer\\.spec\\.ts:[\\d]+/);\n \n   await traceViewer.hoverAction('Wait for navigation');\n-  await expect(page.locator('.source-line-running')).toContainText('page.waitForNavigation()');\n+  await expect(traceViewer.page.locator('.source-line-running')).toContainText('page.waitForNavigation()');\n });\n \n test('should follow redirects', async ({ page, runAndTrace, server, asset }) => {\n@@ -1015,7 +1014,7 @@ test('should follow redirects', async ({ page, runAndTrace, server, asset }) =>\n \n test('should include metainfo', async ({ showTraceViewer }) => {\n   const traceViewer = await showTraceViewer([traceFile]);\n-  await traceViewer.page.locator('text=Metadata').click();\n+  await traceViewer.page.getByRole('tab', { name: 'Metadata' }).click();\n   const callLine = traceViewer.metadataTab.locator('.call-line');\n   await expect(callLine.getByText('start time')).toHaveText(/start time:[\\d/,: ]+/);\n   await expect(callLine.getByText('duration')).toHaveText(/duration:[\\dms]+/);\n@@ -1065,7 +1064,7 @@ test('should open two trace files', async ({ context, page, request, server, sho\n     /Fetch \"\\/one-style\\.css\"/,\n   ]);\n \n-  await traceViewer.page.locator('text=Metadata').click();\n+  await traceViewer.page.getByRole('tab', { name: 'Metadata' }).click();\n   const callLine = traceViewer.page.locator('.call-line');\n   // Should get metadata from the context trace\n   await expect(callLine.getByText('start time')).toHaveText(/start time:[\\d/,: ]+/);"
+    },
+    {
+      "sha": "fc57ad7f7314b00e613251d6efd0003df255844c",
+      "filename": "tests/playwright-test/reporter-html.spec.ts",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 3,
+      "changes": 6,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/tests%2Fplaywright-test%2Freporter-html.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/tests%2Fplaywright-test%2Freporter-html.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Freporter-html.spec.ts?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -543,18 +543,18 @@ for (const useIntermediateMergeReport of [true, false] as const) {\n       await page.getByRole('link', { name: 'passes' }).click();\n       await page.click('img');\n       await page.click('.action-title >> text=EVALUATE');\n-      await page.click('text=Source');\n+      await page.getByRole('tab', { name: 'Source' }).click();\n \n       await expect(page.locator('.CodeMirror-line')).toContainText([\n         /import.*test/,\n         /page\\.evaluate/\n       ]);\n       await expect(page.locator('.source-line-running')).toContainText('page.evaluate');\n \n-      await expect(page.getByTestId('stack-trace-list')).toContainText([\n+      await expect(page.getByRole('list', { name: 'Stack trace' }).getByRole('listitem')).toContainText([\n         /a.test.js:[\\d]+/,\n       ]);\n-      await expect(page.getByTestId('stack-trace-list').locator('.list-view-entry.selected')).toContainText('a.test.js');\n+      await expect(page.getByRole('list', { name: 'Stack trace' }).getByRole('listitem').and(page.locator('.selected'))).toContainText('a.test.js');\n     });\n \n     test('should not show stack trace', async ({ runInlineTest, page, showReport }) => {"
+    },
+    {
+      "sha": "10810d16161844d847b9d9b17a412cedb9d371a0",
+      "filename": "tests/playwright-test/ui-mode-test-network-tab.spec.ts",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 3,
+      "changes": 6,
+      "blob_url": "https://github.com/microsoft/playwright/blob/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/tests%2Fplaywright-test%2Fui-mode-test-network-tab.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/1072d14efc3a2dbce25d70b0dc0f516061ba4d9e/tests%2Fplaywright-test%2Fui-mode-test-network-tab.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Fui-mode-test-network-tab.spec.ts?ref=1072d14efc3a2dbce25d70b0dc0f516061ba4d9e",
+      "patch": "@@ -32,7 +32,7 @@ test('should filter network requests by resource type', async ({ runUITest, serv\n   await page.getByText('network tab test').dblclick();\n   await page.getByText('Network', { exact: true }).click();\n \n-  const networkItems = page.getByTestId('network-list').getByRole('listitem');\n+  const networkItems = page.getByRole('list', { name: 'Network requests' }).getByRole('listitem');\n \n   await page.getByText('JS', { exact: true }).click();\n   await expect(networkItems).toHaveCount(1);\n@@ -73,7 +73,7 @@ test('should filter network requests by url', async ({ runUITest, server }) => {\n   await page.getByText('network tab test').dblclick();\n   await page.getByText('Network', { exact: true }).click();\n \n-  const networkItems = page.getByTestId('network-list').getByRole('listitem');\n+  const networkItems = page.getByRole('list', { name: 'Network requests' }).getByRole('listitem');\n \n   await page.getByPlaceholder('Filter network').fill('script.');\n   await expect(networkItems).toHaveCount(1);\n@@ -198,5 +198,5 @@ test('should not duplicate network entries from beforeAll', {\n \n   await page.getByText('first test').dblclick();\n   await page.getByText('Network', { exact: true }).click();\n-  await expect(page.getByTestId('network-list').getByText('empty.html')).toHaveCount(1);\n+  await expect(page.getByRole('list', { name: 'Network requests' }).getByText('empty.html')).toHaveCount(1);\n });"
+    }
+  ]
+}

@@ -1,0 +1,2012 @@
+From c5a1dbf580e206cb74b8966e260d038e099eb2ce Mon Sep 17 00:00:00 2001
+From: Sanne de Vries <65487235+sanne-san@users.noreply.github.com>
+Date: Tue, 29 Oct 2024 13:46:09 +0100
+Subject: [PATCH] Aligned settings panel styles with Admin-X design system
+ (#1373)
+
+* Aligned settings panel styles with Admin-X design system
+
+REF PLG-187
+- Updated settings panel styles as groundwork for adding visibility settings to the settings panel.
+
+* Fixed tests
+
+REF PLG-187
+
+* Updated dark mode styles
+
+REF PLG-187
+
+* Moved HTML card visibility settings to the SettingsPanel
+
+REF PLG-206
+- Moved HTML card visibility settings to the SettingsPanel
+- Added TabView component
+- Removed VisibilityDropdown component
+
+* Updated label typography for settings panel
+
+REF PLG-187
+
+* Reduced spacing between settings panel elements
+
+REF PLG-187
+
+* Updated settings panel typography
+
+REF PLG-187
+
+* Updated settings panel and tab view styling
+
+REF PLG-187
+
+* Refactored SettingsPanel to use TabView
+
+REF PLG-206
+
+* Updated settings panel and tab view
+
+REF PLG-206
+
+* Updated e2e tests for visibility settings
+
+* Fixed e2e tests for visibility settings
+
+* Fixed e2e tests
+
+* Fix paste behaviour test
+
+* Fixed HTML card test
+
+* Fixed HTML card test
+
+* Updated paste behaviour test to match new HTML card structure
+---
+ .../src/assets/icons/kg-align-center.svg      |   2 +-
+ .../src/assets/icons/kg-align-left.svg        |   2 +-
+ .../src/assets/icons/kg-arrow-down.svg        |   6 +-
+ .../src/assets/icons/kg-card-type-email.svg   |   4 +-
+ .../src/assets/icons/kg-indicator-email.svg   |   4 +-
+ .../src/components/DesignSandbox.jsx          |   4 +-
+ .../components/ui/BackgroundImagePicker.jsx   |   2 +-
+ .../src/components/ui/ButtonGroup.jsx         |   6 +-
+ .../components/ui/CardVisibilityMessage.jsx   |   2 +-
+ .../src/components/ui/ColorOptionButtons.jsx  |   2 +-
+ .../src/components/ui/ColorPicker.jsx         |   3 +-
+ .../src/components/ui/Dropdown.jsx            |   8 +-
+ .../src/components/ui/DropdownContainer.jsx   |   6 +-
+ .../src/components/ui/Input.jsx               |   2 +-
+ .../src/components/ui/MediaPlaceholder.jsx    |   8 +-
+ .../ui/MediaPlaceholder.stories.jsx           |  16 +--
+ .../src/components/ui/MediaUploader.jsx       |  10 +-
+ .../src/components/ui/MultiSelectDropdown.jsx |  25 ++--
+ .../src/components/ui/ProgressBar.jsx         |   2 +-
+ .../src/components/ui/SettingsPanel.jsx       |  94 ++++++------
+ .../components/ui/SettingsPanel.stories.jsx   |  11 +-
+ .../components/ui/SnippetInput/Dropdown.jsx   |   2 +-
+ .../src/components/ui/TabView.jsx             |  48 +++++++
+ .../src/components/ui/Toggle.jsx              |   4 +-
+ .../src/components/ui/Tooltip.jsx             |   4 +-
+ .../src/components/ui/VisibilityDropdown.jsx  |  54 -------
+ .../src/components/ui/cards/AudioCard.jsx     |   4 +-
+ .../src/components/ui/cards/EmailCtaCard.jsx  |   6 +-
+ .../ui/cards/HeaderCard/v1/HeaderCard.jsx     |   3 +-
+ .../ui/cards/HeaderCard/v2/HeaderCard.jsx     |  21 ++-
+ .../src/components/ui/cards/HtmlCard.jsx      |   1 +
+ .../cards/MarkdownCard/MarkdownHelpDialog.jsx |   2 +-
+ .../src/components/ui/cards/PaywallCard.jsx   |   2 +-
+ .../src/components/ui/cards/ProductCard.jsx   |   3 +-
+ .../src/components/ui/cards/SignupCard.jsx    |  25 ++--
+ .../src/components/ui/cards/VideoCard.jsx     |   2 +-
+ .../src/hooks/useVisibilityToggle.js          |  14 +-
+ .../src/nodes/HtmlNodeComponent.jsx           | 134 ++++++++++--------
+ .../src/plugins/EmojiPickerPlugin.jsx         |   2 +-
+ .../koenig-lexical/src/plugins/TKPlugin.jsx   |   2 +-
+ packages/koenig-lexical/tailwind.config.cjs   |  12 +-
+ .../test/e2e/cards/email-cta-card.test.js     |   4 +-
+ .../test/e2e/cards/header-card.test.js        |   8 +-
+ .../test/e2e/cards/product-card.test.js       |   1 -
+ .../test/e2e/content-visibility.test.js       |  87 +++++-------
+ .../test/e2e/paste-behaviour.test.js          |  95 +++++++++----
+ 46 files changed, 399 insertions(+), 360 deletions(-)
+ create mode 100644 packages/koenig-lexical/src/components/ui/TabView.jsx
+ delete mode 100644 packages/koenig-lexical/src/components/ui/VisibilityDropdown.jsx
+
+diff --git a/packages/koenig-lexical/src/assets/icons/kg-align-center.svg b/packages/koenig-lexical/src/assets/icons/kg-align-center.svg
+index db0b19ad35..cc1e18cd5e 100644
+--- a/packages/koenig-lexical/src/assets/icons/kg-align-center.svg
++++ b/packages/koenig-lexical/src/assets/icons/kg-align-center.svg
+@@ -1,3 +1,3 @@
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M2 4h20M8 12h8M2 20h20"/>
++  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M3 5h18M9 12h6M3 19h18"/>
+ </svg>
+\ No newline at end of file
+diff --git a/packages/koenig-lexical/src/assets/icons/kg-align-left.svg b/packages/koenig-lexical/src/assets/icons/kg-align-left.svg
+index 3bbd941c54..2d5a5ed3b4 100644
+--- a/packages/koenig-lexical/src/assets/icons/kg-align-left.svg
++++ b/packages/koenig-lexical/src/assets/icons/kg-align-left.svg
+@@ -1,3 +1,3 @@
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M2 4h20M2 12h8m-8 8h20"/>
++  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M3 5h18M3 12h6m-6 7h18"/>
+ </svg>
+\ No newline at end of file
+diff --git a/packages/koenig-lexical/src/assets/icons/kg-arrow-down.svg b/packages/koenig-lexical/src/assets/icons/kg-arrow-down.svg
+index 9c16bb7d29..631d1bd84f 100644
+--- a/packages/koenig-lexical/src/assets/icons/kg-arrow-down.svg
++++ b/packages/koenig-lexical/src/assets/icons/kg-arrow-down.svg
+@@ -1,3 +1,3 @@
+-<svg width="26" height="17" viewBox="0 0 26 17" xmlns="http://www.w3.org/2000/svg">
+-  <path d="m1.469 2.18 11.5 13.143 11.5-13.143" stroke-width="3" stroke="currentColor" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round"/>
+-</svg>
++<svg xmlns="http://www.w3.org/2000/svg" width="26" height="17" viewBox="0 0 26 17">
++  <path fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="m1.469 2.5 11.5 12.143L24.469 2.5"/>
++</svg>
+\ No newline at end of file
+diff --git a/packages/koenig-lexical/src/assets/icons/kg-card-type-email.svg b/packages/koenig-lexical/src/assets/icons/kg-card-type-email.svg
+index 3d2b40d0e7..2594c2696c 100644
+--- a/packages/koenig-lexical/src/assets/icons/kg-card-type-email.svg
++++ b/packages/koenig-lexical/src/assets/icons/kg-card-type-email.svg
+@@ -1,4 +1,4 @@
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1.614 3.558 12 13l10.385-9.441"/>
+-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 3H3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2Z"/>
++  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m2 5 10 8 10-8"/>
++  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 4H3c-.53 0-1.04.199-1.414.553A1.837 1.837 0 0 0 1 5.89v13.22c0 .501.21.982.586 1.336C1.96 20.8 2.47 21 3 21h18c.53 0 1.04-.199 1.414-.553.375-.354.586-.835.586-1.336V5.89c0-.501-.21-.982-.586-1.336A2.061 2.061 0 0 0 21 4Z"/>
+ </svg>
+\ No newline at end of file
+diff --git a/packages/koenig-lexical/src/assets/icons/kg-indicator-email.svg b/packages/koenig-lexical/src/assets/icons/kg-indicator-email.svg
+index 8e85f8ca00..d1af4eb487 100644
+--- a/packages/koenig-lexical/src/assets/icons/kg-indicator-email.svg
++++ b/packages/koenig-lexical/src/assets/icons/kg-indicator-email.svg
+@@ -1,4 +1,4 @@
+ <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.614 4.558 12 14l9.385-9.441"/>
+-  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.182 4H3.818a1.84 1.84 0 0 0-1.285.52A1.758 1.758 0 0 0 2 5.779v12.444c0 .472.192.924.533 1.257.34.334.803.521 1.285.521h16.364a1.84 1.84 0 0 0 1.286-.52c.34-.334.532-.786.532-1.258V5.778a1.76 1.76 0 0 0-.532-1.257A1.84 1.84 0 0 0 20.181 4Z"/>
++  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3 5 9 8 9-8"/>
++  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20.182 4H3.818c-.48 0-.94.174-1.285.487a1.649 1.649 0 0 0-.394.54 1.56 1.56 0 0 0-.139.64v11.666c0 .443.192.866.533 1.179A1.9 1.9 0 0 0 3.818 19h16.364c.48.001.942-.174 1.286-.488.34-.313.532-.736.532-1.179V5.667c0-.22-.048-.437-.14-.64a1.65 1.65 0 0 0-.392-.539A1.904 1.904 0 0 0 20.182 4Z"/>
+ </svg>
+\ No newline at end of file
+diff --git a/packages/koenig-lexical/src/components/DesignSandbox.jsx b/packages/koenig-lexical/src/components/DesignSandbox.jsx
+index d6675ad671..21fc75c821 100644
+--- a/packages/koenig-lexical/src/components/DesignSandbox.jsx
++++ b/packages/koenig-lexical/src/components/DesignSandbox.jsx
+@@ -222,7 +222,7 @@ const DesignSandbox = () => {
+ 
+     function CardMenuSection({label, ...props}) {
+         return (
+-            <div className="mb-2 flex shrink-0 flex-col justify-center px-4 pt-3 text-xs font-medium uppercase tracking-[.06rem] text-grey" style={{minWidth: 'calc(100% - 3.2rem)'}} {...props}>
++            <div className="mb-2 flex shrink-0 flex-col justify-center px-4 pt-3 text-2xs font-medium uppercase tracking-[.06rem] text-grey" style={{minWidth: 'calc(100% - 3.2rem)'}} {...props}>
+                 {label}
+             </div>
+         );
+@@ -236,7 +236,7 @@ const DesignSandbox = () => {
+                 </div>
+                 <div className="flex flex-col">
+                     <div className="m-0 ml-4 truncate text-[1.3rem] font-normal leading-[1.333em] tracking-[.02rem] text-grey-900">{label}</div>
+-                    <div className="m-0 ml-4 truncate text-xs font-normal leading-[1.333em] tracking-[.02rem] text-grey">{desc}</div>
++                    <div className="m-0 ml-4 truncate text-2xs font-normal leading-[1.333em] tracking-[.02rem] text-grey">{desc}</div>
+                 </div>
+             </div>
+         );
+diff --git a/packages/koenig-lexical/src/components/ui/BackgroundImagePicker.jsx b/packages/koenig-lexical/src/components/ui/BackgroundImagePicker.jsx
+index 771271ca7b..822fdf8323 100644
+--- a/packages/koenig-lexical/src/components/ui/BackgroundImagePicker.jsx
++++ b/packages/koenig-lexical/src/components/ui/BackgroundImagePicker.jsx
+@@ -64,7 +64,7 @@ export function BackgroundImagePicker({onFileChange,
+                                             </div>
+                                         </>
+                                         :
+-                                        <button className="group flex h-[120px] w-full cursor-pointer flex-col items-center justify-center rounded-md border border-dashed border-grey-300 bg-grey-50 dark:border-grey-800 dark:bg-grey-900" type="button" onClick={openFilePicker}>
++                                        <button className="group flex h-[120px] w-full cursor-pointer flex-col items-center justify-center rounded-md border border-grey-100 bg-grey-50 dark:border-grey-800 dark:bg-grey-900" type="button" onClick={openFilePicker}>
+                                             <FileUploadIcon className="size-5 fill-grey-700 stroke-[3px] transition-all ease-linear group-hover:scale-105" />
+                                             <span className="px-1 text-[1.35rem] font-medium text-grey-700">Click to upload background image</span>
+                                         </button>
+diff --git a/packages/koenig-lexical/src/components/ui/ButtonGroup.jsx b/packages/koenig-lexical/src/components/ui/ButtonGroup.jsx
+index c7ea5f0585..20fa64c871 100644
+--- a/packages/koenig-lexical/src/components/ui/ButtonGroup.jsx
++++ b/packages/koenig-lexical/src/components/ui/ButtonGroup.jsx
+@@ -7,7 +7,7 @@ import {usePreviousFocus} from '../../hooks/usePreviousFocus';
+ export function ButtonGroup({buttons = [], selectedName, onClick}) {
+     return (
+         <div className="flex">
+-            <ul className="flex items-center justify-evenly rounded-lg bg-grey-100 font-sans text-md font-normal text-white dark:bg-black">
++            <ul className="flex items-center justify-evenly gap-[.6rem] rounded-lg font-sans text-md font-normal text-white">
+                 {buttons.map(({label, name, Icon, dataTestId}) => (
+                     <IconButton
+                         key={`${name}-${label}`}
+@@ -33,13 +33,13 @@ export function IconButton({dataTestId, onClick, label, name, selectedName, Icon
+         <li className="mb-0">
+             <button
+                 aria-label={label}
+-                className={`group relative m-[3px] flex h-7 w-8 cursor-pointer items-center justify-center ${isActive ? 'rounded-md bg-white text-black shadow-sm dark:bg-grey-900 dark:text-white' : 'text-grey-700 dark:text-white' } ${Icon || 'text-[1.3rem] font-bold'}`}
++                className={`group relative flex h-7 w-8 cursor-pointer items-center justify-center rounded-lg hover:bg-grey-150 dark:hover:bg-grey-900 ${isActive ? 'bg-grey-150 text-green-600 dark:bg-grey-900 dark:text-white' : 'text-black dark:text-white' } ${Icon || 'text-[1.3rem] font-bold'}`}
+                 data-testid={dataTestId}
+                 type="button"
+                 onClick={handleClick}
+                 onMouseDown={handleMousedown}
+             >
+-                {Icon ? <Icon className="size-4 stroke-2 text-black dark:text-white" /> : label}
++                {Icon ? <Icon className="size-4 stroke-2" /> : label}
+                 {(Icon && label) && <Tooltip label={label} />}
+             </button>
+         </li>
+diff --git a/packages/koenig-lexical/src/components/ui/CardVisibilityMessage.jsx b/packages/koenig-lexical/src/components/ui/CardVisibilityMessage.jsx
+index df21c9954c..0924920d99 100644
+--- a/packages/koenig-lexical/src/components/ui/CardVisibilityMessage.jsx
++++ b/packages/koenig-lexical/src/components/ui/CardVisibilityMessage.jsx
+@@ -4,7 +4,7 @@ export function CardVisibilityMessage({message}) {
+     }
+ 
+     return (
+-        <div className="py-[.6rem] font-sans text-xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800" data-testid="visibility-message">
++        <div className="py-[.6rem] font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800" data-testid="visibility-message">
+             {message}
+         </div>
+     );
+diff --git a/packages/koenig-lexical/src/components/ui/ColorOptionButtons.jsx b/packages/koenig-lexical/src/components/ui/ColorOptionButtons.jsx
+index 26a43a8bfb..b45583cf47 100644
+--- a/packages/koenig-lexical/src/components/ui/ColorOptionButtons.jsx
++++ b/packages/koenig-lexical/src/components/ui/ColorOptionButtons.jsx
+@@ -44,7 +44,7 @@ export function ColorButton({onClick, label, name, color, selectedName}) {
+                 onMouseDown={handleMousedown}
+             >
+                 <span
+-                    className={`${color} size-5 rounded-full border-2 border-black/5`}
++                    className={`${color} size-5 rounded-full border border-black/5`}
+                 ></span>
+             </button>
+         </li>
+diff --git a/packages/koenig-lexical/src/components/ui/ColorPicker.jsx b/packages/koenig-lexical/src/components/ui/ColorPicker.jsx
+index 5a313bd1d6..e18c37ea03 100644
+--- a/packages/koenig-lexical/src/components/ui/ColorPicker.jsx
++++ b/packages/koenig-lexical/src/components/ui/ColorPicker.jsx
+@@ -3,7 +3,6 @@ import React, {Fragment, useCallback, useEffect, useRef} from 'react';
+ import clsx from 'clsx';
+ import {Button} from './Button';
+ import {HexColorInput, HexColorPicker} from 'react-colorful';
+-import {INPUT_CLASSES} from './Input';
+ import {getAccentColor} from '../../utils/getAccentColor';
+ 
+ export function ColorPicker({value, eyedropper, hasTransparentOption, onChange}) {
+@@ -79,7 +78,7 @@ export function ColorPicker({value, eyedropper, hasTransparentOption, onChange})
+         <div className="mt-2" onMouseDown={stopPropagation} onTouchStart={stopPropagation}>
+             <HexColorPicker color={hexValue || '#ffffff'} onChange={onChange} onMouseDown={startUsingColorPicker} onTouchStart={startUsingColorPicker} />
+             <div className="mt-3 flex gap-2">
+-                <div ref={inputWrapperRef} className={`relative flex w-full items-center ${INPUT_CLASSES}`} onClick={focusHexInputOnClick}>
++                <div ref={inputWrapperRef} className={`relative flex w-full items-center rounded-lg border border-grey-100 bg-grey-100 px-3 py-1.5 font-sans text-sm font-normal text-grey-900 transition-colors placeholder:text-grey-500 focus-within:border-green focus-within:bg-white focus-within:shadow-[0_0_0_2px_rgba(48,207,67,.25)] focus-within:outline-none dark:border-transparent dark:bg-grey-900 dark:text-white dark:selection:bg-grey-800 dark:placeholder:text-grey-700 dark:focus-within:border-green dark:hover:bg-grey-925 dark:focus:bg-grey-925`} onClick={focusHexInputOnClick}>
+                     <span className='ml-1 mr-2 text-grey-700'>#</span>
+                     <HexColorInput aria-label="Color value" className='z-50 w-full bg-transparent' color={hexValue} onChange={onChange} />
+                     {eyedropper && !!window.EyeDropper && (
+diff --git a/packages/koenig-lexical/src/components/ui/Dropdown.jsx b/packages/koenig-lexical/src/components/ui/Dropdown.jsx
+index 1de479613b..17b23d5968 100644
+--- a/packages/koenig-lexical/src/components/ui/Dropdown.jsx
++++ b/packages/koenig-lexical/src/components/ui/Dropdown.jsx
+@@ -19,8 +19,8 @@ function Item({item, selected, onChange}) {
+     };
+ 
+     return (
+-        <li key={item.name} className={`${selectionClass} !mb-1 hover:bg-grey-100 dark:hover:bg-grey-950`}>
+-            <button className="size-full cursor-pointer px-3 py-1 text-left dark:text-white" data-test-value={item.name} type="button" onMouseDownCapture={event => handleOptionMouseDown(event, item.name)}>{item.label}</button>
++        <li key={item.name} className={`${selectionClass} m-0 hover:bg-grey-100 dark:hover:bg-grey-950`}>
++            <button className="size-full cursor-pointer px-3 py-[7px] text-left dark:text-white" data-test-value={item.name} type="button" onMouseDownCapture={event => handleOptionMouseDown(event, item.name)}>{item.label}</button>
+         </li>
+     );
+ }
+@@ -66,7 +66,7 @@ export function Dropdown({value, menu, onChange, dataTestId}) {
+     return (
+         <div className={`relative ${zIndex} font-sans text-sm font-normal`} data-testid={dataTestId}>
+             <button
+-                className={`relative w-full cursor-pointer border border-grey-300 px-3 py-2 text-left font-sans font-normal text-grey-900 focus-visible:outline-none dark:border-grey-900 dark:bg-grey-900 dark:text-white dark:placeholder:text-grey-800 ${open ? 'rounded-t-md' : 'rounded-md'}`}
++                className="relative h-9 w-full cursor-pointer rounded-lg border border-grey-150 bg-grey-150 px-3 py-1 pr-5 text-left font-sans font-normal leading-[1.5] text-grey-900 hover:border-grey-100 hover:bg-grey-100 focus-visible:outline-none dark:border-grey-900 dark:bg-grey-900 dark:text-white dark:placeholder:text-grey-800 md:h-[38px] md:py-2"
+                 data-testid={`${dataTestId}-value`}
+                 type="button"
+                 onBlur={handleBlur}
+@@ -74,7 +74,7 @@ export function Dropdown({value, menu, onChange, dataTestId}) {
+                 onMouseDownCapture={preventLoseFocus}
+             >
+                 {trigger}
+-                <ArrowIcon className={`absolute right-2 top-4 size-2 text-grey-600 ${open && 'rotate-180'}`} />
++                <ArrowIcon className={`absolute right-3 top-[1.5rem] size-2 text-grey-900 ${open && 'rotate-180'}`} />
+             </button>
+             {open && (
+                 <DropdownContainer>
+diff --git a/packages/koenig-lexical/src/components/ui/DropdownContainer.jsx b/packages/koenig-lexical/src/components/ui/DropdownContainer.jsx
+index e35c434882..1e4c80d6ab 100644
+--- a/packages/koenig-lexical/src/components/ui/DropdownContainer.jsx
++++ b/packages/koenig-lexical/src/components/ui/DropdownContainer.jsx
+@@ -11,9 +11,9 @@ import debounce from 'lodash/debounce';
+  */
+ export function DropdownContainer({
+     dataTestId,
+-    className = 'z-[-1] max-h-[30vh] w-full overflow-y-auto border border-grey-200 bg-white py-1 shadow dark:border-grey-800 dark:bg-grey-900',
+-    placementTopClass = 'top-[2px] -translate-y-full rounded-t-md border-b-0',
+-    placementBottomClass = 'mt-[-2px] rounded-b-md border-t-0',
++    className = 'z-[-1] max-h-[30vh] w-full overflow-y-auto bg-white shadow rounded-lg dark:border-grey-800 dark:bg-grey-900',
++    placementTopClass = '-top-0.5 -translate-y-full',
++    placementBottomClass = 'mt-0.5',
+     children,
+     ...props
+ }) {
+diff --git a/packages/koenig-lexical/src/components/ui/Input.jsx b/packages/koenig-lexical/src/components/ui/Input.jsx
+index 1d8df2cc4a..05b0fbaf76 100644
+--- a/packages/koenig-lexical/src/components/ui/Input.jsx
++++ b/packages/koenig-lexical/src/components/ui/Input.jsx
+@@ -1,6 +1,6 @@
+ import React from 'react';
+ 
+-export const INPUT_CLASSES = 'rounded-md border border-grey-300 py-2 px-3 font-sans text-sm font-normal text-grey-900 focus:border-green focus:shadow-insetgreen focus-visible:outline-none dark:border-grey-900 dark:bg-grey-900 dark:text-white dark:placeholder:text-grey-700 dark:selection:bg-grey-800';
++export const INPUT_CLASSES = 'h-9 rounded-lg border border-grey-100 bg-grey-100 dark:bg-grey-900 dark:border-transparent dark:focus:border-green dark:hover:bg-grey-925 dark:focus:bg-grey-925 transition-colors px-3 py-1.5 font-sans text-sm font-normal text-grey-900 focus:border-green focus:bg-white focus:shadow-[0_0_0_2px_rgba(48,207,67,.25)] focus-visible:outline-none dark:text-white dark:selection:bg-grey-800 placeholder:text-grey-500 md:h-[38px] md:py-2 dark:placeholder:text-grey-700';
+ 
+ export function Input({autoFocus, className, dataTestId, value, onChange, ...props}) {
+     const inputRef = React.useRef(null);
+diff --git a/packages/koenig-lexical/src/components/ui/MediaPlaceholder.jsx b/packages/koenig-lexical/src/components/ui/MediaPlaceholder.jsx
+index eadd086108..794d1ce45b 100644
+--- a/packages/koenig-lexical/src/components/ui/MediaPlaceholder.jsx
++++ b/packages/koenig-lexical/src/components/ui/MediaPlaceholder.jsx
+@@ -44,14 +44,14 @@ export function MediaPlaceholder({
+             className="not-kg-prose size-full" {...props}
+             data-testid={dataTestId}
+         >
+-            <div className={`relative flex h-full items-center justify-center border bg-grey-50 dark:bg-grey-950 ${size === 'xsmall' ? 'before:pb-[12.5%]' : 'before:pb-[62.5%]'} ${borderStyle === 'dashed' ? 'rounded-md border-dashed border-grey/40' : 'border-grey/20 dark:border-grey/10'}`}>
++            <div className={`relative flex h-full items-center justify-center border bg-grey-50 ${size === 'xsmall' ? 'before:pb-[12.5%] dark:bg-grey-900' : 'before:pb-[62.5%] dark:bg-grey-950'} ${borderStyle === 'rounded' ? 'rounded-lg border-grey/20 dark:border-transparent' : 'border-grey/20 dark:border-grey/10'}`}>
+                 {isDraggedOver ?
+                     <CardText text={`Drop ${multiple ? '\'em' : 'it'} like it's hot 🔥`} /> :
+                     <>
+                         <button className={`group flex cursor-pointer select-none items-center justify-center ${size === 'xsmall' ? 'p-4' : 'flex-col p-20'}`} name="placeholder-button" type="button" onClick={filePicker}>
+                             {(size === 'xsmall' && errors.length > 0) ||
+                                 <>
+-                                    <Icon className={`shrink-0 opacity-80 transition-all ease-linear hover:scale-105 group-hover:opacity-100 ${size === 'large' ? 'size-20 text-grey' : size === 'small' ? 'size-14 text-grey' : size === 'xsmall' ? 'size-6 text-grey-700' : 'size-16 text-grey'} ${(size === 'xsmall') && desc ? 'mr-3' : ''}`} />
++                                    <Icon className={`shrink-0 opacity-80 transition-all ease-linear hover:scale-105 group-hover:opacity-100 ${size === 'large' ? 'size-20 text-grey' : size === 'small' ? 'size-14 text-grey' : size === 'xsmall' ? 'size-5 text-grey-700' : 'size-16 text-grey'} ${(size === 'xsmall') && desc ? 'mr-3' : ''}`} />
+                                     <p className={`flex min-w-[auto] !font-sans !text-sm !font-normal text-grey-700 opacity-80 transition-all group-hover:opacity-100 ${size === 'xsmall' ? '!mt-0' : '!mt-4'}`}>{desc}</p>
+                                 </>
+                             }
+@@ -74,9 +74,9 @@ MediaPlaceholder.propTypes = {
+     icon: PropTypes.oneOf(['image', 'gallery', 'video', 'audio', 'file', 'product']),
+     desc: PropTypes.string,
+     size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large']),
+-    borderStyle: PropTypes.oneOf(['solid', 'dashed'])
++    borderStyle: PropTypes.oneOf(['squared', 'rounded'])
+ };
+ 
+ MediaPlaceholder.defaultProps = {
+-    borderStyle: 'solid'
++    borderStyle: 'squared'
+ };
+diff --git a/packages/koenig-lexical/src/components/ui/MediaPlaceholder.stories.jsx b/packages/koenig-lexical/src/components/ui/MediaPlaceholder.stories.jsx
+index 081a97389a..5217232b2c 100644
+--- a/packages/koenig-lexical/src/components/ui/MediaPlaceholder.stories.jsx
++++ b/packages/koenig-lexical/src/components/ui/MediaPlaceholder.stories.jsx
+@@ -15,7 +15,7 @@ const story = {
+             control: {type: 'select'}
+         },
+         borderStyle: {
+-            options: ['solid', 'dashed'],
++            options: ['squared', 'rounded'],
+             control: {type: 'radio'}
+         }
+     },
+@@ -38,7 +38,7 @@ Image.args = {
+     icon: 'image',
+     desc: 'Click to select an image',
+     size: 'medium',
+-    borderStyle: 'solid'
++    borderStyle: 'squared'
+ };
+ 
+ export const Gallery = Template.bind({});
+@@ -46,7 +46,7 @@ Gallery.args = {
+     icon: 'gallery',
+     desc: 'Click to select up to 9 images',
+     size: 'large',
+-    borderStyle: 'solid'
++    borderStyle: 'squared'
+ };
+ 
+ export const Video = Template.bind({});
+@@ -54,7 +54,7 @@ Video.args = {
+     icon: 'video',
+     desc: 'Click to select a video',
+     size: 'medium',
+-    borderStyle: 'solid'
++    borderStyle: 'squared'
+ };
+ 
+ export const Audio = Template.bind({});
+@@ -62,7 +62,7 @@ Audio.args = {
+     icon: 'audio',
+     desc: 'Click to upload an audio file',
+     size: 'xsmall',
+-    borderStyle: 'solid'
++    borderStyle: 'squared'
+ };
+ 
+ export const File = Template.bind({});
+@@ -70,7 +70,7 @@ File.args = {
+     icon: 'file',
+     desc: 'Click to upload a file',
+     size: 'xsmall',
+-    borderStyle: 'solid'
++    borderStyle: 'squared'
+ };
+ 
+ export const Product = Template.bind({});
+@@ -78,7 +78,7 @@ Product.args = {
+     icon: 'product',
+     desc: 'Click to upload a product image',
+     size: 'small',
+-    borderStyle: 'solid'
++    borderStyle: 'squared'
+ };
+ 
+ export const Error = Template.bind({});
+@@ -86,6 +86,6 @@ Error.args = {
+     icon: 'video',
+     desc: 'Click to select a video',
+     size: 'medium',
+-    borderStyle: 'solid',
++    borderStyle: 'squared',
+     errors: [{message: 'The file type you uploaded is not supported. Please use .MP4, .WEBM, .OGV'}]
+ };
+diff --git a/packages/koenig-lexical/src/components/ui/MediaUploader.jsx b/packages/koenig-lexical/src/components/ui/MediaUploader.jsx
+index 4e0c08f6c9..ca108223c8 100644
+--- a/packages/koenig-lexical/src/components/ui/MediaUploader.jsx
++++ b/packages/koenig-lexical/src/components/ui/MediaUploader.jsx
+@@ -17,7 +17,7 @@ export function MediaUploader({
+     desc,
+     icon,
+     size,
+-    borderStyle = 'solid',
++    borderStyle = 'squared',
+     backgroundSize = 'cover',
+     mimeTypes,
+     onFileChange,
+@@ -79,13 +79,13 @@ export function MediaUploader({
+         <div className={clsx('group/image relative flex items-center justify-center', borderStyle === 'dashed' && 'rounded', className)} data-testid="media-upload-filled">
+             {src && (
+                 <>
+-                    <img alt={alt} className={clsx('mx-auto size-full', backgroundSize === 'cover' ? 'object-cover' : 'object-contain', borderStyle === 'dashed' && 'rounded', imgClassName)} src={src} />
+-                    <div className={clsx('absolute inset-0 bg-gradient-to-t from-black/0 via-black/5 to-black/30 opacity-0 transition-all group-hover/image:opacity-100', borderStyle === 'dashed' && 'rounded')}></div>
++                    <img alt={alt} className={clsx('mx-auto size-full rounded-lg', backgroundSize === 'cover' ? 'object-cover' : 'object-contain', imgClassName)} src={src} />
++                    <div className={clsx('absolute inset-0 rounded-lg bg-gradient-to-t from-black/0 via-black/5 to-black/30 opacity-0 transition-all group-hover/image:opacity-100', borderStyle === 'dashed' && 'rounded-lg')}></div>
+                 </>
+             )}
+ 
+             {!isLoading && (
+-                <div className="absolute right-2 top-2 flex space-x-2 opacity-0 transition-all group-hover/image:opacity-100">
++                <div className="absolute right-1 top-1 flex space-x-1 opacity-0 transition-all group-hover/image:opacity-100">
+                     {additionalActions}
+                     { isPinturaEnabled && <IconButton Icon={WandIcon} label="Edit" onClick={() => openImageEditor({
+                         image: src,
+@@ -103,7 +103,7 @@ export function MediaUploader({
+ 
+             {isLoading && (
+                 <div
+-                    className={clsx('absolute inset-0 flex min-w-full items-center justify-center overflow-hidden border border-dashed border-grey/20 bg-grey-50', borderStyle === 'dashed' && 'rounded')}
++                    className={clsx('absolute inset-0 flex min-w-full items-center justify-center overflow-hidden border border-grey-100 bg-grey-75', borderStyle === 'rounded' && 'rounded-lg')}
+                     data-testid="custom-thumbnail-progress"
+                 >
+                     <ProgressBar style={progressStyle} />
+diff --git a/packages/koenig-lexical/src/components/ui/MultiSelectDropdown.jsx b/packages/koenig-lexical/src/components/ui/MultiSelectDropdown.jsx
+index 5726e444e6..ab5ea1524a 100644
+--- a/packages/koenig-lexical/src/components/ui/MultiSelectDropdown.jsx
++++ b/packages/koenig-lexical/src/components/ui/MultiSelectDropdown.jsx
+@@ -8,7 +8,7 @@ function Item({item, selected, onChange}) {
+     let selectionClass = '';
+ 
+     if (selected) {
+-        selectionClass = 'bg-grey-100 dark:bg-grey-950';
++        selectionClass = 'bg-grey-100 dark:bg-grey-900';
+     }
+ 
+     // We use the capture phase of the mouse down event, otherwise the list option will be removed when blurring the input
+@@ -20,9 +20,9 @@ function Item({item, selected, onChange}) {
+     };
+ 
+     return (
+-        <li key={item.name} className={`${selectionClass} !mb-1 hover:bg-grey-100 dark:hover:bg-grey-950`} >
++        <li key={item.name} className={`${selectionClass} m-0 hover:bg-grey-100 dark:hover:bg-grey-900`} >
+             <button
+-                className="size-full cursor-pointer px-3 py-1 text-left dark:text-white"
++                className="size-full cursor-pointer px-3 py-[7px] text-left dark:text-white"
+                 data-testid="multiselect-dropdown-item"
+                 type="button"
+                 onMouseDownCapture={handleOptionMouseDown}
+@@ -36,6 +36,7 @@ function Item({item, selected, onChange}) {
+ export function MultiSelectDropdown({placeholder = '', items = [], availableItems = [], onChange, dataTestId, allowAdd = true}) {
+     const [open, setOpen] = React.useState(false);
+     const [filter, setFilter] = React.useState('');
++    const [isFocused, setIsFocused] = React.useState(false);
+     const inputRef = React.useRef(null);
+ 
+     const handleOpen = (event) => {
+@@ -50,6 +51,12 @@ export function MultiSelectDropdown({placeholder = '', items = [], availableItem
+     const handleBlur = () => {
+         setOpen(false);
+         setFilter('');
++        setIsFocused(false);
++    };
++
++    const handleFocus = () => {
++        setIsFocused(true);
++        handleOpen();
+     };
+ 
+     const handleSelect = (item) => {
+@@ -96,27 +103,25 @@ export function MultiSelectDropdown({placeholder = '', items = [], availableItem
+         if (!exactMatch) {
+             filteredItems.unshift({name: filter, label: <>Add <strong>&quot;{filter}&quot;...</strong></>});
+         }
+-    } else if (!filter) {
+-        prefixItem = getItem({name: '', label: 'Type to search'}, false);
+     }
+ 
+     return (
+         <div className="relative z-0 font-sans text-sm font-normal" data-testid={dataTestId}>
+             <div
+-                className={`relative flex w-full cursor-text flex-wrap gap-1 rounded-md border border-grey-300 bg-white py-2 pl-3 pr-5 text-left font-sans font-normal text-grey-900 focus-within:border-green focus-within:shadow-insetgreen focus-visible:outline-none dark:border-grey-900 dark:bg-grey-900 dark:text-white dark:placeholder:text-grey-800`}
++                className={`relative flex w-full cursor-text flex-wrap gap-1 rounded-lg border ${isFocused ? 'border-green bg-white shadow-[0_0_0_2px_rgba(48,207,67,.25)] dark:bg-grey-925' : 'border-grey-100 bg-grey-100 dark:border-transparent dark:bg-grey-900 dark:hover:bg-grey-925'} px-[10px] py-2 pr-5 font-sans text-sm font-normal leading-[1.5] text-grey-900 placeholder:text-grey-500 focus-visible:outline-none dark:text-white dark:selection:bg-grey-800 dark:placeholder:text-grey-700`}
+                 type="button"
+                 onClick={() => inputRef.current.focus()}
+             >
+                 {selectedItems.map(item => (
+                     <button
+                         key={item.name}
+-                        className="flex cursor-pointer items-center rounded-sm bg-black px-[1rem] py-[.6rem] leading-none text-white dark:bg-grey-100 dark:text-grey-900"
++                        className="flex cursor-pointer items-center gap-1.5 rounded bg-black py-px pl-2 pr-1 leading-[1.5] text-white dark:bg-grey-100 dark:text-grey-900"
+                         data-testid="multiselect-dropdown-selected"
+                         type="button"
+                         onMouseDownCapture={event => handleDeselect(event, item)}
+                     >
+                         {item.label}
+-                        <CloseIcon className="ml-2 mt-[1px] size-2" />
++                        <CloseIcon className="mt-px size-[1rem] stroke-[3]" />
+                     </button>
+                 ))}
+ 
+@@ -128,12 +133,12 @@ export function MultiSelectDropdown({placeholder = '', items = [], availableItem
+                         value={filter}
+                         onBlur={handleBlur}
+                         onChange={event => setFilter(event.target.value)}
+-                        onFocus={handleOpen}
++                        onFocus={handleFocus}
+                         onKeyDown={handleBackspace}
+                     />
+                 </div>
+ 
+-                <ArrowIcon className={`absolute right-2 top-4 size-2 text-grey-600 ${open && 'rotate-180'}`} />
++                <ArrowIcon className={`absolute right-3 top-4 size-2 text-grey-900 ${open && 'rotate-180'}`} />
+             </div>
+             {open && !!filteredItems.length && (
+                 <DropdownContainer>
+diff --git a/packages/koenig-lexical/src/components/ui/ProgressBar.jsx b/packages/koenig-lexical/src/components/ui/ProgressBar.jsx
+index d8183ee118..7ddfb82691 100644
+--- a/packages/koenig-lexical/src/components/ui/ProgressBar.jsx
++++ b/packages/koenig-lexical/src/components/ui/ProgressBar.jsx
+@@ -4,7 +4,7 @@ import React from 'react';
+ export function ProgressBar({style, fullWidth, bgStyle}) {
+     return (
+         <div className={`rounded-full bg-grey-200 dark:bg-black ${fullWidth ? 'w-full' : 'mx-auto w-3/5'} ${bgStyle === 'transparent' ? 'bg-white/30' : 'bg-grey-200'}`} data-testid="progress-bar">
+-            <div className="rounded-full bg-green py-1 text-center text-xs leading-none text-white" style={style}></div>
++            <div className="rounded-full bg-green py-1 text-center text-2xs leading-none text-white" style={style}></div>
+         </div>
+     );
+ }
+diff --git a/packages/koenig-lexical/src/components/ui/SettingsPanel.jsx b/packages/koenig-lexical/src/components/ui/SettingsPanel.jsx
+index c8f2b42866..0fa631053b 100644
+--- a/packages/koenig-lexical/src/components/ui/SettingsPanel.jsx
++++ b/packages/koenig-lexical/src/components/ui/SettingsPanel.jsx
+@@ -11,32 +11,48 @@ import {InputList, InputListItem} from './InputList.jsx';
+ import {MediaUploader} from './MediaUploader';
+ import {MultiSelectDropdown} from './MultiSelectDropdown';
+ import {Slider} from './Slider.jsx';
++import {TabView} from './TabView';
+ import {Toggle} from './Toggle';
+ 
+-export function SettingsPanel({children, darkMode, cardWidth}) {
++export function SettingsPanel({children, darkMode, cardWidth, tabs, defaultTab}) {
+     const {ref} = useSettingsPanelReposition({}, cardWidth);
+ 
++    const tabContent = React.useMemo(() => {
++        if (!tabs) {
++            return {default: children};
++        }
++        return typeof children === 'object' && children !== null ? children : {default: children};
++    }, [tabs, children]);
++
+     return (
+         // Ideally we would use Portal to avoid issues with transformed ancestors (https://bugs.chromium.org/p/chromium/issues/detail?id=20574)
+         // However, Portal causes problems with drag/drop, focus, etc
+         <div className={`!mt-0 touch-none ${darkMode ? 'dark' : ''}`}>
+-            <div ref={ref}
+-                className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col gap-2 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
+-                data-testid="settings-panel"
+-            >
+-                {children}
+-            </div>
++
++            {tabs ? (
++                <div ref={ref}
++                    className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col rounded-lg bg-white bg-clip-padding font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
++                    data-testid="settings-panel"
++                >
++                    <TabView defaultTab={defaultTab} tabContent={tabContent} tabs={tabs} />
++                </div>
++            ) : (
++                <div ref={ref}
++                    className="not-kg-prose fixed left-0 top-0 z-[9999999] m-0 flex w-[320px] flex-col gap-3 rounded-lg bg-white bg-clip-padding p-6 font-sans shadow-lg will-change-transform dark:bg-grey-950 dark:shadow-xl"
++                    data-testid="settings-panel"
++                >{children}</div>
++            )}
+         </div>
+     );
+ }
+ 
+ export function ToggleSetting({label, description, isChecked, onChange, dataTestId}) {
+     return (
+-        <label className="mt-2 flex min-h-[3rem] w-full cursor-pointer items-center justify-between text-[1.3rem] first:mt-0">
++        <label className="flex w-full cursor-pointer items-center justify-between">
+             <div>
+-                <div className="font-bold text-grey-900 dark:text-grey-300">{label}</div>
++                <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+                 {description &&
+-                    <p className="w-11/12 text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
++                    <p className="mt-1 w-11/12 text-xs font-normal leading-snug text-grey-700 dark:text-grey-600">{description}</p>
+                 }
+             </div>
+             <div className="flex shrink-0 pl-2">
+@@ -50,12 +66,12 @@ export function SliderSetting({label, onChange, max, min, value, defaultValue, d
+     return (
+         <div className="my-2 flex w-full flex-col gap-1">
+             <div className="flex items-center justify-between font-sans text-[1.3rem] font-normal">
+-                <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
++                <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+                 <div className="text-grey-900 dark:text-grey-100" data-testid={`${dataTestId}-value`}>{value}</div>
+             </div>
+             <Slider dataTestId={dataTestId} defaultValue={defaultValue} max={max} min={min} value={value} onChange={onChange} />
+             {description &&
+-                <p className="mt-1 text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
++                <p className="mt-1 text-xs font-normal leading-snug text-grey-700 dark:text-grey-600">{description}</p>
+             }
+         </div>
+     );
+@@ -63,11 +79,11 @@ export function SliderSetting({label, onChange, max, min, value, defaultValue, d
+ 
+ export function InputSetting({label, hideLabel, description, onChange, value, placeholder, dataTestId, onBlur}) {
+     return (
+-        <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
+-            <div className={hideLabel ? 'sr-only' : 'font-bold text-grey-900 dark:text-grey-200'}>{label}</div>
++        <div className="flex w-full flex-col justify-between">
++            <div className={hideLabel ? 'sr-only' : 'mb-1.5 text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300'}>{label}</div>
+             <Input dataTestId={dataTestId} placeholder={placeholder} value={value} onBlur={onBlur} onChange={onChange} />
+             {description &&
+-                <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
++                <p className="text-xs font-normal leading-snug text-grey-700 dark:text-grey-600">{description}</p>
+             }
+         </div>
+     );
+@@ -123,8 +139,8 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
+             <InputListItem
+                 key={item.value}
+                 className={clsx(
+-                    selected && 'bg-grey-100',
+-                    'cursor-pointer px-4 py-2 text-left hover:bg-grey-100 dark:hover:bg-black'
++                    selected && 'bg-grey-100 dark:bg-grey-925',
++                    'm-0 cursor-pointer px-3 py-[7px] text-left hover:bg-grey-100 dark:hover:bg-grey-925'
+                 )}
+                 dataTestId={dataTestId}
+                 item={item}
+@@ -133,7 +149,7 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
+                 onClick={onClick}
+                 onMouseOver={onMouseOver}
+             >
+-                <span className="block text-sm font-semibold leading-tight text-black dark:text-white" data-testid={`${dataTestId}-listOption-${item.label}`}>{item.label}</span>
++                <span className="block text-sm font-normal leading-tight text-black dark:text-white" data-testid={`${dataTestId}-listOption-${item.label}`}>{item.label}</span>
+                 <span className="block truncate text-xs leading-tight text-grey-700 dark:text-grey-600" data-testid={`${dataTestId}-listOption-${item.value}`}>
+                     {item.value}
+                 </span>
+@@ -142,8 +158,8 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
+     };
+ 
+     return (
+-        <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
+-            <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
++        <div className="flex w-full flex-col justify-between">
++            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+             <InputList
+                 dataTestId={dataTestId}
+                 getItem={getItem}
+@@ -153,7 +169,7 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
+                 onChange={onChange}
+             />
+             {description &&
+-                <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
++                <p className="text-xs font-normal leading-snug text-grey-700 dark:text-grey-600">{description}</p>
+             }
+         </div>
+     );
+@@ -161,8 +177,8 @@ export function InputListSetting({dataTestId, description, label, listOptions, o
+ 
+ export function DropdownSetting({label, description, value, menu, onChange, dataTestId}) {
+     return (
+-        <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
+-            <div className="font-bold text-grey-900 dark:text-grey-200" data-testid={`${dataTestId}-label`}>{label}</div>
++        <div className="flex w-full flex-col justify-between gap-1">
++            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300" data-testid={`${dataTestId}-label`}>{label}</div>
+             <Dropdown
+                 dataTestId={dataTestId}
+                 menu={menu}
+@@ -170,7 +186,7 @@ export function DropdownSetting({label, description, value, menu, onChange, data
+                 onChange={onChange}
+             />
+             {description &&
+-                    <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
++                    <p className="text-xs font-normal leading-snug text-grey-700 dark:text-grey-600">{description}</p>
+             }
+         </div>
+     );
+@@ -186,8 +202,8 @@ export function DropdownSetting({label, description, value, menu, onChange, data
+  */
+ export function MultiSelectDropdownSetting({label, description, placeholder = '', items, availableItems, onChange, dataTestId, allowAdd = true}) {
+     return (
+-        <div className="mt-2 flex w-full flex-col justify-between gap-2 text-[1.3rem] first:mt-0">
+-            <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
++        <div className="flex w-full flex-col justify-between gap-1">
++            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+             <MultiSelectDropdown
+                 allowAdd={allowAdd}
+                 availableItems={availableItems}
+@@ -197,7 +213,7 @@ export function MultiSelectDropdownSetting({label, description, placeholder = ''
+                 onChange={onChange}
+             />
+             {description &&
+-                    <p className="text-[1.25rem] font-normal leading-snug text-grey-700">{description}</p>
++                    <p className="text-xs font-normal leading-snug text-grey-700 dark:text-grey-600">{description}</p>
+             }
+         </div>
+     );
+@@ -205,8 +221,8 @@ export function MultiSelectDropdownSetting({label, description, placeholder = ''
+ 
+ export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
+     return (
+-        <div className="mt-2 flex w-full items-center justify-between text-[1.3rem] first:mt-0">
+-            <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
++        <div className="flex w-full items-center justify-between text-[1.3rem]">
++            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+ 
+             <div className="shrink-0 pl-2">
+                 <ButtonGroup buttons={buttons} selectedName={selectedName} onClick={onClick} />
+@@ -217,8 +233,8 @@ export function ButtonGroupSetting({label, onClick, selectedName, buttons}) {
+ 
+ export function ColorOptionSetting({label, onClick, selectedName, buttons, layout, dataTestId}) {
+     return (
+-        <div className={`mt-2 flex w-full text-[1.3rem] first:mt-0 ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestId}>
+-            <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
++        <div className={`flex w-full text-[1.3rem] ${layout === 'stacked' ? 'flex-col' : 'items-center justify-between'}`} data-testid={dataTestId}>
++            <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+ 
+             <div className={`shrink-0 ${layout === 'stacked' ? '-mx-1 pt-1' : 'pl-2'}`}>
+                 <ColorOptionButtons buttons={buttons} selectedName={selectedName} onClick={onClick} />
+@@ -251,9 +267,9 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
+     }, [isExpanded]);
+ 
+     return (
+-        <div className="mt-2 flex-col" data-testid={dataTestId} onClick={markClickedInside}>
+-            <div className="flex w-full items-center justify-between text-[1.3rem] first:mt-0">
+-                <div className="font-bold text-grey-900 dark:text-grey-200">{label}</div>
++        <div className="flex-col" data-testid={dataTestId} onClick={markClickedInside}>
++            <div className="flex w-full items-center justify-between text-[1.3rem]">
++                <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">{label}</div>
+ 
+                 <div className="shrink-0 pl-2">
+                     <ColorIndicator
+@@ -272,8 +288,8 @@ export function ColorPickerSetting({label, isExpanded, onSwatchChange, onPickerC
+ 
+ export function MediaUploadSetting({className, label, hideLabel, onFileChange, isDraggedOver, placeholderRef, src, alt, isLoading, errors = [], progress, onRemoveMedia, icon, desc = '', size, borderStyle, mimeTypes, isPinturaEnabled, openImageEditor, setFileInputRef}) {
+     return (
+-        <div className={clsx('mt-2 text-[1.3rem] first:mt-0', className)} data-testid="media-upload-setting">
+-            <div className={hideLabel ? 'sr-only' : 'font-bold text-grey-900 dark:text-grey-200'}>{label}</div>
++        <div className={clsx(className)} data-testid="media-upload-setting">
++            <div className={hideLabel ? 'sr-only' : 'mb-2 text-sm font-medium tracking-normal text-grey-900 dark:text-grey-400'}>{label}</div>
+ 
+             <MediaUploader
+                 alt={alt}
+@@ -297,9 +313,3 @@ export function MediaUploadSetting({className, label, hideLabel, onFileChange, i
+         </div>
+     );
+ }
+-
+-export function SettingsDivider() {
+-    return (
+-        <hr className="-mx-6 mt-2 border-grey-250 dark:border-white/5" />
+-    );
+-}
+diff --git a/packages/koenig-lexical/src/components/ui/SettingsPanel.stories.jsx b/packages/koenig-lexical/src/components/ui/SettingsPanel.stories.jsx
+index 512d56fdd6..c75c952d51 100644
+--- a/packages/koenig-lexical/src/components/ui/SettingsPanel.stories.jsx
++++ b/packages/koenig-lexical/src/components/ui/SettingsPanel.stories.jsx
+@@ -6,12 +6,12 @@ import ImgFullIcon from '../../assets/icons/kg-img-full.svg?react';
+ import ImgRegularIcon from '../../assets/icons/kg-img-regular.svg?react';
+ import ImgWideIcon from '../../assets/icons/kg-img-wide.svg?react';
+ import LeftAlignIcon from '../../assets/icons/kg-align-left.svg?react';
+-import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, DropdownSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from './SettingsPanel';
++import {ButtonGroupSetting, ColorOptionSetting, ColorPickerSetting, DropdownSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsPanel, ToggleSetting} from './SettingsPanel';
+ 
+ const story = {
+     title: 'Settings panel/Settings panel',
+     component: SettingsPanel,
+-    subcomponents: {ToggleSetting, InputSetting, SettingsDivider, ButtonGroupSetting},
++    subcomponents: {ToggleSetting, InputSetting, ButtonGroupSetting},
+     parameters: {
+         status: {
+             type: 'uiReady'
+@@ -83,10 +83,8 @@ EmailCtaCard.args = {
+             menu={[{label: 'Free members', name: 'status:free'}, {label: 'Paid members', name: 'status:-free'}]}
+             value='status:free'
+         />,
+-        <SettingsDivider />,
+         <ButtonGroupSetting buttons={alignmentButtonGroup} label='Content alignment' />,
+         <ToggleSetting label='Separators' />,
+-        <SettingsDivider />,
+         <ToggleSetting label='Button' />,
+         <InputSetting label='Button text' placeholder='Add button text' />,
+         <InputSetting label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
+@@ -114,7 +112,6 @@ export const ButtonCard = Template.bind({});
+ ButtonCard.args = {
+     children: [
+         <ButtonGroupSetting buttons={alignmentButtonGroup} label='Content alignment' />,
+-        <SettingsDivider />,
+         <InputSetting label='Button text' placeholder='Add button text' />,
+         <InputSetting label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
+     ]
+@@ -188,7 +185,7 @@ VideoCard.args = {
+             label='Loop'
+         />,
+         <MediaUploadSetting
+-            borderStyle='dashed'
++            borderStyle='rounded'
+             desc=''
+             icon='file'
+             label='Custom thumbnail'
+@@ -201,7 +198,6 @@ export const ProductCard = Template.bind({});
+ ProductCard.args = {
+     children: [
+         <ToggleSetting label='Rating' />,
+-        <SettingsDivider />,
+         <ToggleSetting label='Button' />,
+         <InputSetting label='Button text' placeholder='Add button text' />,
+         <InputSetting label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
+@@ -228,7 +224,6 @@ HeaderCard.args = {
+     children: [
+         <ButtonGroupSetting buttons={sizeButtonGroup} label='Size' />,
+         <ColorOptionSetting buttons={headerColorPicker} label='Style' />,
+-        <SettingsDivider />,
+         <ToggleSetting label='Button' />,
+         <InputSetting label='Button text' placeholder='Add button text' />,
+         <InputSetting label='Button URL' placeholder='https://yoursite.com/#/portal/signup/' />
+diff --git a/packages/koenig-lexical/src/components/ui/SnippetInput/Dropdown.jsx b/packages/koenig-lexical/src/components/ui/SnippetInput/Dropdown.jsx
+index 3da7a0790a..a012b748b3 100644
+--- a/packages/koenig-lexical/src/components/ui/SnippetInput/Dropdown.jsx
++++ b/packages/koenig-lexical/src/components/ui/SnippetInput/Dropdown.jsx
+@@ -13,7 +13,7 @@ export const Dropdown = ({
+ }) => {
+     return (
+         <ul
+-            className="absolute mt-[-1px] w-full max-w-[240px] rounded-b border border-grey-200 bg-white shadow dark:border-grey-900 dark:bg-grey-950"
++            className="absolute mt-[-1px] w-full max-w-[240px] rounded-b border border-grey-200 bg-white shadow-md dark:border-grey-900 dark:bg-grey-950"
+             tabIndex={0}
+             onKeyDown={onKeyDown}
+         >
+diff --git a/packages/koenig-lexical/src/components/ui/TabView.jsx b/packages/koenig-lexical/src/components/ui/TabView.jsx
+new file mode 100644
+index 0000000000..db681bf57f
+--- /dev/null
++++ b/packages/koenig-lexical/src/components/ui/TabView.jsx
+@@ -0,0 +1,48 @@
++import PropTypes from 'prop-types';
++import React, {useState} from 'react';
++
++const TabView = ({tabs, defaultTab, tabContent}) => {
++    const [activeTab, setActiveTab] = useState(defaultTab || tabs[0].id);
++
++    const handleTabChange = (tabId) => {
++        setActiveTab(tabId);
++    };
++
++    return (
++        <>
++            <div className="no-scrollbar flex w-full gap-5 border-b border-grey-300 px-6 dark:border-grey-900">
++                {tabs.map(tab => (
++                    <button
++                        key={tab.id}
++                        className={`-mb-px cursor-pointer appearance-none whitespace-nowrap border-b-2 pb-3 pt-4 text-sm font-semibold transition-all ${
++                            activeTab === tab.id
++                                ? 'border-black text-black dark:border-white dark:text-white'
++                                : 'border-transparent text-grey-600 hover:border-grey-500 dark:text-white'
++                        }`}
++                        data-testid={`tab-${tab.id}`}
++                        type="button"
++                        onClick={() => handleTabChange(tab.id)}
++                    >
++                        {tab.label}
++                    </button>
++                ))}
++            </div>
++            <div className="flex flex-col gap-3 p-6">
++                {tabContent[activeTab]}
++            </div>
++        </>
++    );
++};
++
++TabView.propTypes = {
++    tabs: PropTypes.arrayOf(
++        PropTypes.shape({
++            id: PropTypes.string.isRequired,
++            label: PropTypes.string.isRequired
++        })
++    ).isRequired,
++    defaultTab: PropTypes.string,
++    tabContent: PropTypes.objectOf(PropTypes.node).isRequired
++};
++
++export {TabView};
+\ No newline at end of file
+diff --git a/packages/koenig-lexical/src/components/ui/Toggle.jsx b/packages/koenig-lexical/src/components/ui/Toggle.jsx
+index 6831509611..327e8c16d9 100644
+--- a/packages/koenig-lexical/src/components/ui/Toggle.jsx
++++ b/packages/koenig-lexical/src/components/ui/Toggle.jsx
+@@ -3,14 +3,14 @@ import React from 'react';
+ 
+ export function Toggle({isChecked, onChange, dataTestId}) {
+     return (
+-        <label className="relative inline-block h-5 w-[34px] outline-none" data-testid={dataTestId} id={dataTestId}>
++        <label className="relative inline-block h-4 w-7 outline-none" data-testid={dataTestId} id={dataTestId}>
+             <input
+                 checked={isChecked}
+                 className="peer absolute hidden"
+                 type="checkbox"
+                 onChange={onChange}
+             />
+-            <div className="absolute inset-0 cursor-pointer rounded-full bg-grey-300 transition-all before:absolute before:bottom-[2px] before:left-[2px] before:size-4 before:rounded-full before:bg-white before:transition-all before:duration-200 peer-checked:bg-black peer-checked:before:translate-x-[14px] dark:bg-grey-900 dark:peer-checked:bg-green"></div>
++            <div className="absolute inset-0 cursor-pointer rounded-full bg-grey-300 transition-all before:absolute before:bottom-[2px] before:left-[2px] before:size-3 before:rounded-full before:bg-white before:transition-all before:duration-100 peer-checked:bg-black peer-checked:before:translate-x-[12px] dark:bg-grey-800 dark:peer-checked:bg-green"></div>
+         </label>
+     );
+ }
+diff --git a/packages/koenig-lexical/src/components/ui/Tooltip.jsx b/packages/koenig-lexical/src/components/ui/Tooltip.jsx
+index 85bfc346fb..4b0dc3c42a 100644
+--- a/packages/koenig-lexical/src/components/ui/Tooltip.jsx
++++ b/packages/koenig-lexical/src/components/ui/Tooltip.jsx
+@@ -2,10 +2,10 @@ import React from 'react';
+ 
+ export function Tooltip({label, shortcutKeys}) {
+     return (
+-        <div className={`invisible absolute -top-8 left-1/2 z-[1000] flex -translate-x-1/2 items-center gap-1 whitespace-nowrap rounded-md bg-black py-1 font-sans text-xs font-medium text-white group-hover:visible dark:bg-grey-950 ${shortcutKeys ? 'pl-[1rem] pr-1' : 'px-[1rem]'}`}>
++        <div className={`invisible absolute -top-8 left-1/2 z-[1000] flex -translate-x-1/2 items-center gap-1 whitespace-nowrap rounded-md bg-black py-1 font-sans text-2xs font-medium text-white group-hover:visible dark:bg-grey-900 ${shortcutKeys ? 'pl-[1rem] pr-1' : 'px-[1rem]'}`}>
+             <span>{label}</span>
+             {shortcutKeys && shortcutKeys.map(k => (
+-                <div key={k} className="rounded bg-grey-900 px-2 text-xs text-white dark:bg-grey-950">{k}</div>
++                <div key={k} className="rounded bg-grey-900 px-2 text-2xs text-white dark:bg-grey-950">{k}</div>
+             ))}
+         </div>
+     );
+diff --git a/packages/koenig-lexical/src/components/ui/VisibilityDropdown.jsx b/packages/koenig-lexical/src/components/ui/VisibilityDropdown.jsx
+deleted file mode 100644
+index edb652d850..0000000000
+--- a/packages/koenig-lexical/src/components/ui/VisibilityDropdown.jsx
++++ /dev/null
+@@ -1,54 +0,0 @@
+-import React from 'react';
+-import {Dropdown} from './Dropdown';
+-import {Toggle} from './Toggle';
+-// import {useVisibilityToggle} from '../../hooks/useVisibilityToggle.js';
+-
+-export function VisibilityDropdown({editor, nodeKey, visibility, isActive, visibilityProps}) {
+-    const {toggleEmail, toggleSegment, toggleWeb, segment, emailVisibility, webVisibility, dropdownOptions} = visibilityProps;
+-    // const [toggleEmail, toggleSegment, toggleWeb, segment, emailVisibility, webVisibility, dropdownOptions] = useVisibilityToggle(editor, nodeKey, visibility);
+-
+-    if (!isActive) {
+-        return <></>;
+-    }
+-
+-    if (isActive) {
+-        return (
+-            <div className="not-kg-prose absolute left-1/2 top-0 z-[1001] flex w-[254px] -translate-x-1/2 flex-col gap-1 rounded-lg bg-white p-6 shadow-md" data-kg-allow-clickthrough="false" data-testid="visibility-settings">
+-                <ToggleSetting
+-                    dataTestId='visibility-show-on-web'
+-                    isChecked={webVisibility}
+-                    label="Show on web"
+-                    onChange={e => toggleWeb(e)} />
+-                <hr className="-mx-6 my-2 border-grey-250 dark:border-white/5" />
+-                <ToggleSetting
+-                    dataTestId='visibility-show-on-email'
+-                    isChecked={emailVisibility}
+-                    label="Show in email"
+-                    onChange={e => toggleEmail(e)} />
+-                {
+-                    emailVisibility && dropdownOptions && (
+-                        <>
+-                            <Dropdown
+-                                dataTestId={'visibility-dropdown-segment'}
+-                                menu={dropdownOptions}
+-                                value={segment}
+-                                onChange={toggleSegment}
+-                            />
+-                        </>
+-                    )
+-                }
+-            </div>
+-        );
+-    }
+-}
+-
+-function ToggleSetting({label, isChecked, onChange, dataTestId}) {
+-    return (
+-        <label className="flex min-h-[3rem] w-full cursor-pointer items-center justify-between text-sm" data-testid={dataTestId}>
+-            <span className="block text-grey-900 dark:text-grey-300">{label}</span>
+-            <div className="flex shrink-0 pl-2">
+-                <Toggle dataTestId={`${dataTestId}-Toggle`} isChecked={isChecked} onChange={onChange} />
+-            </div>
+-        </label>
+-    );
+-}
+diff --git a/packages/koenig-lexical/src/components/ui/cards/AudioCard.jsx b/packages/koenig-lexical/src/components/ui/cards/AudioCard.jsx
+index 7294474ed1..c982ac5de8 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/AudioCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/AudioCard.jsx
+@@ -106,7 +106,7 @@ function AudioThumbnail({
+         );
+     } else if (errors && errors.length > 0) {
+         return (
+-            <span className="group relative flex aspect-square h-20 items-center justify-center rounded-md bg-grey-200 px-1 text-center font-sans text-xs font-semibold leading-snug text-red" data-testid="thumbnail-errors">
++            <span className="group relative flex aspect-square h-20 items-center justify-center rounded-md bg-grey-200 px-1 text-center font-sans text-2xs font-semibold leading-snug text-red" data-testid="thumbnail-errors">
+                 {errors[0].message}
+             </span>
+         );
+@@ -131,7 +131,7 @@ function AudioThumbnail({
+         return (
+             <div className="group flex aspect-square h-20 items-center justify-center rounded-md bg-purple">
+                 <button
+-                    className="flex size-20 items-center justify-center"
++                    className="flex size-20 cursor-pointer items-center justify-center"
+                     data-testid="upload-thumbnail"
+                     type="button"
+                     onClick={() => openFileSelection({fileInputRef: fileInputRef})}
+diff --git a/packages/koenig-lexical/src/components/ui/cards/EmailCtaCard.jsx b/packages/koenig-lexical/src/components/ui/cards/EmailCtaCard.jsx
+index a3f48be709..3c744f6106 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/EmailCtaCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/EmailCtaCard.jsx
+@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
+ import React from 'react';
+ import ReplacementStringsPlugin from '../../../plugins/ReplacementStringsPlugin';
+ import {Button} from '../Button';
+-import {ButtonGroupSetting, DropdownSetting, InputSetting, InputUrlSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
++import {ButtonGroupSetting, DropdownSetting, InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+ import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
+ 
+ export function EmailCtaCard({
+@@ -54,7 +54,7 @@ export function EmailCtaCard({
+         <>
+             <div className="w-full pb-6">
+                 {/* Segment */}
+-                <div className="pb-7 pt-[.6rem] font-sans text-xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">
++                <div className="pb-7 pt-[.6rem] font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">
+                     {segmentName}
+                 </div>
+ 
+@@ -99,7 +99,6 @@ export function EmailCtaCard({
+                         value={segment}
+                         onChange={handleSegmentChange}
+                     />
+-                    <SettingsDivider />
+ 
+                     {/* Alignment settings */}
+                     <ButtonGroupSetting
+@@ -116,7 +115,6 @@ export function EmailCtaCard({
+                         label='Separators'
+                         onChange={toggleDividers}
+                     />
+-                    <SettingsDivider />
+ 
+                     {/* Button settings */}
+                     <ToggleSetting
+diff --git a/packages/koenig-lexical/src/components/ui/cards/HeaderCard/v1/HeaderCard.jsx b/packages/koenig-lexical/src/components/ui/cards/HeaderCard/v1/HeaderCard.jsx
+index 85955bdccf..fae3396026 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/HeaderCard/v1/HeaderCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/HeaderCard/v1/HeaderCard.jsx
+@@ -4,7 +4,7 @@ import React from 'react';
+ import clsx from 'clsx';
+ import {BackgroundImagePicker} from '../../../BackgroundImagePicker';
+ import {Button} from '../../../Button';
+-import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../../../SettingsPanel';
++import {ButtonGroupSetting, ColorOptionSetting, InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../../../SettingsPanel';
+ import {ReadOnlyOverlay} from '../../../ReadOnlyOverlay';
+ import {isEditorEmpty} from '../../../../../utils/isEditorEmpty';
+ 
+@@ -192,7 +192,6 @@ export function HeaderCard({isEditing,
+                         type={type}
+                         onFileChange={onFileChange}
+                     />
+-                    <SettingsDivider />
+                     <ToggleSetting
+                         dataTestId='header-button-toggle'
+                         isChecked={button}
+diff --git a/packages/koenig-lexical/src/components/ui/cards/HeaderCard/v2/HeaderCard.jsx b/packages/koenig-lexical/src/components/ui/cards/HeaderCard/v2/HeaderCard.jsx
+index bdeba3d562..6d227e63c4 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/HeaderCard/v2/HeaderCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/HeaderCard/v2/HeaderCard.jsx
+@@ -13,7 +13,7 @@ import ShrinkIcon from '../../../../../assets/icons/kg-shrink.svg?react';
+ import clsx from 'clsx';
+ import trackEvent from '../../../../../utils/analytics';
+ import {Button} from '../../../Button';
+-import {ButtonGroupSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../../../SettingsPanel';
++import {ButtonGroupSetting, ColorPickerSetting, InputSetting, InputUrlSetting, MediaUploadSetting, SettingsPanel, ToggleSetting} from '../../../SettingsPanel';
+ import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
+ import {FastAverageColor} from 'fast-average-color';
+ import {IconButton} from '../../../IconButton';
+@@ -374,13 +374,7 @@ export function HeaderCard({alignment,
+                         selectedName={layout}
+                         onClick={handleLayout}
+                     />
+-                    <ButtonGroupSetting
+-                        buttons={alignmentChildren}
+-                        label='Alignment'
+-                        selectedName={alignment}
+-                        onClick={handleAlignment}
+-                    />
+-
++                                        
+                     {
+                         layout === 'split' && (
+                             <ToggleSetting
+@@ -393,6 +387,13 @@ export function HeaderCard({alignment,
+                         )
+                     }
+ 
++                    <ButtonGroupSetting
++                        buttons={alignmentChildren}
++                        label='Alignment'
++                        selectedName={alignment}
++                        onClick={handleAlignment}
++                    />
++
+                     <ColorPickerSetting
+                         dataTestId='header-background-color'
+                         eyedropper={layout === 'split'}
+@@ -450,9 +451,8 @@ export function HeaderCard({alignment,
+                     />
+                     <MediaUploadSetting
+                         alt='Background image'
+-                        borderStyle={'dashed'}
++                        borderStyle={'rounded'}
+                         className={(!showBackgroundImage || layout === 'split') && 'hidden'}
+-                        desc='Click to upload'
+                         errors={fileUploader?.errors}
+                         hideLabel={layout !== 'split'}
+                         icon='file'
+@@ -475,7 +475,6 @@ export function HeaderCard({alignment,
+                     />
+ 
+                     {/* Button settings */}
+-                    <SettingsDivider />
+                     <ToggleSetting
+                         dataTestId='header-button-toggle'
+                         isChecked={buttonEnabled}
+diff --git a/packages/koenig-lexical/src/components/ui/cards/HtmlCard.jsx b/packages/koenig-lexical/src/components/ui/cards/HtmlCard.jsx
+index d12cda7f41..e679553da7 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/HtmlCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/HtmlCard.jsx
+@@ -15,6 +15,7 @@ export function HtmlCard({html, updateHtml, isEditing, darkMode, visibilityMessa
+             {isEditing
+                 ? (
+                     <>
++                        {isContentVisibilityEnabled && <CardVisibilityMessage message={visibilityMessage} />}
+                         <HtmlEditor
+                             darkMode={darkMode}
+                             html={html}
+diff --git a/packages/koenig-lexical/src/components/ui/cards/MarkdownCard/MarkdownHelpDialog.jsx b/packages/koenig-lexical/src/components/ui/cards/MarkdownCard/MarkdownHelpDialog.jsx
+index c52656393c..6d2a428945 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/MarkdownCard/MarkdownHelpDialog.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/MarkdownCard/MarkdownHelpDialog.jsx
+@@ -30,7 +30,7 @@ function superSub(value) {
+ export function Td({value}) {
+     return (
+         <td className={`p-2 font-normal ${(value === 'Bold' ? '!font-bold' : (value === 'Emphasize') ? 'italic' : (value === 'Strike-through') ? 'line-through' : (value === 'Link') ? 'cursor-pointer text-green' : '')}`}>
+-            <span className={` ${(value === 'Inline code') ? 'rounded-sm border border-grey-300 bg-grey-100 p-[.2rem] font-mono text-xs' : (value === 'Highlight') ? 'bg-[#ff0]' : ''}`}>
++            <span className={` ${(value === 'Inline code') ? 'rounded-sm border border-grey-300 bg-grey-100 p-[.2rem] font-mono text-2xs' : (value === 'Highlight') ? 'bg-[#ff0]' : ''}`}>
+                 {superSub(value)}
+             </span>
+         </td>
+diff --git a/packages/koenig-lexical/src/components/ui/cards/PaywallCard.jsx b/packages/koenig-lexical/src/components/ui/cards/PaywallCard.jsx
+index 954419b250..cec65675d2 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/PaywallCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/PaywallCard.jsx
+@@ -1,6 +1,6 @@
+ export function PaywallCard() {
+     return (
+-        <div className="flex h-3 items-center whitespace-pre text-center font-sans text-xs font-semibold uppercase text-grey-500 before:mr-2 before:flex-1 before:border-t before:border-grey-300 before:content-[''] after:ml-2 after:flex-1 after:border-t after:border-grey-300 dark:text-grey-800">
++        <div className="flex h-3 items-center whitespace-pre text-center font-sans text-2xs font-semibold uppercase text-grey-500 before:mr-2 before:flex-1 before:border-t before:border-grey-300 before:content-[''] after:ml-2 after:flex-1 after:border-t after:border-grey-300 dark:text-grey-800">
+             Free public preview
+             <span className="mx-2 text-green">↑</span>
+             /
+diff --git a/packages/koenig-lexical/src/components/ui/cards/ProductCard.jsx b/packages/koenig-lexical/src/components/ui/cards/ProductCard.jsx
+index b3bb397457..796fc208be 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/ProductCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/ProductCard.jsx
+@@ -2,7 +2,7 @@ import KoenigNestedEditor from '../../KoenigNestedEditor';
+ import PropTypes from 'prop-types';
+ import React from 'react';
+ import {Button} from '../Button';
+-import {InputSetting, InputUrlSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
++import {InputSetting, InputUrlSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+ import {ProductCardImage} from './ProductCard/ProductCardImage';
+ import {RatingButton} from './ProductCard/RatingButton';
+ import {ReadOnlyOverlay} from '../ReadOnlyOverlay';
+@@ -105,7 +105,6 @@ export function ProductCard({
+                         label='Rating'
+                         onChange={onRatingToggle}
+                     />
+-                    <SettingsDivider />
+                     <ToggleSetting
+                         dataTestId="product-button-toggle"
+                         isChecked={isButtonEnabled}
+diff --git a/packages/koenig-lexical/src/components/ui/cards/SignupCard.jsx b/packages/koenig-lexical/src/components/ui/cards/SignupCard.jsx
+index 52d62e5243..34974dac15 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/SignupCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/SignupCard.jsx
+@@ -12,7 +12,7 @@ import React, {useEffect, useState} from 'react';
+ import ShrinkIcon from '../../../assets/icons/kg-shrink.svg?react';
+ import clsx from 'clsx';
+ import trackEvent from '../../../utils/analytics';
+-import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsDivider, SettingsPanel, ToggleSetting} from '../SettingsPanel';
++import {ButtonGroupSetting, ColorPickerSetting, InputSetting, MediaUploadSetting, MultiSelectDropdownSetting, SettingsPanel, ToggleSetting} from '../SettingsPanel';
+ import {Color, textColorForBackgroundColor} from '@tryghost/color-utils';
+ import {FastAverageColor} from 'fast-average-color';
+ import {IconButton} from '../IconButton';
+@@ -371,12 +371,6 @@ export function SignupCard({alignment,
+                         selectedName={layout}
+                         onClick={handleLayout}
+                     />
+-                    <ButtonGroupSetting
+-                        buttons={alignmentChildren}
+-                        label='Alignment'
+-                        selectedName={alignment}
+-                        onClick={handleAlignment}
+-                    />
+ 
+                     {
+                         layout === 'split' && (
+@@ -390,6 +384,13 @@ export function SignupCard({alignment,
+                         )
+                     }
+ 
++                    <ButtonGroupSetting
++                        buttons={alignmentChildren}
++                        label='Alignment'
++                        selectedName={alignment}
++                        onClick={handleAlignment}
++                    />
++
+                     <ColorPickerSetting
+                         dataTestId='signup-background-color'
+                         eyedropper={layout === 'split'}
+@@ -445,11 +446,11 @@ export function SignupCard({alignment,
+                             }
+                         }}
+                     />
++
+                     <MediaUploadSetting
+                         alt='Background image'
+-                        borderStyle={'dashed'}
++                        borderStyle={'rounded'}
+                         className={(!showBackgroundImage || layout === 'split') && 'hidden'}
+-                        desc='Click to upload'
+                         errors={fileUploader?.errors}
+                         hideLabel={layout !== 'split'}
+                         icon='file'
+@@ -470,13 +471,12 @@ export function SignupCard({alignment,
+                             handleTextColor(matchingTextColor(backgroundColor));
+                         }}
+                     />
+-                    <SettingsDivider />
+ 
+                     <ColorPickerSetting
+                         dataTestId='signup-button-color'
+                         eyedropper={layout === 'split'}
+                         isExpanded={buttonColorPickerExpanded}
+-                        label='Button'
++                        label='Button color'
+                         swatches={[
+                             {title: 'White', hex: '#ffffff'},
+                             {title: 'Black', hex: '#000000'},
+@@ -500,7 +500,6 @@ export function SignupCard({alignment,
+                         label='Button text'
+                         placeholder='Add button text'
+                         value={buttonText}
+-                        hideLabel
+                         onBlur={handleButtonTextBlur}
+                         onChange={handleButtonText}
+                     />
+@@ -511,7 +510,7 @@ export function SignupCard({alignment,
+                             description='Added to members created using this form'
+                             items={labels}
+                             label='Labels'
+-                            placeholder='Select'
++                            placeholder='Type to search'
+                             onChange={handleLabels}
+                         />
+                     )}
+diff --git a/packages/koenig-lexical/src/components/ui/cards/VideoCard.jsx b/packages/koenig-lexical/src/components/ui/cards/VideoCard.jsx
+index e717749403..fc8b80dec2 100644
+--- a/packages/koenig-lexical/src/components/ui/cards/VideoCard.jsx
++++ b/packages/koenig-lexical/src/components/ui/cards/VideoCard.jsx
+@@ -97,7 +97,7 @@ function PopulatedVideoCard({
+                         {!isLoopChecked && (
+                             <MediaUploadSetting
+                                 alt='Custom thumbnail'
+-                                borderStyle={'dashed'}
++                                borderStyle={'rounded'}
+                                 dataTestId="custom-thumbnail-replace"
+                                 errors={customThumbnailUploader.errors}
+                                 icon='file'
+diff --git a/packages/koenig-lexical/src/hooks/useVisibilityToggle.js b/packages/koenig-lexical/src/hooks/useVisibilityToggle.js
+index 90c55d92a6..f201f337a8 100644
+--- a/packages/koenig-lexical/src/hooks/useVisibilityToggle.js
++++ b/packages/koenig-lexical/src/hooks/useVisibilityToggle.js
+@@ -55,21 +55,21 @@ export const useVisibilityToggle = (editor, nodeKey, cardConfig) => {
+             message = `Only shown to ${segmentLabel} in email`;
+         }
+     }
+-
+-    const toggleEmail = (e) => {
++    
++    const toggleEmail = () => {
+         editor.update(() => {
+             const node = $getNodeByKey(nodeKey);
+-            node.visibility = {...node.visibility, showOnEmail: e.target.checked};
++            node.visibility = {...node.visibility, showOnEmail: !node.visibility.showOnEmail};
+         });
+     };
+-
+-    const toggleWeb = (e) => {
++    
++    const toggleWeb = () => {
+         editor.update(() => {
+             const node = $getNodeByKey(nodeKey);
+-            node.visibility = {...node.visibility, showOnWeb: e.target.checked};
++            node.visibility = {...node.visibility, showOnWeb: !node.visibility.showOnWeb};
+         });
+     };
+-
++    
+     const toggleSegment = (name) => {
+         editor.update(() => {
+             const node = $getNodeByKey(nodeKey);
+diff --git a/packages/koenig-lexical/src/nodes/HtmlNodeComponent.jsx b/packages/koenig-lexical/src/nodes/HtmlNodeComponent.jsx
+index 084e14b5ea..0234f7d07a 100644
+--- a/packages/koenig-lexical/src/nodes/HtmlNodeComponent.jsx
++++ b/packages/koenig-lexical/src/nodes/HtmlNodeComponent.jsx
+@@ -1,40 +1,77 @@
+ import CardContext from '../context/CardContext';
+ import KoenigComposerContext from '../context/KoenigComposerContext.jsx';
+-import React, {useEffect} from 'react';
++import React from 'react';
+ import {$getNodeByKey} from 'lexical';
+ import {ActionToolbar} from '../components/ui/ActionToolbar.jsx';
+ import {DESELECT_CARD_COMMAND, EDIT_CARD_COMMAND} from '../plugins/KoenigBehaviourPlugin.jsx';
++import {DropdownSetting, SettingsPanel, ToggleSetting} from '../components/ui/SettingsPanel.jsx';
+ import {HtmlCard} from '../components/ui/cards/HtmlCard';
+ import {SnippetActionToolbar} from '../components/ui/SnippetActionToolbar.jsx';
+ import {ToolbarMenu, ToolbarMenuItem, ToolbarMenuSeparator} from '../components/ui/ToolbarMenu.jsx';
+-import {VisibilityDropdown} from '../components/ui/VisibilityDropdown.jsx';
+ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
+ import {useVisibilityToggle} from '../hooks/useVisibilityToggle.js';
+ 
+-export function HtmlNodeComponent({nodeKey, html, visibility}) {
++export function HtmlNodeComponent({nodeKey, html}) {
+     const [editor] = useLexicalComposerContext();
+     const cardContext = React.useContext(CardContext);
+     const {cardConfig, darkMode} = React.useContext(KoenigComposerContext);
+     const [showSnippetToolbar, setShowSnippetToolbar] = React.useState(false);
+-    const [showVisibilityDropdown, setShowVisibilityDropdown] = React.useState(false);
+ 
+     const isContentVisibilityEnabled = cardConfig?.feature?.contentVisibility || false;
+-    const isContentVisibilityActive = editor.getEditorState().read(() => {
+-        return $getNodeByKey(nodeKey).getIsVisibilityActive();
+-    });
+-
+     const [toggleEmail, toggleSegment, toggleWeb, segment, emailVisibility, webVisibility, dropdownOptions, visibilityMessage] = useVisibilityToggle(editor, nodeKey, cardConfig);
+-
+-    const visibilityProps = {
+-        toggleEmail,
+-        toggleSegment,
+-        toggleWeb,
+-        segment,
+-        emailVisibility,
+-        webVisibility,
+-        dropdownOptions
++    const handleSettingChange = settingFunction => (value) => {
++        if (typeof value === 'string') {
++            // This is for the dropdown
++            settingFunction(value);
++        } else {
++            // This is for the toggles
++            settingFunction();
++        }
++        editor.update(() => {
++            const node = $getNodeByKey(nodeKey);
++            if (node.select) {
++                node.select();
++            }
++        });
+     };
+ 
++    const tabs = [
++        {id: 'design', label: 'Design'},
++        {id: 'visibility', label: 'Visibility'}
++    ];
++
++    const visibilitySettings = (
++        <>
++            <ToggleSetting
++                dataTestId="visibility-show-on-web"
++                isChecked={webVisibility}
++                label="Show on web"
++                onChange={handleSettingChange(toggleWeb)}
++            />
++            <ToggleSetting
++                dataTestId="visibility-show-on-email"
++                isChecked={emailVisibility}
++                label="Show in email"
++                onChange={handleSettingChange(toggleEmail)}
++            />
++            {emailVisibility && dropdownOptions && (
++                <DropdownSetting
++                    dataTestId="visibility-dropdown-segment"
++                    label="Email audience"
++                    menu={dropdownOptions}
++                    value={segment}
++                    onChange={value => handleSettingChange(toggleSegment)(value)}
++                />
++            )}
++        </>
++    );
++
++    const designSettings = (
++        <div className="text-sm font-medium tracking-normal text-grey-900 dark:text-grey-300">
++            Some design settings
++        </div>
++    );
++
+     const updateHtml = (value) => {
+         editor.update(() => {
+             const node = $getNodeByKey(nodeKey);
+@@ -54,18 +91,6 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
+         }
+     };
+ 
+-    const handleVisibilityToggle = (event) => {
+-        event.preventDefault();
+-        event.stopPropagation();
+-        setShowVisibilityDropdown(!showVisibilityDropdown);
+-    };
+-
+-    useEffect(() => {
+-        if (!cardContext.isSelected || !cardContext.isEditing) {
+-            setShowVisibilityDropdown(false);
+-        }
+-    }, [cardContext.isSelected, cardContext.isEditing]);
+-
+     return (
+         <>
+             <HtmlCard
+@@ -79,19 +104,6 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
+                 onBlur={onBlur}
+             />
+ 
+-            {
+-                isContentVisibilityEnabled &&
+-                (
+-                    <VisibilityDropdown
+-                        editor={editor}
+-                        isActive={showVisibilityDropdown}
+-                        nodeKey={nodeKey}
+-                        visibility={visibility}
+-                        visibilityProps={visibilityProps}
+-                    />
+-                )
+-            }
+-
+             <ActionToolbar
+                 data-kg-card-toolbar="html"
+                 isVisible={showSnippetToolbar}
+@@ -101,23 +113,17 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
+ 
+             <ActionToolbar
+                 data-kg-card-toolbar="html"
+-                isVisible={(cardContext.isSelected && !showSnippetToolbar && !cardContext.isEditing) || showVisibilityDropdown}
++                isVisible={(cardContext.isSelected && !showSnippetToolbar && !cardContext.isEditing)}
+             >
+                 <ToolbarMenu>
+-                    <ToolbarMenuItem icon="edit" isActive={false} label="Edit" onClick={handleToolbarEdit} />
++                    <ToolbarMenuItem
++                        dataTestId="edit-html"
++                        icon="edit"
++                        isActive={false}
++                        label="Edit"
++                        onClick={handleToolbarEdit}
++                    />
+                     <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
+-                    {
+-                        isContentVisibilityEnabled &&
+-                        <>
+-                            <ToolbarMenuItem
+-                                icon="visibility"
+-                                isActive={isContentVisibilityActive}
+-                                label="Visibility"
+-                                onClick={handleVisibilityToggle}
+-                            />
+-                            <ToolbarMenuSeparator hide={!cardConfig.createSnippet} />
+-                        </>
+-                    }
+                     <ToolbarMenuItem
+                         dataTestId="create-snippet"
+                         hide={!cardConfig.createSnippet}
+@@ -128,6 +134,20 @@ export function HtmlNodeComponent({nodeKey, html, visibility}) {
+                     />
+                 </ToolbarMenu>
+             </ActionToolbar>
++
++            {cardContext.isEditing && isContentVisibilityEnabled && (
++                <SettingsPanel 
++                    darkMode={darkMode} 
++                    defaultTab="visibility"
++                    tabs={tabs}
++                    onMouseDown={e => e.preventDefault()}
++                >
++                    {{
++                        design: designSettings,
++                        visibility: visibilitySettings
++                    }}
++                </SettingsPanel>
++            )}
+         </>
+     );
+-}
++}
+\ No newline at end of file
+diff --git a/packages/koenig-lexical/src/plugins/EmojiPickerPlugin.jsx b/packages/koenig-lexical/src/plugins/EmojiPickerPlugin.jsx
+index 06e3d46935..ed600d88d3 100644
+--- a/packages/koenig-lexical/src/plugins/EmojiPickerPlugin.jsx
++++ b/packages/koenig-lexical/src/plugins/EmojiPickerPlugin.jsx
+@@ -177,7 +177,7 @@ export function EmojiPickerPlugin() {
+                 }
+                 return (
+                     <Portal className="w-[240px]" to={anchorElementRef.current}>
+-                        <ul className="relative z-10 max-h-[214px] select-none scroll-p-2 list-none overflow-y-auto rounded-md bg-white p-1  shadow dark:bg-grey-950" data-testid="emoji-menu" style={getPositionStyles()}>
++                        <ul className="relative z-10 max-h-[214px] select-none scroll-p-2 list-none overflow-y-auto rounded-md bg-white p-1  shadow-md dark:bg-grey-950" data-testid="emoji-menu" style={getPositionStyles()}>
+                             {searchResults.map((emoji, index) => (
+                                 <div key={emoji.id}>
+                                     <EmojiMenuItem
+diff --git a/packages/koenig-lexical/src/plugins/TKPlugin.jsx b/packages/koenig-lexical/src/plugins/TKPlugin.jsx
+index 87fba410d9..320ad7109f 100644
+--- a/packages/koenig-lexical/src/plugins/TKPlugin.jsx
++++ b/packages/koenig-lexical/src/plugins/TKPlugin.jsx
+@@ -122,7 +122,7 @@ function TKIndicator({editor, rootElement, parentKey, nodeKeys}) {
+ 
+     return (
+         <div
+-            className="absolute cursor-pointer p-1 text-xs font-medium text-grey-600"
++            className="absolute cursor-pointer p-1 text-2xs font-medium text-grey-600"
+             data-testid="tk-indicator"
+             style={style}
+             onClick={onClick}
+diff --git a/packages/koenig-lexical/tailwind.config.cjs b/packages/koenig-lexical/tailwind.config.cjs
+index 96b62fb4ae..f6133fb4fe 100644
+--- a/packages/koenig-lexical/tailwind.config.cjs
++++ b/packages/koenig-lexical/tailwind.config.cjs
+@@ -18,6 +18,7 @@ module.exports = {
+             grey: {
+                 DEFAULT: '#ABB4BE',
+                 50: '#FAFAFB',
++                75: '#F9FAFB',
+                 100: '#F4F5F6',
+                 150: '#F1F3F4',
+                 200: '#EBEEF0',
+@@ -29,7 +30,9 @@ module.exports = {
+                 700: '#7C8B9A',
+                 800: '#626D79',
+                 900: '#394047',
+-                950: '#23292F'
++                925: '#2E3338',
++                950: '#23292F',
++                975: '#191B1E'
+             },
+             green: {
+                 DEFAULT: '#30CF43',
+@@ -87,10 +90,10 @@ module.exports = {
+             mono: 'Consolas, Liberation Mono, Menlo, Courier, monospace'
+         },
+         boxShadow: {
+-            DEFAULT: '0 0 1px rgba(0,0,0,.05), 0 5px 18px rgba(0,0,0,.08)',
++            DEFAULT: '0 0 1px rgba(0,0,0,.15), 0px 13px 27px -5px rgba(50, 50, 93, 0.08), 0px 8px 16px -8px rgba(0, 0, 0, 0.12)',
+             sm: '0px 2px 5px -1px rgba(50, 50, 93, 0.2), 0px 1px 3px -1px rgba(0, 0, 0, 0.25)',
+             md: '0px 13px 27px -5px rgba(50, 50, 93, 0.25), 0px 8px 16px -8px rgba(0, 0, 0, 0.3)',
+-            lg: '0px 40px 80px -20px rgba(50, 50, 93, 0.2), 0px 20px 40px -20px rgba(0, 0, 0, 0.25)',
++            lg: '0px 50px 100px -25px rgba(50, 50, 93, 0.2), 0px 30px 60px -20px rgba(0, 0, 0, 0.25)',
+             xl: '0 2.8px 2.2px rgba(0, 0, 0, 0.02), 0 6.7px 5.3px rgba(0, 0, 0, 0.028), 0 12.5px 10px rgba(0, 0, 0, 0.035), 0 22.3px 17.9px rgba(0, 0, 0, 0.042), 0 41.8px 33.4px rgba(0, 0, 0, 0.05), 0 100px 80px rgba(0, 0, 0, 0.07)',
+             inner: 'inset 0 0 4px 0 rgb(0 0 0 / 0.08)',
+             insetgreen: '0px 0px 0px 1px inset var(--green)',
+@@ -167,7 +170,8 @@ module.exports = {
+                 full: '9999px'
+             },
+             fontSize: {
+-                xs: '1.2rem',
++                '2xs': '1.2rem',
++                xs: '1.25rem',
+                 sm: '1.4rem',
+                 md: '1.5rem',
+                 lg: '1.8rem',
+diff --git a/packages/koenig-lexical/test/e2e/cards/email-cta-card.test.js b/packages/koenig-lexical/test/e2e/cards/email-cta-card.test.js
+index 859328dd5f..b69fee50a2 100644
+--- a/packages/koenig-lexical/test/e2e/cards/email-cta-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/email-cta-card.test.js
+@@ -142,7 +142,7 @@ test.describe('Email card', async () => {
+                 <div class="relative border-transparent caret-grey-800 z-10 hover:shadow-[0_0_0_1px] hover:shadow-green hover:-mx-3 hover:px-3"
+                     data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="email-cta">
+                     <div class="w-full pb-6">
+-                        <div class="pb-7 pt-[.6rem] font-sans text-xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">Free members</div>
++                        <div class="pb-7 pt-[.6rem] font-sans text-2xs font-semibold uppercase leading-8 tracking-normal text-grey dark:text-grey-800">Free members</div>
+                         <div
+                             class="koenig-lexical kg-inherit-styles w-full bg-transparent whitespace-normal font-serif text-xl text-grey-900 dark:text-grey-200 text-center mx-auto [&amp;:has(.placeholder)]:w-fit [&amp;:has(.placeholder)]:text-left">
+                             <div data-kg="editor">
+@@ -324,7 +324,6 @@ test.describe('Email card', async () => {
+                             </div>
+                             <p>Visible for this audience when delivered by email. This card is not published on your site.</p>
+                         </div>
+-                        <hr>
+                         <div>
+                             <div>Content alignment</div>
+                             <div>
+@@ -357,7 +356,6 @@ test.describe('Email card', async () => {
+                                 </label>
+                             </div>
+                         </label>
+-                        <hr>
+                         <label>
+                             <div>
+                                 <div>Button</div>
+diff --git a/packages/koenig-lexical/test/e2e/cards/header-card.test.js b/packages/koenig-lexical/test/e2e/cards/header-card.test.js
+index 3e9ce9a667..eec35a5874 100644
+--- a/packages/koenig-lexical/test/e2e/cards/header-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/header-card.test.js
+@@ -186,8 +186,8 @@ test.describe('Header card V1', async () => {
+         await createHeaderCard({page});
+ 
+         // Check that the default size is small
+-        await expect(page.getByLabel('S')).toHaveClass(/ bg-white /);
+-        await expect(page.getByLabel('M')).not.toHaveClass(/ bg-white /);
++        await expect(page.getByLabel('S')).toHaveClass(/ bg-grey-150 /);
++        await expect(page.getByLabel('M')).not.toHaveClass(/ bg-grey-150 /);
+ 
+         // Get height of the card
+         const box = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
+@@ -195,7 +195,7 @@ test.describe('Header card V1', async () => {
+ 
+         // Click on the medium button
+         await page.getByLabel('M').click();
+-        await expect(page.getByLabel('M')).toHaveClass(/ bg-white /);
++        await expect(page.getByLabel('M')).toHaveClass(/ bg-grey-150 /);
+ 
+         // Check that the height has changed
+         const box2 = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
+@@ -206,7 +206,7 @@ test.describe('Header card V1', async () => {
+         // Switch to large
+         const largeButton = page.locator('[aria-label="L"]');
+         await largeButton.click();
+-        await expect(largeButton).toHaveClass(/ bg-white /);
++        await expect(largeButton).toHaveClass(/ bg-grey-150 /);
+ 
+         // Check that the height has changed
+         const box3 = await page.locator('[data-kg-card="header"] > div:first-child').nth(0).boundingBox();
+diff --git a/packages/koenig-lexical/test/e2e/cards/product-card.test.js b/packages/koenig-lexical/test/e2e/cards/product-card.test.js
+index c83c6c3feb..ab5790da52 100644
+--- a/packages/koenig-lexical/test/e2e/cards/product-card.test.js
++++ b/packages/koenig-lexical/test/e2e/cards/product-card.test.js
+@@ -314,7 +314,6 @@ test.describe('Product card', async () => {
+                                     </label>
+                                 </div>
+                             </label>
+-                            <hr />
+                             <label>
+                                 <div><div>Button</div></div>
+                                 <div>
+diff --git a/packages/koenig-lexical/test/e2e/content-visibility.test.js b/packages/koenig-lexical/test/e2e/content-visibility.test.js
+index cec3c0104f..2578561246 100644
+--- a/packages/koenig-lexical/test/e2e/content-visibility.test.js
++++ b/packages/koenig-lexical/test/e2e/content-visibility.test.js
+@@ -26,50 +26,38 @@ test.describe('Content Visibility', async () => {
+             return page.locator('[data-kg-card="html"]');
+         }
+ 
+-        test('toolbar shows content visibility icon', async function () {
++        test('toolbar shows edit icon', async function () {
+             await insertHtmlCard();
+ 
+             await expect(page.locator('[data-kg-card="html"]')).toHaveAttribute('data-kg-card-selected', 'true');
+             await expect(page.locator('[data-kg-card="html"]')).toHaveAttribute('data-kg-card-editing', 'false');
+             await expect(page.locator('[data-kg-card-toolbar="html"]')).toBeVisible();
+-            await expect(page.locator('[data-kg-card-toolbar="html"] [aria-label="Visibility"]')).toBeVisible();
++            await expect(page.locator('[data-kg-card-toolbar="html"] [data-testid="edit-html"]')).toBeVisible();
+         });
+ 
+-        test('toolbar shows visibility options on click', async function () {
++        test('toolbar shows settings panel on click', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
++            await card.getByTestId('edit-html').click();
+ 
+             // settings are visible
+-            await expect(card.getByTestId('visibility-settings')).toBeVisible();
++            await expect(card.getByTestId('settings-panel')).toBeVisible();
++            await card.getByTestId('tab-visibility').click();
++            await expect(card.getByTestId('visibility-show-on-web')).toBeVisible();
+         });
+ 
+-        test('clicking on settings does not transition into edit mode', async function () {
++        test('clicking on edit button transitions card into edit mode', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
+-            await card.getByTestId('visibility-settings').click();
++            await card.getByTestId('edit-html').click();
+ 
+-            await expect(card).toHaveAttribute('data-kg-card-editing', 'false');
+-        });
+-
+-        test('changing a setting puts icon in active state', async function () {
+-            const card = await insertHtmlCard();
+-
+-            // button is not highlighted
+-            await expect(card.locator('[aria-label="Visibility"]')).toHaveAttribute('data-kg-active', 'false');
+-
+-            await card.locator('[aria-label="Visibility"]').click();
+-            await card.getByTestId('visibility-show-on-email-Toggle').click();
+-
+-            // button is highlighted
+-            await expect(card.locator('[aria-label="Visibility"]')).toHaveAttribute('data-kg-active', 'true');
++            await expect(card).toHaveAttribute('data-kg-card-editing', 'true');
+         });
+ 
+         test('visibility settings - defaults to show on email and web and all members', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
++            await card.getByTestId('edit-html').click();
+ 
+             await expect(card.getByTestId('visibility-message')).not.toBeVisible();
+         });
+@@ -77,9 +65,9 @@ test.describe('Content Visibility', async () => {
+         test('can toggle visibility settings - show on web is off', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
+-
+-            await card.getByTestId('visibility-show-on-web-Toggle').click();
++            await card.getByTestId('edit-html').click();
++            await card.getByTestId('tab-visibility').click();
++            await card.getByTestId('visibility-show-on-web').click();
+ 
+             await expect(card.getByTestId('visibility-message')).toContainText('Only shown in email');
+         });
+@@ -87,28 +75,19 @@ test.describe('Content Visibility', async () => {
+         test('can toggle visibility settings - show on email is off', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
+-
+-            await card.getByTestId('visibility-show-on-email-Toggle').click();
++            await card.getByTestId('edit-html').click();
++            await card.getByTestId('tab-visibility').click();
++            await card.getByTestId('visibility-show-on-email').click();
+ 
+             await expect(card.getByTestId('visibility-message')).toContainText('Only shown on web');
+         });
+ 
+-        test('can toggle visibility settings - show on email and web and all members', async function () {
+-            const card = await insertHtmlCard();
+-
+-            await card.locator('[aria-label="Visibility"]').click();
+-
+-            await expect(card.getByTestId('visibility-message')).not.toBeVisible();
+-        });
+-
+         test('can toggle visibility settings segments - free members', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
+-
++            await card.getByTestId('edit-html').click();
++            await card.getByTestId('tab-visibility').click();
+             await card.getByTestId('visibility-dropdown-segment').click();
+-
+             await card.locator('[data-test-value="status:free"]').click();
+ 
+             await expect(card.getByTestId('visibility-message')).toContainText('Shown on web, and to free members only in email');
+@@ -117,8 +96,8 @@ test.describe('Content Visibility', async () => {
+         test('can toggle visibility settings segments - paid members', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
+-
++            await card.getByTestId('edit-html').click();
++            await card.getByTestId('tab-visibility').click();
+             await card.getByTestId('visibility-dropdown-segment').click();
+             await card.locator('[data-test-value="status:-free"]').click();
+ 
+@@ -128,8 +107,8 @@ test.describe('Content Visibility', async () => {
+         test('can toggle visibility settings segments - all members', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
+-
++            await card.getByTestId('edit-html').click();
++            await card.getByTestId('tab-visibility').click();
+             await card.getByTestId('visibility-dropdown-segment').click();
+             await card.locator('[data-test-value=""]').click();
+ 
+@@ -139,10 +118,10 @@ test.describe('Content Visibility', async () => {
+         test('can toggle visibility - disable everything', async function () {
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
+-
+-            await card.getByTestId('visibility-show-on-web-Toggle').click();
+-            await card.getByTestId('visibility-show-on-email-Toggle').click();
++            await card.getByTestId('edit-html').click();
++            await card.getByTestId('tab-visibility').click();
++            await card.getByTestId('visibility-show-on-web').click();
++            await card.getByTestId('visibility-show-on-email').click();
+ 
+             await expect(card.getByTestId('visibility-message')).toContainText('Hidden from both web and email');
+         });
+@@ -151,18 +130,22 @@ test.describe('Content Visibility', async () => {
+             await initialize({page, uri: '/#/?content=false&labs=contentVisibility&stripe=false'});
+             const card = await insertHtmlCard();
+ 
+-            await card.locator('[aria-label="Visibility"]').click();
++            await card.getByTestId('edit-html').click();
++            await card.getByTestId('tab-visibility').click();
++
+             await expect(card.getByTestId('visibility-dropdown-segment')).not.toBeVisible();
+         });
+ 
+         test('can click toggle label to change visibility settings', async function () {
+             const card = await insertHtmlCard();
+-            await card.locator('[aria-label="Visibility"]').click();
+ 
+-            await expect(page.getByTestId('visibility-show-on-web-Toggle').locator('input')).toBeChecked();
++            await card.getByTestId('edit-html').click();
++            await card.getByTestId('tab-visibility').click();
++
++            await expect(page.getByTestId('visibility-show-on-web').locator('input')).toBeChecked();
+             // click on the surrounding label rather than the inner label/input
+             await page.getByTestId('visibility-show-on-web').click();
+-            await expect(page.getByTestId('visibility-show-on-web-Toggle').locator('input')).not.toBeChecked();
++            await expect(page.getByTestId('visibility-show-on-web').locator('input')).not.toBeChecked();
+         });
+     });
+ });
+diff --git a/packages/koenig-lexical/test/e2e/paste-behaviour.test.js b/packages/koenig-lexical/test/e2e/paste-behaviour.test.js
+index 5f9a4ec7be..7f2f9e3993 100644
+--- a/packages/koenig-lexical/test/e2e/paste-behaviour.test.js
++++ b/packages/koenig-lexical/test/e2e/paste-behaviour.test.js
+@@ -518,40 +518,77 @@ test.describe('Paste behaviour', async () => {
+ 
+             await assertHTML(page, html`
+                 <div data-lexical-decorator="true" contenteditable="false">
+-                  <div><svg></svg></div>
+-                  <div
+-                    data-kg-card-editing="true"
+-                    data-kg-card-selected="true"
+-                    data-kg-card="html">
+-                    <div>
+-                      <div>
++                    <div><svg></svg></div>
++                    <div
++                        data-kg-card-editing="true"
++                        data-kg-card-selected="true"
++                        data-kg-card="html">
+                         <div>
+-                          <div aria-live="polite"></div>
+-                          <div tabindex="-1">
+-                            <div aria-hidden="true">
+-                              <div>
+-                                <div>9</div>
+-                                <div>1</div>
+-                              </div>
++                            <div>
++                                <div>
++                                    <div aria-live="polite"></div>
++                                    <div tabindex="-1">
++                                        <div aria-hidden="true">
++                                            <div>
++                                                <div>9</div>
++                                                <div>1</div>
++                                            </div>
++                                        </div>
++                                        <div
++                                            spellcheck="false"
++                                            autocorrect="off"
++                                            autocapitalize="off"
++                                            translate="no"
++                                            contenteditable="true"
++                                            role="textbox"
++                                            aria-multiline="true"
++                                            data-language="html">
++                                            <div>ignore default Lexical behaviour</div>
++                                        </div>
++                                        <div aria-hidden="true"><div></div></div>
++                                        <div aria-hidden="true"></div>
++                                    </div>
++                                </div>
+                             </div>
+-                            <div
+-                              spellcheck="false"
+-                              autocorrect="off"
+-                              autocapitalize="off"
+-                              translate="no"
+-                              contenteditable="true"
+-                              role="textbox"
+-                              aria-multiline="true"
+-                              data-language="html">
+-                              <div>ignore default Lexical behaviour</div>
++                        </div>
++                        <div>
++                            <div draggable="true">
++                                <div>
++                                    <button type="button">Design</button>
++                                    <button type="button">Visibility</button>
++                                </div>
++                                <div>
++                                    <label>
++                                        <div><div>Show on web</div></div>
++                                        <div>
++                                            <label id="visibility-show-on-web">
++                                                <input type="checkbox" checked="" />
++                                                <div></div>
++                                            </label>
++                                        </div>
++                                    </label>
++                                    <label>
++                                        <div><div>Show in email</div></div>
++                                        <div>
++                                            <label id="visibility-show-on-email">
++                                                <input type="checkbox" checked="" />
++                                                <div></div>
++                                            </label>
++                                        </div>
++                                    </label>
++                                    <div>
++                                        <div>Email audience</div>
++                                        <div>
++                                            <button type="button">
++                                                All members
++                                                <svg></svg>
++                                            </button>
++                                        </div>
++                                    </div>
++                                </div>
+                             </div>
+-                            <div aria-hidden="true"><div></div></div>
+-                            <div aria-hidden="true"></div>
+-                          </div>
+                         </div>
+-                      </div>
+                     </div>
+-                  </div>
+                 </div>
+                 <p><br /></p>
+             `, {ignoreCardContents: false});

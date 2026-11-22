@@ -1,0 +1,2961 @@
+From 0467c28722044a4ae84aac055f3f1c6059a0bf70 Mon Sep 17 00:00:00 2001
+From: Dmitry Gozman <dgozman@gmail.com>
+Date: Tue, 25 Mar 2025 13:49:28 +0000
+Subject: [PATCH] chore: builtins (#35197)
+
+---
+ eslint.config.mjs                             |  22 +-
+ .../src/server/bidi/bidiExecutionContext.ts   |   3 +-
+ .../src/server/browserContext.ts              |   5 +-
+ .../src/server/chromium/crExecutionContext.ts |   3 +-
+ .../src/server/firefox/ffBrowser.ts           |   5 +-
+ .../src/server/firefox/ffExecutionContext.ts  |   3 +-
+ packages/playwright-core/src/server/frames.ts |   4 +-
+ .../src/server/injected/ariaSnapshot.ts       |  29 +-
+ .../src/server/injected/clock.ts              |  20 +-
+ .../src/server/injected/highlight.ts          |   6 +-
+ .../src/server/injected/injectedScript.ts     | 269 ++++++++----------
+ .../server/injected/reactSelectorEngine.ts    |   7 +-
+ .../injected/recorder/pollingRecorder.ts      |   6 +-
+ .../src/server/injected/recorder/recorder.ts  |  19 +-
+ .../src/server/injected/roleSelectorEngine.ts |  11 +-
+ .../src/server/injected/roleUtils.ts          |  84 +++---
+ .../src/server/injected/selectorEvaluator.ts  |  54 ++--
+ .../src/server/injected/selectorGenerator.ts  |  40 +--
+ .../src/server/injected/selectorUtils.ts      |   7 +-
+ .../src/server/injected/utilityScript.ts      |  71 ++---
+ .../src/server/injected/vueSelectorEngine.ts  |  15 +-
+ .../src/server/injected/webSocketMock.ts      |   6 +-
+ .../src/server/isomorphic/builtins.ts         |  67 +++++
+ .../isomorphic/utilityScriptSerializers.ts    |  22 +-
+ .../playwright-core/src/server/javascript.ts  |   7 +-
+ packages/playwright-core/src/server/page.ts   |  78 +----
+ .../playwright-core/src/server/pageBinding.ts |  92 ++++++
+ .../src/server/storageScript.ts               |  15 +-
+ .../src/server/webkit/wkExecutionContext.ts   |   3 +-
+ tests/assets/input/handle-locator.html        |   2 +-
+ tests/config/baseTest.ts                      |  10 +-
+ tests/library/browsercontext-events.spec.ts   |   2 +-
+ tests/library/browsertype-launch.spec.ts      |   2 +-
+ tests/library/chromium/css-coverage.spec.ts   |   2 +-
+ tests/library/chromium/js-coverage.spec.ts    |   6 +-
+ tests/library/inspector/cli-codegen-3.spec.ts |   2 +-
+ tests/library/popup.spec.ts                   |   8 +-
+ tests/library/role-utils.spec.ts              |   8 +-
+ tests/library/trace-viewer.spec.ts            |   4 +-
+ tests/library/tracing.spec.ts                 |   6 +-
+ tests/library/unit/clock.spec.ts              |   7 +-
+ tests/library/video.spec.ts                   |   4 +-
+ tests/page/page-click.spec.ts                 |   2 +-
+ tests/page/page-close.spec.ts                 |   4 +-
+ tests/page/page-dialog.spec.ts                |   2 +-
+ tests/page/page-drag.spec.ts                  |   2 +-
+ tests/page/page-evaluate.spec.ts              |  40 ++-
+ tests/page/page-event-console.spec.ts         |   4 +-
+ tests/page/page-event-pageerror.spec.ts       |  10 +-
+ tests/page/page-expose-function.spec.ts       |  40 ++-
+ tests/page/page-filechooser.spec.ts           |   2 +-
+ tests/page/page-screenshot.spec.ts            |   4 +-
+ tests/page/page-wait-for-function.spec.ts     |   4 +-
+ tests/page/page-wait-for-navigation.spec.ts   |   2 +-
+ tests/page/page-wait-for-request.spec.ts      |   2 +-
+ tests/page/page-wait-for-response.spec.ts     |   2 +-
+ tests/page/pageTest.ts                        |   2 +-
+ .../ui-mode-test-output.spec.ts               |   4 +-
+ 58 files changed, 670 insertions(+), 492 deletions(-)
+ create mode 100644 packages/playwright-core/src/server/isomorphic/builtins.ts
+ create mode 100644 packages/playwright-core/src/server/pageBinding.ts
+
+diff --git a/eslint.config.mjs b/eslint.config.mjs
+index 7909c3414abe4..9c958dcff4dce 100644
+--- a/eslint.config.mjs
++++ b/eslint.config.mjs
+@@ -218,11 +218,25 @@ const noBooleanCompareRules = {
+ };
+ 
+ const noWebGlobalsRules = {
++  // This should contain every bulitin from builtins.ts.
+   "no-restricted-globals": [
+     "error",
+-    { name: "window" },
+-    { name: "document" },
+-    { name: "globalThis" },
++    { "name": "window", "message": "Use InjectedScript.window instead" },
++    { "name": "document", "message": "Use InjectedScript.document instead" },
++    { "name": "globalThis", "message": "Use InjectedScript.window instead" },
++    { "name": "setTimeout", "message": "Use InjectedScript.builtins.setTimeout instead" },
++    { "name": "clearTimeout", "message": "Use InjectedScript.builtins.clearTimeout instead" },
++    { "name": "setInterval", "message": "Use InjectedScript.builtins.setInterval instead" },
++    { "name": "clearInterval", "message": "Use InjectedScript.builtins.clearInterval instead" },
++    { "name": "requestAnimationFrame", "message": "Use InjectedScript.builtins.requestAnimationFrame instead" },
++    { "name": "cancelAnimationFrame", "message": "Use InjectedScript.builtins.cancelAnimationFrame instead" },
++    { "name": "requestIdleCallback", "message": "Use InjectedScript.builtins.requestIdleCallback instead" },
++    { "name": "cancelIdleCallback", "message": "Use InjectedScript.builtins.cancelIdleCallback instead" },
++    { "name": "performance", "message": "Use InjectedScript.builtins.performance instead" },
++    { "name": "eval", "message": "Use InjectedScript.builtins.eval instead" },
++    { "name": "Date", "message": "Use InjectedScript.builtins.Date instead" },
++    { "name": "Map", "message": "Use InjectedScript.builtins.Map instead" },
++    { "name": "Set", "message": "Use InjectedScript.builtins.Set instead" },
+   ],
+ };
+ 
+@@ -358,6 +372,8 @@ export default [
+       "packages/playwright-core/src/server/injected/**/*.ts",
+       "packages/playwright-core/src/server/isomorphic/**/*.ts",
+       "packages/playwright-core/src/utils/isomorphic/**/*.ts",
++      "packages/playwright-core/src/server/pageBinding.ts",
++      "packages/playwright-core/src/server/storageScript.ts",
+     ],
+     languageOptions: languageOptionsWithTsConfig,
+     rules: {
+diff --git a/packages/playwright-core/src/server/bidi/bidiExecutionContext.ts b/packages/playwright-core/src/server/bidi/bidiExecutionContext.ts
+index 431e1b9841408..429b939302f6e 100644
+--- a/packages/playwright-core/src/server/bidi/bidiExecutionContext.ts
++++ b/packages/playwright-core/src/server/bidi/bidiExecutionContext.ts
+@@ -15,7 +15,6 @@
+  */
+ 
+ import { assert } from '../../utils';
+-import { parseEvaluationResultValue } from '../isomorphic/utilityScriptSerializers';
+ import * as js from '../javascript';
+ import * as dom from '../dom';
+ import { BidiDeserializer } from './third_party/bidiDeserializer';
+@@ -98,7 +97,7 @@ export class BidiExecutionContext implements js.ExecutionContextDelegate {
+       throw new js.JavaScriptErrorInEvaluate(response.exceptionDetails.text + '\nFull val: ' + JSON.stringify(response.exceptionDetails));
+     if (response.type === 'success') {
+       if (returnByValue)
+-        return parseEvaluationResultValue(BidiDeserializer.deserialize(response.result));
++        return js.parseEvaluationResultValue(BidiDeserializer.deserialize(response.result));
+       return createHandle(utilityScript._context, response.result);
+     }
+     throw new js.JavaScriptErrorInEvaluate('Unexpected response type: ' + JSON.stringify(response));
+diff --git a/packages/playwright-core/src/server/browserContext.ts b/packages/playwright-core/src/server/browserContext.ts
+index 261513c8c6eb5..143f25cf8ce88 100644
+--- a/packages/playwright-core/src/server/browserContext.ts
++++ b/packages/playwright-core/src/server/browserContext.ts
+@@ -28,6 +28,7 @@ import { mkdirIfNeeded } from './utils/fileUtils';
+ import { HarRecorder } from './har/harRecorder';
+ import { helper } from './helper';
+ import { SdkObject, serverSideCallMetadata } from './instrumentation';
++import { ensureBuiltins } from './isomorphic/builtins';
+ import * as utilityScriptSerializers from './isomorphic/utilityScriptSerializers';
+ import * as network from './network';
+ import { InitScript } from './page';
+@@ -518,7 +519,7 @@ export abstract class BrowserContext extends SdkObject {
+     };
+     const originsToSave = new Set(this._origins);
+ 
+-    const collectScript = `(${storageScript.collect})((${utilityScriptSerializers.source})(), ${this._browser.options.name === 'firefox'}, ${indexedDB})`;
++    const collectScript = `(${storageScript.collect})(${utilityScriptSerializers.source}, (${ensureBuiltins})(globalThis), ${this._browser.options.name === 'firefox'}, ${indexedDB})`;
+ 
+     // First try collecting storage stage from existing pages.
+     for (const page of this.pages()) {
+@@ -611,7 +612,7 @@ export abstract class BrowserContext extends SdkObject {
+         for (const originState of state.origins) {
+           const frame = page.mainFrame();
+           await frame.goto(metadata, originState.origin);
+-          await frame.evaluateExpression(`(${storageScript.restore})(${JSON.stringify(originState)}, (${utilityScriptSerializers.source})())`, { world: 'utility' });
++          await frame.evaluateExpression(`(${storageScript.restore})(${utilityScriptSerializers.source}, (${ensureBuiltins})(globalThis), ${JSON.stringify(originState)})`, { world: 'utility' });
+         }
+         await page.close(internalMetadata);
+       }
+diff --git a/packages/playwright-core/src/server/chromium/crExecutionContext.ts b/packages/playwright-core/src/server/chromium/crExecutionContext.ts
+index da11f1e68687f..2bf6d709be468 100644
+--- a/packages/playwright-core/src/server/chromium/crExecutionContext.ts
++++ b/packages/playwright-core/src/server/chromium/crExecutionContext.ts
+@@ -18,7 +18,6 @@
+ import { assert } from '../../utils/isomorphic/assert';
+ import { getExceptionMessage, releaseObject } from './crProtocolHelper';
+ import { rewriteErrorMessage } from '../../utils/isomorphic/stackTrace';
+-import { parseEvaluationResultValue } from '../isomorphic/utilityScriptSerializers';
+ import * as js from '../javascript';
+ import * as dom from '../dom';
+ import { isSessionClosedError } from '../protocolError';
+@@ -71,7 +70,7 @@ export class CRExecutionContext implements js.ExecutionContextDelegate {
+     }).catch(rewriteError);
+     if (exceptionDetails)
+       throw new js.JavaScriptErrorInEvaluate(getExceptionMessage(exceptionDetails));
+-    return returnByValue ? parseEvaluationResultValue(remoteObject.value) : createHandle(utilityScript._context, remoteObject);
++    return returnByValue ? js.parseEvaluationResultValue(remoteObject.value) : createHandle(utilityScript._context, remoteObject);
+   }
+ 
+   async getProperties(object: js.JSHandle): Promise<Map<string, js.JSHandle>> {
+diff --git a/packages/playwright-core/src/server/firefox/ffBrowser.ts b/packages/playwright-core/src/server/firefox/ffBrowser.ts
+index 66724468deda6..aaeef60afac17 100644
+--- a/packages/playwright-core/src/server/firefox/ffBrowser.ts
++++ b/packages/playwright-core/src/server/firefox/ffBrowser.ts
+@@ -20,7 +20,7 @@ import { Browser } from '../browser';
+ import { BrowserContext, assertBrowserContextIsNotOwned, verifyGeolocation } from '../browserContext';
+ import { TargetClosedError } from '../errors';
+ import * as network from '../network';
+-import { PageBinding } from '../page';
++import { kBuiltinsScript, PageBinding } from '../page';
+ import { ConnectionEvents, FFConnection  } from './ffConnection';
+ import { FFPage } from './ffPage';
+ 
+@@ -185,6 +185,7 @@ export class FFBrowserContext extends BrowserContext {
+     const promises: Promise<any>[] = [
+       super._initialize(),
+       this._browser.session.send('Browser.addBinding', { browserContextId: this._browserContextId, name: PageBinding.kPlaywrightBinding, script: '' }),
++      this._updateInitScripts(),
+     ];
+     if (this._options.acceptDownloads !== 'internal-browser-default') {
+       promises.push(this._browser.session.send('Browser.setDownloadOptions', {
+@@ -377,7 +378,7 @@ export class FFBrowserContext extends BrowserContext {
+   private async _updateInitScripts() {
+     const bindingScripts = [...this._pageBindings.values()].map(binding => binding.initScript.source);
+     const initScripts = this.initScripts.map(script => script.source);
+-    await this._browser.session.send('Browser.setInitScripts', { browserContextId: this._browserContextId, scripts: [...bindingScripts, ...initScripts].map(script => ({ script })) });
++    await this._browser.session.send('Browser.setInitScripts', { browserContextId: this._browserContextId, scripts: [kBuiltinsScript.source, ...bindingScripts, ...initScripts].map(script => ({ script })) });
+   }
+ 
+   async doUpdateRequestInterception(): Promise<void> {
+diff --git a/packages/playwright-core/src/server/firefox/ffExecutionContext.ts b/packages/playwright-core/src/server/firefox/ffExecutionContext.ts
+index 1b9af6bfaa86b..00bfad3713731 100644
+--- a/packages/playwright-core/src/server/firefox/ffExecutionContext.ts
++++ b/packages/playwright-core/src/server/firefox/ffExecutionContext.ts
+@@ -17,7 +17,6 @@
+ 
+ import { assert } from '../../utils/isomorphic/assert';
+ import { rewriteErrorMessage } from '../../utils/isomorphic/stackTrace';
+-import { parseEvaluationResultValue } from '../isomorphic/utilityScriptSerializers';
+ import * as js from '../javascript';
+ import * as dom from '../dom';
+ import { isSessionClosedError } from '../protocolError';
+@@ -67,7 +66,7 @@ export class FFExecutionContext implements js.ExecutionContextDelegate {
+     }).catch(rewriteError);
+     checkException(payload.exceptionDetails);
+     if (returnByValue)
+-      return parseEvaluationResultValue(payload.result!.value);
++      return js.parseEvaluationResultValue(payload.result!.value);
+     return createHandle(utilityScript._context, payload.result!);
+   }
+ 
+diff --git a/packages/playwright-core/src/server/frames.ts b/packages/playwright-core/src/server/frames.ts
+index 873ba2875b0c4..d1e97d919459e 100644
+--- a/packages/playwright-core/src/server/frames.ts
++++ b/packages/playwright-core/src/server/frames.ts
+@@ -1567,9 +1567,9 @@ export class Frame extends SdkObject {
+                 return;
+               }
+               if (typeof polling !== 'number')
+-                injected.builtinRequestAnimationFrame(next);
++                injected.builtins.requestAnimationFrame(next);
+               else
+-                injected.builtinSetTimeout(next, polling);
++                injected.builtins.setTimeout(next, polling);
+             } catch (e) {
+               reject(e);
+             }
+diff --git a/packages/playwright-core/src/server/injected/ariaSnapshot.ts b/packages/playwright-core/src/server/injected/ariaSnapshot.ts
+index bfc54c99223f8..8589037a6feb5 100644
+--- a/packages/playwright-core/src/server/injected/ariaSnapshot.ts
++++ b/packages/playwright-core/src/server/injected/ariaSnapshot.ts
+@@ -21,6 +21,7 @@ import * as roleUtils from './roleUtils';
+ import { yamlEscapeKeyIfNeeded, yamlEscapeValueIfNeeded } from './yaml';
+ 
+ import type { AriaProps, AriaRegex, AriaRole, AriaTemplateNode, AriaTemplateRoleNode, AriaTemplateTextNode } from '@isomorphic/ariaSnapshot';
++import type { Builtins } from '../isomorphic/builtins';
+ 
+ export type AriaNode = AriaProps & {
+   role: AriaRole | 'fragment';
+@@ -32,19 +33,19 @@ export type AriaNode = AriaProps & {
+ 
+ export type AriaSnapshot = {
+   root: AriaNode;
+-  elements: Map<number, Element>;
++  elements: Builtins.Map<number, Element>;
+   generation: number;
+-  ids: Map<Element, number>;
++  ids: Builtins.Map<Element, number>;
+ };
+ 
+-export function generateAriaTree(rootElement: Element, generation: number): AriaSnapshot {
+-  const visited = new Set<Node>();
++export function generateAriaTree(builtins: Builtins, rootElement: Element, generation: number): AriaSnapshot {
++  const visited = new builtins.Set<Node>();
+ 
+   const snapshot: AriaSnapshot = {
+     root: { role: 'fragment', name: '', children: [], element: rootElement, props: {} },
+-    elements: new Map<number, Element>(),
++    elements: new builtins.Map<number, Element>(),
+     generation,
+-    ids: new Map<Element, number>(),
++    ids: new builtins.Map<Element, number>(),
+   };
+ 
+   const addElement = (element: Element) => {
+@@ -86,7 +87,7 @@ export function generateAriaTree(rootElement: Element, generation: number): Aria
+     }
+ 
+     addElement(element);
+-    const childAriaNode = toAriaNode(element);
++    const childAriaNode = toAriaNode(builtins, element);
+     if (childAriaNode)
+       ariaNode.children.push(childAriaNode);
+     processElement(childAriaNode || ariaNode, element, ariaChildren);
+@@ -132,7 +133,7 @@ export function generateAriaTree(rootElement: Element, generation: number): Aria
+     }
+   }
+ 
+-  roleUtils.beginAriaCaches();
++  roleUtils.beginAriaCaches(builtins);
+   try {
+     visit(snapshot.root, rootElement);
+   } finally {
+@@ -143,12 +144,12 @@ export function generateAriaTree(rootElement: Element, generation: number): Aria
+   return snapshot;
+ }
+ 
+-function toAriaNode(element: Element): AriaNode | null {
++function toAriaNode(builtins: Builtins, element: Element): AriaNode | null {
+   const role = roleUtils.getAriaRole(element);
+   if (!role || role === 'presentation' || role === 'none')
+     return null;
+ 
+-  const name = normalizeWhiteSpace(roleUtils.getElementAccessibleName(element, false) || '');
++  const name = normalizeWhiteSpace(roleUtils.getElementAccessibleName(builtins, element, false) || '');
+   const result: AriaNode = { role, name, children: [], props: {}, element };
+ 
+   if (roleUtils.kAriaCheckedRoles.includes(role))
+@@ -230,8 +231,8 @@ export type MatcherReceived = {
+   regex: string;
+ };
+ 
+-export function matchesAriaTree(rootElement: Element, template: AriaTemplateNode): { matches: AriaNode[], received: MatcherReceived } {
+-  const snapshot = generateAriaTree(rootElement, 0);
++export function matchesAriaTree(builtins: Builtins, rootElement: Element, template: AriaTemplateNode): { matches: AriaNode[], received: MatcherReceived } {
++  const snapshot = generateAriaTree(builtins, rootElement, 0);
+   const matches = matchesNodeDeep(snapshot.root, template, false);
+   return {
+     matches,
+@@ -242,8 +243,8 @@ export function matchesAriaTree(rootElement: Element, template: AriaTemplateNode
+   };
+ }
+ 
+-export function getAllByAria(rootElement: Element, template: AriaTemplateNode): Element[] {
+-  const root = generateAriaTree(rootElement, 0).root;
++export function getAllByAria(builtins: Builtins, rootElement: Element, template: AriaTemplateNode): Element[] {
++  const root = generateAriaTree(builtins, rootElement, 0).root;
+   const matches = matchesNodeDeep(root, template, true);
+   return matches.map(n => n.element);
+ }
+diff --git a/packages/playwright-core/src/server/injected/clock.ts b/packages/playwright-core/src/server/injected/clock.ts
+index b2daf190f387c..f2c8613b5b50a 100644
+--- a/packages/playwright-core/src/server/injected/clock.ts
++++ b/packages/playwright-core/src/server/injected/clock.ts
+@@ -10,6 +10,10 @@
+  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+ 
++import { ensureBuiltins } from '../isomorphic/builtins';
++
++import type { Builtins } from '../isomorphic/builtins';
++
+ export type ClockMethods = {
+   Date: DateConstructor;
+   setTimeout: Window['setTimeout'];
+@@ -25,7 +29,7 @@ export type ClockMethods = {
+ };
+ 
+ export type ClockConfig = {
+-  now?: number | Date;
++  now?: number | Builtins.Date;
+ };
+ 
+ export type InstallConfig = ClockConfig & {
+@@ -74,7 +78,7 @@ type LogEntryType = 'fastForward' |'install' | 'pauseAt' | 'resume' | 'runFor' |
+ export class ClockController {
+   readonly _now: Time;
+   private _duringTick = false;
+-  private _timers = new Map<number, Timer>();
++  private _timers: Builtins.Map<number, Timer>;
+   private _uniqueTimerId = idCounterStart;
+   private _embedder: Embedder;
+   readonly disposables: (() => void)[] = [];
+@@ -82,7 +86,8 @@ export class ClockController {
+   private _realTime: { startTicks: EmbedderTicks, lastSyncTicks: EmbedderTicks } | undefined;
+   private _currentRealTimeTimer: { callAt: Ticks, dispose: () => void } | undefined;
+ 
+-  constructor(embedder: Embedder) {
++  constructor(builtins: Builtins, embedder: Embedder) {
++    this._timers = new builtins.Map();
+     this._now = { time: asWallTime(0), isFixedTime: false, ticks: 0 as Ticks, origin: asWallTime(-1) };
+     this._embedder = embedder;
+   }
+@@ -416,7 +421,7 @@ export class ClockController {
+   }
+ }
+ 
+-function mirrorDateProperties(target: any, source: typeof Date): DateConstructor & Date {
++function mirrorDateProperties(target: any, source: DateConstructor): DateConstructor & Builtins.Date {
+   for (const prop in source) {
+     if (source.hasOwnProperty(prop))
+       target[prop] = (source as any)[prop];
+@@ -430,8 +435,8 @@ function mirrorDateProperties(target: any, source: typeof Date): DateConstructor
+   return target;
+ }
+ 
+-function createDate(clock: ClockController, NativeDate: typeof Date): DateConstructor & Date {
+-  function ClockDate(this: typeof ClockDate, year: number, month: number, date: number, hour: number, minute: number, second: number, ms: number): Date | string {
++function createDate(clock: ClockController, NativeDate: DateConstructor): DateConstructor & Builtins.Date {
++  function ClockDate(this: typeof ClockDate, year: number, month: number, date: number, hour: number, minute: number, second: number, ms: number): Builtins.Date | string {
+     // the Date constructor called as a function, ref Ecma-262 Edition 5.1, section 15.9.2.
+     // This remains so in the 10th edition of 2019 as well.
+     if (!(this instanceof ClockDate))
+@@ -680,7 +685,8 @@ export function createClock(globalObject: WindowOrWorkerGlobalScope): { clock: C
+     },
+   };
+ 
+-  const clock = new ClockController(embedder);
++  // TODO: unify ensureBuiltins and platformOriginals
++  const clock = new ClockController(ensureBuiltins(globalObject as any), embedder);
+   const api = createApi(clock, originals.bound);
+   return { clock, api, originals: originals.raw };
+ }
+diff --git a/packages/playwright-core/src/server/injected/highlight.ts b/packages/playwright-core/src/server/injected/highlight.ts
+index 400031434e306..58bb0fa072a6c 100644
+--- a/packages/playwright-core/src/server/injected/highlight.ts
++++ b/packages/playwright-core/src/server/injected/highlight.ts
+@@ -99,7 +99,7 @@ export class Highlight {
+ 
+   runHighlightOnRaf(selector: ParsedSelector) {
+     if (this._rafRequest)
+-      cancelAnimationFrame(this._rafRequest);
++      this._injectedScript.builtins.cancelAnimationFrame(this._rafRequest);
+     const elements = this._injectedScript.querySelectorAll(selector, this._injectedScript.document.documentElement);
+     const locator = asLocator(this._language, stringifySelector(selector));
+     const color = elements.length > 1 ? '#f6b26b7f' : '#6fa8dc7f';
+@@ -107,12 +107,12 @@ export class Highlight {
+       const suffix = elements.length > 1 ? ` [${index + 1} of ${elements.length}]` : '';
+       return { element, color, tooltipText: locator + suffix };
+     }));
+-    this._rafRequest = this._injectedScript.builtinRequestAnimationFrame(() => this.runHighlightOnRaf(selector));
++    this._rafRequest = this._injectedScript.builtins.requestAnimationFrame(() => this.runHighlightOnRaf(selector));
+   }
+ 
+   uninstall() {
+     if (this._rafRequest)
+-      cancelAnimationFrame(this._rafRequest);
++      this._injectedScript.builtins.cancelAnimationFrame(this._rafRequest);
+     this._glassPaneElement.remove();
+   }
+ 
+diff --git a/packages/playwright-core/src/server/injected/injectedScript.ts b/packages/playwright-core/src/server/injected/injectedScript.ts
+index fbcc8e936fc9e..585f53c525952 100644
+--- a/packages/playwright-core/src/server/injected/injectedScript.ts
++++ b/packages/playwright-core/src/server/injected/injectedScript.ts
+@@ -16,17 +16,18 @@
+ 
+ import { parseAriaSnapshot } from '@isomorphic/ariaSnapshot';
+ 
++import { ensureBuiltins } from '../isomorphic/builtins';
+ import { generateAriaTree, getAllByAria, matchesAriaTree, renderAriaTree } from './ariaSnapshot';
+ import { enclosingShadowRootOrDocument, isElementVisible, isInsideScope, parentElementOrShadowHost, setBrowserName } from './domUtils';
+ import { Highlight } from './highlight';
+ import { kLayoutSelectorNames,  layoutSelectorScore } from './layoutSelectorUtils';
+-import { ReactEngine } from './reactSelectorEngine';
++import { createReactEngine } from './reactSelectorEngine';
+ import { createRoleEngine } from './roleSelectorEngine';
+ import { getAriaDisabled, getAriaRole, getCheckedAllowMixed, getCheckedWithoutMixed, getElementAccessibleDescription, getElementAccessibleErrorMessage, getElementAccessibleName, getReadonly } from './roleUtils';
+ import { SelectorEvaluatorImpl, sortInDOMOrder } from './selectorEvaluator';
+ import { generateSelector  } from './selectorGenerator';
+-import {  elementMatchesText, elementText,  getElementLabels } from './selectorUtils';
+-import { VueEngine } from './vueSelectorEngine';
++import { elementMatchesText, elementText,  getElementLabels } from './selectorUtils';
++import { createVueEngine } from './vueSelectorEngine';
+ import { XPathEngine } from './xpathSelectorEngine';
+ import { asLocator } from '../../utils/isomorphic/locatorGenerators';
+ import { parseAttributeSelector } from '../../utils/isomorphic/selectorParser';
+@@ -34,6 +35,7 @@ import { parseSelector, stringifySelector, visitAllSelectorParts } from '../../u
+ import { cacheNormalizedWhitespaces, normalizeWhiteSpace, trimStringWithEllipsis } from '../../utils/isomorphic/stringUtils';
+ 
+ import type { AriaSnapshot } from './ariaSnapshot';
++import type { Builtins } from '../isomorphic/builtins';
+ import type { LayoutSelectorName } from './layoutSelectorUtils';
+ import type { SelectorEngine, SelectorRoot } from './selectorEngine';
+ import type { GenerateSelectorOptions } from './selectorGenerator';
+@@ -64,17 +66,17 @@ interface WebKitLegacyDeviceMotionEvent extends DeviceMotionEvent {
+ }
+ 
+ export class InjectedScript {
+-  private _engines: Map<string, SelectorEngine>;
+-  _evaluator: SelectorEvaluatorImpl;
++  private _engines: Builtins.Map<string, SelectorEngine>;
++  readonly _evaluator: SelectorEvaluatorImpl;
+   private _stableRafCount: number;
+   private _browserName: string;
+-  onGlobalListenersRemoved = new Set<() => void>();
++  readonly onGlobalListenersRemoved: Builtins.Set<() => void>;
+   private _hitTargetInterceptor: undefined | ((event: MouseEvent | PointerEvent | TouchEvent) => void);
+   private _highlight: Highlight | undefined;
+   readonly isUnderTest: boolean;
+   private _sdkLanguage: Language;
+   private _testIdAttributeNameForStrictErrorAndConsoleCodegen: string = 'data-testid';
+-  private _markedElements?: { callId: string, elements: Set<Element> };
++  private _markedElements?: { callId: string, elements: Builtins.Set<Element> };
+   // eslint-disable-next-line no-restricted-globals
+   readonly window: Window & typeof globalThis;
+   readonly document: Document;
+@@ -96,21 +98,93 @@ export class InjectedScript {
+     parseAriaSnapshot,
+   };
+ 
++  readonly builtins: Builtins;
++  private _autoClosingTags: Builtins.Set<string>;
++  private _booleanAttributes: Builtins.Set<string>;
++  private _eventTypes: Builtins.Map<string, 'mouse' | 'keyboard' | 'touch' | 'pointer' | 'focus' | 'drag' | 'wheel' | 'deviceorientation' | 'devicemotion'>;
++  private _hoverHitTargetInterceptorEvents: Builtins.Set<string>;
++  private _tapHitTargetInterceptorEvents: Builtins.Set<string>;
++  private _mouseHitTargetInterceptorEvents: Builtins.Set<string>;
++  private _allHitTargetInterceptorEvents: Builtins.Set<string>;
++
+   // eslint-disable-next-line no-restricted-globals
+   constructor(window: Window & typeof globalThis, isUnderTest: boolean, sdkLanguage: Language, testIdAttributeNameForStrictErrorAndConsoleCodegen: string, stableRafCount: number, browserName: string, customEngines: { name: string, engine: SelectorEngine }[]) {
+     this.window = window;
+     this.document = window.document;
+     this.isUnderTest = isUnderTest;
++    this.builtins = ensureBuiltins(window);
+     this._sdkLanguage = sdkLanguage;
+     this._testIdAttributeNameForStrictErrorAndConsoleCodegen = testIdAttributeNameForStrictErrorAndConsoleCodegen;
+-    this._evaluator = new SelectorEvaluatorImpl(new Map());
+-
+-    this._engines = new Map();
++    this._evaluator = new SelectorEvaluatorImpl(this.builtins);
++
++    this.onGlobalListenersRemoved = new this.builtins.Set();
++    this._autoClosingTags = new this.builtins.Set(['AREA', 'BASE', 'BR', 'COL', 'COMMAND', 'EMBED', 'HR', 'IMG', 'INPUT', 'KEYGEN', 'LINK', 'MENUITEM', 'META', 'PARAM', 'SOURCE', 'TRACK', 'WBR']);
++    this._booleanAttributes = new this.builtins.Set(['checked', 'selected', 'disabled', 'readonly', 'multiple']);
++    this._eventTypes = new this.builtins.Map([
++      ['auxclick', 'mouse'],
++      ['click', 'mouse'],
++      ['dblclick', 'mouse'],
++      ['mousedown', 'mouse'],
++      ['mouseeenter', 'mouse'],
++      ['mouseleave', 'mouse'],
++      ['mousemove', 'mouse'],
++      ['mouseout', 'mouse'],
++      ['mouseover', 'mouse'],
++      ['mouseup', 'mouse'],
++      ['mouseleave', 'mouse'],
++      ['mousewheel', 'mouse'],
++
++      ['keydown', 'keyboard'],
++      ['keyup', 'keyboard'],
++      ['keypress', 'keyboard'],
++      ['textInput', 'keyboard'],
++
++      ['touchstart', 'touch'],
++      ['touchmove', 'touch'],
++      ['touchend', 'touch'],
++      ['touchcancel', 'touch'],
++
++      ['pointerover', 'pointer'],
++      ['pointerout', 'pointer'],
++      ['pointerenter', 'pointer'],
++      ['pointerleave', 'pointer'],
++      ['pointerdown', 'pointer'],
++      ['pointerup', 'pointer'],
++      ['pointermove', 'pointer'],
++      ['pointercancel', 'pointer'],
++      ['gotpointercapture', 'pointer'],
++      ['lostpointercapture', 'pointer'],
++
++      ['focus', 'focus'],
++      ['blur', 'focus'],
++
++      ['drag', 'drag'],
++      ['dragstart', 'drag'],
++      ['dragend', 'drag'],
++      ['dragover', 'drag'],
++      ['dragenter', 'drag'],
++      ['dragleave', 'drag'],
++      ['dragexit', 'drag'],
++      ['drop', 'drag'],
++
++      ['wheel', 'wheel'],
++
++      ['deviceorientation', 'deviceorientation'],
++      ['deviceorientationabsolute', 'deviceorientation'],
++
++      ['devicemotion', 'devicemotion'],
++    ]);
++    this._hoverHitTargetInterceptorEvents = new this.builtins.Set(['mousemove']);
++    this._tapHitTargetInterceptorEvents = new this.builtins.Set(['pointerdown', 'pointerup', 'touchstart', 'touchend', 'touchcancel']);
++    this._mouseHitTargetInterceptorEvents = new this.builtins.Set(['mousedown', 'mouseup', 'pointerdown', 'pointerup', 'click', 'auxclick', 'dblclick', 'contextmenu']);
++    this._allHitTargetInterceptorEvents = new this.builtins.Set([...this._hoverHitTargetInterceptorEvents, ...this._tapHitTargetInterceptorEvents, ...this._mouseHitTargetInterceptorEvents]);
++
++    this._engines = new this.builtins.Map();
+     this._engines.set('xpath', XPathEngine);
+     this._engines.set('xpath:light', XPathEngine);
+-    this._engines.set('_react', ReactEngine);
+-    this._engines.set('_vue', VueEngine);
+-    this._engines.set('role', createRoleEngine(false));
++    this._engines.set('_react', createReactEngine(this.builtins));
++    this._engines.set('_vue', createVueEngine(this.builtins));
++    this._engines.set('role', createRoleEngine(this.builtins, false));
+     this._engines.set('text', this._createTextEngine(true, false));
+     this._engines.set('text:light', this._createTextEngine(false, false));
+     this._engines.set('id', this._createAttributeEngine('id', true));
+@@ -136,7 +210,7 @@ export class InjectedScript {
+     this._engines.set('internal:has-not-text', this._createInternalHasNotTextEngine());
+     this._engines.set('internal:attr', this._createNamedAttributeEngine());
+     this._engines.set('internal:testid', this._createNamedAttributeEngine());
+-    this._engines.set('internal:role', createRoleEngine(true));
++    this._engines.set('internal:role', createRoleEngine(this.builtins, true));
+     this._engines.set('aria-ref', this._createAriaIdEngine());
+ 
+     for (const { name, engine } of customEngines)
+@@ -153,24 +227,6 @@ export class InjectedScript {
+       (this.window as any).__injectedScript = this;
+   }
+ 
+-  builtinSetTimeout(callback: Function, timeout: number) {
+-    if (this.window.__pwClock?.builtin)
+-      return this.window.__pwClock.builtin.setTimeout(callback, timeout);
+-    return this.window.setTimeout(callback, timeout);
+-  }
+-
+-  builtinClearTimeout(timeout: number | undefined) {
+-    if (this.window.__pwClock?.builtin)
+-      return this.window.__pwClock.builtin.clearTimeout(timeout);
+-    return this.window.clearTimeout(timeout);
+-  }
+-
+-  builtinRequestAnimationFrame(callback: FrameRequestCallback) {
+-    if (this.window.__pwClock?.builtin)
+-      return this.window.__pwClock.builtin.requestAnimationFrame(callback);
+-    return this.window.requestAnimationFrame(callback);
+-  }
+-
+   eval(expression: string): any {
+     return this.window.eval(expression);
+   }
+@@ -203,15 +259,15 @@ export class InjectedScript {
+     return result[0];
+   }
+ 
+-  private _queryNth(elements: Set<Element>, part: ParsedSelectorPart): Set<Element> {
++  private _queryNth(elements: Builtins.Set<Element>, part: ParsedSelectorPart): Builtins.Set<Element> {
+     const list = [...elements];
+     let nth = +part.body;
+     if (nth === -1)
+       nth = list.length - 1;
+-    return new Set<Element>(list.slice(nth, nth + 1));
++    return new this.builtins.Set<Element>(list.slice(nth, nth + 1));
+   }
+ 
+-  private _queryLayoutSelector(elements: Set<Element>, part: ParsedSelectorPart, originalRoot: Node): Set<Element> {
++  private _queryLayoutSelector(elements: Builtins.Set<Element>, part: ParsedSelectorPart, originalRoot: Node): Builtins.Set<Element> {
+     const name = part.name as LayoutSelectorName;
+     const body = part.body as NestedSelectorBody;
+     const result: { element: Element, score: number }[] = [];
+@@ -222,14 +278,14 @@ export class InjectedScript {
+         result.push({ element, score });
+     }
+     result.sort((a, b) => a.score - b.score);
+-    return new Set<Element>(result.map(r => r.element));
++    return new this.builtins.Set<Element>(result.map(r => r.element));
+   }
+ 
+   ariaSnapshot(node: Node, options?: { mode?: 'raw' | 'regex', ref?: boolean }): string {
+     if (node.nodeType !== Node.ELEMENT_NODE)
+       throw this.createStacklessError('Can only capture aria snapshot of Element nodes.');
+     const generation = (this._lastAriaSnapshot?.generation || 0) + 1;
+-    this._lastAriaSnapshot = generateAriaTree(node as Element, generation);
++    this._lastAriaSnapshot = generateAriaTree(this.builtins, node as Element, generation);
+     return renderAriaTree(this._lastAriaSnapshot, options);
+   }
+ 
+@@ -238,7 +294,7 @@ export class InjectedScript {
+   }
+ 
+   getAllByAria(document: Document, template: AriaTemplateNode): Element[] {
+-    return getAllByAria(document.documentElement, template);
++    return getAllByAria(this.builtins, document.documentElement, template);
+   }
+ 
+   querySelectorAll(selector: ParsedSelector, root: Node): Element[] {
+@@ -270,20 +326,20 @@ export class InjectedScript {
+ 
+     this._evaluator.begin();
+     try {
+-      let roots = new Set<Element>([root as Element]);
++      let roots = new this.builtins.Set<Element>([root as Element]);
+       for (const part of selector.parts) {
+         if (part.name === 'nth') {
+           roots = this._queryNth(roots, part);
+         } else if (part.name === 'internal:and') {
+           const andElements = this.querySelectorAll((part.body as NestedSelectorBody).parsed, root);
+-          roots = new Set(andElements.filter(e => roots.has(e)));
++          roots = new this.builtins.Set(andElements.filter(e => roots.has(e)));
+         } else if (part.name === 'internal:or') {
+           const orElements = this.querySelectorAll((part.body as NestedSelectorBody).parsed, root);
+-          roots = new Set(sortInDOMOrder(new Set([...roots, ...orElements])));
++          roots = new this.builtins.Set(sortInDOMOrder(this.builtins, new this.builtins.Set([...roots, ...orElements])));
+         } else if (kLayoutSelectorNames.includes(part.name as LayoutSelectorName)) {
+           roots = this._queryLayoutSelector(roots, part, root);
+         } else {
+-          const next = new Set<Element>();
++          const next = new this.builtins.Set<Element>();
+           for (const root of roots) {
+             const all = this._queryEngineAll(part, root);
+             for (const one of all)
+@@ -487,7 +543,7 @@ export class InjectedScript {
+       observer.observe(element);
+       // Firefox doesn't call IntersectionObserver callback unless
+       // there are rafs.
+-      this.builtinRequestAnimationFrame(() => {});
++      this.builtins.requestAnimationFrame(() => {});
+     });
+   }
+ 
+@@ -568,7 +624,7 @@ export class InjectedScript {
+         return 'error:notconnected';
+ 
+       // Drop frames that are shorter than 16ms - WebKit Win bug.
+-      const time = performance.now();
++      const time = this.builtins.performance.now();
+       if (this._stableRafCount > 1 && time - lastTime < 15)
+         return continuePolling;
+       lastTime = time;
+@@ -596,12 +652,12 @@ export class InjectedScript {
+         if (success !== continuePolling)
+           fulfill(success);
+         else
+-          this.builtinRequestAnimationFrame(raf);
++          this.builtins.requestAnimationFrame(raf);
+       } catch (e) {
+         reject(e);
+       }
+     };
+-    this.builtinRequestAnimationFrame(raf);
++    this.builtins.requestAnimationFrame(raf);
+ 
+     return result;
+   }
+@@ -730,8 +786,8 @@ export class InjectedScript {
+     if (element.nodeName.toLowerCase() === 'input') {
+       const input = element as HTMLInputElement;
+       const type = input.type.toLowerCase();
+-      const kInputTypesToSetValue = new Set(['color', 'date', 'time', 'datetime-local', 'month', 'range', 'week']);
+-      const kInputTypesToTypeInto = new Set(['', 'email', 'number', 'password', 'search', 'tel', 'text', 'url']);
++      const kInputTypesToSetValue = new this.builtins.Set(['color', 'date', 'time', 'datetime-local', 'month', 'range', 'week']);
++      const kInputTypesToTypeInto = new this.builtins.Set(['', 'email', 'number', 'password', 'search', 'tel', 'text', 'url']);
+       if (!kInputTypesToTypeInto.has(type) && !kInputTypesToSetValue.has(type))
+         throw this.createStacklessError(`Input of type "${type}" cannot be filled`);
+       if (type === 'number') {
+@@ -983,9 +1039,9 @@ export class InjectedScript {
+       return { stop: () => 'done' };
+ 
+     const events = {
+-      'hover': kHoverHitTargetInterceptorEvents,
+-      'tap': kTapHitTargetInterceptorEvents,
+-      'mouse': kMouseHitTargetInterceptorEvents,
++      'hover': this._hoverHitTargetInterceptorEvents,
++      'tap': this._tapHitTargetInterceptorEvents,
++      'mouse': this._mouseHitTargetInterceptorEvents,
+     }[action];
+     let result: 'done' | { hitTargetDescription: string } | undefined;
+ 
+@@ -1033,7 +1089,7 @@ export class InjectedScript {
+   dispatchEvent(node: Node, type: string, eventInitObj: Object) {
+     let event;
+     const eventInit: any = { bubbles: true, cancelable: true, composed: true, ...eventInitObj };
+-    switch (eventType.get(type)) {
++    switch (this._eventTypes.get(type)) {
+       case 'mouse': event = new MouseEvent(type, eventInit); break;
+       case 'keyboard': event = new KeyboardEvent(type, eventInit); break;
+       case 'touch': {
+@@ -1109,14 +1165,14 @@ export class InjectedScript {
+       const { name, value } = element.attributes[i];
+       if (name === 'style')
+         continue;
+-      if (!value && booleanAttributes.has(name))
++      if (!value && this._booleanAttributes.has(name))
+         attrs.push(` ${name}`);
+       else
+         attrs.push(` ${name}="${value}"`);
+     }
+     attrs.sort((a, b) => a.length - b.length);
+     const attrText = trimStringWithEllipsis(attrs.join(''), 500);
+-    if (autoClosingTags.has(element.nodeName))
++    if (this._autoClosingTags.has(element.nodeName))
+       return oneLine(`<${element.nodeName.toLowerCase()}${attrText}/>`);
+ 
+     const children = element.childNodes;
+@@ -1184,10 +1240,10 @@ export class InjectedScript {
+     }
+   }
+ 
+-  markTargetElements(markedElements: Set<Element>, callId: string) {
++  markTargetElements(markedElements: Builtins.Set<Element>, callId: string) {
+     if (this._markedElements?.callId !== callId)
+       this._markedElements = undefined;
+-    const previous = this._markedElements?.elements || new Set();
++    const previous = this._markedElements?.elements || new this.builtins.Set();
+ 
+     const unmarkEvent = new CustomEvent('__playwright_unmark_target__', {
+       bubbles: true,
+@@ -1242,7 +1298,7 @@ export class InjectedScript {
+   private _setupHitTargetInterceptors() {
+     const listener = (event: PointerEvent | MouseEvent | TouchEvent) => this._hitTargetInterceptor?.(event);
+     const addHitTargetInterceptorListeners = () => {
+-      for (const event of kAllHitTargetInterceptorEvents)
++      for (const event of this._allHitTargetInterceptorEvents)
+         this.window.addEventListener(event as any, listener, { capture: true, passive: false });
+     };
+     addHitTargetInterceptorListeners();
+@@ -1375,13 +1431,13 @@ export class InjectedScript {
+         const received = [...(element as HTMLSelectElement).selectedOptions].map(o => o.value);
+         if (received.length !== options.expectedText!.length)
+           return { received, matches: false };
+-        return { received, matches: received.map((r, i) => new ExpectedTextMatcher(options.expectedText![i]).matches(r)).every(Boolean) };
++        return { received, matches: received.map((r, i) => new ExpectedTextMatcher(this.builtins, options.expectedText![i]).matches(r)).every(Boolean) };
+       }
+     }
+ 
+     {
+       if (expression === 'to.match.aria') {
+-        const result = matchesAriaTree(element, options.expectedValue);
++        const result = matchesAriaTree(this.builtins, element, options.expectedValue);
+         return {
+           received: result.received,
+           matches: !!result.matches.length,
+@@ -1402,20 +1458,20 @@ export class InjectedScript {
+           throw this.createStacklessError('Expected text is not provided for ' + expression);
+         return {
+           received: element.classList.toString(),
+-          matches: new ExpectedTextMatcher(options.expectedText[0]).matchesClassList(this, element.classList, options.expressionArg.partial),
++          matches: new ExpectedTextMatcher(this.builtins, options.expectedText[0]).matchesClassList(this, element.classList, options.expressionArg.partial),
+         };
+       } else if (expression === 'to.have.css') {
+         received = this.window.getComputedStyle(element).getPropertyValue(options.expressionArg);
+       } else if (expression === 'to.have.id') {
+         received = element.id;
+       } else if (expression === 'to.have.text') {
+-        received = options.useInnerText ? (element as HTMLElement).innerText : elementText(new Map(), element).full;
++        received = options.useInnerText ? (element as HTMLElement).innerText : elementText(new this.builtins.Map(), element).full;
+       } else if (expression === 'to.have.accessible.name') {
+-        received = getElementAccessibleName(element, false /* includeHidden */);
++        received = getElementAccessibleName(this.builtins, element, false /* includeHidden */);
+       } else if (expression === 'to.have.accessible.description') {
+-        received = getElementAccessibleDescription(element, false /* includeHidden */);
++        received = getElementAccessibleDescription(this.builtins, element, false /* includeHidden */);
+       } else if (expression === 'to.have.accessible.error.message') {
+-        received = getElementAccessibleErrorMessage(element);
++        received = getElementAccessibleErrorMessage(this.builtins, element);
+       } else if (expression === 'to.have.role') {
+         received = getAriaRole(element) || '';
+       } else if (expression === 'to.have.title') {
+@@ -1430,7 +1486,7 @@ export class InjectedScript {
+       }
+ 
+       if (received !== undefined && options.expectedText) {
+-        const matcher = new ExpectedTextMatcher(options.expectedText[0]);
++        const matcher = new ExpectedTextMatcher(this.builtins, options.expectedText[0]);
+         return { received, matches: matcher.matches(received) };
+       }
+     }
+@@ -1468,7 +1524,7 @@ export class InjectedScript {
+     if (!['to.contain.text.array', 'to.have.text.array'].includes(expression))
+       throw this.createStacklessError('Unknown expect matcher: ' + expression);
+ 
+-    const received = elements.map(e => options.useInnerText ? (e as HTMLElement).innerText : elementText(new Map(), e).full);
++    const received = elements.map(e => options.useInnerText ? (e as HTMLElement).innerText : elementText(new this.builtins.Map(), e).full);
+     // "To match an array" is "to contain an array" + "equal length"
+     const lengthShouldMatch = expression !== 'to.contain.text.array';
+     const matchesLength = received.length === options.expectedText.length || !lengthShouldMatch;
+@@ -1484,7 +1540,7 @@ export class InjectedScript {
+     received: T[],
+     matchFn: (matcher: ExpectedTextMatcher, received: T) => boolean
+   ): boolean {
+-    const matchers = expectedText.map(e => new ExpectedTextMatcher(e));
++    const matchers = expectedText.map(e => new ExpectedTextMatcher(this.builtins, e));
+     let mIndex = 0;
+     let rIndex = 0;
+     while (mIndex < matchers.length && rIndex < received.length) {
+@@ -1496,73 +1552,10 @@ export class InjectedScript {
+   }
+ }
+ 
+-const autoClosingTags = new Set(['AREA', 'BASE', 'BR', 'COL', 'COMMAND', 'EMBED', 'HR', 'IMG', 'INPUT', 'KEYGEN', 'LINK', 'MENUITEM', 'META', 'PARAM', 'SOURCE', 'TRACK', 'WBR']);
+-const booleanAttributes = new Set(['checked', 'selected', 'disabled', 'readonly', 'multiple']);
+-
+ function oneLine(s: string): string {
+   return s.replace(/\n/g, '↵').replace(/\t/g, '⇆');
+ }
+ 
+-const eventType = new Map<string, 'mouse' | 'keyboard' | 'touch' | 'pointer' | 'focus' | 'drag' | 'wheel' | 'deviceorientation' | 'devicemotion'>([
+-  ['auxclick', 'mouse'],
+-  ['click', 'mouse'],
+-  ['dblclick', 'mouse'],
+-  ['mousedown', 'mouse'],
+-  ['mouseeenter', 'mouse'],
+-  ['mouseleave', 'mouse'],
+-  ['mousemove', 'mouse'],
+-  ['mouseout', 'mouse'],
+-  ['mouseover', 'mouse'],
+-  ['mouseup', 'mouse'],
+-  ['mouseleave', 'mouse'],
+-  ['mousewheel', 'mouse'],
+-
+-  ['keydown', 'keyboard'],
+-  ['keyup', 'keyboard'],
+-  ['keypress', 'keyboard'],
+-  ['textInput', 'keyboard'],
+-
+-  ['touchstart', 'touch'],
+-  ['touchmove', 'touch'],
+-  ['touchend', 'touch'],
+-  ['touchcancel', 'touch'],
+-
+-  ['pointerover', 'pointer'],
+-  ['pointerout', 'pointer'],
+-  ['pointerenter', 'pointer'],
+-  ['pointerleave', 'pointer'],
+-  ['pointerdown', 'pointer'],
+-  ['pointerup', 'pointer'],
+-  ['pointermove', 'pointer'],
+-  ['pointercancel', 'pointer'],
+-  ['gotpointercapture', 'pointer'],
+-  ['lostpointercapture', 'pointer'],
+-
+-  ['focus', 'focus'],
+-  ['blur', 'focus'],
+-
+-  ['drag', 'drag'],
+-  ['dragstart', 'drag'],
+-  ['dragend', 'drag'],
+-  ['dragover', 'drag'],
+-  ['dragenter', 'drag'],
+-  ['dragleave', 'drag'],
+-  ['dragexit', 'drag'],
+-  ['drop', 'drag'],
+-
+-  ['wheel', 'wheel'],
+-
+-  ['deviceorientation', 'deviceorientation'],
+-  ['deviceorientationabsolute', 'deviceorientation'],
+-
+-  ['devicemotion', 'devicemotion'],
+-]);
+-
+-const kHoverHitTargetInterceptorEvents = new Set(['mousemove']);
+-const kTapHitTargetInterceptorEvents = new Set(['pointerdown', 'pointerup', 'touchstart', 'touchend', 'touchcancel']);
+-const kMouseHitTargetInterceptorEvents = new Set(['mousedown', 'mouseup', 'pointerdown', 'pointerup', 'click', 'auxclick', 'dblclick', 'contextmenu']);
+-const kAllHitTargetInterceptorEvents = new Set([...kHoverHitTargetInterceptorEvents, ...kTapHitTargetInterceptorEvents, ...kMouseHitTargetInterceptorEvents]);
+-
+ function cssUnquote(s: string): string {
+   // Trim quotes.
+   s = s.substring(1, s.length - 1);
+@@ -1622,13 +1615,13 @@ class ExpectedTextMatcher {
+   private _normalizeWhiteSpace: boolean | undefined;
+   private _ignoreCase: boolean | undefined;
+ 
+-  constructor(expected: channels.ExpectedTextValue) {
++  constructor(builtins: Builtins, expected: channels.ExpectedTextValue) {
+     this._normalizeWhiteSpace = expected.normalizeWhiteSpace;
+     this._ignoreCase = expected.ignoreCase;
+     this._string = expected.matchSubstring ? undefined : this.normalize(expected.string);
+     this._substring = expected.matchSubstring ? this.normalize(expected.string) : undefined;
+     if (expected.regexSource) {
+-      const flags = new Set((expected.regexFlags || '').split(''));
++      const flags = new builtins.Set((expected.regexFlags || '').split(''));
+       if (expected.ignoreCase === false)
+         flags.delete('i');
+       if (expected.ignoreCase === true)
+@@ -1717,15 +1710,3 @@ function deepEquals(a: any, b: any): boolean {
+ 
+   return false;
+ }
+-
+-declare global {
+-  interface Window {
+-    __pwClock?: {
+-      builtin: {
+-        setTimeout: Window['setTimeout'],
+-        clearTimeout: Window['clearTimeout'],
+-        requestAnimationFrame: Window['requestAnimationFrame'],
+-      }
+-    }
+-  }
+-}
+diff --git a/packages/playwright-core/src/server/injected/reactSelectorEngine.ts b/packages/playwright-core/src/server/injected/reactSelectorEngine.ts
+index 5beb3cc9ee790..c7ae9040617de 100644
+--- a/packages/playwright-core/src/server/injected/reactSelectorEngine.ts
++++ b/packages/playwright-core/src/server/injected/reactSelectorEngine.ts
+@@ -19,6 +19,7 @@ import { matchesComponentAttribute } from './selectorUtils';
+ import { parseAttributeSelector } from '../../utils/isomorphic/selectorParser';
+ 
+ import type { SelectorEngine, SelectorRoot } from './selectorEngine';
++import type { Builtins } from '../isomorphic/builtins';
+ 
+ type ComponentNode = {
+   key?: any,
+@@ -191,7 +192,7 @@ function findReactRoots(root: Document | ShadowRoot, roots: ReactVNode[] = []):
+   return roots;
+ }
+ 
+-export const ReactEngine: SelectorEngine = {
++export const createReactEngine = (builtins: Builtins): SelectorEngine => ({
+   queryAll(scope: SelectorRoot, selector: string): Element[] {
+     const { name, attributes } = parseAttributeSelector(selector, false);
+ 
+@@ -213,11 +214,11 @@ export const ReactEngine: SelectorEngine = {
+       }
+       return true;
+     })).flat();
+-    const allRootElements: Set<Element> = new Set();
++    const allRootElements: Builtins.Set<Element> = new builtins.Set();
+     for (const treeNode of treeNodes) {
+       for (const domNode of treeNode.rootElements)
+         allRootElements.add(domNode);
+     }
+     return [...allRootElements];
+   }
+-};
++});
+diff --git a/packages/playwright-core/src/server/injected/recorder/pollingRecorder.ts b/packages/playwright-core/src/server/injected/recorder/pollingRecorder.ts
+index fd9a3edf98a79..d75cb1bc86ffc 100644
+--- a/packages/playwright-core/src/server/injected/recorder/pollingRecorder.ts
++++ b/packages/playwright-core/src/server/injected/recorder/pollingRecorder.ts
+@@ -54,10 +54,10 @@ export class PollingRecorder implements RecorderDelegate {
+   private async _pollRecorderMode() {
+     const pollPeriod = 1000;
+     if (this._pollRecorderModeTimer)
+-      clearTimeout(this._pollRecorderModeTimer);
++      this._recorder.injectedScript.builtins.clearTimeout(this._pollRecorderModeTimer);
+     const state = await this._embedder.__pw_recorderState().catch(() => null);
+     if (!state) {
+-      this._pollRecorderModeTimer = this._recorder.injectedScript.builtinSetTimeout(() => this._pollRecorderMode(), pollPeriod);
++      this._pollRecorderModeTimer = this._recorder.injectedScript.builtins.setTimeout(() => this._pollRecorderMode(), pollPeriod);
+       return;
+     }
+ 
+@@ -73,7 +73,7 @@ export class PollingRecorder implements RecorderDelegate {
+       this._recorder.setUIState(state, this);
+     }
+ 
+-    this._pollRecorderModeTimer = this._recorder.injectedScript.builtinSetTimeout(() => this._pollRecorderMode(), pollPeriod);
++    this._pollRecorderModeTimer = this._recorder.injectedScript.builtins.setTimeout(() => this._pollRecorderMode(), pollPeriod);
+   }
+ 
+   async performAction(action: actions.PerformOnRecordAction) {
+diff --git a/packages/playwright-core/src/server/injected/recorder/recorder.ts b/packages/playwright-core/src/server/injected/recorder/recorder.ts
+index 9a7fd66000644..81612f26aa1a2 100644
+--- a/packages/playwright-core/src/server/injected/recorder/recorder.ts
++++ b/packages/playwright-core/src/server/injected/recorder/recorder.ts
+@@ -23,6 +23,7 @@ import type { ElementText } from '../selectorUtils';
+ import type * as actions from '@recorder/actions';
+ import type { ElementInfo, Mode, OverlayState, UIState } from '@recorder/recorderTypes';
+ import type { Language } from '@isomorphic/locatorGenerators';
++import type { Builtins } from '../../isomorphic/builtins';
+ 
+ const HighlightColors = {
+   multiple: '#f6b26b7f',
+@@ -188,7 +189,7 @@ class InspectTool implements RecorderTool {
+ 
+ class RecordActionTool implements RecorderTool {
+   private _recorder: Recorder;
+-  private _performingActions = new Set<actions.PerformOnRecordAction>();
++  private _performingActions: Builtins.Set<actions.PerformOnRecordAction>;
+   private _hoveredModel: HighlightModelWithSelector | null = null;
+   private _hoveredElement: HTMLElement | null = null;
+   private _activeModel: HighlightModelWithSelector | null = null;
+@@ -197,6 +198,7 @@ class RecordActionTool implements RecorderTool {
+ 
+   constructor(recorder: Recorder) {
+     this._recorder = recorder;
++    this._performingActions = new recorder.injectedScript.builtins.Set();
+   }
+ 
+   cursor() {
+@@ -250,7 +252,7 @@ class RecordActionTool implements RecorderTool {
+           modifiers: modifiersForEvent(event),
+           clickCount: event.detail
+         },
+-        timeout: this._recorder.injectedScript.builtinSetTimeout(() => this._commitPendingClickAction(), 200)
++        timeout: this._recorder.injectedScript.builtins.setTimeout(() => this._commitPendingClickAction(), 200)
+       };
+     }
+   }
+@@ -287,7 +289,7 @@ class RecordActionTool implements RecorderTool {
+ 
+   private _cancelPendingClickAction() {
+     if (this._pendingClickAction)
+-      clearTimeout(this._pendingClickAction.timeout);
++      this._recorder.injectedScript.builtins.clearTimeout(this._pendingClickAction.timeout);
+     this._pendingClickAction = undefined;
+   }
+ 
+@@ -593,11 +595,12 @@ class TextAssertionTool implements RecorderTool {
+   private _hoverHighlight: HighlightModelWithSelector | null = null;
+   private _action: actions.AssertAction | null = null;
+   private _dialog: Dialog;
+-  private _textCache = new Map<Element | ShadowRoot, ElementText>();
++  private _textCache: Builtins.Map<Element | ShadowRoot, ElementText>;
+   private _kind: 'text' | 'value' | 'snapshot';
+ 
+   constructor(recorder: Recorder, kind: 'text' | 'value' | 'snapshot') {
+     this._recorder = recorder;
++    this._textCache = new recorder.injectedScript.builtins.Map();
+     this._kind = kind;
+     this._dialog = new Dialog(recorder);
+   }
+@@ -946,7 +949,7 @@ class Overlay {
+     else
+       element = this._assertValuesToggle;
+     element.classList.add('succeeded');
+-    this._recorder.injectedScript.builtinSetTimeout(() => element.classList.remove('succeeded'), 2000);
++    this._recorder.injectedScript.builtins.setTimeout(() => element.classList.remove('succeeded'), 2000);
+   }
+ 
+   private _hideOverlay() {
+@@ -1081,10 +1084,10 @@ export class Recorder {
+     let recreationInterval: number | undefined;
+     const recreate = () => {
+       this.highlight.install();
+-      recreationInterval = this.injectedScript.builtinSetTimeout(recreate, 500);
++      recreationInterval = this.injectedScript.builtins.setTimeout(recreate, 500);
+     };
+-    recreationInterval = this.injectedScript.builtinSetTimeout(recreate, 500);
+-    this._listeners.push(() => this.injectedScript.builtinClearTimeout(recreationInterval));
++    recreationInterval = this.injectedScript.builtins.setTimeout(recreate, 500);
++    this._listeners.push(() => this.injectedScript.builtins.clearTimeout(recreationInterval));
+ 
+     this.highlight.appendChild(createSvgElement(this.document, clipPaths));
+     this.overlay?.install();
+diff --git a/packages/playwright-core/src/server/injected/roleSelectorEngine.ts b/packages/playwright-core/src/server/injected/roleSelectorEngine.ts
+index 2a9c8f648e42d..a4c04afed0525 100644
+--- a/packages/playwright-core/src/server/injected/roleSelectorEngine.ts
++++ b/packages/playwright-core/src/server/injected/roleSelectorEngine.ts
+@@ -19,6 +19,7 @@ import { matchesAttributePart } from './selectorUtils';
+ import { parseAttributeSelector   } from '../../utils/isomorphic/selectorParser';
+ import { normalizeWhiteSpace } from '../../utils/isomorphic/stringUtils';
+ 
++import type { Builtins } from '../isomorphic/builtins';
+ import type { SelectorEngine, SelectorRoot } from './selectorEngine';
+ import type { AttributeSelectorOperator, AttributeSelectorPart } from '../../utils/isomorphic/selectorParser';
+ 
+@@ -126,7 +127,7 @@ function validateAttributes(attrs: AttributeSelectorPart[], role: string): RoleE
+   return options;
+ }
+ 
+-function queryRole(scope: SelectorRoot, options: RoleEngineOptions, internal: boolean): Element[] {
++function queryRole(builtins: Builtins, scope: SelectorRoot, options: RoleEngineOptions, internal: boolean): Element[] {
+   const result: Element[] = [];
+   const match = (element: Element) => {
+     if (getAriaRole(element) !== options.role)
+@@ -150,7 +151,7 @@ function queryRole(scope: SelectorRoot, options: RoleEngineOptions, internal: bo
+     }
+     if (options.name !== undefined) {
+       // Always normalize whitespace in the accessible name.
+-      const accessibleName = normalizeWhiteSpace(getElementAccessibleName(element, !!options.includeHidden));
++      const accessibleName = normalizeWhiteSpace(getElementAccessibleName(builtins, element, !!options.includeHidden));
+       if (typeof options.name === 'string')
+         options.name = normalizeWhiteSpace(options.name);
+       // internal:role assumes that [name="foo"i] also means substring.
+@@ -178,7 +179,7 @@ function queryRole(scope: SelectorRoot, options: RoleEngineOptions, internal: bo
+   return result;
+ }
+ 
+-export function createRoleEngine(internal: boolean): SelectorEngine {
++export function createRoleEngine(builtins: Builtins, internal: boolean): SelectorEngine {
+   return {
+     queryAll: (scope: SelectorRoot, selector: string): Element[] => {
+       const parsed = parseAttributeSelector(selector, true);
+@@ -186,9 +187,9 @@ export function createRoleEngine(internal: boolean): SelectorEngine {
+       if (!role)
+         throw new Error(`Role must not be empty`);
+       const options = validateAttributes(parsed.attributes, role);
+-      beginAriaCaches();
++      beginAriaCaches(builtins);
+       try {
+-        return queryRole(scope, options, internal);
++        return queryRole(builtins, scope, options, internal);
+       } finally {
+         endAriaCaches();
+       }
+diff --git a/packages/playwright-core/src/server/injected/roleUtils.ts b/packages/playwright-core/src/server/injected/roleUtils.ts
+index c0ee8c5f19ba9..ca716d77b5a59 100644
+--- a/packages/playwright-core/src/server/injected/roleUtils.ts
++++ b/packages/playwright-core/src/server/injected/roleUtils.ts
+@@ -17,6 +17,7 @@
+ import { closestCrossShadow, elementSafeTagName, enclosingShadowRootOrDocument, getElementComputedStyle, isElementStyleVisibilityVisible, isVisibleTextNode, parentElementOrShadowHost } from './domUtils';
+ 
+ import type { AriaRole } from '@isomorphic/ariaSnapshot';
++import type { Builtins } from '../isomorphic/builtins';
+ 
+ function hasExplicitAccessibleName(e: Element) {
+   return e.hasAttribute('aria-label') || e.hasAttribute('aria-labelledby');
+@@ -26,7 +27,7 @@ function hasExplicitAccessibleName(e: Element) {
+ const kAncestorPreventingLandmark = 'article:not([role]), aside:not([role]), main:not([role]), nav:not([role]), section:not([role]), [role=article], [role=complementary], [role=main], [role=navigation], [role=region]';
+ 
+ // https://www.w3.org/TR/wai-aria-1.2/#global_states
+-const kGlobalAriaAttributes = new Map<string, Set<string> | undefined>([
++const kGlobalAriaAttributes: [string, string[] | undefined][] = [
+   ['aria-atomic', undefined],
+   ['aria-busy', undefined],
+   ['aria-controls', undefined],
+@@ -46,17 +47,17 @@ const kGlobalAriaAttributes = new Map<string, Set<string> | undefined>([
+   // Global use deprecated in ARIA 1.2
+   // ['aria-invalid', undefined],
+   ['aria-keyshortcuts', undefined],
+-  ['aria-label', new Set(['caption', 'code', 'deletion', 'emphasis', 'generic', 'insertion', 'paragraph', 'presentation', 'strong', 'subscript', 'superscript'])],
+-  ['aria-labelledby', new Set(['caption', 'code', 'deletion', 'emphasis', 'generic', 'insertion', 'paragraph', 'presentation', 'strong', 'subscript', 'superscript'])],
++  ['aria-label', ['caption', 'code', 'deletion', 'emphasis', 'generic', 'insertion', 'paragraph', 'presentation', 'strong', 'subscript', 'superscript']],
++  ['aria-labelledby', ['caption', 'code', 'deletion', 'emphasis', 'generic', 'insertion', 'paragraph', 'presentation', 'strong', 'subscript', 'superscript']],
+   ['aria-live', undefined],
+   ['aria-owns', undefined],
+   ['aria-relevant', undefined],
+-  ['aria-roledescription', new Set(['generic'])],
+-]);
++  ['aria-roledescription', ['generic']],
++];
+ 
+ function hasGlobalAriaAttribute(element: Element, forRole?: string | null) {
+-  return [...kGlobalAriaAttributes].some(([attr, prohibited]) => {
+-    return !prohibited?.has(forRole || '') && element.hasAttribute(attr);
++  return kGlobalAriaAttributes.some(([attr, prohibited]) => {
++    return !prohibited?.includes(forRole || '') && element.hasAttribute(attr);
+   });
+ }
+ 
+@@ -315,15 +316,15 @@ function getIdRefs(element: Element, ref: string | null): Element[] {
+     return [];
+   try {
+     const ids = ref.split(' ').filter(id => !!id);
+-    const set = new Set<Element>();
++    const result: Element[] = [];
+     for (const id of ids) {
+       // https://www.w3.org/TR/wai-aria-1.2/#mapping_additional_relations_error_processing
+       // "If more than one element has the same ID, the user agent SHOULD use the first element found with the given ID"
+       const firstElement = root.querySelector('#' + CSS.escape(id));
+-      if (firstElement)
+-        set.add(firstElement);
++      if (firstElement && !result.includes(firstElement))
++        result.push(firstElement);
+     }
+-    return [...set];
++    return result;
+   } catch (e) {
+     return [];
+   }
+@@ -411,7 +412,7 @@ function allowsNameFromContent(role: string, targetDescendant: boolean) {
+   return alwaysAllowsNameFromContent || descendantAllowsNameFromContent;
+ }
+ 
+-export function getElementAccessibleName(element: Element, includeHidden: boolean): string {
++export function getElementAccessibleName(builtins: Builtins, element: Element, includeHidden: boolean): string {
+   const cache = (includeHidden ? cacheAccessibleNameHidden : cacheAccessibleName);
+   let accessibleName = cache?.get(element);
+ 
+@@ -426,8 +427,9 @@ export function getElementAccessibleName(element: Element, includeHidden: boolea
+     if (!elementProhibitsNaming) {
+       // step 2.
+       accessibleName = asFlatString(getTextAlternativeInternal(element, {
++        builtins,
+         includeHidden,
+-        visitedElements: new Set(),
++        visitedElements: new builtins.Set(),
+         embeddedInTargetElement: 'self',
+       }));
+     }
+@@ -437,7 +439,7 @@ export function getElementAccessibleName(element: Element, includeHidden: boolea
+   return accessibleName;
+ }
+ 
+-export function getElementAccessibleDescription(element: Element, includeHidden: boolean): string {
++export function getElementAccessibleDescription(builtins: Builtins, element: Element, includeHidden: boolean): string {
+   const cache = (includeHidden ? cacheAccessibleDescriptionHidden : cacheAccessibleDescription);
+   let accessibleDescription = cache?.get(element);
+ 
+@@ -450,8 +452,9 @@ export function getElementAccessibleDescription(element: Element, includeHidden:
+       // precedence 1
+       const describedBy = getIdRefs(element, element.getAttribute('aria-describedby'));
+       accessibleDescription = asFlatString(describedBy.map(ref => getTextAlternativeInternal(ref, {
++        builtins,
+         includeHidden,
+-        visitedElements: new Set(),
++        visitedElements: new builtins.Set(),
+         embeddedInDescribedBy: { element: ref, hidden: isElementHiddenForAria(ref) },
+       })).join(' '));
+     } else if (element.hasAttribute('aria-description')) {
+@@ -492,7 +495,7 @@ function getValidityInvalid(element: Element) {
+   return false;
+ }
+ 
+-export function getElementAccessibleErrorMessage(element: Element): string {
++export function getElementAccessibleErrorMessage(builtins: Builtins, element: Element): string {
+   // SPEC: https://w3c.github.io/aria/#aria-errormessage
+   //
+   // TODO: support https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/validationMessage
+@@ -511,7 +514,8 @@ export function getElementAccessibleErrorMessage(element: Element): string {
+       // Relevant vague spec: https://w3c.github.io/core-aam/#ariaErrorMessage.
+       const parts = errorMessages.map(errorMessage => asFlatString(
+           getTextAlternativeInternal(errorMessage, {
+-            visitedElements: new Set(),
++            builtins,
++            visitedElements: new builtins.Set(),
+             embeddedInDescribedBy: { element: errorMessage, hidden: isElementHiddenForAria(errorMessage) },
+           })
+       ));
+@@ -523,7 +527,8 @@ export function getElementAccessibleErrorMessage(element: Element): string {
+ }
+ 
+ type AccessibleNameOptions = {
+-  visitedElements: Set<Element>,
++  builtins: Builtins,
++  visitedElements: Builtins.Set<Element>,
+   includeHidden?: boolean,
+   embeddedInDescribedBy?: { element: Element, hidden: boolean },
+   embeddedInLabelledBy?: { element: Element, hidden: boolean },
+@@ -821,7 +826,7 @@ function getTextAlternativeInternal(element: Element, options: AccessibleNameOpt
+       !!options.embeddedInLabelledBy || !!options.embeddedInDescribedBy ||
+       !!options.embeddedInLabel || !!options.embeddedInNativeTextAlternative) {
+     options.visitedElements.add(element);
+-    const accessibleName = innerAccumulatedElementText(element, childOptions);
++    const accessibleName = innerAccumulatedElementText(options.builtins, element, childOptions);
+     // Spec says "Return the accumulated text if it is not the empty string". However, that is not really
+     // compatible with the real browser behavior and wpt tests, where an element with empty contents will fallback to the title.
+     // So we follow the spec everywhere except for the target element itself. This can probably be improved.
+@@ -842,7 +847,7 @@ function getTextAlternativeInternal(element: Element, options: AccessibleNameOpt
+   return '';
+ }
+ 
+-function innerAccumulatedElementText(element: Element, options: AccessibleNameOptions): string {
++function innerAccumulatedElementText(builtins: Builtins, element: Element, options: AccessibleNameOptions): string {
+   const tokens: string[] = [];
+   const visit = (node: Node, skipSlotted: boolean) => {
+     if (skipSlotted && (node as Element | Text).assignedSlot)
+@@ -881,11 +886,6 @@ function innerAccumulatedElementText(element: Element, options: AccessibleNameOp
+   return tokens.join('');
+ }
+ 
+-export function accumulatedElementText(element: Element): string {
+-  const visitedElements = new Set<Element>();
+-  return asFlatString(innerAccumulatedElementText(element, { visitedElements })).trim();
+-}
+-
+ export const kAriaSelectedRoles = ['gridcell', 'option', 'row', 'tab', 'rowheader', 'columnheader', 'treeitem'];
+ export function getAriaSelected(element: Element): boolean {
+   // https://www.w3.org/TR/wai-aria-1.2/#aria-selected
+@@ -1038,26 +1038,26 @@ function getAccessibleNameFromAssociatedLabels(labels: Iterable<HTMLLabelElement
+   })).filter(accessibleName => !!accessibleName).join(' ');
+ }
+ 
+-let cacheAccessibleName: Map<Element, string> | undefined;
+-let cacheAccessibleNameHidden: Map<Element, string> | undefined;
+-let cacheAccessibleDescription: Map<Element, string> | undefined;
+-let cacheAccessibleDescriptionHidden: Map<Element, string> | undefined;
+-let cacheAccessibleErrorMessage: Map<Element, string> | undefined;
+-let cacheIsHidden: Map<Element, boolean> | undefined;
+-let cachePseudoContentBefore: Map<Element, string> | undefined;
+-let cachePseudoContentAfter: Map<Element, string> | undefined;
++let cacheAccessibleName: Builtins.Map<Element, string> | undefined;
++let cacheAccessibleNameHidden: Builtins.Map<Element, string> | undefined;
++let cacheAccessibleDescription: Builtins.Map<Element, string> | undefined;
++let cacheAccessibleDescriptionHidden: Builtins.Map<Element, string> | undefined;
++let cacheAccessibleErrorMessage: Builtins.Map<Element, string> | undefined;
++let cacheIsHidden: Builtins.Map<Element, boolean> | undefined;
++let cachePseudoContentBefore: Builtins.Map<Element, string> | undefined;
++let cachePseudoContentAfter: Builtins.Map<Element, string> | undefined;
+ let cachesCounter = 0;
+ 
+-export function beginAriaCaches() {
++export function beginAriaCaches(builtins: Builtins) {
+   ++cachesCounter;
+-  cacheAccessibleName ??= new Map();
+-  cacheAccessibleNameHidden ??= new Map();
+-  cacheAccessibleDescription ??= new Map();
+-  cacheAccessibleDescriptionHidden ??= new Map();
+-  cacheAccessibleErrorMessage ??= new Map();
+-  cacheIsHidden ??= new Map();
+-  cachePseudoContentBefore ??= new Map();
+-  cachePseudoContentAfter ??= new Map();
++  cacheAccessibleName ??= new builtins.Map();
++  cacheAccessibleNameHidden ??= new builtins.Map();
++  cacheAccessibleDescription ??= new builtins.Map();
++  cacheAccessibleDescriptionHidden ??= new builtins.Map();
++  cacheAccessibleErrorMessage ??= new builtins.Map();
++  cacheIsHidden ??= new builtins.Map();
++  cachePseudoContentBefore ??= new builtins.Map();
++  cachePseudoContentAfter ??= new builtins.Map();
+ }
+ 
+ export function endAriaCaches() {
+diff --git a/packages/playwright-core/src/server/injected/selectorEvaluator.ts b/packages/playwright-core/src/server/injected/selectorEvaluator.ts
+index 7d55229166b2a..8147c08fc86bc 100644
+--- a/packages/playwright-core/src/server/injected/selectorEvaluator.ts
++++ b/packages/playwright-core/src/server/injected/selectorEvaluator.ts
+@@ -23,6 +23,7 @@ import { normalizeWhiteSpace } from '../../utils/isomorphic/stringUtils';
+ import type { LayoutSelectorName } from './layoutSelectorUtils';
+ import type { ElementText } from './selectorUtils';
+ import type { CSSComplexSelector, CSSComplexSelectorList, CSSFunctionArgument, CSSSimpleSelector } from '../../utils/isomorphic/cssParser';
++import type { Builtins } from '../isomorphic/builtins';
+ 
+ type QueryContext = {
+   scope: Element | Document;
+@@ -33,6 +34,7 @@ type QueryContext = {
+ };
+ export type Selector = any; // Opaque selector type.
+ export interface SelectorEvaluator {
++  readonly builtins: Builtins;
+   query(context: QueryContext, selector: Selector): Element[];
+   matches(element: Element, selector: Selector, context: QueryContext): boolean;
+ }
+@@ -41,24 +43,36 @@ export interface SelectorEngine {
+   query?(context: QueryContext, args: (string | number | Selector)[], evaluator: SelectorEvaluator): Element[];
+ }
+ 
+-type QueryCache = Map<any, { rest: any[], result: any }[]>;
++type QueryCache = Builtins.Map<any, { rest: any[], result: any }[]>;
++
+ export class SelectorEvaluatorImpl implements SelectorEvaluator {
+-  private _engines = new Map<string, SelectorEngine>();
+-  private _cacheQueryCSS: QueryCache = new Map();
+-  private _cacheMatches: QueryCache = new Map();
+-  private _cacheQuery: QueryCache = new Map();
+-  private _cacheMatchesSimple: QueryCache = new Map();
+-  private _cacheMatchesParents: QueryCache = new Map();
+-  private _cacheCallMatches: QueryCache = new Map();
+-  private _cacheCallQuery: QueryCache = new Map();
+-  private _cacheQuerySimple: QueryCache = new Map();
+-  _cacheText = new Map<Element | ShadowRoot, ElementText>();
+-  private _scoreMap: Map<Element, number> | undefined;
++  readonly builtins: Builtins;
++  private _engines: Builtins.Map<string, SelectorEngine>;
++  private _cacheQueryCSS: QueryCache;
++  private _cacheMatches: QueryCache;
++  private _cacheQuery: QueryCache;
++  private _cacheMatchesSimple: QueryCache;
++  private _cacheMatchesParents: QueryCache;
++  private _cacheCallMatches: QueryCache;
++  private _cacheCallQuery: QueryCache;
++  private _cacheQuerySimple: QueryCache;
++  _cacheText: Builtins.Map<Element | ShadowRoot, ElementText>;
++  private _scoreMap: Builtins.Map<Element, number> | undefined;
+   private _retainCacheCounter = 0;
+ 
+-  constructor(extraEngines: Map<string, SelectorEngine>) {
+-    for (const [name, engine] of extraEngines)
+-      this._engines.set(name, engine);
++  constructor(builtins: Builtins) {
++    this.builtins = builtins;
++    this._cacheText = new builtins.Map();
++    this._cacheQueryCSS = new builtins.Map();
++    this._cacheMatches = new builtins.Map();
++    this._cacheQuery = new builtins.Map();
++    this._cacheMatchesSimple = new builtins.Map();
++    this._cacheMatchesParents = new builtins.Map();
++    this._cacheCallMatches = new builtins.Map();
++    this._cacheCallQuery = new builtins.Map();
++    this._cacheQuerySimple = new builtins.Map();
++
++    this._engines = new builtins.Map();
+     this._engines.set('not', notEngine);
+     this._engines.set('is', isEngine);
+     this._engines.set('where', isEngine);
+@@ -154,7 +168,7 @@ export class SelectorEvaluatorImpl implements SelectorEvaluator {
+ 
+         // query() recursively calls itself, so we set up a new map for this particular query() call.
+         const previousScoreMap = this._scoreMap;
+-        this._scoreMap = new Map();
++        this._scoreMap = new this.builtins.Map();
+         let elements = this._querySimple(context, selector.simples[selector.simples.length - 1].selector);
+         elements = elements.filter(element => this._matchesParents(element, selector, selector.simples.length - 2, context));
+         if (this._scoreMap.size) {
+@@ -383,7 +397,7 @@ const isEngine: SelectorEngine = {
+     let elements: Element[] = [];
+     for (const arg of args)
+       elements = elements.concat(evaluator.query(context, arg));
+-    return args.length === 1 ? elements : sortInDOMOrder(elements);
++    return args.length === 1 ? elements : sortInDOMOrder(evaluator.builtins, elements);
+   },
+ };
+ 
+@@ -538,10 +552,10 @@ function previousSiblingInContext(element: Element, context: QueryContext): Elem
+   return element.previousElementSibling || undefined;
+ }
+ 
+-export function sortInDOMOrder(elements: Iterable<Element>): Element[] {
++export function sortInDOMOrder(builtins: Builtins, elements: Iterable<Element>): Element[] {
+   type SortEntry = { children: Element[], taken: boolean };
+ 
+-  const elementToEntry = new Map<Element, SortEntry>();
++  const elementToEntry = new builtins.Map<Element, SortEntry>();
+   const roots: Element[] = [];
+   const result: Element[] = [];
+ 
+@@ -568,7 +582,7 @@ export function sortInDOMOrder(elements: Iterable<Element>): Element[] {
+     if (entry.taken)
+       result.push(element);
+     if (entry.children.length > 1) {
+-      const set = new Set(entry.children);
++      const set = new builtins.Set(entry.children);
+       entry.children = [];
+       let child = element.firstElementChild;
+       while (child && entry.children.length < set.size) {
+diff --git a/packages/playwright-core/src/server/injected/selectorGenerator.ts b/packages/playwright-core/src/server/injected/selectorGenerator.ts
+index 70541abfc043a..ed3c083b8b001 100644
+--- a/packages/playwright-core/src/server/injected/selectorGenerator.ts
++++ b/packages/playwright-core/src/server/injected/selectorGenerator.ts
+@@ -20,6 +20,7 @@ import { elementText, getElementLabels } from './selectorUtils';
+ import { cssEscape, escapeForAttributeSelector, escapeForTextSelector, escapeRegExp, quoteCSSAttributeValue } from '../../utils/isomorphic/stringUtils';
+ 
+ import type { InjectedScript } from './injectedScript';
++import type { Builtins } from '../isomorphic/builtins';
+ 
+ type SelectorToken = {
+   engine: string;
+@@ -27,8 +28,10 @@ type SelectorToken = {
+   score: number;  // Lower is better.
+ };
+ 
+-const cacheAllowText = new Map<Element, SelectorToken[] | null>();
+-const cacheDisallowText = new Map<Element, SelectorToken[] | null>();
++type Cache = {
++  allowText: Builtins.Map<Element, SelectorToken[] | null>;
++  disallowText: Builtins.Map<Element, SelectorToken[] | null>;
++};
+ 
+ const kTextScoreRange = 10;
+ const kExactPenalty = kTextScoreRange / 2;
+@@ -73,13 +76,14 @@ export type GenerateSelectorOptions = {
+ 
+ export function generateSelector(injectedScript: InjectedScript, targetElement: Element, options: GenerateSelectorOptions): { selector: string, selectors: string[], elements: Element[] } {
+   injectedScript._evaluator.begin();
+-  beginAriaCaches();
++  const cache: Cache = { allowText: new injectedScript.builtins.Map(), disallowText: new injectedScript.builtins.Map() };
++  beginAriaCaches(injectedScript.builtins);
+   try {
+     let selectors: string[] = [];
+     if (options.forTextExpect) {
+       let targetTokens = cssFallback(injectedScript, targetElement.ownerDocument.documentElement, options);
+       for (let element: Element | undefined = targetElement; element; element = parentElementOrShadowHost(element)) {
+-        const tokens = generateSelectorFor(injectedScript, element, { ...options, noText: true });
++        const tokens = generateSelectorFor(cache, injectedScript, element, { ...options, noText: true });
+         if (!tokens)
+           continue;
+         const score = combineScores(tokens);
+@@ -97,18 +101,18 @@ export function generateSelector(injectedScript: InjectedScript, targetElement:
+           targetElement = interactiveParent;
+       }
+       if (options.multiple) {
+-        const withText = generateSelectorFor(injectedScript, targetElement, options);
+-        const withoutText = generateSelectorFor(injectedScript, targetElement, { ...options, noText: true });
++        const withText = generateSelectorFor(cache, injectedScript, targetElement, options);
++        const withoutText = generateSelectorFor(cache, injectedScript, targetElement, { ...options, noText: true });
+         let tokens = [withText, withoutText];
+ 
+         // Clear cache to re-generate without css id.
+-        cacheAllowText.clear();
+-        cacheDisallowText.clear();
++        cache.allowText.clear();
++        cache.disallowText.clear();
+ 
+         if (withText && hasCSSIdToken(withText))
+-          tokens.push(generateSelectorFor(injectedScript, targetElement, { ...options, noCSSId: true }));
++          tokens.push(generateSelectorFor(cache, injectedScript, targetElement, { ...options, noCSSId: true }));
+         if (withoutText && hasCSSIdToken(withoutText))
+-          tokens.push(generateSelectorFor(injectedScript, targetElement, { ...options, noText: true, noCSSId: true }));
++          tokens.push(generateSelectorFor(cache, injectedScript, targetElement, { ...options, noText: true, noCSSId: true }));
+ 
+         tokens = tokens.filter(Boolean);
+         if (!tokens.length) {
+@@ -117,9 +121,9 @@ export function generateSelector(injectedScript: InjectedScript, targetElement:
+           if (hasCSSIdToken(css))
+             tokens.push(cssFallback(injectedScript, targetElement, { ...options, noCSSId: true }));
+         }
+-        selectors = [...new Set(tokens.map(t => joinTokens(t!)))];
++        selectors = [...new injectedScript.builtins.Set(tokens.map(t => joinTokens(t!)))];
+       } else {
+-        const targetTokens = generateSelectorFor(injectedScript, targetElement, options) || cssFallback(injectedScript, targetElement, options);
++        const targetTokens = generateSelectorFor(cache, injectedScript, targetElement, options) || cssFallback(injectedScript, targetElement, options);
+         selectors = [joinTokens(targetTokens)];
+       }
+     }
+@@ -131,8 +135,6 @@ export function generateSelector(injectedScript: InjectedScript, targetElement:
+       elements: injectedScript.querySelectorAll(parsedSelector, options.root ?? targetElement.ownerDocument)
+     };
+   } finally {
+-    cacheAllowText.clear();
+-    cacheDisallowText.clear();
+     endAriaCaches();
+     injectedScript._evaluator.end();
+   }
+@@ -145,7 +147,7 @@ function filterRegexTokens(textCandidates: SelectorToken[][]): SelectorToken[][]
+ 
+ type InternalOptions = GenerateSelectorOptions & { noText?: boolean, noCSSId?: boolean };
+ 
+-function generateSelectorFor(injectedScript: InjectedScript, targetElement: Element, options: InternalOptions): SelectorToken[] | null {
++function generateSelectorFor(cache: Cache, injectedScript: InjectedScript, targetElement: Element, options: InternalOptions): SelectorToken[] | null {
+   if (options.root && !isInsideScope(options.root, targetElement))
+     throw new Error(`Target element must belong to the root's subtree`);
+ 
+@@ -215,11 +217,11 @@ function generateSelectorFor(injectedScript: InjectedScript, targetElement: Elem
+   };
+ 
+   const calculateCached = (element: Element, allowText: boolean): SelectorToken[] | null => {
+-    const cache = allowText ? cacheAllowText : cacheDisallowText;
+-    let value = cache.get(element);
++    const map = allowText ? cache.allowText : cache.disallowText;
++    let value = map.get(element);
+     if (value === undefined) {
+       value = calculate(element, allowText);
+-      cache.set(element, value);
++      map.set(element, value);
+     }
+     return value;
+   };
+@@ -339,7 +341,7 @@ function buildTextCandidates(injectedScript: InjectedScript, element: Element, i
+ 
+   const ariaRole = getAriaRole(element);
+   if (ariaRole && !['none', 'presentation'].includes(ariaRole)) {
+-    const ariaName = getElementAccessibleName(element, false);
++    const ariaName = getElementAccessibleName(injectedScript.builtins, element, false);
+     if (ariaName) {
+       const roleToken = { engine: 'internal:role', selector: `${ariaRole}[name=${escapeForAttributeSelector(ariaName, true)}]`, score: kRoleWithNameScoreExact };
+       candidates.push([roleToken]);
+diff --git a/packages/playwright-core/src/server/injected/selectorUtils.ts b/packages/playwright-core/src/server/injected/selectorUtils.ts
+index 31db84683dc0f..422da2cb19e74 100644
+--- a/packages/playwright-core/src/server/injected/selectorUtils.ts
++++ b/packages/playwright-core/src/server/injected/selectorUtils.ts
+@@ -18,6 +18,7 @@ import { getAriaLabelledByElements } from './roleUtils';
+ import { normalizeWhiteSpace } from '../../utils/isomorphic/stringUtils';
+ 
+ import type { AttributeSelectorPart } from '../../utils/isomorphic/selectorParser';
++import type { Builtins } from '../isomorphic/builtins';
+ 
+ export function matchesComponentAttribute(obj: any, attr: AttributeSelectorPart) {
+   for (const token of attr.jsonPath) {
+@@ -61,7 +62,7 @@ export function shouldSkipForTextMatching(element: Element | ShadowRoot) {
+ export type ElementText = { full: string, normalized: string, immediate: string[] };
+ export type TextMatcher = (text: ElementText) => boolean;
+ 
+-export function elementText(cache: Map<Element | ShadowRoot, ElementText>, root: Element | ShadowRoot): ElementText {
++export function elementText(cache: Builtins.Map<Element | ShadowRoot, ElementText>, root: Element | ShadowRoot): ElementText {
+   let value = cache.get(root);
+   if (value === undefined) {
+     value = { full: '', normalized: '', immediate: [] };
+@@ -97,7 +98,7 @@ export function elementText(cache: Map<Element | ShadowRoot, ElementText>, root:
+   return value;
+ }
+ 
+-export function elementMatchesText(cache: Map<Element | ShadowRoot, ElementText>, element: Element, matcher: TextMatcher): 'none' | 'self' | 'selfAndChildren' {
++export function elementMatchesText(cache: Builtins.Map<Element | ShadowRoot, ElementText>, element: Element, matcher: TextMatcher): 'none' | 'self' | 'selfAndChildren' {
+   if (shouldSkipForTextMatching(element))
+     return 'none';
+   if (!matcher(elementText(cache, element)))
+@@ -111,7 +112,7 @@ export function elementMatchesText(cache: Map<Element | ShadowRoot, ElementText>
+   return 'self';
+ }
+ 
+-export function getElementLabels(textCache: Map<Element | ShadowRoot, ElementText>, element: Element): ElementText[] {
++export function getElementLabels(textCache: Builtins.Map<Element | ShadowRoot, ElementText>, element: Element): ElementText[] {
+   const labels = getAriaLabelledByElements(element);
+   if (labels)
+     return labels.map(label => elementText(textCache, label));
+diff --git a/packages/playwright-core/src/server/injected/utilityScript.ts b/packages/playwright-core/src/server/injected/utilityScript.ts
+index 2a987802ff5bc..c64150d292bd1 100644
+--- a/packages/playwright-core/src/server/injected/utilityScript.ts
++++ b/packages/playwright-core/src/server/injected/utilityScript.ts
+@@ -14,16 +14,27 @@
+  * limitations under the License.
+  */
+ 
+-import { parseEvaluationResultValue, serializeAsCallArgument } from '../isomorphic/utilityScriptSerializers';
++import { ensureBuiltins } from '../isomorphic/builtins';
++import { source } from '../isomorphic/utilityScriptSerializers';
++
++import type { Builtins } from '../isomorphic/builtins';
+ 
+ export class UtilityScript {
+   constructor(isUnderTest: boolean) {
+-    if (isUnderTest)
+-      this._setBuiltins();
++    // eslint-disable-next-line no-restricted-globals
++    this.builtins = ensureBuiltins(globalThis);
++    if (isUnderTest) {
++      // eslint-disable-next-line no-restricted-globals
++      (globalThis as any).builtins = this.builtins;
++    }
++    const result = source(this.builtins);
++    this.serializeAsCallArgument = result.serializeAsCallArgument;
++    this.parseEvaluationResultValue = result.parseEvaluationResultValue;
+   }
+ 
+-  serializeAsCallArgument = serializeAsCallArgument;
+-  parseEvaluationResultValue = parseEvaluationResultValue;
++  readonly builtins: Builtins;
++  readonly serializeAsCallArgument;
++  readonly parseEvaluationResultValue;
+ 
+   evaluate(isFunction: boolean | undefined, returnByValue: boolean, expression: string, argCount: number, ...argsAndHandles: any[]) {
+     const args = argsAndHandles.slice(0, argCount);
+@@ -32,8 +43,7 @@ export class UtilityScript {
+     for (let i = 0; i < args.length; i++)
+       parameters[i] = this.parseEvaluationResultValue(args[i], handles);
+ 
+-    // eslint-disable-next-line no-restricted-globals
+-    let result = globalThis.eval(expression);
++    let result = this.builtins.eval(expression);
+     if (isFunction === true) {
+       result = result(...parameters);
+     } else if (isFunction === false) {
+@@ -48,9 +58,9 @@ export class UtilityScript {
+ 
+   jsonValue(returnByValue: true, value: any) {
+     // Special handling of undefined to work-around multi-step returnByValue handling in WebKit.
+-    if (Object.is(value, undefined))
++    if (value === undefined)
+       return undefined;
+-    return serializeAsCallArgument(value, (value: any) => ({ fallThrough: value }));
++    return this.serializeAsCallArgument(value, (value: any) => ({ fallThrough: value }));
+   }
+ 
+   private _promiseAwareJsonValueNoThrow(value: any) {
+@@ -74,47 +84,4 @@ export class UtilityScript {
+     }
+     return safeJson(value);
+   }
+-
+-  private _setBuiltins() {
+-    // eslint-disable-next-line no-restricted-globals
+-    const window = (globalThis as any);
+-    window.builtinSetTimeout = (callback: Function, timeout: number) => {
+-      if (window.__pwClock?.builtin)
+-        return window.__pwClock.builtin.setTimeout(callback, timeout);
+-      return setTimeout(callback, timeout);
+-    };
+-
+-    window.builtinClearTimeout = (id: number) => {
+-      if (window.__pwClock?.builtin)
+-        return window.__pwClock.builtin.clearTimeout(id);
+-      return clearTimeout(id);
+-    };
+-
+-    window.builtinSetInterval = (callback: Function, timeout: number) => {
+-      if (window.__pwClock?.builtin)
+-        return window.__pwClock.builtin.setInterval(callback, timeout);
+-      return setInterval(callback, timeout);
+-    };
+-
+-    window.builtinClearInterval = (id: number) => {
+-      if (window.__pwClock?.builtin)
+-        return window.__pwClock.builtin.clearInterval(id);
+-      return clearInterval(id);
+-    };
+-
+-    window.builtinRequestAnimationFrame = (callback: FrameRequestCallback) => {
+-      if (window.__pwClock?.builtin)
+-        return window.__pwClock.builtin.requestAnimationFrame(callback);
+-      return requestAnimationFrame(callback);
+-    };
+-
+-    window.builtinCancelAnimationFrame = (id: number) => {
+-      if (window.__pwClock?.builtin)
+-        return window.__pwClock.builtin.cancelAnimationFrame(id);
+-      return cancelAnimationFrame(id);
+-    };
+-
+-    window.builtinDate = window.__pwClock?.builtin.Date || Date;
+-    window.builtinPerformance = window.__pwClock?.builtin.performance || performance;
+-  }
+ }
+diff --git a/packages/playwright-core/src/server/injected/vueSelectorEngine.ts b/packages/playwright-core/src/server/injected/vueSelectorEngine.ts
+index a9f179bf435d6..7ff282e4792c3 100644
+--- a/packages/playwright-core/src/server/injected/vueSelectorEngine.ts
++++ b/packages/playwright-core/src/server/injected/vueSelectorEngine.ts
+@@ -19,6 +19,7 @@ import { matchesComponentAttribute } from './selectorUtils';
+ import { parseAttributeSelector } from '../../utils/isomorphic/selectorParser';
+ 
+ import type { SelectorEngine, SelectorRoot } from './selectorEngine';
++import type { Builtins } from '../isomorphic/builtins';
+ 
+ type ComponentNode = {
+   name: string,
+@@ -215,11 +216,11 @@ function filterComponentsTree(treeNode: ComponentNode, searchFn: (node: Componen
+ }
+ 
+ type VueRoot = {version: number, root: VueVNode};
+-function findVueRoots(root: Document | ShadowRoot, roots: VueRoot[] = []): VueRoot[] {
++function findVueRoots(builtins: Builtins, root: Document | ShadowRoot, roots: VueRoot[] = []): VueRoot[] {
+   const document = root.ownerDocument || root;
+   const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+   // Vue2 roots are referred to from elements.
+-  const vue2Roots: Set<VueVNode> = new Set();
++  const vue2Roots = new builtins.Set<VueVNode>();
+   do {
+     const node = walker.currentNode;
+     if ((node as any).__vue__)
+@@ -229,7 +230,7 @@ function findVueRoots(root: Document | ShadowRoot, roots: VueRoot[] = []): VueRo
+       roots.push({ root: (node as any)._vnode.component, version: 3 });
+     const shadowRoot = node instanceof Element ? node.shadowRoot : null;
+     if (shadowRoot)
+-      findVueRoots(shadowRoot, roots);
++      findVueRoots(builtins, shadowRoot, roots);
+   } while (walker.nextNode());
+   for (const vue2root of vue2Roots) {
+     roots.push({
+@@ -240,11 +241,11 @@ function findVueRoots(root: Document | ShadowRoot, roots: VueRoot[] = []): VueRo
+   return roots;
+ }
+ 
+-export const VueEngine: SelectorEngine = {
++export const createVueEngine = (builtins: Builtins): SelectorEngine => ({
+   queryAll(scope: SelectorRoot, selector: string): Element[] {
+     const document = scope.ownerDocument || scope;
+     const { name, attributes } = parseAttributeSelector(selector, false);
+-    const vueRoots = findVueRoots(document);
++    const vueRoots = findVueRoots(builtins, document);
+     const trees = vueRoots.map(vueRoot => vueRoot.version === 3 ? buildComponentsTreeVue3(vueRoot.root) : buildComponentsTreeVue2(vueRoot.root));
+     const treeNodes = trees.map(tree => filterComponentsTree(tree, treeNode => {
+       if (name && treeNode.name !== name)
+@@ -257,11 +258,11 @@ export const VueEngine: SelectorEngine = {
+       }
+       return true;
+     })).flat();
+-    const allRootElements: Set<Element> = new Set();
++    const allRootElements = new builtins.Set<Element>();
+     for (const treeNode of treeNodes) {
+       for (const rootElement of treeNode.rootElements)
+         allRootElements.add(rootElement);
+     }
+     return [...allRootElements];
+   }
+-};
++});
+diff --git a/packages/playwright-core/src/server/injected/webSocketMock.ts b/packages/playwright-core/src/server/injected/webSocketMock.ts
+index f45885a4e8abc..92a2ace471cc4 100644
+--- a/packages/playwright-core/src/server/injected/webSocketMock.ts
++++ b/packages/playwright-core/src/server/injected/webSocketMock.ts
+@@ -14,6 +14,8 @@
+  * limitations under the License.
+  */
+ 
++import { ensureBuiltins } from '../isomorphic/builtins';
++
+ export type WebSocketMessage = string | ArrayBufferLike | Blob | ArrayBufferView;
+ export type WSData = { data: string, isBase64: boolean };
+ 
+@@ -37,6 +39,8 @@ export type APIRequest = ConnectRequest | PassthroughRequest | EnsureOpenedReque
+ type GlobalThis = typeof globalThis;
+ 
+ export function inject(globalThis: GlobalThis) {
++  const builtins = ensureBuiltins(globalThis);
++
+   if ((globalThis as any).__pwWebSocketDispatch)
+     return;
+ 
+@@ -87,7 +91,7 @@ export function inject(globalThis: GlobalThis) {
+ 
+   const binding = (globalThis as any).__pwWebSocketBinding as (message: BindingPayload) => void;
+   const NativeWebSocket: typeof WebSocket = globalThis.WebSocket;
+-  const idToWebSocket = new Map<string, WebSocketMock>();
++  const idToWebSocket = new builtins.Map<string, WebSocketMock>();
+   (globalThis as any).__pwWebSocketDispatch = (request: APIRequest) => {
+     const ws = idToWebSocket.get(request.id);
+     if (!ws)
+diff --git a/packages/playwright-core/src/server/isomorphic/builtins.ts b/packages/playwright-core/src/server/isomorphic/builtins.ts
+new file mode 100644
+index 0000000000000..5bde0b4ac3680
+--- /dev/null
++++ b/packages/playwright-core/src/server/isomorphic/builtins.ts
+@@ -0,0 +1,67 @@
++/**
++ * Copyright (c) Microsoft Corporation.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++/* eslint-disable no-restricted-globals */
++
++// Make sure to update eslint.config.mjs when changing the list of builitins.
++export type Builtins = {
++  setTimeout: Window['setTimeout'],
++  clearTimeout: Window['clearTimeout'],
++  setInterval: Window['setInterval'],
++  clearInterval: Window['clearInterval'],
++  requestAnimationFrame: Window['requestAnimationFrame'],
++  cancelAnimationFrame: Window['cancelAnimationFrame'],
++  requestIdleCallback: Window['requestIdleCallback'],
++  cancelIdleCallback: (id: number) => void,
++  performance: Window['performance'],
++  eval: typeof eval,
++  Intl: typeof Intl,
++  Date: typeof Date,
++  Map: typeof Map,
++  Set: typeof Set,
++};
++
++type OriginalMap<K, V> = Map<K, V>;
++type OriginalSet<T> = Set<T>;
++type OriginalDate = Date;
++export namespace Builtins {
++  export type Map<K, V> = OriginalMap<K, V>;
++  export type Set<T> = OriginalSet<T>;
++  export type Date = OriginalDate;
++}
++
++export function ensureBuiltins(global: typeof globalThis): Builtins {
++  if (!(global as any)['__playwright_builtins__']) {
++    const builtins: Builtins = {
++      setTimeout: global.setTimeout?.bind(global),
++      clearTimeout: global.clearTimeout?.bind(global),
++      setInterval: global.setInterval?.bind(global),
++      clearInterval: global.clearInterval?.bind(global),
++      requestAnimationFrame: global.requestAnimationFrame?.bind(global),
++      cancelAnimationFrame: global.cancelAnimationFrame?.bind(global),
++      requestIdleCallback: global.requestIdleCallback?.bind(global),
++      cancelIdleCallback: global.cancelIdleCallback?.bind(global),
++      performance: global.performance,
++      eval: global.eval?.bind(global),
++      Intl: global.Intl,
++      Date: global.Date,
++      Map: global.Map,
++      Set: global.Set,
++    };
++    Object.defineProperty(global, '__playwright_builtins__', { value: builtins, configurable: false, enumerable: false, writable: false });
++  }
++  return (global as any)['__playwright_builtins__'];
++}
+diff --git a/packages/playwright-core/src/server/isomorphic/utilityScriptSerializers.ts b/packages/playwright-core/src/server/isomorphic/utilityScriptSerializers.ts
+index 08a167240f0ae..945b9702effe8 100644
+--- a/packages/playwright-core/src/server/isomorphic/utilityScriptSerializers.ts
++++ b/packages/playwright-core/src/server/isomorphic/utilityScriptSerializers.ts
+@@ -14,6 +14,8 @@
+  * limitations under the License.
+  */
+ 
++import type { Builtins } from './builtins';
++
+ export type SerializedValue =
+     undefined | boolean | number | string |
+     { v: 'null' | 'undefined' | 'NaN' | 'Infinity' | '-Infinity' | '-0' } |
+@@ -27,14 +29,14 @@ export type SerializedValue =
+     { ref: number } |
+     { h: number };
+ 
+-export type HandleOrValue = { h: number } | { fallThrough: any };
++type HandleOrValue = { h: number } | { fallThrough: any };
+ 
+ type VisitorInfo = {
+-  visited: Map<object, number>;
++  visited: Builtins.Map<object, number>;
+   lastId: number;
+ };
+ 
+-export function source() {
++export function source(builtins: Builtins) {
+ 
+   function isRegExp(obj: any): obj is RegExp {
+     try {
+@@ -44,9 +46,9 @@ export function source() {
+     }
+   }
+ 
+-  function isDate(obj: any): obj is Date {
++  function isDate(obj: any): obj is Builtins.Date {
+     try {
+-      return obj instanceof Date || Object.prototype.toString.call(obj) === '[object Date]';
++      return obj instanceof builtins.Date || Object.prototype.toString.call(obj) === '[object Date]';
+     } catch (error) {
+       return false;
+     }
+@@ -68,7 +70,7 @@ export function source() {
+     }
+   }
+ 
+-  function parseEvaluationResultValue(value: SerializedValue, handles: any[] = [], refs: Map<number, object> = new Map()): any {
++  function parseEvaluationResultValue(value: SerializedValue, handles: any[] = [], refs: Builtins.Map<number, object> = new builtins.Map()): any {
+     if (Object.is(value, undefined))
+       return undefined;
+     if (typeof value === 'object' && value) {
+@@ -90,7 +92,7 @@ export function source() {
+         return undefined;
+       }
+       if ('d' in value)
+-        return new Date(value.d);
++        return new builtins.Date(value.d);
+       if ('u' in value)
+         return new URL(value.u);
+       if ('bi' in value)
+@@ -124,7 +126,7 @@ export function source() {
+   }
+ 
+   function serializeAsCallArgument(value: any, handleSerializer: (value: any) => HandleOrValue): SerializedValue {
+-    return serialize(value, handleSerializer, { visited: new Map(), lastId: 0 });
++    return serialize(value, handleSerializer, { visited: new builtins.Map(), lastId: 0 });
+   }
+ 
+   function serialize(value: any, handleSerializer: (value: any) => HandleOrValue, visitorInfo: VisitorInfo): SerializedValue {
+@@ -236,7 +238,3 @@ export function source() {
+ 
+   return { parseEvaluationResultValue, serializeAsCallArgument };
+ }
+-
+-const result = source();
+-export const parseEvaluationResultValue = result.parseEvaluationResultValue;
+-export const serializeAsCallArgument = result.serializeAsCallArgument;
+diff --git a/packages/playwright-core/src/server/javascript.ts b/packages/playwright-core/src/server/javascript.ts
+index f01cb88bcfa7d..8617cd32b1d98 100644
+--- a/packages/playwright-core/src/server/javascript.ts
++++ b/packages/playwright-core/src/server/javascript.ts
+@@ -17,7 +17,8 @@
+ import { SdkObject } from './instrumentation';
+ import * as utilityScriptSource from '../generated/utilityScriptSource';
+ import { isUnderTest } from '../utils';
+-import { serializeAsCallArgument } from './isomorphic/utilityScriptSerializers';
++import { ensureBuiltins } from './isomorphic/builtins';
++import { source } from './isomorphic/utilityScriptSerializers';
+ import { LongStandingScope } from '../utils/isomorphic/manualPromise';
+ 
+ import type * as dom from './dom';
+@@ -45,6 +46,10 @@ export type Func1<Arg, R> = string | ((arg: Unboxed<Arg>) => R | Promise<R>);
+ export type FuncOn<On, Arg2, R> = string | ((on: On, arg2: Unboxed<Arg2>) => R | Promise<R>);
+ export type SmartHandle<T> = T extends Node ? dom.ElementHandle<T> : JSHandle<T>;
+ 
++const utilityScriptSerializers = source(ensureBuiltins(globalThis));
++export const parseEvaluationResultValue = utilityScriptSerializers.parseEvaluationResultValue;
++export const serializeAsCallArgument = utilityScriptSerializers.serializeAsCallArgument;
++
+ export interface ExecutionContextDelegate {
+   rawEvaluateJSON(expression: string): Promise<any>;
+   rawEvaluateHandle(context: ExecutionContext, expression: string): Promise<JSHandle>;
+diff --git a/packages/playwright-core/src/server/page.ts b/packages/playwright-core/src/server/page.ts
+index 820c46f4aa324..24e22f4f9f8c2 100644
+--- a/packages/playwright-core/src/server/page.ts
++++ b/packages/playwright-core/src/server/page.ts
+@@ -24,7 +24,8 @@ import * as frames from './frames';
+ import { helper } from './helper';
+ import * as input from './input';
+ import { SdkObject } from './instrumentation';
+-import { parseEvaluationResultValue, source } from './isomorphic/utilityScriptSerializers';
++import { ensureBuiltins } from './isomorphic/builtins';
++import { createPageBindingScript, deliverBindingResult, takeBindingHandle } from './pageBinding';
+ import * as js from './javascript';
+ import { ProgressController } from './progress';
+ import { Screenshotter, validateScreenshotOptions } from './screenshotter';
+@@ -41,7 +42,6 @@ import { compressCallLog } from './callLog';
+ import type { Artifact } from './artifact';
+ import type * as dom from './dom';
+ import type { CallMetadata } from './instrumentation';
+-import type { SerializedValue } from './isomorphic/utilityScriptSerializers';
+ import type * as network from './network';
+ import type { Progress } from './progress';
+ import type { ScreenshotOptions } from './screenshotter';
+@@ -49,6 +49,7 @@ import type * as types from './types';
+ import type { TimeoutOptions } from '../utils/isomorphic/types';
+ import type { ImageComparatorOptions } from './utils/comparators';
+ import type * as channels from '@protocol/channels';
++import type { BindingPayload } from './pageBinding';
+ 
+ export interface PageDelegate {
+   readonly rawMouse: input.RawMouse;
+@@ -771,7 +772,7 @@ export class Page extends SdkObject {
+ 
+   allInitScripts() {
+     const bindings = [...this._browserContext._pageBindings.values(), ...this._pageBindings.values()];
+-    return [...bindings.map(binding => binding.initScript), ...this._browserContext.initScripts, ...this.initScripts];
++    return [kBuiltinsScript, ...bindings.map(binding => binding.initScript), ...this._browserContext.initScripts, ...this.initScripts];
+   }
+ 
+   getBinding(name: string) {
+@@ -856,12 +857,6 @@ export class Worker extends SdkObject {
+   }
+ }
+ 
+-type BindingPayload = {
+-  name: string;
+-  seq: number;
+-  serializedArgs?: SerializedValue[],
+-};
+-
+ export class PageBinding {
+   static kPlaywrightBinding = '__playwright__binding__';
+ 
+@@ -874,7 +869,7 @@ export class PageBinding {
+   constructor(name: string, playwrightFunction: frames.FunctionWithSource, needsHandle: boolean) {
+     this.name = name;
+     this.playwrightFunction = playwrightFunction;
+-    this.initScript = new InitScript(`(${addPageBinding.toString()})(${JSON.stringify(PageBinding.kPlaywrightBinding)}, ${JSON.stringify(name)}, ${needsHandle}, (${source})())`, true /* internal */);
++    this.initScript = new InitScript(createPageBindingScript(PageBinding.kPlaywrightBinding, name, needsHandle), true /* internal */);
+     this.needsHandle = needsHandle;
+     this.internal = name.startsWith('__pw');
+   }
+@@ -888,74 +883,21 @@ export class PageBinding {
+         throw new Error(`Function "${name}" is not exposed`);
+       let result: any;
+       if (binding.needsHandle) {
+-        const handle = await context.evaluateHandle(takeHandle, { name, seq }).catch(e => null);
++        const handle = await context.evaluateHandle(takeBindingHandle, { name, seq }).catch(e => null);
+         result = await binding.playwrightFunction({ frame: context.frame, page, context: page._browserContext }, handle);
+       } else {
+         if (!Array.isArray(serializedArgs))
+           throw new Error(`serializedArgs is not an array. This can happen when Array.prototype.toJSON is defined incorrectly`);
+-        const args = serializedArgs!.map(a => parseEvaluationResultValue(a));
++        const args = serializedArgs!.map(a => js.parseEvaluationResultValue(a));
+         result = await binding.playwrightFunction({ frame: context.frame, page, context: page._browserContext }, ...args);
+       }
+-      context.evaluate(deliverResult, { name, seq, result }).catch(e => debugLogger.log('error', e));
++      context.evaluate(deliverBindingResult, { name, seq, result }).catch(e => debugLogger.log('error', e));
+     } catch (error) {
+-      context.evaluate(deliverResult, { name, seq, error }).catch(e => debugLogger.log('error', e));
+-    }
+-
+-    function takeHandle(arg: { name: string, seq: number }) {
+-      const handle = (globalThis as any)[arg.name]['handles'].get(arg.seq);
+-      (globalThis as any)[arg.name]['handles'].delete(arg.seq);
+-      return handle;
+-    }
+-
+-    function deliverResult(arg: { name: string, seq: number, result?: any, error?: any }) {
+-      const callbacks = (globalThis as any)[arg.name]['callbacks'];
+-      if ('error' in arg)
+-        callbacks.get(arg.seq).reject(arg.error);
+-      else
+-        callbacks.get(arg.seq).resolve(arg.result);
+-      callbacks.delete(arg.seq);
++      context.evaluate(deliverBindingResult, { name, seq, error }).catch(e => debugLogger.log('error', e));
+     }
+   }
+ }
+ 
+-function addPageBinding(playwrightBinding: string, bindingName: string, needsHandle: boolean, utilityScriptSerializers: ReturnType<typeof source>) {
+-  const binding = (globalThis as any)[playwrightBinding];
+-  (globalThis as any)[bindingName] = (...args: any[]) => {
+-    const me = (globalThis as any)[bindingName];
+-    if (needsHandle && args.slice(1).some(arg => arg !== undefined))
+-      throw new Error(`exposeBindingHandle supports a single argument, ${args.length} received`);
+-    let callbacks = me['callbacks'];
+-    if (!callbacks) {
+-      callbacks = new Map();
+-      me['callbacks'] = callbacks;
+-    }
+-    const seq: number = (me['lastSeq'] || 0) + 1;
+-    me['lastSeq'] = seq;
+-    let handles = me['handles'];
+-    if (!handles) {
+-      handles = new Map();
+-      me['handles'] = handles;
+-    }
+-    const promise = new Promise((resolve, reject) => callbacks.set(seq, { resolve, reject }));
+-    let payload: BindingPayload;
+-    if (needsHandle) {
+-      handles.set(seq, args[0]);
+-      payload = { name: bindingName, seq };
+-    } else {
+-      const serializedArgs = [];
+-      for (let i = 0; i < args.length; i++) {
+-        serializedArgs[i] = utilityScriptSerializers.serializeAsCallArgument(args[i], v => {
+-          return { fallThrough: v };
+-        });
+-      }
+-      payload = { name: bindingName, seq, serializedArgs };
+-    }
+-    binding(JSON.stringify(payload));
+-    return promise;
+-  };
+-  (globalThis as any)[bindingName].__installed = true;
+-}
+-
+ export class InitScript {
+   readonly source: string;
+   readonly internal: boolean;
+@@ -976,6 +918,8 @@ export class InitScript {
+   }
+ }
+ 
++export const kBuiltinsScript = new InitScript(`(${ensureBuiltins})(globalThis)`, true /* internal */);
++
+ class FrameThrottler {
+   private _acks: (() => void)[] = [];
+   private _defaultInterval: number;
+diff --git a/packages/playwright-core/src/server/pageBinding.ts b/packages/playwright-core/src/server/pageBinding.ts
+new file mode 100644
+index 0000000000000..d0840562b970b
+--- /dev/null
++++ b/packages/playwright-core/src/server/pageBinding.ts
+@@ -0,0 +1,92 @@
++/**
++ * Copyright (c) Microsoft Corporation.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++import { ensureBuiltins } from './isomorphic/builtins';
++import { source } from './isomorphic/utilityScriptSerializers';
++
++import type { Builtins } from './isomorphic/builtins';
++import type { SerializedValue } from './isomorphic/utilityScriptSerializers';
++
++export type BindingPayload = {
++  name: string;
++  seq: number;
++  serializedArgs?: SerializedValue[],
++};
++
++function addPageBinding(playwrightBinding: string, bindingName: string, needsHandle: boolean, utilityScriptSerializersFactory: typeof source, builtins: Builtins) {
++  const { serializeAsCallArgument } = utilityScriptSerializersFactory(builtins);
++  // eslint-disable-next-line no-restricted-globals
++  const binding = (globalThis as any)[playwrightBinding];
++  // eslint-disable-next-line no-restricted-globals
++  (globalThis as any)[bindingName] = (...args: any[]) => {
++  // eslint-disable-next-line no-restricted-globals
++    const me = (globalThis as any)[bindingName];
++    if (needsHandle && args.slice(1).some(arg => arg !== undefined))
++      throw new Error(`exposeBindingHandle supports a single argument, ${args.length} received`);
++    let callbacks = me['callbacks'];
++    if (!callbacks) {
++      callbacks = new builtins.Map();
++      me['callbacks'] = callbacks;
++    }
++    const seq: number = (me['lastSeq'] || 0) + 1;
++    me['lastSeq'] = seq;
++    let handles = me['handles'];
++    if (!handles) {
++      handles = new builtins.Map();
++      me['handles'] = handles;
++    }
++    const promise = new Promise((resolve, reject) => callbacks.set(seq, { resolve, reject }));
++    let payload: BindingPayload;
++    if (needsHandle) {
++      handles.set(seq, args[0]);
++      payload = { name: bindingName, seq };
++    } else {
++      const serializedArgs = [];
++      for (let i = 0; i < args.length; i++) {
++        serializedArgs[i] = serializeAsCallArgument(args[i], v => {
++          return { fallThrough: v };
++        });
++      }
++      payload = { name: bindingName, seq, serializedArgs };
++    }
++    binding(JSON.stringify(payload));
++    return promise;
++  };
++  // eslint-disable-next-line no-restricted-globals
++  (globalThis as any)[bindingName].__installed = true;
++}
++
++export function takeBindingHandle(arg: { name: string, seq: number }) {
++  // eslint-disable-next-line no-restricted-globals
++  const handles = (globalThis as any)[arg.name]['handles'];
++  const handle = handles.get(arg.seq);
++  handles.delete(arg.seq);
++  return handle;
++}
++
++export function deliverBindingResult(arg: { name: string, seq: number, result?: any, error?: any }) {
++  // eslint-disable-next-line no-restricted-globals
++  const callbacks = (globalThis as any)[arg.name]['callbacks'];
++  if ('error' in arg)
++    callbacks.get(arg.seq).reject(arg.error);
++  else
++    callbacks.get(arg.seq).resolve(arg.result);
++  callbacks.delete(arg.seq);
++}
++
++export function createPageBindingScript(playwrightBinding: string, name: string, needsHandle: boolean) {
++  return `(${addPageBinding.toString()})(${JSON.stringify(playwrightBinding)}, ${JSON.stringify(name)}, ${needsHandle}, (${source}), (${ensureBuiltins})(globalThis))`;
++}
+diff --git a/packages/playwright-core/src/server/storageScript.ts b/packages/playwright-core/src/server/storageScript.ts
+index c306b11ed594b..a90f7b0f0b5bd 100644
+--- a/packages/playwright-core/src/server/storageScript.ts
++++ b/packages/playwright-core/src/server/storageScript.ts
+@@ -14,12 +14,15 @@
+  * limitations under the License.
+  */
+ 
++import type { Builtins } from './isomorphic/builtins';
+ import type { source } from './isomorphic/utilityScriptSerializers';
+ import type * as channels from '@protocol/channels';
+ 
+ export type Storage = Omit<channels.OriginStorage, 'origin'>;
+ 
+-export async function collect(serializers: ReturnType<typeof source>, isFirefox: boolean, recordIndexedDB: boolean): Promise<Storage> {
++export async function collect(serializersSource: typeof source, builtins: Builtins, isFirefox: boolean, recordIndexedDB: boolean): Promise<Storage> {
++  const { serializeAsCallArgument } = serializersSource(builtins);
++
+   async function collectDB(dbInfo: IDBDatabaseInfo) {
+     if (!dbInfo.name)
+       throw new Error('Database name is empty');
+@@ -46,7 +49,7 @@ export async function collect(serializers: ReturnType<typeof source>, isFirefox:
+ 
+     function trySerialize(value: any): { trivial?: any, encoded?: any } {
+       let trivial = true;
+-      const encoded = serializers.serializeAsCallArgument(value, v => {
++      const encoded = serializeAsCallArgument(value, v => {
+         const isTrivial = (
+           isPlainObject(v)
+           || Array.isArray(v)
+@@ -129,7 +132,9 @@ export async function collect(serializers: ReturnType<typeof source>, isFirefox:
+   };
+ }
+ 
+-export async function restore(originState: channels.SetOriginStorage, serializers: ReturnType<typeof source>) {
++export async function restore(serializersSource: typeof source, builtins: Builtins, originState: channels.SetOriginStorage) {
++  const { parseEvaluationResultValue } = serializersSource(builtins);
++
+   for (const { name, value } of (originState.localStorage || []))
+     localStorage.setItem(name, value);
+ 
+@@ -159,8 +164,8 @@ export async function restore(originState: channels.SetOriginStorage, serializer
+       await Promise.all(store.records.map(async record => {
+         await idbRequestToPromise(
+             objectStore.add(
+-                record.value ?? serializers.parseEvaluationResultValue(record.valueEncoded),
+-                record.key ?? serializers.parseEvaluationResultValue(record.keyEncoded),
++                record.value ?? parseEvaluationResultValue(record.valueEncoded),
++                record.key ?? parseEvaluationResultValue(record.keyEncoded),
+             )
+         );
+       }));
+diff --git a/packages/playwright-core/src/server/webkit/wkExecutionContext.ts b/packages/playwright-core/src/server/webkit/wkExecutionContext.ts
+index c7533d1ac5967..051611de7cf1c 100644
+--- a/packages/playwright-core/src/server/webkit/wkExecutionContext.ts
++++ b/packages/playwright-core/src/server/webkit/wkExecutionContext.ts
+@@ -15,7 +15,6 @@
+  * limitations under the License.
+  */
+ 
+-import { parseEvaluationResultValue } from '../isomorphic/utilityScriptSerializers';
+ import * as js from '../javascript';
+ import * as dom from '../dom';
+ import { isSessionClosedError } from '../protocolError';
+@@ -80,7 +79,7 @@ export class WKExecutionContext implements js.ExecutionContextDelegate {
+       if (response.wasThrown)
+         throw new js.JavaScriptErrorInEvaluate(response.result.description);
+       if (returnByValue)
+-        return parseEvaluationResultValue(response.result.value);
++        return js.parseEvaluationResultValue(response.result.value);
+       return createHandle(utilityScript._context, response.result);
+     } catch (error) {
+       throw rewriteError(error);
+diff --git a/tests/assets/input/handle-locator.html b/tests/assets/input/handle-locator.html
+index a42849e951cc8..5b164d5c7a082 100644
+--- a/tests/assets/input/handle-locator.html
++++ b/tests/assets/input/handle-locator.html
+@@ -57,7 +57,7 @@
+         };
+ 
+         if (interstitial.classList.contains('timeout'))
+-          builtinSetTimeout(closeInterstitial, 3000);
++          window.builtins.setTimeout(closeInterstitial, 3000);
+         else
+           closeInterstitial();
+       });
+diff --git a/tests/config/baseTest.ts b/tests/config/baseTest.ts
+index b585f28e565ba..0729b05e243a9 100644
+--- a/tests/config/baseTest.ts
++++ b/tests/config/baseTest.ts
+@@ -22,6 +22,7 @@ import type { ServerFixtures, ServerWorkerOptions } from './serverFixtures';
+ import { serverFixtures } from './serverFixtures';
+ import { platformTest } from './platformFixtures';
+ import { testModeTest } from './testModeFixtures';
++import type { Builtins } from '../../packages/playwright-core/src/server/isomorphic/builtins';
+ 
+ export const base = test;
+ 
+@@ -44,13 +45,6 @@ export function step<This extends Object, Args extends any[], Return>(
+ 
+ declare global {
+   interface Window {
+-    builtinSetTimeout: WindowOrWorkerGlobalScope['setTimeout'],
+-    builtinClearTimeout: WindowOrWorkerGlobalScope['setTimeout'],
+-    builtinSetInterval: WindowOrWorkerGlobalScope['setInterval'],
+-    builtinClearInterval: WindowOrWorkerGlobalScope['clearInterval'],
+-    builtinRequestAnimationFrame: AnimationFrameProvider['requestAnimationFrame'],
+-    builtinCancelAnimationFrame: AnimationFrameProvider['cancelAnimationFrame'],
+-    builtinPerformance: WindowOrWorkerGlobalScope['performance'],
+-    builtinDate: typeof Date,
++    builtins: Builtins;
+   }
+ }
+diff --git a/tests/library/browsercontext-events.spec.ts b/tests/library/browsercontext-events.spec.ts
+index f197436bdcc46..2d0393ef3acd9 100644
+--- a/tests/library/browsercontext-events.spec.ts
++++ b/tests/library/browsercontext-events.spec.ts
+@@ -46,7 +46,7 @@ test('console event should work in popup 2', async ({ page, browserName }) => {
+   const [, message, popup] = await Promise.all([
+     page.evaluate(async () => {
+       const win = window.open('javascript:console.log("hello")')!;
+-      await new Promise(f => window.builtinSetTimeout(f, 0));
++      await new Promise(f => window.builtins.setTimeout(f, 0));
+       win.close();
+     }),
+     page.context().waitForEvent('console', msg => msg.type() === 'log'),
+diff --git a/tests/library/browsertype-launch.spec.ts b/tests/library/browsertype-launch.spec.ts
+index 75198f4f8be03..5e1c202f0cadc 100644
+--- a/tests/library/browsertype-launch.spec.ts
++++ b/tests/library/browsertype-launch.spec.ts
+@@ -24,7 +24,7 @@ it('should reject all promises when browser is closed', async ({ browserType })
+   const page = await (await browser.newContext()).newPage();
+   let error: Error | undefined;
+   const neverResolves = page.evaluate(() => new Promise(r => {})).catch(e => error = e);
+-  await page.evaluate(() => new Promise(f => window.builtinSetTimeout(f, 0)));
++  await page.evaluate(() => new Promise(f => window.builtins.setTimeout(f, 0)));
+   await browser.close();
+   await neverResolves;
+   // WebKit under task-set -c 1 is giving browser, rest are giving target.
+diff --git a/tests/library/chromium/css-coverage.spec.ts b/tests/library/chromium/css-coverage.spec.ts
+index 229f8baaa1af1..105558754e246 100644
+--- a/tests/library/chromium/css-coverage.spec.ts
++++ b/tests/library/chromium/css-coverage.spec.ts
+@@ -135,7 +135,7 @@ it('should work with a recently loaded stylesheet', async function({ page, serve
+     link.href = url;
+     document.head.appendChild(link);
+     await new Promise(x => link.onload = x);
+-    await new Promise(f => window.builtinRequestAnimationFrame(f));
++    await new Promise(f => window.builtins.requestAnimationFrame(f));
+   }, server.PREFIX + '/csscoverage/stylesheet1.css');
+   const coverage = await page.coverage.stopCSSCoverage();
+   expect(coverage.length).toBe(1);
+diff --git a/tests/library/chromium/js-coverage.spec.ts b/tests/library/chromium/js-coverage.spec.ts
+index 860304d51ca4c..18f21b70fd9d5 100644
+--- a/tests/library/chromium/js-coverage.spec.ts
++++ b/tests/library/chromium/js-coverage.spec.ts
+@@ -47,8 +47,10 @@ it('shouldn\'t ignore eval() scripts if reportAnonymousScripts is true', async f
+   await page.coverage.startJSCoverage({ reportAnonymousScripts: true });
+   await page.goto(server.PREFIX + '/jscoverage/eval.html');
+   const coverage = await page.coverage.stopJSCoverage();
+-  expect(coverage.find(entry => entry.url === '').source).toBe('console.log("foo")');
+-  expect(coverage.length).toBe(2);
++  expect(coverage).toContainEqual(expect.objectContaining({
++    url: '',
++    source: 'console.log("foo")',
++  }));
+ });
+ 
+ it('should report multiple scripts', async function({ page, server }) {
+diff --git a/tests/library/inspector/cli-codegen-3.spec.ts b/tests/library/inspector/cli-codegen-3.spec.ts
+index 8af5a764723aa..8bbf111bf9571 100644
+--- a/tests/library/inspector/cli-codegen-3.spec.ts
++++ b/tests/library/inspector/cli-codegen-3.spec.ts
+@@ -849,7 +849,7 @@ await page.GetByRole(AriaRole.Textbox, new() { Name = \"Coun\\\"try\" }).ClickAs
+     const { recorder } = await openRecorder();
+ 
+     const hydrate = () => {
+-      window.builtinSetTimeout(() => {
++      window.builtins.setTimeout(() => {
+         document.documentElement.innerHTML = '<p>Post-Hydration Content</p>';
+       }, 500);
+     };
+diff --git a/tests/library/popup.spec.ts b/tests/library/popup.spec.ts
+index 8f2f1df7dc44c..495cf5d7cc47b 100644
+--- a/tests/library/popup.spec.ts
++++ b/tests/library/popup.spec.ts
+@@ -136,9 +136,9 @@ it('should use viewport size from window features', async function({ browser, se
+     page.evaluate(async () => {
+       const win = window.open(window.location.href, 'Title', 'toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=600,height=300,top=0,left=0');
+       await new Promise<void>(resolve => {
+-        const interval = window.builtinSetInterval(() => {
++        const interval = window.builtins.setInterval(() => {
+           if (win.innerWidth === 600 && win.innerHeight === 300) {
+-            window.builtinClearInterval(interval);
++            window.builtins.clearInterval(interval);
+             resolve();
+           }
+         }, 10);
+@@ -284,8 +284,8 @@ async function waitForRafs(page: Page, count: number): Promise<void> {
+       if (!count)
+         resolve();
+       else
+-        window.builtinRequestAnimationFrame(onRaf);
++        window.builtins.requestAnimationFrame(onRaf);
+     };
+-    window.builtinRequestAnimationFrame(onRaf);
++    window.builtins.requestAnimationFrame(onRaf);
+   }), count);
+ }
+diff --git a/tests/library/role-utils.spec.ts b/tests/library/role-utils.spec.ts
+index 777d32c58f50a..8fdf68ad34fe5 100644
+--- a/tests/library/role-utils.spec.ts
++++ b/tests/library/role-utils.spec.ts
+@@ -22,7 +22,7 @@ test.skip(({ mode }) => mode !== 'default');
+ 
+ async function getNameAndRole(page: Page, selector: string) {
+   return await page.$eval(selector, e => {
+-    const name = (window as any).__injectedScript.utils.getElementAccessibleName(e);
++    const name = (window as any).__injectedScript.utils.getElementAccessibleName((window as any).__injectedScript.builtins, e);
+     const role = (window as any).__injectedScript.utils.getAriaRole(e);
+     return { name, role };
+   });
+@@ -89,7 +89,7 @@ for (let range = 0; range <= ranges.length; range++) {
+             if (!element)
+               throw new Error(`Unable to resolve "${step.selector}"`);
+             const injected = (window as any).__injectedScript;
+-            const received = step.property === 'name' ? injected.utils.getElementAccessibleName(element) : injected.utils.getElementAccessibleDescription(element);
++            const received = step.property === 'name' ? injected.utils.getElementAccessibleName(injected.builtins, element) : injected.utils.getElementAccessibleDescription(injected.builtins, element);
+             result.push({ selector: step.selector, expected: step.value, received });
+           }
+           return result;
+@@ -152,7 +152,7 @@ test('wpt accname non-manual', async ({ page, asset, server }) => {
+           const injected = (window as any).__injectedScript;
+           const title = element.getAttribute('data-testname');
+           const expected = element.getAttribute('data-expectedlabel');
+-          const received = injected.utils.getElementAccessibleName(element);
++          const received = injected.utils.getElementAccessibleName(injected.builtins, element);
+           result.push({ title, expected, received });
+         }
+         return result;
+@@ -213,7 +213,7 @@ test('axe-core accessible-text', async ({ page, asset, server }) => {
+           const element = injected.querySelector(injected.parseSelector('css=' + selector), document, false);
+           if (!element)
+             throw new Error(`Unable to resolve "${selector}"`);
+-          return injected.utils.getElementAccessibleName(element);
++          return injected.utils.getElementAccessibleName(injected.builtins, element);
+         });
+       }, targets);
+       expect.soft(received, `checking ${JSON.stringify(testCase)}`).toEqual(expected);
+diff --git a/tests/library/trace-viewer.spec.ts b/tests/library/trace-viewer.spec.ts
+index 04a4ae5771d81..05887ab6bffd8 100644
+--- a/tests/library/trace-viewer.spec.ts
++++ b/tests/library/trace-viewer.spec.ts
+@@ -51,9 +51,9 @@ test.beforeAll(async function recordTrace({ browser, browserName, browserType, s
+     console.error('Error');
+     return new Promise(f => {
+       // Generate exception.
+-      window.builtinSetTimeout(() => {
++      window.builtins.setTimeout(() => {
+         // And then resolve.
+-        window.builtinSetTimeout(() => f('return ' + a), 0);
++        window.builtins.setTimeout(() => f('return ' + a), 0);
+         throw new Error('Unhandled exception');
+       }, 0);
+     });
+diff --git a/tests/library/tracing.spec.ts b/tests/library/tracing.spec.ts
+index 2639dbe0e8ae8..4baf95083f3bc 100644
+--- a/tests/library/tracing.spec.ts
++++ b/tests/library/tracing.spec.ts
+@@ -446,7 +446,7 @@ for (const params of [
+     // Make sure we have a chance to paint.
+     for (let i = 0; i < 10; ++i) {
+       await page.setContent('<body style="box-sizing: border-box; width: 100%; height: 100%; margin:0; background: red; border: 50px solid blue"></body>');
+-      await page.evaluate(() => new Promise(window.builtinRequestAnimationFrame));
++      await page.evaluate(() => new Promise(window.builtins.requestAnimationFrame));
+     }
+     await context.tracing.stop({ path: testInfo.outputPath('trace.zip') });
+ 
+@@ -729,7 +729,7 @@ test('should not flush console events', async ({ context, page, mode }, testInfo
+   });
+ 
+   await page.evaluate(() => {
+-    window.builtinSetTimeout(() => {
++    window.builtins.setTimeout(() => {
+       for (let i = 0; i < 100; ++i)
+         console.log('hello ' + i);
+     }, 10);
+@@ -769,7 +769,7 @@ test('should flush console events on tracing stop', async ({ context, page }, te
+     });
+   });
+   await page.evaluate(() => {
+-    window.builtinSetTimeout(() => {
++    window.builtins.setTimeout(() => {
+       for (let i = 0; i < 100; ++i)
+         console.log('hello ' + i);
+     });
+diff --git a/tests/library/unit/clock.spec.ts b/tests/library/unit/clock.spec.ts
+index cb204cef07a14..18a0db8212840 100644
+--- a/tests/library/unit/clock.spec.ts
++++ b/tests/library/unit/clock.spec.ts
+@@ -1157,7 +1157,12 @@ it.describe('stubTimers', () => {
+ 
+   it('restores global property on uninstall if it was inherited onto the global object', ({}) => {
+     // Give the global object an inherited 'setTimeout' method
+-    const proto = { Date,
++    const proto = {
++      Date,
++      Intl,
++      Map,
++      Set,
++      performance,
+       setTimeout: () => {},
+       clearTimeout: () => {},
+       setInterval: () => {},
+diff --git a/tests/library/video.spec.ts b/tests/library/video.spec.ts
+index d858b9db2a61f..123e7533adf7a 100644
+--- a/tests/library/video.spec.ts
++++ b/tests/library/video.spec.ts
+@@ -865,8 +865,8 @@ async function waitForRafs(page: Page, count: number): Promise<void> {
+       if (!count)
+         resolve();
+       else
+-        window.builtinRequestAnimationFrame(onRaf);
++        window.builtins.requestAnimationFrame(onRaf);
+     };
+-    window.builtinRequestAnimationFrame(onRaf);
++    window.builtins.requestAnimationFrame(onRaf);
+   }), count);
+ }
+diff --git a/tests/page/page-click.spec.ts b/tests/page/page-click.spec.ts
+index a2769d573058b..7ab480efce2e7 100644
+--- a/tests/page/page-click.spec.ts
++++ b/tests/page/page-click.spec.ts
+@@ -1101,7 +1101,7 @@ it('ensure events are dispatched in the individual tasks', async ({ page, browse
+     function onClick(name) {
+       console.log(`click ${name}`);
+ 
+-      window.builtinSetTimeout(function() {
++      window.builtins.setTimeout(function() {
+         console.log(`timeout ${name}`);
+       }, 0);
+ 
+diff --git a/tests/page/page-close.spec.ts b/tests/page/page-close.spec.ts
+index c1123b819071d..fd215f8b60400 100644
+--- a/tests/page/page-close.spec.ts
++++ b/tests/page/page-close.spec.ts
+@@ -20,8 +20,8 @@ import { test as it, expect } from './pageTest';
+ it.skip(({ isWebView2 }) => isWebView2, 'Page.close() is not supported in WebView2');
+ 
+ it('should close page with active dialog', async ({ page }) => {
+-  await page.evaluate('"trigger builtinSetTimeout"');
+-  await page.setContent(`<button onclick="builtinSetTimeout(() => alert(1))">alert</button>`);
++  await page.evaluate('"trigger builtins.setTimeout"');
++  await page.setContent(`<button onclick="builtins.setTimeout(() => alert(1))">alert</button>`);
+   void page.click('button').catch(() => {});
+   await page.waitForEvent('dialog');
+   await page.close();
+diff --git a/tests/page/page-dialog.spec.ts b/tests/page/page-dialog.spec.ts
+index 61499890817fa..657653a577b74 100644
+--- a/tests/page/page-dialog.spec.ts
++++ b/tests/page/page-dialog.spec.ts
+@@ -67,7 +67,7 @@ it('should dismiss the confirm prompt', async ({ page }) => {
+ it('should be able to close context with open alert', async ({ page }) => {
+   const alertPromise = page.waitForEvent('dialog');
+   await page.evaluate(() => {
+-    window.builtinSetTimeout(() => alert('hello'), 0);
++    window.builtins.setTimeout(() => alert('hello'), 0);
+   });
+   await alertPromise;
+ });
+diff --git a/tests/page/page-drag.spec.ts b/tests/page/page-drag.spec.ts
+index c227978f23268..e7e3d178378f3 100644
+--- a/tests/page/page-drag.spec.ts
++++ b/tests/page/page-drag.spec.ts
+@@ -358,7 +358,7 @@ it('should report event.buttons', async ({ page, browserName }) => {
+     function onEvent(event) {
+       logs.push({ type: event.type, buttons: event.buttons });
+     }
+-    await new Promise(window.builtinRequestAnimationFrame);
++    await new Promise(window.builtins.requestAnimationFrame);
+     return logs;
+   });
+   await page.mouse.move(20, 20);
+diff --git a/tests/page/page-evaluate.spec.ts b/tests/page/page-evaluate.spec.ts
+index 8cbe594e277ea..041e4ad1c4b0c 100644
+--- a/tests/page/page-evaluate.spec.ts
++++ b/tests/page/page-evaluate.spec.ts
+@@ -349,10 +349,10 @@ it('should properly serialize null fields', async ({ page }) => {
+ 
+ it('should properly serialize PerformanceMeasure object', async ({ page }) => {
+   expect(await page.evaluate(() => {
+-    window.builtinPerformance.mark('start');
+-    window.builtinPerformance.mark('end');
+-    window.builtinPerformance.measure('my-measure', 'start', 'end');
+-    return window.builtinPerformance.getEntriesByType('measure');
++    window.builtins.performance.mark('start');
++    window.builtins.performance.mark('end');
++    window.builtins.performance.measure('my-measure', 'start', 'end');
++    return window.builtins.performance.getEntriesByType('measure');
+   })).toEqual([{
+     duration: expect.any(Number),
+     entryType: 'measure',
+@@ -809,3 +809,35 @@ it('should work with Array.from/map', async ({ page }) => {
+     return r('([a-f0-9]{2})', 3);
+   })).toBe('([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})');
+ });
++
++it('should work with overridden eval', {
++  annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/34628' },
++}, async ({ page, server }) => {
++  server.setRoute('/page', (req, res) => {
++    res.setHeader('Content-Type', 'text/html');
++    res.end(`
++      <script>
++        window.eval = () => 42;
++      </script>
++    `);
++  });
++  await page.goto(server.PREFIX + '/page');
++  expect(await page.evaluate(x => ({ value: 2 * x }), 17)).toEqual({ value: 34 });
++});
++
++it('should work with deleted Map', {
++  annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/34443' },
++}, async ({ page, server }) => {
++  it.info().annotations.push({ type: 'issue', description: 'https://github.com/microsoft/playwright/issues/34443' });
++
++  server.setRoute('/page', (req, res) => {
++    res.setHeader('Content-Type', 'text/html');
++    res.end(`
++      <script>
++        delete window.Map;
++      </script>
++    `);
++  });
++  await page.goto(server.PREFIX + '/page');
++  expect(await page.evaluate(x => ({ value: 2 * x }), 17)).toEqual({ value: 34 });
++});
+diff --git a/tests/page/page-event-console.spec.ts b/tests/page/page-event-console.spec.ts
+index ee47e81e02ef3..d37b28e734979 100644
+--- a/tests/page/page-event-console.spec.ts
++++ b/tests/page/page-event-console.spec.ts
+@@ -97,9 +97,9 @@ it('should format the message correctly with time/timeLog/timeEnd', async ({ pag
+   page.on('console', msg => messages.push(msg));
+   await page.evaluate(async () => {
+     console.time('foo time');
+-    await new Promise(x => window.builtinSetTimeout(x, 100));
++    await new Promise(x => window.builtins.setTimeout(x, 100));
+     console.timeLog('foo time');
+-    await new Promise(x => window.builtinSetTimeout(x, 100));
++    await new Promise(x => window.builtins.setTimeout(x, 100));
+     console.timeEnd('foo time');
+   });
+   expect(messages.length).toBe(2);
+diff --git a/tests/page/page-event-pageerror.spec.ts b/tests/page/page-event-pageerror.spec.ts
+index 1e91ce7b7f145..c7fc699683ac0 100644
+--- a/tests/page/page-event-pageerror.spec.ts
++++ b/tests/page/page-event-pageerror.spec.ts
+@@ -70,7 +70,7 @@ it('should contain the Error.name property', async ({ page }) => {
+   const [error] = await Promise.all([
+     page.waitForEvent('pageerror'),
+     page.evaluate(() => {
+-      window.builtinSetTimeout(() => {
++      window.builtins.setTimeout(() => {
+         const error = new Error('my-message');
+         error.name = 'my-name';
+         throw error;
+@@ -85,7 +85,7 @@ it('should support an empty Error.name property', async ({ page }) => {
+   const [error] = await Promise.all([
+     page.waitForEvent('pageerror'),
+     page.evaluate(() => {
+-      window.builtinSetTimeout(() => {
++      window.builtins.setTimeout(() => {
+         const error = new Error('my-message');
+         error.name = '';
+         throw error;
+@@ -107,7 +107,7 @@ it('should handle odd values', async ({ page }) => {
+     const [error] = await Promise.all([
+       page.waitForEvent('pageerror'),
+       page.evaluate(value => {
+-        window.builtinSetTimeout(() => { throw value; }, 0);
++        window.builtins.setTimeout(() => { throw value; }, 0);
+       }, value),
+     ]);
+     expect(error.message).toBe(message);
+@@ -118,7 +118,7 @@ it('should handle object', async ({ page, browserName }) => {
+   const [error] = await Promise.all([
+     page.waitForEvent('pageerror'),
+     page.evaluate(() => {
+-      window.builtinSetTimeout(() => { throw {}; }, 0);
++      window.builtins.setTimeout(() => { throw {}; }, 0);
+     }),
+   ]);
+   expect(error.message).toBe(browserName === 'chromium' ? 'Object' : '[object Object]');
+@@ -128,7 +128,7 @@ it('should handle window', async ({ page, browserName }) => {
+   const [error] = await Promise.all([
+     page.waitForEvent('pageerror'),
+     page.evaluate(() => {
+-      window.builtinSetTimeout(() => { throw window; }, 0);
++      window.builtins.setTimeout(() => { throw window; }, 0);
+     }),
+   ]);
+   expect(error.message).toBe(browserName === 'chromium' ? 'Window' : '[object Window]');
+diff --git a/tests/page/page-expose-function.spec.ts b/tests/page/page-expose-function.spec.ts
+index fc18ada02bde6..d6152c2b53846 100644
+--- a/tests/page/page-expose-function.spec.ts
++++ b/tests/page/page-expose-function.spec.ts
+@@ -230,7 +230,7 @@ it('should not result in unhandled rejection', async ({ page, isAndroid, isWebVi
+     await page.close();
+   });
+   await page.evaluate(() => {
+-    window.builtinSetTimeout(() => (window as any).foo(), 0);
++    window.builtins.setTimeout(() => (window as any).foo(), 0);
+     return undefined;
+   });
+   await closedPromise;
+@@ -309,3 +309,41 @@ it('should fail with busted Array.prototype.toJSON', async ({ page }) => {
+ 
+   expect.soft(await page.evaluate(() => ([] as any).toJSON())).toBe('"[]"');
+ });
++
++it('should work with overridden eval', {
++  annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/34628' },
++}, async ({ page, server }) => {
++  await page.exposeFunction('add', (a, b) => a + b);
++
++  server.setRoute('/page', (req, res) => {
++    res.setHeader('Content-Type', 'text/html');
++    res.end(`
++      <script>
++        window.eval = () => 42;
++      </script>
++    `);
++  });
++  await page.goto(server.PREFIX + '/page');
++  expect(await page.evaluate(async () => {
++    return { value: await (window as any)['add'](5, 6) };
++  })).toEqual({ value: 11 });
++});
++
++it('should work with deleted Map', {
++  annotation: { type: 'issue', description: 'https://github.com/microsoft/playwright/issues/34443' },
++}, async ({ page, server }) => {
++  await page.exposeFunction('add', (a, b) => a + b);
++
++  server.setRoute('/page', (req, res) => {
++    res.setHeader('Content-Type', 'text/html');
++    res.end(`
++      <script>
++        delete window.Map;
++      </script>
++    `);
++  });
++  await page.goto(server.PREFIX + '/page');
++  expect(await page.evaluate(async () => {
++    return { value: await (window as any)['add'](5, 6) };
++  })).toEqual({ value: 11 });
++});
+diff --git a/tests/page/page-filechooser.spec.ts b/tests/page/page-filechooser.spec.ts
+index 7fc8cf5500cdf..ba45345474535 100644
+--- a/tests/page/page-filechooser.spec.ts
++++ b/tests/page/page-filechooser.spec.ts
+@@ -210,7 +210,7 @@ test('should prioritize exact timeout over default timeout', async ({ page, play
+ test('should work with no timeout', async ({ page, server }) => {
+   const [chooser] = await Promise.all([
+     page.waitForEvent('filechooser', { timeout: 0 }),
+-    page.evaluate(() => window.builtinSetTimeout(() => {
++    page.evaluate(() => window.builtins.setTimeout(() => {
+       const el = document.createElement('input');
+       el.type = 'file';
+       el.click();
+diff --git a/tests/page/page-screenshot.spec.ts b/tests/page/page-screenshot.spec.ts
+index 4e9114ad5d214..6c8dca034bd70 100644
+--- a/tests/page/page-screenshot.spec.ts
++++ b/tests/page/page-screenshot.spec.ts
+@@ -729,9 +729,9 @@ it.describe('page screenshot animations', () => {
+     const div = page.locator('div');
+     await div.evaluate(el => {
+       el.addEventListener('transitionend', () => {
+-        const time = window.builtinDate.now();
++        const time = window.builtins.Date.now();
+         // Block main thread for 200ms, emulating heavy layout.
+-        while (window.builtinDate.now() - time < 200) {}
++        while (window.builtins.Date.now() - time < 200) {}
+         const h1 = document.createElement('h1');
+         h1.textContent = 'woof-woof';
+         document.body.append(h1);
+diff --git a/tests/page/page-wait-for-function.spec.ts b/tests/page/page-wait-for-function.spec.ts
+index 88b6d7cb147aa..98f8a327ce9f3 100644
+--- a/tests/page/page-wait-for-function.spec.ts
++++ b/tests/page/page-wait-for-function.spec.ts
+@@ -44,10 +44,10 @@ it('should poll on interval', async ({ page, server }) => {
+   const polling = 100;
+   const timeDelta = await page.waitForFunction(() => {
+     if (!window['__startTime']) {
+-      window['__startTime'] = window.builtinDate.now();
++      window['__startTime'] = window.builtins.Date.now();
+       return false;
+     }
+-    return window.builtinDate.now() - window['__startTime'];
++    return window.builtins.Date.now() - window['__startTime'];
+   }, {}, { polling });
+   expect(await timeDelta.jsonValue()).not.toBeLessThan(polling);
+ });
+diff --git a/tests/page/page-wait-for-navigation.spec.ts b/tests/page/page-wait-for-navigation.spec.ts
+index d34251e977e5d..dd5bfbb259c2f 100644
+--- a/tests/page/page-wait-for-navigation.spec.ts
++++ b/tests/page/page-wait-for-navigation.spec.ts
+@@ -255,7 +255,7 @@ it('should fail when frame detaches', async ({ page, server }) => {
+     frame.waitForNavigation().catch(e => e),
+     page.$eval('iframe', frame => { frame.contentWindow.location.href = '/one-style.html'; }),
+     // Make sure policy checks pass and navigation actually begins before removing the frame to avoid other errors
+-    server.waitForRequest('/one-style.css').then(() => page.$eval('iframe', frame => window.builtinSetTimeout(() => frame.remove(), 0)))
++    server.waitForRequest('/one-style.css').then(() => page.$eval('iframe', frame => window.builtins.setTimeout(() => frame.remove(), 0)))
+   ]);
+   expect(error.message).toContain('waiting for navigation until "load"');
+   expect(error.message).toContain('frame was detached');
+diff --git a/tests/page/page-wait-for-request.spec.ts b/tests/page/page-wait-for-request.spec.ts
+index e7ae14ba66ba2..9032af3f86331 100644
+--- a/tests/page/page-wait-for-request.spec.ts
++++ b/tests/page/page-wait-for-request.spec.ts
+@@ -70,7 +70,7 @@ it('should work with no timeout', async ({ page, server }) => {
+   await page.goto(server.EMPTY_PAGE);
+   const [request] = await Promise.all([
+     page.waitForRequest(server.PREFIX + '/digits/2.png', { timeout: 0 }),
+-    page.evaluate(() => window.builtinSetTimeout(() => {
++    page.evaluate(() => window.builtins.setTimeout(() => {
+       void fetch('/digits/1.png');
+       void fetch('/digits/2.png');
+       void fetch('/digits/3.png');
+diff --git a/tests/page/page-wait-for-response.spec.ts b/tests/page/page-wait-for-response.spec.ts
+index ccfc18c9ebc73..75c06131adc68 100644
+--- a/tests/page/page-wait-for-response.spec.ts
++++ b/tests/page/page-wait-for-response.spec.ts
+@@ -108,7 +108,7 @@ it('should work with no timeout', async ({ page, server }) => {
+   await page.goto(server.EMPTY_PAGE);
+   const [response] = await Promise.all([
+     page.waitForResponse(server.PREFIX + '/digits/2.png', { timeout: 0 }),
+-    page.evaluate(() => window.builtinSetTimeout(() => {
++    page.evaluate(() => window.builtins.setTimeout(() => {
+       void fetch('/digits/1.png');
+       void fetch('/digits/2.png');
+       void fetch('/digits/3.png');
+diff --git a/tests/page/pageTest.ts b/tests/page/pageTest.ts
+index a28984e55ab34..0bf4d469eaa28 100644
+--- a/tests/page/pageTest.ts
++++ b/tests/page/pageTest.ts
+@@ -40,7 +40,7 @@ export const test = impl;
+ export async function rafraf(target: Page | Frame, count = 1) {
+   for (let i = 0; i < count; i++) {
+     await target.evaluate(async () => {
+-      await new Promise(f => window.builtinRequestAnimationFrame(() => window.builtinRequestAnimationFrame(f)));
++      await new Promise(f => window.builtins.requestAnimationFrame(() => window.builtins.requestAnimationFrame(f)));
+     });
+   }
+ }
+diff --git a/tests/playwright-test/ui-mode-test-output.spec.ts b/tests/playwright-test/ui-mode-test-output.spec.ts
+index fa44daabb9555..75d4c545f88ed 100644
+--- a/tests/playwright-test/ui-mode-test-output.spec.ts
++++ b/tests/playwright-test/ui-mode-test-output.spec.ts
+@@ -130,7 +130,7 @@ test('should collapse repeated console messages for test', async ({ runUITest })
+           await new Promise(resolve => {
+             for (let i = 0; i < 10; ++i)
+               console.log('page message')
+-            builtinSetTimeout(() => {
++            window.builtins.setTimeout(() => {
+               for (let i = 0; i < 10; ++i)
+                 console.log('page message')
+               resolve()
+@@ -216,7 +216,7 @@ test('should stream console messages live', async ({ runUITest }) => {
+         await page.setContent('<button>Click me</button>');
+         const button = page.getByRole('button', { name: 'Click me' });
+         await button.evaluate(node => node.addEventListener('click', () => {
+-          builtinSetTimeout(() => { console.log('I was clicked'); }, 1000);
++          window.builtins.setTimeout(() => { console.log('I was clicked'); }, 1000);
+         }));
+         console.log('I was logged');
+         await button.click();

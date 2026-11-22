@@ -1,0 +1,221 @@
+{
+  "sha": "8f31191637bca917b90a15e589b5734aa379fa41",
+  "node_id": "C_kwDODTssw9oAKDhmMzExOTE2MzdiY2E5MTdiOTBhMTVlNTg5YjU3MzRhYTM3OWZhNDE",
+  "commit": {
+    "author": {
+      "name": "Pavel Feldman",
+      "email": "pavel.feldman@gmail.com",
+      "date": "2023-08-19T00:53:03Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2023-08-19T00:53:03Z"
+    },
+    "message": "chore: pick locator tab (#26532)",
+    "tree": {
+      "sha": "9bee44325a51c60379eb7ad721ef5db0e6f1571e",
+      "url": "https://api.github.com/repos/microsoft/playwright/git/trees/9bee44325a51c60379eb7ad721ef5db0e6f1571e"
+    },
+    "url": "https://api.github.com/repos/microsoft/playwright/git/commits/8f31191637bca917b90a15e589b5734aa379fa41",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJk4BJvCRBK7hj4Ov3rIwAAafEIACBaECc7hiz/tZAKp14gGfZo\nuEv3lSwirI/PpFzKWL2u/ZNY1kUP3wj119YIbloss+8uM372XLNA57DGr6n2IV8d\noWYCUzTtGzAVdG5zUEcXhHWbLROjM1Ud5fhwDVcLxfOpQqK8UtjSiDR+GTQrCYtx\nqarcZ4u/6RSekUZK7zWwkwNgk5WLo/rIKs6xh2xKT/c64PSG1zDQlmLH00EG9/js\nA4eg11sbsItamyqmR80TWuImSCWMjrp++bfWeHCNO4FhB7pzsAMHLTDHXRGolwWQ\n0PjR6uNKYCKePEp+W4MTURhbJaJ+aB2rwkXc2l8ok51WfL7II3As8knBXmTmLAk=\n=Eng6\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree 9bee44325a51c60379eb7ad721ef5db0e6f1571e\nparent 14a57a788b504536e9bcb3d2e2ac0a01769b8afe\nauthor Pavel Feldman <pavel.feldman@gmail.com> 1692406383 -0700\ncommitter GitHub <noreply@github.com> 1692406383 -0700\n\nchore: pick locator tab (#26532)\n\n",
+      "verified_at": "2024-01-16T19:59:59Z"
+    }
+  },
+  "url": "https://api.github.com/repos/microsoft/playwright/commits/8f31191637bca917b90a15e589b5734aa379fa41",
+  "html_url": "https://github.com/microsoft/playwright/commit/8f31191637bca917b90a15e589b5734aa379fa41",
+  "comments_url": "https://api.github.com/repos/microsoft/playwright/commits/8f31191637bca917b90a15e589b5734aa379fa41/comments",
+  "author": {
+    "login": "pavelfeldman",
+    "id": 883973,
+    "node_id": "MDQ6VXNlcjg4Mzk3Mw==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/883973?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/pavelfeldman",
+    "html_url": "https://github.com/pavelfeldman",
+    "followers_url": "https://api.github.com/users/pavelfeldman/followers",
+    "following_url": "https://api.github.com/users/pavelfeldman/following{/other_user}",
+    "gists_url": "https://api.github.com/users/pavelfeldman/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/pavelfeldman/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/pavelfeldman/subscriptions",
+    "organizations_url": "https://api.github.com/users/pavelfeldman/orgs",
+    "repos_url": "https://api.github.com/users/pavelfeldman/repos",
+    "events_url": "https://api.github.com/users/pavelfeldman/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/pavelfeldman/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "14a57a788b504536e9bcb3d2e2ac0a01769b8afe",
+      "url": "https://api.github.com/repos/microsoft/playwright/commits/14a57a788b504536e9bcb3d2e2ac0a01769b8afe",
+      "html_url": "https://github.com/microsoft/playwright/commit/14a57a788b504536e9bcb3d2e2ac0a01769b8afe"
+    }
+  ],
+  "stats": {
+    "total": 337,
+    "additions": 218,
+    "deletions": 119
+  },
+  "files": [
+    {
+      "sha": "9293e1a1d82bf76ae9d3fbf0698bc3d247892d21",
+      "filename": "packages/trace-viewer/src/ui/browserFrame.css",
+      "status": "added",
+      "additions": 59,
+      "deletions": 0,
+      "changes": 59,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FbrowserFrame.css",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FbrowserFrame.css",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FbrowserFrame.css?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -0,0 +1,59 @@\n+/*\n+  Copyright (c) Microsoft Corporation.\n+\n+  Licensed under the Apache License, Version 2.0 (the \"License\");\n+  you may not use this file except in compliance with the License.\n+  You may obtain a copy of the License at\n+\n+      http://www.apache.org/licenses/LICENSE-2.0\n+\n+  Unless required by applicable law or agreed to in writing, software\n+  distributed under the License is distributed on an \"AS IS\" BASIS,\n+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+  See the License for the specific language governing permissions and\n+  limitations under the License.\n+*/\n+\n+.browser-frame-dot {\n+  border-radius: 50%;\n+  display: inline-block;\n+  height: 12px;\n+  margin-right: 6px;\n+  margin-top: 4px;\n+  width: 12px;\n+}\n+\n+.browser-frame-address-bar {\n+  background-color: var(--vscode-input-background);\n+  border-radius: 12.5px;\n+  color: var(--vscode-input-foreground);\n+  flex: 1 0;\n+  font: 400 16px Arial,sans-serif;\n+  margin: 0 16px 0 8px;\n+  padding: 5px 15px;\n+  overflow: hidden;\n+  text-overflow: ellipsis;\n+  white-space: nowrap;\n+}\n+\n+.browser-frame-menu-bar {\n+  background-color: #aaa;\n+  display: block;\n+  height: 3px;\n+  margin: 3px 0;\n+  width: 17px;\n+}\n+\n+.browser-frame-header {\n+  align-items: center;\n+  background: #ebedf0;\n+  display: flex;\n+  padding: 8px 16px;\n+  border-top-left-radius: 6px;\n+  border-top-right-radius: 6px;\n+  height: var(--browser-frame-header-height);\n+}\n+\n+body.dark-mode .browser-frame-header {\n+  background: #444950;\n+}"
+    },
+    {
+      "sha": "53cece1c8f2653049c41b0ffe6eaf087c1239f22",
+      "filename": "packages/trace-viewer/src/ui/browserFrame.tsx",
+      "status": "added",
+      "additions": 38,
+      "deletions": 0,
+      "changes": 38,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FbrowserFrame.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FbrowserFrame.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FbrowserFrame.tsx?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -0,0 +1,38 @@\n+/**\n+ * Copyright (c) Microsoft Corporation.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ *     http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing, software\n+ * distributed under the License is distributed on an \"AS IS\" BASIS,\n+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+ * See the License for the specific language governing permissions and\n+ * limitations under the License.\n+ */\n+\n+import './browserFrame.css';\n+import * as React from 'react';\n+\n+export const BrowserFrame: React.FunctionComponent<{\n+  url?: string,\n+}> = ({ url }) => {\n+  return <div className='browser-frame-header'>\n+    <div style={{ whiteSpace: 'nowrap' }}>\n+      <span className='browser-frame-dot' style={{ backgroundColor: 'rgb(242, 95, 88)' }}></span>\n+      <span className='browser-frame-dot' style={{ backgroundColor: 'rgb(251, 190, 60)' }}></span>\n+      <span className='browser-frame-dot' style={{ backgroundColor: 'rgb(88, 203, 66)' }}></span>\n+    </div>\n+    <div className='browser-frame-address-bar' title={url || 'about:blank'}>{url || 'about:blank'}</div>\n+    <div style={{ marginLeft: 'auto' }}>\n+      <div>\n+        <span className='browser-frame-menu-bar'></span>\n+        <span className='browser-frame-menu-bar'></span>\n+        <span className='browser-frame-menu-bar'></span>\n+      </div>\n+    </div>\n+  </div>;\n+};"
+    },
+    {
+      "sha": "16190dff4eece3e67a0147ca145cb3b12afab759",
+      "filename": "packages/trace-viewer/src/ui/filmStrip.css",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 1,
+      "changes": 3,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FfilmStrip.css",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FfilmStrip.css",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FfilmStrip.css?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -46,7 +46,7 @@\n   position: absolute;\n   top: 0;\n   left: 0;\n-  background-color: white;\n+  background-color: var(--vscode-panel-background);\n   box-shadow: rgba(0, 0, 0, 0.133) 0px 1.6px 10px 0px, rgba(0, 0, 0, 0.11) 0px 0.3px 10px 0px;\n   z-index: 200;\n   pointer-events: none;\n@@ -56,4 +56,5 @@\n   padding: 2px 4px;\n   display: flex;\n   align-items: center;\n+  overflow: hidden;\n }"
+    },
+    {
+      "sha": "d5688354a2aa181751f33da5db59cc1d29d6580b",
+      "filename": "packages/trace-viewer/src/ui/filmStrip.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FfilmStrip.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FfilmStrip.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FfilmStrip.tsx?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -75,10 +75,10 @@ export const FilmStrip: React.FunctionComponent<{\n         top: measure.bottom + 5,\n         left: Math.min(previewPoint!.x, measure.width - previewSize.width - 10),\n       }}>\n+        {previewPoint.action && <div className='film-strip-hover-title'>{renderAction(previewPoint.action, previewPoint.sdkLanguage)}</div>}\n         <div style={{ width: previewSize.width, height: previewSize.height }}>\n           <img src={`sha1/${previewImage.sha1}`} width={previewSize.width} height={previewSize.height} />\n         </div>\n-        {previewPoint.action && <div className='film-strip-hover-title'>{renderAction(previewPoint.action, previewPoint.sdkLanguage)}</div>}\n       </div>\n     }\n   </div>;"
+    },
+    {
+      "sha": "3e096032df2fa741488239f592864c74b60f4119",
+      "filename": "packages/trace-viewer/src/ui/inspectorTab.tsx",
+      "status": "added",
+      "additions": 42,
+      "deletions": 0,
+      "changes": 42,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FinspectorTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FinspectorTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FinspectorTab.tsx?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -0,0 +1,42 @@\n+/**\n+ * Copyright (c) Microsoft Corporation.\n+ *\n+ * Licensed under the Apache License, Version 2.0 (the \"License\");\n+ * you may not use this file except in compliance with the License.\n+ * You may obtain a copy of the License at\n+ *\n+ *     http://www.apache.org/licenses/LICENSE-2.0\n+ *\n+ * Unless required by applicable law or agreed to in writing, software\n+ * distributed under the License is distributed on an \"AS IS\" BASIS,\n+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n+ * See the License for the specific language governing permissions and\n+ * limitations under the License.\n+ */\n+\n+import { CodeMirrorWrapper } from '@web/components/codeMirrorWrapper';\n+import type { Language } from '@web/components/codeMirrorWrapper';\n+import { ToolbarButton } from '@web/components/toolbarButton';\n+import { copy } from '@web/uiUtils';\n+import * as React from 'react';\n+import './sourceTab.css';\n+\n+export const InspectorTab: React.FunctionComponent<{\n+  sdkLanguage: Language,\n+  setIsInspecting: (isInspecting: boolean) => void,\n+  highlightedLocator: string,\n+  setHighlightedLocator: (locator: string) => void,\n+}> = ({ sdkLanguage, setIsInspecting, highlightedLocator, setHighlightedLocator }) => {\n+  return <div className='vbox'>\n+    <CodeMirrorWrapper text={highlightedLocator} language={sdkLanguage} focusOnChange={true} wrapLines={true} onChange={text => {\n+      // Updating text needs to go first - react can squeeze a render between the state updates.\n+      setHighlightedLocator(text);\n+      setIsInspecting(false);\n+    }}></CodeMirrorWrapper>\n+    <div style={{ position: 'absolute', right: '0', top: '0' }}>\n+      <ToolbarButton icon='files' title='Copy locator' onClick={() => {\n+        copy(highlightedLocator);\n+      }}></ToolbarButton>\n+    </div>\n+  </div>;\n+};"
+    },
+    {
+      "sha": "4e091f31d7452c41e9060e1df4c656838504db5d",
+      "filename": "packages/trace-viewer/src/ui/snapshotTab.css",
+      "status": "modified",
+      "additions": 0,
+      "deletions": 44,
+      "changes": 44,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsnapshotTab.css",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsnapshotTab.css",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsnapshotTab.css?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -125,50 +125,6 @@ iframe.snapshot-visible[name=snapshot] {\n   opacity: var(--vscode-disabledForeground);\n }\n \n-.window-dot {\n-  border-radius: 50%;\n-  display: inline-block;\n-  height: 12px;\n-  margin-right: 6px;\n-  margin-top: 4px;\n-  width: 12px;\n-}\n-\n-.window-address-bar {\n-  background-color: var(--vscode-input-background);\n-  border-radius: 12.5px;\n-  color: var(--vscode-input-foreground);\n-  flex: 1 0;\n-  font: 400 16px Arial,sans-serif;\n-  margin: 0 16px 0 8px;\n-  padding: 5px 15px;\n-  overflow: hidden;\n-  text-overflow: ellipsis;\n-  white-space: nowrap;\n-}\n-\n-.window-menu-bar {\n-  background-color: #aaa;\n-  display: block;\n-  height: 3px;\n-  margin: 3px 0;\n-  width: 17px;\n-}\n-\n-.window-header {\n-  align-items: center;\n-  background: #ebedf0;\n-  display: flex;\n-  padding: 8px 16px;\n-  border-top-left-radius: 6px;\n-  border-top-right-radius: 6px;\n-  height: var(--window-header-height);\n-}\n-\n-body.dark-mode .window-header {\n-  background: #444950;\n-}\n-\n .snapshot-tab .cm-wrapper {\n   line-height: 23px;\n   margin-right: 4px;"
+    },
+    {
+      "sha": "bbfc1e1f8da3218e97cc6ab17e55b6dbea0fc288",
+      "filename": "packages/trace-viewer/src/ui/snapshotTab.tsx",
+      "status": "modified",
+      "additions": 8,
+      "deletions": 39,
+      "changes": 47,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsnapshotTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsnapshotTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsnapshotTab.tsx?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -18,28 +18,29 @@ import './snapshotTab.css';\n import * as React from 'react';\n import type { ActionTraceEvent } from '@trace/trace';\n import { context, prevInList } from './modelUtil';\n-import { CodeMirrorWrapper } from '@web/components/codeMirrorWrapper';\n import { Toolbar } from '@web/components/toolbar';\n import { ToolbarButton } from '@web/components/toolbarButton';\n-import { copy, useMeasure } from '@web/uiUtils';\n+import { useMeasure } from '@web/uiUtils';\n import { InjectedScript } from '@injected/injectedScript';\n import { Recorder  } from '@injected/recorder';\n import ConsoleAPI from '@injected/consoleApi';\n import { asLocator } from '@isomorphic/locatorGenerators';\n import type { Language } from '@isomorphic/locatorGenerators';\n import { locatorOrSelectorAsSelector } from '@isomorphic/locatorParser';\n import { TabbedPaneTab } from '@web/components/tabbedPane';\n+import { BrowserFrame } from './browserFrame';\n \n export const SnapshotTab: React.FunctionComponent<{\n   action: ActionTraceEvent | undefined,\n   sdkLanguage: Language,\n   testIdAttributeName: string,\n-}> = ({ action, sdkLanguage, testIdAttributeName }) => {\n+  isInspecting: boolean,\n+  setIsInspecting: (isInspecting: boolean) => void,\n+  highlightedLocator: string,\n+  setHighlightedLocator: (locator: string) => void,\n+}> = ({ action, sdkLanguage, testIdAttributeName, isInspecting, setIsInspecting, highlightedLocator, setHighlightedLocator }) => {\n   const [measure, ref] = useMeasure<HTMLDivElement>();\n   const [snapshotTab, setSnapshotTab] = React.useState<'action'|'before'|'after'>('action');\n-  const [isInspecting, setIsInspecting] = React.useState(false);\n-  const [highlightedLocator, setHighlightedLocator] = React.useState<string>('');\n-  const [pickerVisible, setPickerVisible] = React.useState(false);\n \n   const { snapshots } = React.useMemo(() => {\n     if (!action)\n@@ -171,11 +172,6 @@ export const SnapshotTab: React.FunctionComponent<{\n       iframe={iframeRef1.current}\n       iteration={loadingRef.current.iteration} />\n     <Toolbar>\n-      <ToolbarButton title='Pick locator' disabled={!popoutUrl} toggled={pickerVisible} onClick={() => {\n-        setPickerVisible(!pickerVisible);\n-        setHighlightedLocator('');\n-        setIsInspecting(!pickerVisible);\n-      }}>Pick locator</ToolbarButton>\n       {['action', 'before', 'after'].map(tab => {\n         return <TabbedPaneTab\n           id={tab}\n@@ -193,40 +189,13 @@ export const SnapshotTab: React.FunctionComponent<{\n         });\n       }}></ToolbarButton>\n     </Toolbar>\n-    {pickerVisible && <Toolbar noMinHeight={true}>\n-      <ToolbarButton icon='microscope' title='Pick locator' disabled={!popoutUrl} toggled={isInspecting} onClick={() => {\n-        setIsInspecting(!isInspecting);\n-      }}></ToolbarButton>\n-      <CodeMirrorWrapper text={highlightedLocator} language={sdkLanguage} readOnly={!popoutUrl} focusOnChange={true} wrapLines={true} onChange={text => {\n-        // Updating text needs to go first - react can squeeze a render between the state updates.\n-        setHighlightedLocator(text);\n-        setIsInspecting(false);\n-      }}></CodeMirrorWrapper>\n-      <ToolbarButton icon='files' title='Copy locator' disabled={!popoutUrl} onClick={() => {\n-        copy(highlightedLocator);\n-      }}></ToolbarButton>\n-    </Toolbar>}\n     <div ref={ref} className='snapshot-wrapper'>\n       <div className='snapshot-container' style={{\n         width: snapshotContainerSize.width + 'px',\n         height: snapshotContainerSize.height + 'px',\n         transform: `translate(${translate.x}px, ${translate.y}px) scale(${scale})`,\n       }}>\n-        <div className='window-header'>\n-          <div style={{ whiteSpace: 'nowrap' }}>\n-            <span className='window-dot' style={{ backgroundColor: 'rgb(242, 95, 88)' }}></span>\n-            <span className='window-dot' style={{ backgroundColor: 'rgb(251, 190, 60)' }}></span>\n-            <span className='window-dot' style={{ backgroundColor: 'rgb(88, 203, 66)' }}></span>\n-          </div>\n-          <div className='window-address-bar' title={snapshotInfo.url || 'about:blank'}>{snapshotInfo.url || 'about:blank'}</div>\n-          <div style={{ marginLeft: 'auto' }}>\n-            <div>\n-              <span className='window-menu-bar'></span>\n-              <span className='window-menu-bar'></span>\n-              <span className='window-menu-bar'></span>\n-            </div>\n-          </div>\n-        </div>\n+        <BrowserFrame url={snapshotInfo.url} />\n         <div className='snapshot-switcher'>\n           <iframe ref={iframeRef0} name='snapshot' className={loadingRef.current.visibleIframe === 0 ? 'snapshot-visible' : ''}></iframe>\n           <iframe ref={iframeRef1} name='snapshot' className={loadingRef.current.visibleIframe === 1 ? 'snapshot-visible' : ''}></iframe>"
+    },
+    {
+      "sha": "50d96f8ee3f09c769401f1a271227c188b11bd2d",
+      "filename": "packages/trace-viewer/src/ui/sourceTab.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -75,7 +75,7 @@ export const SourceTab: React.FunctionComponent<{\n     return { source, highlight, targetLine, fileName };\n   }, [action, selectedFrame, rootDir, fallbackLocation], { source: { errors: [], content: 'Loading\\u2026' }, highlight: [] });\n \n-  return <SplitView sidebarSize={200} orientation='vertical' sidebarHidden={hideStackFrames}>\n+  return <SplitView sidebarSize={200} orientation='horizontal' sidebarHidden={hideStackFrames}>\n     <div className='vbox' data-testid='source-code'>\n       {fileName && <div className='source-tab-file-name'>{fileName}</div>}\n       <CodeMirrorWrapper text={source.content || ''} language='javascript' highlight={highlight} revealLine={targetLine} readOnly={true} lineNumbers={true} />"
+    },
+    {
+      "sha": "01ecef3cc8af4b4a19f2806c54a1b74242e227a2",
+      "filename": "packages/trace-viewer/src/ui/uiModeView.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 2,
+      "changes": 3,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FuiModeView.tsx?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -570,8 +570,7 @@ const TraceView: React.FC<{\n     initialSelection={initialSelection}\n     onSelectionChanged={onSelectionChanged}\n     fallbackLocation={item.testFile}\n-    isLive={model?.isLive}\n-    drawer='bottom' />;\n+    isLive={model?.isLive} />;\n };\n \n let receiver: TeleReporterReceiver | undefined;"
+    },
+    {
+      "sha": "b25bf061ea2bd2fa6aad3ba82ba89680ce4d3755",
+      "filename": "packages/trace-viewer/src/ui/workbench.tsx",
+      "status": "modified",
+      "additions": 64,
+      "deletions": 29,
+      "changes": 93,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -30,6 +30,8 @@ import { Timeline } from './timeline';\n import { MetadataView } from './metadataView';\n import { AttachmentsTab } from './attachmentsTab';\n import type { Boundaries } from '../geometry';\n+import { InspectorTab } from './inspectorTab';\n+import { ToolbarButton } from '@web/components/toolbarButton';\n \n export const Workbench: React.FunctionComponent<{\n   model?: MultiTraceModel,\n@@ -40,12 +42,13 @@ export const Workbench: React.FunctionComponent<{\n   initialSelection?: ActionTraceEventInContext,\n   onSelectionChanged?: (action: ActionTraceEventInContext) => void,\n   isLive?: boolean,\n-  drawer?: 'bottom' | 'right',\n-}> = ({ model, hideStackFrames, showSourcesFirst, rootDir, fallbackLocation, initialSelection, onSelectionChanged, isLive, drawer }) => {\n+}> = ({ model, hideStackFrames, showSourcesFirst, rootDir, fallbackLocation, initialSelection, onSelectionChanged, isLive }) => {\n   const [selectedAction, setSelectedAction] = React.useState<ActionTraceEventInContext | undefined>(undefined);\n   const [highlightedAction, setHighlightedAction] = React.useState<ActionTraceEventInContext | undefined>();\n   const [selectedNavigatorTab, setSelectedNavigatorTab] = React.useState<string>('actions');\n   const [selectedPropertiesTab, setSelectedPropertiesTab] = React.useState<string>(showSourcesFirst ? 'source' : 'call');\n+  const [isInspecting, setIsInspecting] = React.useState(false);\n+  const [highlightedLocator, setHighlightedLocator] = React.useState<string>('');\n   const activeAction = model ? highlightedAction || selectedAction : undefined;\n   const [selectedTime, setSelectedTime] = React.useState<Boundaries | undefined>();\n \n@@ -68,8 +71,22 @@ export const Workbench: React.FunctionComponent<{\n     onSelectionChanged?.(action);\n   }, [setSelectedAction, onSelectionChanged]);\n \n+  const locatorPicked = React.useCallback((locator: string) => {\n+    setHighlightedLocator(locator);\n+    setSelectedPropertiesTab('inspector');\n+  }, []);\n+\n   const sdkLanguage = model?.sdkLanguage || 'javascript';\n \n+  const inspectorTab: TabbedPaneTabModel = {\n+    id: 'inspector',\n+    title: 'Locator',\n+    render: () => <InspectorTab\n+      sdkLanguage={sdkLanguage}\n+      setIsInspecting={setIsInspecting}\n+      highlightedLocator={highlightedLocator}\n+      setHighlightedLocator={setHighlightedLocator} />,\n+  };\n   const callTab: TabbedPaneTabModel = {\n     id: 'call',\n     title: 'Call',\n@@ -102,12 +119,14 @@ export const Workbench: React.FunctionComponent<{\n   };\n \n   const tabs: TabbedPaneTabModel[] = showSourcesFirst ? [\n+    inspectorTab,\n     sourceTab,\n     consoleTab,\n     networkTab,\n     callTab,\n     attachmentsTab,\n   ] : [\n+    inspectorTab,\n     callTab,\n     consoleTab,\n     networkTab,\n@@ -135,34 +154,50 @@ export const Workbench: React.FunctionComponent<{\n       selectedTime={selectedTime}\n       setSelectedTime={setSelectedTime}\n     />\n-    <SplitView sidebarSize={drawer === 'bottom' ? 250 : 400} orientation={drawer === 'bottom' ? 'vertical' : 'horizontal'}>\n-      <SplitView sidebarSize={250} orientation='horizontal' sidebarIsFirst={true}>\n-        <SnapshotTab action={activeAction} sdkLanguage={sdkLanguage} testIdAttributeName={model?.testIdAttributeName || 'data-testid'} />\n-        <TabbedPane tabs={\n-          [\n-            {\n-              id: 'actions',\n-              title: 'Actions',\n-              component: <ActionList\n-                sdkLanguage={sdkLanguage}\n-                actions={model?.actions || []}\n-                selectedAction={model ? selectedAction : undefined}\n-                selectedTime={selectedTime}\n-                onSelected={onActionSelected}\n-                onHighlighted={setHighlightedAction}\n-                revealConsole={() => setSelectedPropertiesTab('console')}\n-                isLive={isLive}\n-              />\n-            },\n-            {\n-              id: 'metadata',\n-              title: 'Metadata',\n-              component: <MetadataView model={model}/>\n-            },\n-          ]\n-        } selectedTab={selectedNavigatorTab} setSelectedTab={setSelectedNavigatorTab}/>\n+    <SplitView sidebarSize={400} orientation='horizontal' sidebarIsFirst={true}>\n+      <SplitView sidebarSize={250} orientation='vertical'>\n+        <SnapshotTab\n+          action={activeAction}\n+          sdkLanguage={sdkLanguage}\n+          testIdAttributeName={model?.testIdAttributeName || 'data-testid'}\n+          isInspecting={isInspecting}\n+          setIsInspecting={setIsInspecting}\n+          highlightedLocator={highlightedLocator}\n+          setHighlightedLocator={locatorPicked} />\n+        <TabbedPane\n+          tabs={tabs}\n+          selectedTab={selectedPropertiesTab}\n+          setSelectedTab={setSelectedPropertiesTab}\n+          leftToolbar={[\n+            <ToolbarButton icon='microscope' title='Pick locator' toggled={isInspecting} onClick={() => {\n+              setIsInspecting(!isInspecting);\n+            }}></ToolbarButton>\n+          ]}\n+        />\n       </SplitView>\n-      <TabbedPane tabs={tabs} selectedTab={selectedPropertiesTab} setSelectedTab={setSelectedPropertiesTab} />\n+      <TabbedPane\n+        tabs={[\n+          {\n+            id: 'actions',\n+            title: 'Actions',\n+            component: <ActionList\n+              sdkLanguage={sdkLanguage}\n+              actions={model?.actions || []}\n+              selectedAction={model ? selectedAction : undefined}\n+              selectedTime={selectedTime}\n+              onSelected={onActionSelected}\n+              onHighlighted={setHighlightedAction}\n+              revealConsole={() => setSelectedPropertiesTab('console')}\n+              isLive={isLive}\n+            />\n+          },\n+          {\n+            id: 'metadata',\n+            title: 'Metadata',\n+            component: <MetadataView model={model}/>\n+          },\n+        ]}\n+        selectedTab={selectedNavigatorTab} setSelectedTab={setSelectedNavigatorTab}/>\n     </SplitView>\n   </div>;\n };"
+    },
+    {
+      "sha": "e65e7ce22da7049caf4614d2b00d2c0e206b49d6",
+      "filename": "tests/library/trace-viewer.spec.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/microsoft/playwright/blob/8f31191637bca917b90a15e589b5734aa379fa41/tests%2Flibrary%2Ftrace-viewer.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/8f31191637bca917b90a15e589b5734aa379fa41/tests%2Flibrary%2Ftrace-viewer.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Flibrary%2Ftrace-viewer.spec.ts?ref=8f31191637bca917b90a15e589b5734aa379fa41",
+      "patch": "@@ -274,7 +274,7 @@ test('should show snapshot URL', async ({ page, runAndTrace, server }) => {\n     await page.evaluate('2+2');\n   });\n   await traceViewer.snapshotFrame('page.evaluate');\n-  await expect(traceViewer.page.locator('.window-address-bar')).toHaveText(server.EMPTY_PAGE);\n+  await expect(traceViewer.page.locator('.browser-frame-address-bar')).toHaveText(server.EMPTY_PAGE);\n });\n \n test('should popup snapshot', async ({ page, runAndTrace, server }) => {\n@@ -862,7 +862,7 @@ test('should update highlight when typing', async ({ page, runAndTrace, server }\n     await page.setContent('<button>Submit</button>');\n   });\n   const snapshot = await traceViewer.snapshotFrame('page.setContent');\n-  await traceViewer.page.getByTitle('Pick locator').click();\n+  await traceViewer.page.getByText('Locator').click();\n   await traceViewer.page.locator('.CodeMirror').click();\n   await traceViewer.page.keyboard.type('button');\n   await expect(snapshot.locator('x-pw-glass')).toBeVisible();"
+    }
+  ]
+}

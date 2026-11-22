@@ -1,0 +1,32 @@
+{
+  "n": 30,
+  "kappa": {
+    "kappa": 0.1852,
+    "po": 0.6333,
+    "pe": 0.55,
+    "n": 30
+  },
+  "semantic_validity": 0.4,
+  "by_arm": {
+    "diff": {
+      "n": 15,
+      "kappa": {
+        "kappa": 0.3478,
+        "po": 0.6667,
+        "pe": 0.4889,
+        "n": 15
+      },
+      "semantic_validity": 0.4667
+    },
+    "nodiff": {
+      "n": 15,
+      "kappa": {
+        "kappa": 0,
+        "po": 0.6,
+        "pe": 0.6,
+        "n": 15
+      },
+      "semantic_validity": 0.3333
+    }
+  }
+}

@@ -1,0 +1,44 @@
+From ecee2a8e61e60b562ce7193729c98c7bb03cddbc Mon Sep 17 00:00:00 2001
+From: Kevin Ansfield <kevin@lookingsideways.co.uk>
+Date: Fri, 20 Oct 2023 17:52:11 +0100
+Subject: [PATCH] Another fix attempt for flaky plus card button test
+
+no issue
+
+- switched to markdown card on the assumption that the plus menu sometimes appears above the card before it collapses when leaving exit mode and so the card appears "hidden" to playwright
+---
+ packages/koenig-lexical/test/e2e/plus-button.test.js | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/packages/koenig-lexical/test/e2e/plus-button.test.js b/packages/koenig-lexical/test/e2e/plus-button.test.js
+index 7adabe9df4..ddd90b25dd 100644
+--- a/packages/koenig-lexical/test/e2e/plus-button.test.js
++++ b/packages/koenig-lexical/test/e2e/plus-button.test.js
+@@ -372,21 +372,21 @@ test.describe('Plus button', async () => {
+ 
+         test('exits a card\'s edit mode when plus button is clicked', async function () {
+             await focusEditor(page);
+-            await page.keyboard.type('/');
+-            await page.click('[data-kg-card-menu-item="Markdown"]');
+-            await page.waitForSelector('[data-kg-card="markdown"] .CodeMirror');
++            await page.keyboard.press('Enter');
++            await page.keyboard.press('ArrowUp');
++            await page.keyboard.type('``` ');
++            await page.waitForSelector('[data-kg-card="codeblock"] .cm-editor');
+             await page.keyboard.type('# Test');
+ 
+             const pHandle = await page.locator('[data-lexical-editor] > p').nth(0);
+             await pHandle.hover();
+             await page.click('[data-kg-plus-button]');
+             await page.waitForTimeout(200);
+-            await expect(page.locator('[data-kg-card="markdown"]')).toBeVisible();
++            await expect(page.locator('[data-kg-card="codeblock"]')).toBeVisible();
+ 
+             await assertHTML(page, html`
+                 <div data-lexical-decorator="true" contenteditable="false">
+-                    <div><svg></svg></div>
+-                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="markdown">
++                    <div data-kg-card-editing="false" data-kg-card-selected="false" data-kg-card="codeblock">
+                     </div>
+                 </div>
+                 <p><br /></p>

@@ -1,0 +1,339 @@
+diff --git a/packages/desktop-client/src/components/schedules/SchedulesTable.tsx b/packages/desktop-client/src/components/schedules/SchedulesTable.tsx
+index e85f85e4211..a1c24dd3d18 100644
+--- a/packages/desktop-client/src/components/schedules/SchedulesTable.tsx
++++ b/packages/desktop-client/src/components/schedules/SchedulesTable.tsx
+@@ -138,8 +138,21 @@ export function ScheduleAmountCell({
+ 
+   const num = getScheduledAmount(amount);
+   const currencyAmount = format(Math.abs(num || 0), 'financial');
+-  const isApprox = op === 'isapprox' || op === 'isbetween';
+-
++  const isApprox = op === 'isapprox';
++  const isBetween = op === 'isbetween';
++  let cellText = '';
++  if (isApprox) {
++    cellText = t('Approximately {{currencyAmount}}', {
++      currencyAmount,
++    });
++  } else if (isBetween && typeof amount != 'number') {
++    cellText = t('{{currency1}} to {{currency2}}', {
++      currency1: format(Math.abs(amount.num1 || 0), 'financial'),
++      currency2: format(Math.abs(amount.num2 || 0), 'financial'),
++    });
++  } else {
++    cellText = currencyAmount;
++  }
+   return (
+     <Cell
+       width={100}
+@@ -160,15 +173,24 @@ export function ScheduleAmountCell({
+             lineHeight: '1em',
+             marginRight: 10,
+           }}
+-          title={
+-            isApprox
+-              ? t('Approximately {{currencyAmount}}', { currencyAmount })
+-              : currencyAmount
+-          }
++          title={cellText}
+         >
+           ~
+         </View>
+       )}
++      {isBetween && (
++        <View
++          style={{
++            textAlign: 'left',
++            color: theme.pageTextSubdued,
++            lineHeight: '1em',
++            marginRight: 10,
++          }}
++          title={cellText}
++        >
++          ±
++        </View>
++      )}
+       <FinancialText
+         style={{
+           flex: 1,
+@@ -177,11 +199,7 @@ export function ScheduleAmountCell({
+           overflow: 'hidden',
+           textOverflow: 'ellipsis',
+         }}
+-        title={
+-          isApprox
+-            ? t('Approximately {{currencyAmount}}', { currencyAmount })
+-            : currencyAmount
+-        }
++        title={cellText}
+       >
+         <PrivacyFilter>
+           {num > 0 ? `+${currencyAmount}` : `${currencyAmount}`}
+@@ -349,12 +367,14 @@ export function SchedulesTable({
+       const payee = payees.find(p => schedule._payee === p.id);
+       const account = accounts.find(a => schedule._account === a.id);
+       const amount = getScheduledAmount(schedule._amount);
+-      const amountStr =
+-        (schedule._amountOp === 'isapprox' || schedule._amountOp === 'isbetween'
+-          ? '~'
+-          : '') +
+-        (amount > 0 ? '+' : '') +
+-        format(Math.abs(amount || 0), 'financial');
++      let amountStr = '';
++      if (schedule._amountOp === 'isbetween') {
++        amountStr = '±';
++      } else if (schedule._amountOp === 'isapprox') {
++        amountStr = '~';
++      }
++      amountStr +=
++        (amount > 0 ? '+' : '') + format(Math.abs(amount || 0), 'financial');
+       const dateStr = schedule.next_date
+         ? monthUtilFormat(schedule.next_date, dateFormat)
+         : null;
+diff --git a/packages/sync-server/package.json b/packages/sync-server/package.json
+index 410a218f5ef..eef66b1777f 100644
+--- a/packages/sync-server/package.json
++++ b/packages/sync-server/package.json
+@@ -104,7 +104,7 @@
+     "jws": "^4.0.1",
+     "migrate": "^2.1.0",
+     "openid-client": "^5.7.1",
+-    "pluggy-sdk": "^0.83.0",
++    "pluggy-sdk": "^0.85.3",
+     "uuid": "^14.0.0",
+     "winston": "^3.19.0"
+   },
+diff --git a/packages/sync-server/src/app-pluggyai/app-pluggyai.js b/packages/sync-server/src/app-pluggyai/app-pluggyai.js
+index b33c55ee75e..f836cd1cace 100644
+--- a/packages/sync-server/src/app-pluggyai/app-pluggyai.js
++++ b/packages/sync-server/src/app-pluggyai/app-pluggyai.js
+@@ -69,7 +69,7 @@ app.post(
+     const { accountId, startDate } = req.body || {};
+ 
+     try {
+-      const transactions = await pluggyaiService.getTransactions(
++      const transactions = await pluggyaiService.getTransactionsByAccountId(
+         accountId,
+         startDate,
+       );
+@@ -82,7 +82,7 @@ app.post(
+       if (account.type === 'CREDIT') {
+         startingBalance = -startingBalance;
+       }
+-      const date = getDate(new Date(account.updatedAt));
++      const date = getDate(account.updatedAt);
+ 
+       const balances = [
+         {
+@@ -99,12 +99,16 @@ app.post(
+       const booked = [];
+       const pending = [];
+ 
+-      for (const trans of transactions) {
++      for (const trans of Object.values(transactions)) {
++        if (typeof trans !== 'object' || Object.keys(trans).length === 0) {
++          continue;
++        }
++
+         const newTrans = {};
+ 
+         newTrans.booked = !(trans.status === 'PENDING');
+ 
+-        const transactionDate = new Date(trans.date);
++        const transactionDate = trans.date;
+ 
+         if (transactionDate < startDate && !trans.sandbox) {
+           continue;
+diff --git a/packages/sync-server/src/app-pluggyai/pluggyai-service.js b/packages/sync-server/src/app-pluggyai/pluggyai-service.js
+index 59645a379ba..f63ddb303f4 100644
+--- a/packages/sync-server/src/app-pluggyai/pluggyai-service.js
++++ b/packages/sync-server/src/app-pluggyai/pluggyai-service.js
+@@ -58,7 +58,7 @@ export const pluggyaiService = {
+     }
+   },
+ 
+-  getTransactionsByAccountId: async (accountId, startDate, pageSize, page) => {
++  getTransactionsByAccountId: async (accountId, startDate) => {
+     try {
+       const client = getPluggyClient();
+ 
+@@ -72,14 +72,12 @@ export const pluggyaiService = {
+ 
+       if (sandboxAccount) startDate = '2000-01-01';
+ 
+-      const transactions = await client.fetchTransactions(accountId, {
+-        from: startDate,
+-        pageSize,
+-        page,
++      let transactions = await client.fetchAllTransactions(accountId, {
++        dateFrom: startDate,
+       });
+ 
+       if (sandboxAccount) {
+-        transactions.results = transactions.results.map(t => ({
++        transactions = transactions.map(t => ({
+           ...t,
+           sandbox: true,
+         }));
+@@ -95,26 +93,4 @@ export const pluggyaiService = {
+       throw error;
+     }
+   },
+-  getTransactions: async (accountId, startDate) => {
+-    let transactions = [];
+-    let result = await pluggyaiService.getTransactionsByAccountId(
+-      accountId,
+-      startDate,
+-      500,
+-      1,
+-    );
+-    transactions = transactions.concat(result.results);
+-    const totalPages = result.totalPages;
+-    while (result.page !== totalPages) {
+-      result = await pluggyaiService.getTransactionsByAccountId(
+-        accountId,
+-        startDate,
+-        500,
+-        result.page + 1,
+-      );
+-      transactions = transactions.concat(result.results);
+-    }
+-
+-    return transactions;
+-  },
+ };
+diff --git a/upcoming-release-notes/8103.md b/upcoming-release-notes/8103.md
+new file mode 100644
+index 00000000000..e9b679b941b
+--- /dev/null
++++ b/upcoming-release-notes/8103.md
+@@ -0,0 +1,6 @@
++---
++category: Maintenance
++authors: [KevinIsMyName, lelemm]
++---
++
++Upgrade Pluggy.ai's transaction API from deprecated page-sized pagination to cursor pagination. Update transaction-parsing for Pluggy.ai.
+diff --git a/upcoming-release-notes/between-amount-symbol-tooltip.md b/upcoming-release-notes/between-amount-symbol-tooltip.md
+new file mode 100644
+index 00000000000..b38817d8df4
+--- /dev/null
++++ b/upcoming-release-notes/between-amount-symbol-tooltip.md
+@@ -0,0 +1,6 @@
++---
++category: Enhancements
++authors: [tjmills-dev]
++---
++
++Use ± symbol for 'between' amount schedules and improve tooltip wording.
+diff --git a/yarn.lock b/yarn.lock
+index 13806ad7809..479d2bc904c 100644
+--- a/yarn.lock
++++ b/yarn.lock
+@@ -195,7 +195,7 @@ __metadata:
+     migrate: "npm:^2.1.0"
+     nodemon: "npm:^3.1.14"
+     openid-client: "npm:^5.7.1"
+-    pluggy-sdk: "npm:^0.83.0"
++    pluggy-sdk: "npm:^0.85.3"
+     supertest: "npm:^7.2.2"
+     typescript-strict-plugin: "npm:^2.4.4"
+     uuid: "npm:^14.0.0"
+@@ -17400,15 +17400,15 @@ __metadata:
+   linkType: hard
+ 
+ "joi@npm:^17.9.2":
+-  version: 17.13.3
+-  resolution: "joi@npm:17.13.3"
++  version: 17.13.4
++  resolution: "joi@npm:17.13.4"
+   dependencies:
+     "@hapi/hoek": "npm:^9.3.0"
+     "@hapi/topo": "npm:^5.1.0"
+     "@sideway/address": "npm:^4.1.5"
+     "@sideway/formula": "npm:^3.0.1"
+     "@sideway/pinpoint": "npm:^2.0.0"
+-  checksum: 10/4c150db0c820c3a52f4a55c82c1fc5e144a5b5f4da9ffebc7339a15469d1a447ebb427ced446efcb9709ab56bd71a06c4c67c9381bc1b9f9ae63fc7c89209bdf
++  checksum: 10/0e407d4cc6cb0830b93c2d107f8b85113338473296025c31a931589359b58883e61fd183dd7532d3ab1ee014a01a20830a8fca90d9f0217d0c0894ee2cbf9ff5
+   languageName: node
+   linkType: hard
+ 
+@@ -17596,11 +17596,11 @@ __metadata:
+   languageName: node
+   linkType: hard
+ 
+-"jsonwebtoken@npm:^9.0.2":
+-  version: 9.0.2
+-  resolution: "jsonwebtoken@npm:9.0.2"
++"jsonwebtoken@npm:9.0.3":
++  version: 9.0.3
++  resolution: "jsonwebtoken@npm:9.0.3"
+   dependencies:
+-    jws: "npm:^3.2.2"
++    jws: "npm:^4.0.1"
+     lodash.includes: "npm:^4.3.0"
+     lodash.isboolean: "npm:^3.0.3"
+     lodash.isinteger: "npm:^4.0.4"
+@@ -17610,7 +17610,7 @@ __metadata:
+     lodash.once: "npm:^4.0.0"
+     ms: "npm:^2.1.1"
+     semver: "npm:^7.5.4"
+-  checksum: 10/6e9b6d879cec2b27f2f3a88a0c0973edc7ba956a5d9356b2626c4fddfda969e34a3832deaf79c3e1c6c9a525bc2c4f2c2447fa477f8ac660f0017c31a59ae96b
++  checksum: 10/a67a276db41fbfb458ebdc4938d5d7b01d4743e16bda0f25ac01996fe5b5819d66656153f6cfce19b4680b79ae9f9ca185965defc22e77e0abddf443573238d6
+   languageName: node
+   linkType: hard
+ 
+@@ -17626,17 +17626,6 @@ __metadata:
+   languageName: node
+   linkType: hard
+ 
+-"jwa@npm:^1.4.2":
+-  version: 1.4.2
+-  resolution: "jwa@npm:1.4.2"
+-  dependencies:
+-    buffer-equal-constant-time: "npm:^1.0.1"
+-    ecdsa-sig-formatter: "npm:1.0.11"
+-    safe-buffer: "npm:^5.0.1"
+-  checksum: 10/a46c9ddbcc226d9e85e13ef96328c7d331abddd66b5a55ec44bcf4350464a6125385ac9c1e64faa0fae8d586d90a14d6b5e96c73f0388970a3918d5252efb0f3
+-  languageName: node
+-  linkType: hard
+-
+ "jwa@npm:^2.0.1":
+   version: 2.0.1
+   resolution: "jwa@npm:2.0.1"
+@@ -17648,16 +17637,6 @@ __metadata:
+   languageName: node
+   linkType: hard
+ 
+-"jws@npm:^3.2.2":
+-  version: 3.2.3
+-  resolution: "jws@npm:3.2.3"
+-  dependencies:
+-    jwa: "npm:^1.4.2"
+-    safe-buffer: "npm:^5.0.1"
+-  checksum: 10/707387dd1cabcc3d9c2818f773cfaac7ede66e79ca11bbd159285a88cf5d8e8f355afcb8ee373e7bb0fcf9b7a2df015b22c50f27842f2c77453f04cd9f8f4009
+-  languageName: node
+-  linkType: hard
+-
+ "jws@npm:^4.0.1":
+   version: 4.0.1
+   resolution: "jws@npm:4.0.1"
+@@ -21181,13 +21160,13 @@ __metadata:
+   languageName: node
+   linkType: hard
+ 
+-"pluggy-sdk@npm:^0.83.0":
+-  version: 0.83.0
+-  resolution: "pluggy-sdk@npm:0.83.0"
++"pluggy-sdk@npm:^0.85.3":
++  version: 0.85.3
++  resolution: "pluggy-sdk@npm:0.85.3"
+   dependencies:
+     got: "npm:11.8.6"
+-    jsonwebtoken: "npm:^9.0.2"
+-  checksum: 10/f571e936ca4f4d090627dcc8a97d917a17112d68e915fbe8c35bcfaf62d8b67ba10ed92c18752ad099dbb9ee380325529f8d3d12dffb9b7aeaf3423520d9e2fb
++    jsonwebtoken: "npm:9.0.3"
++  checksum: 10/ab27cf972cfdcc972da83a25857f39befc3f9d6af5052f9932e90f1f29e2d1c3317a99838e801056cdbf441b1e2b23e8aa83317aa6eba505d5826dfaff0cfc9b
+   languageName: node
+   linkType: hard
+ 

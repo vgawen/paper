@@ -1,0 +1,310 @@
+From ed41fd064317446bd191d29d2f4e43f22cae3009 Mon Sep 17 00:00:00 2001
+From: Pavel Feldman <pavel.feldman@gmail.com>
+Date: Fri, 24 Feb 2023 15:31:10 -0800
+Subject: [PATCH] chore: use listview to render stack trace (#21197)
+
+---
+ packages/trace-viewer/src/traceModel.ts     |  2 +-
+ packages/trace-viewer/src/ui/sourceTab.tsx  |  2 +-
+ packages/trace-viewer/src/ui/stackTrace.css | 26 ---------------------
+ packages/trace-viewer/src/ui/stackTrace.tsx | 24 ++++++++-----------
+ packages/trace-viewer/src/ui/workbench.tsx  |  2 +-
+ packages/web/src/components/listView.css    | 15 +++++++-----
+ packages/web/src/components/listView.tsx    | 18 ++++++++------
+ tests/config/traceViewerFixtures.ts         |  2 +-
+ tests/library/trace-viewer.spec.ts          |  2 +-
+ tests/playwright-test/reporter-html.spec.ts |  4 ++--
+ 10 files changed, 37 insertions(+), 60 deletions(-)
+
+diff --git a/packages/trace-viewer/src/traceModel.ts b/packages/trace-viewer/src/traceModel.ts
+index de7ad6f581f4f..7995450202ad9 100644
+--- a/packages/trace-viewer/src/traceModel.ts
++++ b/packages/trace-viewer/src/traceModel.ts
+@@ -87,7 +87,7 @@ export class TraceModel {
+       await stacksEntry.getData!(writer);
+       const metadataMap = parseClientSideCallMetadata(JSON.parse(await writer.getData()));
+       for (const action of this.contextEntry.actions)
+-        action.metadata.stack = metadataMap.get(action.metadata.id);
++        action.metadata.stack = action.metadata.stack || metadataMap.get(action.metadata.id);
+     }
+ 
+     this._build();
+diff --git a/packages/trace-viewer/src/ui/sourceTab.tsx b/packages/trace-viewer/src/ui/sourceTab.tsx
+index 0ff06ac4fab63..e33018f219dc2 100644
+--- a/packages/trace-viewer/src/ui/sourceTab.tsx
++++ b/packages/trace-viewer/src/ui/sourceTab.tsx
+@@ -79,7 +79,7 @@ export const SourceTab: React.FunctionComponent<{
+     }
+   }, [needReveal, targetLineRef]);
+ 
+-  return <SplitView sidebarSize={100} orientation='vertical'>
++  return <SplitView sidebarSize={200} orientation='horizontal'>
+     <SourceView text={content} language='javascript' highlight={[{ line: targetLine, type: 'running' }]} revealLine={targetLine}></SourceView>
+     <StackTraceView action={action} selectedFrame={selectedFrame} setSelectedFrame={setSelectedFrame}></StackTraceView>
+   </SplitView>;
+diff --git a/packages/trace-viewer/src/ui/stackTrace.css b/packages/trace-viewer/src/ui/stackTrace.css
+index dce28834d1b2e..5282c5219bda3 100644
+--- a/packages/trace-viewer/src/ui/stackTrace.css
++++ b/packages/trace-viewer/src/ui/stackTrace.css
+@@ -14,32 +14,6 @@
+   limitations under the License.
+ */
+ 
+-.stack-trace {
+-  flex: 1 1 120px;
+-  display: flex;
+-  flex-direction: column;
+-  align-items: stretch;
+-  overflow-y: auto;
+-}
+-
+-.stack-trace-frame {
+-  flex: 0 0 20px;
+-  display: flex;
+-  flex-direction: row;
+-  align-items: center;
+-  cursor: pointer;
+-  padding: 0 5px;
+-}
+-
+-.stack-trace-frame:hover {
+-  background-color: var(--vscode-list-inactiveSelectionBackground);
+-}
+-
+-.stack-trace-frame:selected {
+-  background-color: var(--vscode-list-activeSelectionBackground);
+-  color: var(--vscode-list-activeSelectionForeground);
+-}
+-
+ .stack-trace-frame-function {
+   flex: 1 1 100px;
+   overflow: hidden;
+diff --git a/packages/trace-viewer/src/ui/stackTrace.tsx b/packages/trace-viewer/src/ui/stackTrace.tsx
+index fbb2f80f3c9fb..fbf175b505644 100644
+--- a/packages/trace-viewer/src/ui/stackTrace.tsx
++++ b/packages/trace-viewer/src/ui/stackTrace.tsx
+@@ -17,6 +17,7 @@
+ import * as React from 'react';
+ import './stackTrace.css';
+ import type { ActionTraceEvent } from '@trace/trace';
++import { ListView } from '@web/components/listView';
+ 
+ export const StackTraceView: React.FunctionComponent<{
+   action: ActionTraceEvent | undefined,
+@@ -24,17 +25,13 @@ export const StackTraceView: React.FunctionComponent<{
+   setSelectedFrame: (index: number) => void
+ }> = ({ action, setSelectedFrame, selectedFrame }) => {
+   const frames = action?.metadata.stack || [];
+-  return <div className='stack-trace'>{
+-    frames.map((frame, index) => {
+-      // Windows frames are E:\path\to\file
++  return <ListView
++    dataTestId='stack-trace'
++    items={frames}
++    selectedItem={frames[selectedFrame]}
++    itemRender={frame => {
+       const pathSep = frame.file[1] === ':' ? '\\' : '/';
+-      return <div
+-        key={index}
+-        className={'stack-trace-frame' + (selectedFrame === index ? ' selected' : '')}
+-        onClick={() => {
+-          setSelectedFrame(index);
+-        }}
+-      >
++      return <>
+         <span className='stack-trace-frame-function'>
+           {frame.function || '(anonymous)'}
+         </span>
+@@ -44,8 +41,7 @@ export const StackTraceView: React.FunctionComponent<{
+         <span className='stack-trace-frame-line'>
+           {':' + frame.line}
+         </span>
+-      </div>;
+-    })
+-  }
+-  </div>;
++      </>;
++    }}
++    onSelected={frame => setSelectedFrame(frames.indexOf(frame))} />;
+ };
+diff --git a/packages/trace-viewer/src/ui/workbench.tsx b/packages/trace-viewer/src/ui/workbench.tsx
+index 028cc46f9582b..c4149e5f0633e 100644
+--- a/packages/trace-viewer/src/ui/workbench.tsx
++++ b/packages/trace-viewer/src/ui/workbench.tsx
+@@ -207,7 +207,7 @@ export const Workbench: React.FunctionComponent<{
+       />
+     </div>
+     <SplitView sidebarSize={300} orientation='horizontal' sidebarIsFirst={true}>
+-      <SplitView sidebarSize={300} orientation={view === 'embedded' ? 'vertical' : 'horizontal'}>
++      <SplitView sidebarSize={300} orientation='vertical'>
+         <SnapshotTab action={activeAction} sdkLanguage={model.sdkLanguage || 'javascript'} testIdAttributeName={model.testIdAttributeName || 'data-testid'} />
+         <TabbedPane tabs={tabs} selectedTab={selectedPropertiesTab} setSelectedTab={setSelectedPropertiesTab}/>
+       </SplitView>
+diff --git a/packages/web/src/components/listView.css b/packages/web/src/components/listView.css
+index 3263dd1fc4307..f5692aa898e7c 100644
+--- a/packages/web/src/components/listView.css
++++ b/packages/web/src/components/listView.css
+@@ -21,7 +21,7 @@
+   position: relative;
+   user-select: none;
+   overflow: auto;
+-  outline: none;
++  outline: 1 px solid transparent;
+ }
+ 
+ .list-view-entry {
+@@ -39,18 +39,22 @@
+   background-color: var(--vscode-list-inactiveSelectionBackground);
+ }
+ 
++.list-view-entry.selected {
++  z-index: 10;
++}
++
+ .list-view-entry.highlighted {
+   background-color: var(--vscode-list-inactiveSelectionBackground);
+ }
+ 
+-.list-view-content:focus .list-view-entry.selected {
++.list-view-content:focus .list-view-entry.selected:not(.error) {
+   background-color: var(--vscode-list-activeSelectionBackground);
+   color: var(--vscode-list-activeSelectionForeground);
+   outline: 1px solid var(--vscode-focusBorder);
+ }
+ 
+-.list-view-content:focus .list-view-entry.selected * {
+-  color: var(--vscode-list-activeSelectionForeground);
++.list-view-content:focus .list-view-entry.error.selected {
++  outline: 1px solid var(--vscode-inputValidation-errorBorder);
+ }
+ 
+ .list-view-empty {
+@@ -60,8 +64,7 @@
+   justify-content: center;
+ }
+ 
+-.list-view-entry.error:not(.selected) {
++.list-view-entry.error {
+   color: var(--vscode-list-errorForeground);
+   background-color: var(--vscode-inputValidation-errorBackground);
+-  outline: 1px solid var(--vscode-inputValidation-errorBorder);
+ }
+diff --git a/packages/web/src/components/listView.tsx b/packages/web/src/components/listView.tsx
+index 23b4567b722d8..3d0ab7cb52d00 100644
+--- a/packages/web/src/components/listView.tsx
++++ b/packages/web/src/components/listView.tsx
+@@ -19,16 +19,17 @@ import './listView.css';
+ 
+ export type ListViewProps = {
+   items: any[],
+-  itemKey: (item: any) => string,
+   itemRender: (item: any) => React.ReactNode,
++  itemKey?: (item: any) => string,
+   itemIcon?: (item: any) => string | undefined,
+   itemIndent?: (item: any) => number | undefined,
+-  itemType: (item: any) => 'error' | undefined,
++  itemType?: (item: any) => 'error' | undefined,
+   selectedItem?: any,
+   onAccepted?: (item: any) => void,
+   onSelected?: (item: any) => void,
+   onHighlighted?: (item: any | undefined) => void,
+   showNoItemsMessage?: boolean,
++  dataTestId?: string,
+ };
+ 
+ export const ListView: React.FC<ListViewProps> = ({
+@@ -43,11 +44,12 @@ export const ListView: React.FC<ListViewProps> = ({
+   onSelected,
+   onHighlighted,
+   showNoItemsMessage,
++  dataTestId,
+ }) => {
+   const itemListRef = React.createRef<HTMLDivElement>();
+   const [highlightedItem, setHighlightedItem] = React.useState<any>();
+ 
+-  return <div className='list-view vbox'>
++  return <div className='list-view vbox' data-testid={dataTestId}>
+     <div
+       className='list-view-content'
+       tabIndex={0}
+@@ -83,8 +85,9 @@ export const ListView: React.FC<ListViewProps> = ({
+       ref={itemListRef}
+     >
+       {showNoItemsMessage && items.length === 0 && <div className='list-view-empty'>No items</div>}
+-      {items.map(item => <ListItemView
+-        key={itemKey(item)}
++      {items.map((item, index) => <ListItemView
++        key={itemKey ? itemKey(item) : String(index)}
++        hasIcons={!!itemIcon}
+         icon={itemIcon?.(item)}
+         type={itemType?.(item)}
+         indent={itemIndent?.(item)}
+@@ -108,6 +111,7 @@ export const ListView: React.FC<ListViewProps> = ({
+ 
+ const ListItemView: React.FC<{
+   key: string,
++  hasIcons: boolean,
+   icon: string | undefined,
+   type: 'error' | undefined,
+   indent: number | undefined,
+@@ -117,7 +121,7 @@ const ListItemView: React.FC<{
+   onMouseEnter: () => void,
+   onMouseLeave: () => void,
+   children: React.ReactNode | React.ReactNode[],
+-}> = ({ key, icon, type, indent, onSelected, onMouseEnter, onMouseLeave, isHighlighted, isSelected, children }) => {
++}> = ({ key, hasIcons, icon, type, indent, onSelected, onMouseEnter, onMouseLeave, isHighlighted, isSelected, children }) => {
+   const selectedSuffix = isSelected ? ' selected' : '';
+   const highlightedSuffix = isHighlighted ? ' highlighted' : '';
+   const errorSuffix = type === 'error' ? ' error' : '';
+@@ -137,7 +141,7 @@ const ListItemView: React.FC<{
+     ref={divRef}
+   >
+     {indent ? <div style={{ minWidth: indent * 16 }}></div> : undefined}
+-    <div className={'codicon ' + (icon || 'blank')} style={{ minWidth: 16, marginRight: 4 }}></div>
++    {hasIcons && <div className={'codicon ' + (icon || 'blank')} style={{ minWidth: 16, marginRight: 4 }}></div>}
+     {typeof children === 'string' ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{children}</div> : children}
+   </div>;
+ };
+diff --git a/tests/config/traceViewerFixtures.ts b/tests/config/traceViewerFixtures.ts
+index 307ccf593a3a9..41848405cef04 100644
+--- a/tests/config/traceViewerFixtures.ts
++++ b/tests/config/traceViewerFixtures.ts
+@@ -49,7 +49,7 @@ class TraceViewerPage {
+     this.consoleLines = page.locator('.console-line');
+     this.consoleLineMessages = page.locator('.console-line-message');
+     this.consoleStacks = page.locator('.console-stack');
+-    this.stackFrames = page.locator('.stack-trace-frame');
++    this.stackFrames = page.getByTestId('stack-trace').locator('.list-view-entry');
+     this.networkRequests = page.locator('.network-request-title');
+     this.snapshotContainer = page.locator('.snapshot-container iframe');
+   }
+diff --git a/tests/library/trace-viewer.spec.ts b/tests/library/trace-viewer.spec.ts
+index 0bd932ada85db..ff8b7123eefa9 100644
+--- a/tests/library/trace-viewer.spec.ts
++++ b/tests/library/trace-viewer.spec.ts
+@@ -601,7 +601,7 @@ test('should show action source', async ({ showTraceViewer }) => {
+ 
+   await page.click('text=Source');
+   await expect(page.locator('.source-line-running')).toContainText('await page.getByText(\'Click\').click()');
+-  await expect(page.locator('.stack-trace-frame.selected')).toHaveText(/doClick.*trace-viewer\.spec\.ts:[\d]+/);
++  await expect(page.getByTestId('stack-trace').locator('.list-view-entry.selected')).toHaveText(/doClick.*trace-viewer\.spec\.ts:[\d]+/);
+ });
+ 
+ test('should follow redirects', async ({ page, runAndTrace, server, asset }) => {
+diff --git a/tests/playwright-test/reporter-html.spec.ts b/tests/playwright-test/reporter-html.spec.ts
+index bf63c86d710bc..4c7bf7d685b46 100644
+--- a/tests/playwright-test/reporter-html.spec.ts
++++ b/tests/playwright-test/reporter-html.spec.ts
+@@ -394,10 +394,10 @@ test('should show trace source', async ({ runInlineTest, page, showReport }) =>
+   ]);
+   await expect(page.locator('.source-line-running')).toContainText('page.evaluate');
+ 
+-  await expect(page.locator('.stack-trace-frame')).toContainText([
++  await expect(page.getByTestId('stack-trace')).toContainText([
+     /a.test.js:[\d]+/,
+   ]);
+-  await expect(page.locator('.stack-trace-frame.selected')).toContainText('a.test.js');
++  await expect(page.getByTestId('stack-trace').locator('.list-view-entry.selected')).toContainText('a.test.js');
+ });
+ 
+ test('should show trace title', async ({ runInlineTest, page, showReport }) => {

@@ -1,0 +1,174 @@
+. preinstall$ node internal/scripts/preinstall.mjs
+. preinstall: Done
+? Verifying lockfile against supply-chain policies (3066 entries)...
+[WARN] Request took 32437ms: https://registry.npmjs.org/playwright-core
+✓ Lockfile passes supply-chain policies (3066 entries in 58.5s)
+Lockfile is up to date, resolution step is skipped
+Packages are cloned from the content-addressable store to the virtual store.
+  Content-addressable store is at: /Users/dd/Library/pnpm/store/v11
+  Virtual store is at:             ../../../../../Library/pnpm/store/v11/links
+Progress: resolved 371, reused 371, downloaded 0, added 368
+Progress: resolved 1394, reused 459, downloaded 3, added 461
+Downloading @typescript/typescript-darwin-arm64@7.0.2: 0.00 B/9.27 MB
+Downloading @napi-rs/canvas-darwin-arm64@0.1.65: 0.00 B/10.68 MB
+[WARN] Tarball download average speed 8 KiB/s (size 13 KiB) is below 50 KiB/s: https://registry.npmjs.org/jest-util/-/jest-util-30.4.1.tgz (GET)
+[WARN] Tarball download average speed 6 KiB/s (size 9 KiB) is below 50 KiB/s: https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.11.tgz (GET)
+Downloading @oxlint-tsgolint/darwin-arm64@0.23.0: 0.00 B/12.98 MB
+[WARN] Tarball download average speed 33 KiB/s (size 36 KiB) is below 50 KiB/s: https://registry.npmjs.org/event-target-shim/-/event-target-shim-5.0.1.tgz (GET)
+[WARN] Tarball download average speed 9 KiB/s (size 13 KiB) is below 50 KiB/s: https://registry.npmjs.org/code-block-writer/-/code-block-writer-10.1.1.tgz (GET)
+[WARN] Tarball download average speed 3 KiB/s (size 7 KiB) is below 50 KiB/s: https://registry.npmjs.org/readdir-glob/-/readdir-glob-1.1.3.tgz (GET)
+Downloading @rolldown/binding-darwin-arm64@1.0.0-rc.1: 0.00 B/7.58 MB
+[WARN] Tarball download average speed 4 KiB/s (size 6 KiB) is below 50 KiB/s: https://registry.npmjs.org/rw/-/rw-1.3.3.tgz (GET)
+[WARN] Tarball download average speed 12 KiB/s (size 24 KiB) is below 50 KiB/s: https://registry.npmjs.org/@radix-ui/react-form/-/react-form-0.1.7.tgz (GET)
+[WARN] Tarball download average speed 20 KiB/s (size 36 KiB) is below 50 KiB/s: https://registry.npmjs.org/@wdio/types/-/types-9.27.2.tgz (GET)
+[WARN] Tarball download average speed 10 KiB/s (size 11 KiB) is below 50 KiB/s: https://registry.npmjs.org/@tiptap/extension-code-block/-/extension-code-block-3.13.0.tgz (GET)
+Downloading @turbo/darwin-arm64@2.10.13: 0.00 B/17.73 MB
+Downloading @sentry/cli-darwin@2.41.1: 0.00 B/10.81 MB
+[WARN] Tarball download average speed 5 KiB/s (size 7 KiB) is below 50 KiB/s: https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz (GET)
+Downloading cytoscape-fcose@2.2.0: 0.00 B/7.60 MB
+[WARN] Tarball download average speed 16 KiB/s (size 25 KiB) is below 50 KiB/s: https://registry.npmjs.org/chokidar/-/chokidar-3.6.0.tgz (GET)
+Downloading mermaid@11.16.1: 0.00 B/17.61 MB
+[WARN] Tarball download average speed 28 KiB/s (size 44 KiB) is below 50 KiB/s: https://registry.npmjs.org/cose-base/-/cose-base-2.2.0.tgz (GET)
+[WARN] Tarball download average speed 11 KiB/s (size 14 KiB) is below 50 KiB/s: https://registry.npmjs.org/@types/yargs/-/yargs-17.0.35.tgz (GET)
+[WARN] Tarball download average speed 7 KiB/s (size 10 KiB) is below 50 KiB/s: https://registry.npmjs.org/micromark-util-types/-/micromark-util-types-2.0.0.tgz (GET)
+[WARN] Tarball download average speed 20 KiB/s (size 41 KiB) is below 50 KiB/s: https://registry.npmjs.org/@floating-ui/core/-/core-1.6.0.tgz (GET)
+[WARN] Tarball download average speed 16 KiB/s (size 24 KiB) is below 50 KiB/s: https://registry.npmjs.org/generic-pool/-/generic-pool-3.4.2.tgz (GET)
+[WARN] Tarball download average speed 22 KiB/s (size 29 KiB) is below 50 KiB/s: https://registry.npmjs.org/xpath/-/xpath-0.0.34.tgz (GET)
+[WARN] Tarball download average speed 25 KiB/s (size 31 KiB) is below 50 KiB/s: https://registry.npmjs.org/mdast-util-to-hast/-/mdast-util-to-hast-13.2.1.tgz (GET)
+[WARN] Tarball download average speed 11 KiB/s (size 33 KiB) is below 50 KiB/s: https://registry.npmjs.org/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz (GET)
+Downloading pdfjs-dist@4.10.38: 0.00 B/10.34 MB
+Downloading mermaid@11.16.1: 327.68 kB/17.61 MB
+[WARN] Tarball download average speed 10 KiB/s (size 61 KiB) is below 50 KiB/s: https://registry.npmjs.org/yargs/-/yargs-16.2.0.tgz (GET)
+[WARN] Tarball download average speed 39 KiB/s (size 41 KiB) is below 50 KiB/s: https://registry.npmjs.org/@radix-ui/react-one-time-password-field/-/react-one-time-password-field-0.1.7.tgz (GET)
+[WARN] Tarball download average speed 5 KiB/s (size 11 KiB) is below 50 KiB/s: https://registry.npmjs.org/@radix-ui/react-hover-card/-/react-hover-card-1.1.14.tgz (GET)
+[WARN] Tarball download average speed 15 KiB/s (size 70 KiB) is below 50 KiB/s: https://registry.npmjs.org/prosemirror-transform/-/prosemirror-transform-1.10.4.tgz (GET)
+Downloading @swc/core-darwin-arm64@1.15.18: 0.00 B/9.32 MB
+[WARN] Tarball download average speed 17 KiB/s (size 17 KiB) is below 50 KiB/s: https://registry.npmjs.org/@asamuzakjp/nwsapi/-/nwsapi-2.3.9.tgz (GET)
+[WARN] Tarball download average speed 37 KiB/s (size 160 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vue/compiler-dom/-/compiler-dom-3.5.17.tgz (GET)
+[WARN] Tarball download average speed 24 KiB/s (size 43 KiB) is below 50 KiB/s: https://registry.npmjs.org/commander/-/commander-9.5.0.tgz (GET)
+[WARN] Tarball download average speed 23 KiB/s (size 25 KiB) is below 50 KiB/s: https://registry.npmjs.org/@floating-ui/dom/-/dom-1.6.1.tgz (GET)
+[WARN] Tarball download average speed 16 KiB/s (size 36 KiB) is below 50 KiB/s: https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.29.7.tgz (GET)
+[WARN] Tarball download average speed 36 KiB/s (size 180 KiB) is below 50 KiB/s: https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.5.17.tgz (GET)
+[WARN] Tarball download average speed 32 KiB/s (size 81 KiB) is below 50 KiB/s: https://registry.npmjs.org/consola/-/consola-3.4.2.tgz (GET)
+[WARN] Tarball download average speed 15 KiB/s (size 46 KiB) is below 50 KiB/s: https://registry.npmjs.org/d3-shape/-/d3-shape-1.3.7.tgz (GET)
+[WARN] Tarball download average speed 21 KiB/s (size 123 KiB) is below 50 KiB/s: https://registry.npmjs.org/diff/-/diff-5.2.2.tgz (GET)
+[WARN] Tarball download average speed 11 KiB/s (size 32 KiB) is below 50 KiB/s: https://registry.npmjs.org/d3-selection/-/d3-selection-3.0.0.tgz (GET)
+Downloading pdfjs-dist@4.10.38: 663.55 kB/10.34 MB
+Downloading pdfjs-dist@4.10.38: 794.62 kB/10.34 MB
+[WARN] Tarball download average speed 38 KiB/s (size 228 KiB) is below 50 KiB/s: https://registry.npmjs.org/d3/-/d3-7.9.0.tgz (GET)
+[WARN] Tarball download average speed 18 KiB/s (size 135 KiB) is below 50 KiB/s: https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz (GET)
+Downloading mermaid@11.16.1: 1.87 MB/17.61 MB
+Downloading cytoscape-fcose@2.2.0: 1.33 MB/7.60 MB
+Downloading pdfjs-dist@4.10.38: 1.20 MB/10.34 MB
+[WARN] Tarball download average speed 42 KiB/s (size 481 KiB) is below 50 KiB/s: https://registry.npmjs.org/mocha/-/mocha-10.8.2.tgz (GET)
+Downloading @swc/core-darwin-arm64@1.15.18: 1.46 MB/9.32 MB
+Downloading @sentry/cli-darwin@2.41.1: 303.10 kB/10.81 MB
+Downloading @swc/core-darwin-arm64@1.15.18: 1.90 MB/9.32 MB
+Downloading @turbo/darwin-arm64@2.10.13: 8.42 MB/17.73 MB
+Downloading @turbo/darwin-arm64@2.10.13: 8.77 MB/17.73 MB
+Downloading @turbo/darwin-arm64@2.10.13: 9.11 MB/17.73 MB
+Downloading pdfjs-dist@4.10.38: 1.94 MB/10.34 MB
+Downloading pdfjs-dist@4.10.38: 2.10 MB/10.34 MB
+Downloading mermaid@11.16.1: 5.09 MB/17.61 MB
+Downloading cytoscape-fcose@2.2.0: 3.85 MB/7.60 MB
+Downloading @turbo/darwin-arm64@2.10.13: 11.04 MB/17.73 MB
+Downloading @turbo/darwin-arm64@2.10.13: 11.53 MB/17.73 MB
+Downloading @turbo/darwin-arm64@2.10.13: 12.02 MB/17.73 MB
+Downloading mermaid@11.16.1: 6.58 MB/17.61 MB
+Downloading cytoscape-fcose@2.2.0: 4.93 MB/7.60 MB
+Downloading @turbo/darwin-arm64@2.10.13: 13.17 MB/17.73 MB
+Downloading cytoscape-fcose@2.2.0: 5.24 MB/7.60 MB
+Downloading @turbo/darwin-arm64@2.10.13: 13.99 MB/17.73 MB
+Downloading pdfjs-dist@4.10.38: 3.55 MB/10.34 MB
+Downloading @turbo/darwin-arm64@2.10.13: 14.97 MB/17.73 MB
+Downloading @swc/core-darwin-arm64@1.15.18: 5.21 MB/9.32 MB
+Downloading @turbo/darwin-arm64@2.10.13: 15.63 MB/17.73 MB
+Downloading mermaid@11.16.1: 9.45 MB/17.61 MB
+Downloading @turbo/darwin-arm64@2.10.13: 16.64 MB/17.73 MB
+Downloading @swc/core-darwin-arm64@1.15.18: 5.93 MB/9.32 MB
+Downloading pdfjs-dist@4.10.38: 4.80 MB/10.34 MB
+Downloading pdfjs-dist@4.10.38: 5.06 MB/10.34 MB
+Downloading cytoscape-fcose@2.2.0: 6.91 MB/7.60 MB
+Downloading @swc/core-darwin-arm64@1.15.18: 6.77 MB/9.32 MB
+Downloading pdfjs-dist@4.10.38: 5.93 MB/10.34 MB
+Downloading pdfjs-dist@4.10.38: 6.19 MB/10.34 MB
+Downloading pdfjs-dist@4.10.38: 6.42 MB/10.34 MB
+Downloading @swc/core-darwin-arm64@1.15.18: 7.55 MB/9.32 MB
+Downloading @sentry/cli-darwin@2.41.1: 1.23 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 1.33 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 1.44 MB/10.81 MB
+Downloading mermaid@11.16.1: 13.76 MB/17.61 MB
+Downloading mermaid@11.16.1: 13.90 MB/17.61 MB
+Downloading pdfjs-dist@4.10.38: 7.81 MB/10.34 MB
+Downloading pdfjs-dist@4.10.38: 8.12 MB/10.34 MB
+Downloading mermaid@11.16.1: 14.82 MB/17.61 MB
+Downloading mermaid@11.16.1: 15.15 MB/17.61 MB
+Downloading pdfjs-dist@4.10.38: 9.02 MB/10.34 MB
+Downloading pdfjs-dist@4.10.38: 9.43 MB/10.34 MB
+Downloading mermaid@11.16.1: 15.97 MB/17.61 MB
+Downloading @sentry/cli-darwin@2.41.1: 2.35 MB/10.81 MB
+Downloading pdfjs-dist@4.10.38: 10.28 MB/10.34 MB
+Downloading @sentry/cli-darwin@2.41.1: 2.56 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 2.72 MB/10.81 MB
+Downloading mermaid@11.16.1: 17.49 MB/17.61 MB
+Downloading @sentry/cli-darwin@2.41.1: 2.99 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 3.13 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 3.27 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 3.40 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 3.53 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 3.70 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 3.86 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 3.94 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 4.16 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 4.30 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 4.50 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 4.73 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 4.98 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 5.24 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 5.48 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 5.86 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 6.16 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 6.30 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 6.55 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 6.84 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 7.09 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 7.29 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 7.55 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 7.78 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 7.99 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 8.24 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 8.47 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 8.73 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 9.02 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 9.40 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 9.74 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 9.99 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 10.30 MB/10.81 MB
+Downloading @sentry/cli-darwin@2.41.1: 10.63 MB/10.81 MB
+Packages: +1394
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 1394, reused 459, downloaded 935, added 1394, done
+.../node_modules/@sentry/cli postinstall$ node ./scripts/install.js
+.../node_modules/@swc/core postinstall$ node postinstall.js
+.../node_modules/esbuild postinstall$ node install.js
+.../node_modules/esbuild postinstall$ node install.js
+.../node_modules/edgedriver install$ test -f ./dist/install.js && node ./dist/install.js || echo "Skipping install, project not build!"
+.../node_modules/@sentry/cli postinstall: Done
+.../node_modules/geckodriver postinstall$ test -f ./dist/install.js && node ./dist/install.js || echo "Skipping install, project not built!"
+.../node_modules/edgedriver install: Done
+.../node_modules/esbuild postinstall$ node install.js
+.../node_modules/geckodriver postinstall: Done
+.../node_modules/@swc/core postinstall: Done
+.../node_modules/esbuild postinstall: Done
+.../node_modules/esbuild postinstall: Done
+.../node_modules/esbuild postinstall: Done
+. postinstall$ husky install && pnpm refresh-assets
+. postinstall: husky - Git hooks installed
+. postinstall: sh: pnpm: command not found
+. postinstall: Failed
+Error: ERR_PNPM_EXECUTOR_LIFECYCLE_SCRIPT_FAILED
+
+  × installing dependencies
+  ╰─▶ /Users/dd/gdb/paper/diffe2e/real/tldraw postinstall: `husky install &&
+      pnpm refresh-assets` exited with exit status: 127
+

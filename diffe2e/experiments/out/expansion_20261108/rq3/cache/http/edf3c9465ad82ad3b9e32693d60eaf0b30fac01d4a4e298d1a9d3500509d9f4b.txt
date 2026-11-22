@@ -1,0 +1,209 @@
+{
+  "sha": "ed41fd064317446bd191d29d2f4e43f22cae3009",
+  "node_id": "C_kwDODTssw9oAKGVkNDFmZDA2NDMxNzQ0NmJkMTkxZDI5ZDJmNGU0M2YyMmNhZTMwMDk",
+  "commit": {
+    "author": {
+      "name": "Pavel Feldman",
+      "email": "pavel.feldman@gmail.com",
+      "date": "2023-02-24T23:31:10Z"
+    },
+    "committer": {
+      "name": "GitHub",
+      "email": "noreply@github.com",
+      "date": "2023-02-24T23:31:10Z"
+    },
+    "message": "chore: use listview to render stack trace (#21197)",
+    "tree": {
+      "sha": "09d961f01642adf96ef65435ba0a5c98df21a886",
+      "url": "https://api.github.com/repos/microsoft/playwright/git/trees/09d961f01642adf96ef65435ba0a5c98df21a886"
+    },
+    "url": "https://api.github.com/repos/microsoft/playwright/git/commits/ed41fd064317446bd191d29d2f4e43f22cae3009",
+    "comment_count": 0,
+    "verification": {
+      "verified": true,
+      "reason": "valid",
+      "signature": "-----BEGIN PGP SIGNATURE-----\n\nwsBcBAABCAAQBQJj+Ui+CRBK7hj4Ov3rIwAA/7cIAElofcJw6zVZJcrLTllls3pZ\nga6PWvpmC/BFEjTanTof/+XbxPy8khDDYQ050ojEFY4ElzZh5pziidKHK8pETF8z\neCKN0Te0IY/YQ/JJm+++LjUUbikexOVtNtoU3HS9najrsrrDSjXBJiVPZgY8BItC\n8uf0P468qXWjOXN6Gjj5lRM9FfFQZuVkxQVJYxkZ2SopW3yiympU30L8xzE81EbE\nHGAkQUfllI0C256OtI/EJB6OGxD8RWLeUyFGWs6C5Pi5HQHC36LZdGZusvGeIOFR\n4kcnowJsI7kqJMnN0+im5p904b5P+PC7lO754Cm4VWGRpqVs/+5bSHMpSQOXGZw=\n=qneJ\n-----END PGP SIGNATURE-----\n",
+      "payload": "tree 09d961f01642adf96ef65435ba0a5c98df21a886\nparent 3fa19e80ada5c44a8285ef841f8d8b8ba298f22a\nauthor Pavel Feldman <pavel.feldman@gmail.com> 1677281470 -0800\ncommitter GitHub <noreply@github.com> 1677281470 -0800\n\nchore: use listview to render stack trace (#21197)\n\n",
+      "verified_at": "2024-11-05T17:23:36Z"
+    }
+  },
+  "url": "https://api.github.com/repos/microsoft/playwright/commits/ed41fd064317446bd191d29d2f4e43f22cae3009",
+  "html_url": "https://github.com/microsoft/playwright/commit/ed41fd064317446bd191d29d2f4e43f22cae3009",
+  "comments_url": "https://api.github.com/repos/microsoft/playwright/commits/ed41fd064317446bd191d29d2f4e43f22cae3009/comments",
+  "author": {
+    "login": "pavelfeldman",
+    "id": 883973,
+    "node_id": "MDQ6VXNlcjg4Mzk3Mw==",
+    "avatar_url": "https://avatars.githubusercontent.com/u/883973?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/pavelfeldman",
+    "html_url": "https://github.com/pavelfeldman",
+    "followers_url": "https://api.github.com/users/pavelfeldman/followers",
+    "following_url": "https://api.github.com/users/pavelfeldman/following{/other_user}",
+    "gists_url": "https://api.github.com/users/pavelfeldman/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/pavelfeldman/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/pavelfeldman/subscriptions",
+    "organizations_url": "https://api.github.com/users/pavelfeldman/orgs",
+    "repos_url": "https://api.github.com/users/pavelfeldman/repos",
+    "events_url": "https://api.github.com/users/pavelfeldman/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/pavelfeldman/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "committer": {
+    "login": "web-flow",
+    "id": 19864447,
+    "node_id": "MDQ6VXNlcjE5ODY0NDQ3",
+    "avatar_url": "https://avatars.githubusercontent.com/u/19864447?v=4",
+    "gravatar_id": "",
+    "url": "https://api.github.com/users/web-flow",
+    "html_url": "https://github.com/web-flow",
+    "followers_url": "https://api.github.com/users/web-flow/followers",
+    "following_url": "https://api.github.com/users/web-flow/following{/other_user}",
+    "gists_url": "https://api.github.com/users/web-flow/gists{/gist_id}",
+    "starred_url": "https://api.github.com/users/web-flow/starred{/owner}{/repo}",
+    "subscriptions_url": "https://api.github.com/users/web-flow/subscriptions",
+    "organizations_url": "https://api.github.com/users/web-flow/orgs",
+    "repos_url": "https://api.github.com/users/web-flow/repos",
+    "events_url": "https://api.github.com/users/web-flow/events{/privacy}",
+    "received_events_url": "https://api.github.com/users/web-flow/received_events",
+    "type": "User",
+    "user_view_type": "public",
+    "site_admin": false
+  },
+  "parents": [
+    {
+      "sha": "3fa19e80ada5c44a8285ef841f8d8b8ba298f22a",
+      "url": "https://api.github.com/repos/microsoft/playwright/commits/3fa19e80ada5c44a8285ef841f8d8b8ba298f22a",
+      "html_url": "https://github.com/microsoft/playwright/commit/3fa19e80ada5c44a8285ef841f8d8b8ba298f22a"
+    }
+  ],
+  "stats": {
+    "total": 97,
+    "additions": 37,
+    "deletions": 60
+  },
+  "files": [
+    {
+      "sha": "7995450202ad99030df9898741daf92935845a70",
+      "filename": "packages/trace-viewer/src/traceModel.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2FtraceModel.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2FtraceModel.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2FtraceModel.ts?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -87,7 +87,7 @@ export class TraceModel {\n       await stacksEntry.getData!(writer);\n       const metadataMap = parseClientSideCallMetadata(JSON.parse(await writer.getData()));\n       for (const action of this.contextEntry.actions)\n-        action.metadata.stack = metadataMap.get(action.metadata.id);\n+        action.metadata.stack = action.metadata.stack || metadataMap.get(action.metadata.id);\n     }\n \n     this._build();"
+    },
+    {
+      "sha": "e33018f219dc2943c4eb599f04c4f56181e20991",
+      "filename": "packages/trace-viewer/src/ui/sourceTab.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FsourceTab.tsx?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -79,7 +79,7 @@ export const SourceTab: React.FunctionComponent<{\n     }\n   }, [needReveal, targetLineRef]);\n \n-  return <SplitView sidebarSize={100} orientation='vertical'>\n+  return <SplitView sidebarSize={200} orientation='horizontal'>\n     <SourceView text={content} language='javascript' highlight={[{ line: targetLine, type: 'running' }]} revealLine={targetLine}></SourceView>\n     <StackTraceView action={action} selectedFrame={selectedFrame} setSelectedFrame={setSelectedFrame}></StackTraceView>\n   </SplitView>;"
+    },
+    {
+      "sha": "5282c5219bda33c657473b39029fdb5a98729ea5",
+      "filename": "packages/trace-viewer/src/ui/stackTrace.css",
+      "status": "modified",
+      "additions": 0,
+      "deletions": 26,
+      "changes": 26,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.css",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.css",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.css?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -14,32 +14,6 @@\n   limitations under the License.\n */\n \n-.stack-trace {\n-  flex: 1 1 120px;\n-  display: flex;\n-  flex-direction: column;\n-  align-items: stretch;\n-  overflow-y: auto;\n-}\n-\n-.stack-trace-frame {\n-  flex: 0 0 20px;\n-  display: flex;\n-  flex-direction: row;\n-  align-items: center;\n-  cursor: pointer;\n-  padding: 0 5px;\n-}\n-\n-.stack-trace-frame:hover {\n-  background-color: var(--vscode-list-inactiveSelectionBackground);\n-}\n-\n-.stack-trace-frame:selected {\n-  background-color: var(--vscode-list-activeSelectionBackground);\n-  color: var(--vscode-list-activeSelectionForeground);\n-}\n-\n .stack-trace-frame-function {\n   flex: 1 1 100px;\n   overflow: hidden;"
+    },
+    {
+      "sha": "fbf175b50564468674e21b218d1983d69a9730fe",
+      "filename": "packages/trace-viewer/src/ui/stackTrace.tsx",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 14,
+      "changes": 24,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2FstackTrace.tsx?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -17,24 +17,21 @@\n import * as React from 'react';\n import './stackTrace.css';\n import type { ActionTraceEvent } from '@trace/trace';\n+import { ListView } from '@web/components/listView';\n \n export const StackTraceView: React.FunctionComponent<{\n   action: ActionTraceEvent | undefined,\n   selectedFrame: number,\n   setSelectedFrame: (index: number) => void\n }> = ({ action, setSelectedFrame, selectedFrame }) => {\n   const frames = action?.metadata.stack || [];\n-  return <div className='stack-trace'>{\n-    frames.map((frame, index) => {\n-      // Windows frames are E:\\path\\to\\file\n+  return <ListView\n+    dataTestId='stack-trace'\n+    items={frames}\n+    selectedItem={frames[selectedFrame]}\n+    itemRender={frame => {\n       const pathSep = frame.file[1] === ':' ? '\\\\' : '/';\n-      return <div\n-        key={index}\n-        className={'stack-trace-frame' + (selectedFrame === index ? ' selected' : '')}\n-        onClick={() => {\n-          setSelectedFrame(index);\n-        }}\n-      >\n+      return <>\n         <span className='stack-trace-frame-function'>\n           {frame.function || '(anonymous)'}\n         </span>\n@@ -44,8 +41,7 @@ export const StackTraceView: React.FunctionComponent<{\n         <span className='stack-trace-frame-line'>\n           {':' + frame.line}\n         </span>\n-      </div>;\n-    })\n-  }\n-  </div>;\n+      </>;\n+    }}\n+    onSelected={frame => setSelectedFrame(frames.indexOf(frame))} />;\n };"
+    },
+    {
+      "sha": "c4149e5f0633e9b9a13fabc119cd277c5fc678b8",
+      "filename": "packages/trace-viewer/src/ui/workbench.tsx",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Ftrace-viewer%2Fsrc%2Fui%2Fworkbench.tsx?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -207,7 +207,7 @@ export const Workbench: React.FunctionComponent<{\n       />\n     </div>\n     <SplitView sidebarSize={300} orientation='horizontal' sidebarIsFirst={true}>\n-      <SplitView sidebarSize={300} orientation={view === 'embedded' ? 'vertical' : 'horizontal'}>\n+      <SplitView sidebarSize={300} orientation='vertical'>\n         <SnapshotTab action={activeAction} sdkLanguage={model.sdkLanguage || 'javascript'} testIdAttributeName={model.testIdAttributeName || 'data-testid'} />\n         <TabbedPane tabs={tabs} selectedTab={selectedPropertiesTab} setSelectedTab={setSelectedPropertiesTab}/>\n       </SplitView>"
+    },
+    {
+      "sha": "f5692aa898e7cf6d59649af30dbc791d19423acf",
+      "filename": "packages/web/src/components/listView.css",
+      "status": "modified",
+      "additions": 9,
+      "deletions": 6,
+      "changes": 15,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.css",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.css",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.css?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -21,7 +21,7 @@\n   position: relative;\n   user-select: none;\n   overflow: auto;\n-  outline: none;\n+  outline: 1 px solid transparent;\n }\n \n .list-view-entry {\n@@ -39,18 +39,22 @@\n   background-color: var(--vscode-list-inactiveSelectionBackground);\n }\n \n+.list-view-entry.selected {\n+  z-index: 10;\n+}\n+\n .list-view-entry.highlighted {\n   background-color: var(--vscode-list-inactiveSelectionBackground);\n }\n \n-.list-view-content:focus .list-view-entry.selected {\n+.list-view-content:focus .list-view-entry.selected:not(.error) {\n   background-color: var(--vscode-list-activeSelectionBackground);\n   color: var(--vscode-list-activeSelectionForeground);\n   outline: 1px solid var(--vscode-focusBorder);\n }\n \n-.list-view-content:focus .list-view-entry.selected * {\n-  color: var(--vscode-list-activeSelectionForeground);\n+.list-view-content:focus .list-view-entry.error.selected {\n+  outline: 1px solid var(--vscode-inputValidation-errorBorder);\n }\n \n .list-view-empty {\n@@ -60,8 +64,7 @@\n   justify-content: center;\n }\n \n-.list-view-entry.error:not(.selected) {\n+.list-view-entry.error {\n   color: var(--vscode-list-errorForeground);\n   background-color: var(--vscode-inputValidation-errorBackground);\n-  outline: 1px solid var(--vscode-inputValidation-errorBorder);\n }"
+    },
+    {
+      "sha": "3d0ab7cb52d003876089d6e5b4baa5cd09d7d09e",
+      "filename": "packages/web/src/components/listView.tsx",
+      "status": "modified",
+      "additions": 11,
+      "deletions": 7,
+      "changes": 18,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/packages%2Fweb%2Fsrc%2Fcomponents%2FlistView.tsx?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -19,16 +19,17 @@ import './listView.css';\n \n export type ListViewProps = {\n   items: any[],\n-  itemKey: (item: any) => string,\n   itemRender: (item: any) => React.ReactNode,\n+  itemKey?: (item: any) => string,\n   itemIcon?: (item: any) => string | undefined,\n   itemIndent?: (item: any) => number | undefined,\n-  itemType: (item: any) => 'error' | undefined,\n+  itemType?: (item: any) => 'error' | undefined,\n   selectedItem?: any,\n   onAccepted?: (item: any) => void,\n   onSelected?: (item: any) => void,\n   onHighlighted?: (item: any | undefined) => void,\n   showNoItemsMessage?: boolean,\n+  dataTestId?: string,\n };\n \n export const ListView: React.FC<ListViewProps> = ({\n@@ -43,11 +44,12 @@ export const ListView: React.FC<ListViewProps> = ({\n   onSelected,\n   onHighlighted,\n   showNoItemsMessage,\n+  dataTestId,\n }) => {\n   const itemListRef = React.createRef<HTMLDivElement>();\n   const [highlightedItem, setHighlightedItem] = React.useState<any>();\n \n-  return <div className='list-view vbox'>\n+  return <div className='list-view vbox' data-testid={dataTestId}>\n     <div\n       className='list-view-content'\n       tabIndex={0}\n@@ -83,8 +85,9 @@ export const ListView: React.FC<ListViewProps> = ({\n       ref={itemListRef}\n     >\n       {showNoItemsMessage && items.length === 0 && <div className='list-view-empty'>No items</div>}\n-      {items.map(item => <ListItemView\n-        key={itemKey(item)}\n+      {items.map((item, index) => <ListItemView\n+        key={itemKey ? itemKey(item) : String(index)}\n+        hasIcons={!!itemIcon}\n         icon={itemIcon?.(item)}\n         type={itemType?.(item)}\n         indent={itemIndent?.(item)}\n@@ -108,6 +111,7 @@ export const ListView: React.FC<ListViewProps> = ({\n \n const ListItemView: React.FC<{\n   key: string,\n+  hasIcons: boolean,\n   icon: string | undefined,\n   type: 'error' | undefined,\n   indent: number | undefined,\n@@ -117,7 +121,7 @@ const ListItemView: React.FC<{\n   onMouseEnter: () => void,\n   onMouseLeave: () => void,\n   children: React.ReactNode | React.ReactNode[],\n-}> = ({ key, icon, type, indent, onSelected, onMouseEnter, onMouseLeave, isHighlighted, isSelected, children }) => {\n+}> = ({ key, hasIcons, icon, type, indent, onSelected, onMouseEnter, onMouseLeave, isHighlighted, isSelected, children }) => {\n   const selectedSuffix = isSelected ? ' selected' : '';\n   const highlightedSuffix = isHighlighted ? ' highlighted' : '';\n   const errorSuffix = type === 'error' ? ' error' : '';\n@@ -137,7 +141,7 @@ const ListItemView: React.FC<{\n     ref={divRef}\n   >\n     {indent ? <div style={{ minWidth: indent * 16 }}></div> : undefined}\n-    <div className={'codicon ' + (icon || 'blank')} style={{ minWidth: 16, marginRight: 4 }}></div>\n+    {hasIcons && <div className={'codicon ' + (icon || 'blank')} style={{ minWidth: 16, marginRight: 4 }}></div>}\n     {typeof children === 'string' ? <div style={{ textOverflow: 'ellipsis', overflow: 'hidden' }}>{children}</div> : children}\n   </div>;\n };"
+    },
+    {
+      "sha": "41848405cef04e36d9a7f80ffeadb9ab0cee8f10",
+      "filename": "tests/config/traceViewerFixtures.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/tests%2Fconfig%2FtraceViewerFixtures.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/tests%2Fconfig%2FtraceViewerFixtures.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fconfig%2FtraceViewerFixtures.ts?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -49,7 +49,7 @@ class TraceViewerPage {\n     this.consoleLines = page.locator('.console-line');\n     this.consoleLineMessages = page.locator('.console-line-message');\n     this.consoleStacks = page.locator('.console-stack');\n-    this.stackFrames = page.locator('.stack-trace-frame');\n+    this.stackFrames = page.getByTestId('stack-trace').locator('.list-view-entry');\n     this.networkRequests = page.locator('.network-request-title');\n     this.snapshotContainer = page.locator('.snapshot-container iframe');\n   }"
+    },
+    {
+      "sha": "ff8b7123eefa96d9dd3cc7c03944068c9314af29",
+      "filename": "tests/library/trace-viewer.spec.ts",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1,
+      "changes": 2,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/tests%2Flibrary%2Ftrace-viewer.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/tests%2Flibrary%2Ftrace-viewer.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Flibrary%2Ftrace-viewer.spec.ts?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -601,7 +601,7 @@ test('should show action source', async ({ showTraceViewer }) => {\n \n   await page.click('text=Source');\n   await expect(page.locator('.source-line-running')).toContainText('await page.getByText(\\'Click\\').click()');\n-  await expect(page.locator('.stack-trace-frame.selected')).toHaveText(/doClick.*trace-viewer\\.spec\\.ts:[\\d]+/);\n+  await expect(page.getByTestId('stack-trace').locator('.list-view-entry.selected')).toHaveText(/doClick.*trace-viewer\\.spec\\.ts:[\\d]+/);\n });\n \n test('should follow redirects', async ({ page, runAndTrace, server, asset }) => {"
+    },
+    {
+      "sha": "4c7bf7d685b46b5eec544fcf3f01e8b1e5f09160",
+      "filename": "tests/playwright-test/reporter-html.spec.ts",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 2,
+      "changes": 4,
+      "blob_url": "https://github.com/microsoft/playwright/blob/ed41fd064317446bd191d29d2f4e43f22cae3009/tests%2Fplaywright-test%2Freporter-html.spec.ts",
+      "raw_url": "https://github.com/microsoft/playwright/raw/ed41fd064317446bd191d29d2f4e43f22cae3009/tests%2Fplaywright-test%2Freporter-html.spec.ts",
+      "contents_url": "https://api.github.com/repos/microsoft/playwright/contents/tests%2Fplaywright-test%2Freporter-html.spec.ts?ref=ed41fd064317446bd191d29d2f4e43f22cae3009",
+      "patch": "@@ -394,10 +394,10 @@ test('should show trace source', async ({ runInlineTest, page, showReport }) =>\n   ]);\n   await expect(page.locator('.source-line-running')).toContainText('page.evaluate');\n \n-  await expect(page.locator('.stack-trace-frame')).toContainText([\n+  await expect(page.getByTestId('stack-trace')).toContainText([\n     /a.test.js:[\\d]+/,\n   ]);\n-  await expect(page.locator('.stack-trace-frame.selected')).toContainText('a.test.js');\n+  await expect(page.getByTestId('stack-trace').locator('.list-view-entry.selected')).toContainText('a.test.js');\n });\n \n test('should show trace title', async ({ runInlineTest, page, showReport }) => {"
+    }
+  ]
+}
