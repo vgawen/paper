@@ -147,7 +147,7 @@ M ⊆ E × T,  E = E_file ∪ E_func ∪ E_route ∪ E_comp ∪ E_ui
 
 ## 6. 建图程序：架构与动态更新（实现蓝图）
 
-**定位**：建图程序**自研**（`diffe2e/pipeline/src/graph/`），运行时**不依赖 codegraph**，只借它的数据模型（node/edge 的 kind 划分、`provenance` 字段）与"tree-sitter 符号解析 + 路由 resolver"的**思路**作参考。解析层对 TS/TSX 直接用 **TypeScript 编译器 API**（我们已依赖、自带符号表、跨度精确）；后续若要无损跨度/多语言再换 tree-sitter。
+**定位**：建图程序**自研**（`diffe2e/pipeline/src/graph/`），运行时**不依赖 codegraph**，只借它的数据模型（node/edge 的 kind 划分、`provenance` 字段）与"tree-sitter 符号解析 + 路由 resolver"的**思路**作参考。解析层用 **tree-sitter**（无损、字节级 span、坏代码容错——追平 codegraph）；语义解析（calls/imports 绑定）用 **TS typeChecker**（穿透 import 别名/barrel/重导出——这是 codegraph 名字解析做不到的，属我们的优势）。
 
 ### 6.1 程序结构：三个提取器 + 图仓库 + 更新器
 
@@ -221,6 +221,14 @@ edges(source, target, kind, provenance, line, last_seen)
 
 ---
 
-## 9. 下一步
+## 9. 当前进度与下一步
 
-先做**里程碑 1（自建建图程序 + 动态更新，纯静态 K 层）**：用 TS 编译器 API 抽 `function/class/variable` 节点 + `contains/imports/calls` 边 → 写进图仓库 → 实现 diff 增量更新 → 用 actual-budget 的 commit 序列验证"**增量 == 全量**"。验证通过后再做 Stage 2（跨文件 calls 解析）与 Stage 3（路由 resolver）。
+**已建成**（`diffe2e/pipeline/src/graph/`，全部有单测）：
+- `extract.mjs`：tree-sitter 无损提取（contains/imports/calls/renders + 字节级 span）
+- `resolve.mjs`：名字解析（calls + component 引用）
+- `semanticResolve.mjs`：typeChecker 语义解析（别名/barrel/重导出）
+- `fileRoutes.mjs`：SvelteKit 文件路由（`+page.svelte` → 路由，含 `[slug]`）
+- `testEdges.mjs`：测试证据边（executes/navigates）
+- `index.mjs`：统一入口 `buildTestCodeGraph(files, testEvidence)`
+
+**下一步**：接到真实项目（actual-budget=React Router、mermaid=SvelteKit、tldraw=React）验证——先 clone 项目，跑"增量==全量 + typeChecker 解析准确率 + 路由层能否把 `main.js 一改全选` 降下来"。
