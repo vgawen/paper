@@ -82,6 +82,23 @@ export function extractFile(filePath, code) {
     file: filePath, startLine: 1, endLine: root.endPosition.row + 1, startByte: 0, endByte: code.length,
   });
 
+  // module-level variable names (for value-reference edges)
+  const moduleVarNames = new Set();
+  const refSeen = new Set();
+  const collectModuleVars = (node) => {
+    if (node.type === 'lexical_declaration' || node.type === 'variable_declaration') {
+      const p = node.parent;
+      if (p && (p.type === 'program' || p.type === 'export_statement')) {
+        for (const c of node.children) if (c.type === 'variable_declarator') {
+          const name = c.childForFieldName('name');
+          if (name) moduleVarNames.add(name.text);
+        }
+      }
+    }
+    for (const c of node.children) collectModuleVars(c);
+  };
+  collectModuleVars(root);
+
   function calleeName(callNode) {
     const callee = callNode.childForFieldName('function');
     if (!callee) return null;
@@ -94,6 +111,15 @@ export function extractFile(filePath, code) {
     if (node.type === 'call_expression' && ownerId) {
       const c = calleeName(node);
       if (c && c !== 'import') edges.push({ source: ownerId, target: `call::${c}`, kind: 'calls', provenance: 'heuristic', line: lineOf(node), callee: c });
+    }
+    // value-reference: identifier that names a module-level variable, read inside a function
+    if (node.type === 'identifier' && ownerId && moduleVarNames.has(node.text)) {
+      const varId = nodeId(filePath, node.text);
+      const key = `${ownerId}\u0000${varId}`;
+      if (!refSeen.has(key)) {
+        refSeen.add(key);
+        edges.push({ source: ownerId, target: varId, kind: 'references', provenance: 'symbolic', line: lineOf(node) });
+      }
     }
     const nm = declName(node);
     const k = kindOf(node);

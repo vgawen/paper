@@ -50,34 +50,40 @@ function loadEvidence(tag) {
 function changedEntities(oldT, newT) {
   const parsed = parseUnifiedDiff(git(`diff ${oldT} ${newT} -- app/public/src`));
   const fns = new Set();
+  const vars = new Set();
   const routes = new Set();
-  const varFiles = new Set();
   for (const repoF of parsed.files) {
     const f = repoF.replace('app/public/', '');
     const newCode = git(`show ${newT}:${repoF}`);
     const lines = parsed.byFile[repoF] ? [...parsed.byFile[repoF].added, ...parsed.byFile[repoF].removed] : [];
     for (const e of changedEntitiesFromCode(newCode, lines, f)) {
-      if (e.kind === 'variable') { varFiles.add(f); continue; } // module-level -> file-level fallback
+      if (e.kind === 'variable') { vars.add(nodeId(f, e.name)); continue; }
       if (e.kind === 'route') { routes.add(nodeId(f, `route:${e.name}`)); continue; }
       fns.add(nodeId(f, e.name));
     }
   }
-  return { fns, routes, varFiles };
+  return { fns, vars, routes };
 }
 
-function selectByGraph(graph, evidence, changed) {
-  const sel = new Set();
+function selectByGraph(graph, changed) {
+  // value-reference: variable -> functions that reference it
+  const readers = new Map();
   for (const e of graph.edges) {
-    if (e.kind === 'executes' && changed.fns.has(e.target)) sel.add(e.source);
-    if (e.kind === 'navigates' && changed.routes.has(e.target)) sel.add(e.source);
-  }
-  // module-level variable changes: fall back to file-level coverage
-  if (changed.varFiles.size) {
-    for (const ev of evidence) {
-      if (ev.files.some((f) => changed.varFiles.has(f))) sel.add(`test::${ev.test}`);
+    if (e.kind === 'references') {
+      if (!readers.has(e.target)) readers.set(e.target, new Set());
+      readers.get(e.target).add(e.source);
     }
   }
-  return sel;
+  const affectedFns = new Set(changed.fns);
+  for (const v of changed.vars) for (const fn of readers.get(v) || []) affectedFns.add(fn);
+
+  const sel = new Set();
+  for (const e of graph.edges) {
+    if (e.kind === 'executes' && affectedFns.has(e.target)) sel.add(e.source);
+    if (e.kind === 'navigates' && changed.routes.has(e.target)) sel.add(e.source);
+  }
+  const varUnresolved = [...changed.vars].filter((v) => !readers.has(v));
+  return { sel, varUnresolved };
 }
 
 const rows = [];
@@ -87,12 +93,12 @@ for (let i = 1; i < manifest.length; i++) {
   const evidence = loadEvidence(n);
   const graph = buildTestCodeGraph(files, evidence);
   const changed = changedEntities(o, n);
-  const sel = selectByGraph(graph, evidence, changed);
+  const { sel, varUnresolved } = selectByGraph(graph, changed);
   const fr = frozen[n];
   const reduction = 1 - sel.size / fr.full;
   const missed = fr.affected_obs.filter((t) => !sel.has(`test::${t}`));
-  rows.push({ tag: n, sel: sel.size, full: fr.full, reduction: +reduction.toFixed(4), cov: fr.cov_reduction, missed: missed.length, changedFns: changed.fns.size, changedRoutes: changed.routes.size, varFiles: changed.varFiles.size });
-  console.log(`${n} sel=${sel.size}/${fr.full} red=${reduction.toFixed(3)} cov=${fr.cov_reduction.toFixed(3)} missed=${missed.length} (fns=${changed.fns.size}, routes=${changed.routes.size}, vars=${changed.varFiles.size})`);
+  rows.push({ tag: n, sel: sel.size, full: fr.full, reduction: +reduction.toFixed(4), cov: fr.cov_reduction, missed: missed.length, changedFns: changed.fns.size, changedRoutes: changed.routes.size, changedVars: changed.vars.size, varUnresolved: varUnresolved.length });
+  console.log(`${n} sel=${sel.size}/${fr.full} red=${reduction.toFixed(3)} cov=${fr.cov_reduction.toFixed(3)} missed=${missed.length} (fns=${changed.fns.size}, vars=${changed.vars.size}, routes=${changed.routes.size}, varUnresolved=${varUnresolved.length})`);
 }
 
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;

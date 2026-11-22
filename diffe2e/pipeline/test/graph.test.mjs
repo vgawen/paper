@@ -188,6 +188,15 @@ test('extract: oversized/broken file degrades to file-only node (no crash)', () 
   assert.equal(edges.length, 0);
 });
 
+test('extract: value-reference edge (function -> module-level variable it reads)', () => {
+  const code = "const ORDERS = [1,2];\nexport function render(){ return ORDERS.map(x=>x); }\nexport function calc(){ return 0; }\n";
+  const { edges } = extractFile('src/orders.ts', code);
+  const refs = edges.filter((e) => e.kind === 'references');
+  assert.ok(refs.some((e) => e.source === 'src/orders.ts::render' && e.target === 'src/orders.ts::ORDERS'));
+  // calc() does not reference ORDERS -> a change to ORDERS won't select calc's tests
+  assert.ok(!refs.some((e) => e.source === 'src/orders.ts::calc'));
+});
+
 test('workspace: discovers packages + builds paths mapping', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'ws-'));
   fs.mkdirSync(path.join(tmp, 'packages', 'pkg-a', 'src'), { recursive: true });
