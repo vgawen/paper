@@ -1,0 +1,427 @@
+{
+  "summary": {
+    "n": 24,
+    "graph": {
+      "Reduction": 0.8889,
+      "Safety_cov": 0.5833,
+      "Precision": 1
+    },
+    "coverage_only": {
+      "Reduction": 0.625,
+      "Safety": 1,
+      "Precision": 1
+    },
+    "SafetyEmp": 1,
+    "recall_misses": 0
+  },
+  "rows": [
+    {
+      "tag": "c01",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c02",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c03",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 6,
+        "affected_count": 6,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c04",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0.6667,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 2,
+        "affected_count": 2,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c05",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c06",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c07",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c08",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c09",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c10",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c11",
+      "sel": 2,
+      "full": 6,
+      "reduction": 0.6667,
+      "cov": {
+        "Reduction": 0.6667,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 2,
+        "affected_count": 2,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c12",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 6,
+        "affected_count": 6,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c13",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 6,
+        "affected_count": 6,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c14",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c15",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c16",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c17",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0.6667,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 2,
+        "affected_count": 2,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c18",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c19",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 6,
+        "affected_count": 6,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c20",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c21",
+      "sel": 1,
+      "full": 6,
+      "reduction": 0.8333,
+      "cov": {
+        "Reduction": 0.8333,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 1,
+        "affected_count": 1,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c22",
+      "sel": 2,
+      "full": 6,
+      "reduction": 0.6667,
+      "cov": {
+        "Reduction": 0.6667,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 2,
+        "affected_count": 2,
+        "full_suite": 6
+      },
+      "safety": 1,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c23",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 6,
+        "affected_count": 6,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    },
+    {
+      "tag": "c24",
+      "sel": 0,
+      "full": 6,
+      "reduction": 1,
+      "cov": {
+        "Reduction": 0.6667,
+        "Safety": 1,
+        "Precision": 1,
+        "selected_count": 2,
+        "affected_count": 2,
+        "full_suite": 6
+      },
+      "safety": 0,
+      "precision": 1,
+      "missed": 0
+    }
+  ]
+}

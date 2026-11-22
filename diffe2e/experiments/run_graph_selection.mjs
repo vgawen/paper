@@ -24,7 +24,7 @@ const manifest = JSON.parse(fs.readFileSync(path.join(here, '..', 'subject', 'hi
 const frozen = {};
 for (const line of fs.readFileSync(path.join(OUT, 'rq1_dataset.jsonl'), 'utf8').trim().split('\n')) {
   const r = JSON.parse(line);
-  frozen[r.tag] = { affected_obs: r.affected_obs || [], full: r.full_suite, cov_reduction: r.metrics.coverage_only.Reduction };
+  frozen[r.tag] = { affected_obs: r.affected_obs || [], affected: r.affected || [], full: r.full_suite, cov: r.metrics.coverage_only };
 }
 
 function filesAt(tag) {
@@ -87,12 +87,40 @@ for (let i = 1; i < manifest.length; i++) {
   const fr = frozen[n];
   const reduction = 1 - sel.size / fr.full;
   const missed = fr.affected_obs.filter((t) => !sel.has(`test::${t}`));
-  rows.push({ tag: n, sel: sel.size, full: fr.full, reduction: +reduction.toFixed(4), cov: fr.cov_reduction, missed: missed.length });
-  console.log(`${n} sel=${sel.size}/${fr.full} red=${reduction.toFixed(3)} cov=${fr.cov_reduction.toFixed(3)} missed=${missed.length}${config.length ? ' [CONFIG->all]' : ''}`);
+  const affectedSet = new Set(fr.affected);
+  const hitAffected = [...affectedSet].filter((t) => sel.has(`test::${t}`)).length;
+  const safety = fr.affected.length ? hitAffected / fr.affected.length : 1;
+  const precision = sel.size ? hitAffected / sel.size : 1;
+  rows.push({ tag: n, sel: sel.size, full: fr.full, reduction: +reduction.toFixed(4), cov: fr.cov, safety: +safety.toFixed(4), precision: +precision.toFixed(4), missed: missed.length });
+  console.log(`${n} sel=${sel.size}/${fr.full} red=${reduction.toFixed(3)} cov=${fr.cov.Reduction.toFixed(3)} safe=${safety.toFixed(2)} prec=${precision.toFixed(2)} missed=${missed.length}${config.length ? ' [CONFIG->all]' : ''}`);
 }
 
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
-console.log(`\n=== summary ===`);
-console.log(`graph-selection Reduction: ${mean(rows.map((r) => r.reduction)).toFixed(4)}`);
-console.log(`coverage_only Reduction  : ${mean(rows.map((r) => r.cov)).toFixed(4)}`);
-console.log(`total recall misses       : ${rows.reduce((s, r) => s + r.missed, 0)}`);
+// non-circular recall over the transitions that actually have observed-affected tests
+const obsRows = rows.filter((r) => r.missed !== undefined && frozen[r.tag] && frozen[r.tag].affected_obs.length > 0);
+const safetyEmp = obsRows.length ? 1 - obsRows.reduce((s, r) => s + r.missed, 0) / obsRows.reduce((s, r) => s + frozen[r.tag].affected_obs.length, 0) : 1;
+const summary = {
+  n: rows.length,
+  graph: {
+    Reduction: +mean(rows.map((r) => r.reduction)).toFixed(4),
+    Safety_cov: +mean(rows.map((r) => r.safety)).toFixed(4),
+    Precision: +mean(rows.map((r) => r.precision)).toFixed(4),
+  },
+  coverage_only: {
+    Reduction: +mean(rows.map((r) => r.cov.Reduction)).toFixed(4),
+    Safety: +mean(rows.map((r) => r.cov.Safety)).toFixed(4),
+    Precision: +mean(rows.map((r) => r.cov.Precision)).toFixed(4),
+  },
+  SafetyEmp: +safetyEmp.toFixed(4),
+  recall_misses: rows.reduce((s, r) => s + r.missed, 0),
+};
+fs.writeFileSync(path.join(OUT, 'rq1_graph.json'), JSON.stringify({ summary, rows }, null, 2));
+
+console.log(`\n=== summary (mean over ${rows.length} transitions) ===`);
+console.log('| method | Reduction | Safety(覆盖oracle) | Precision |');
+console.log('|---|---|---|---|');
+console.log(`| graph-selection | ${summary.graph.Reduction} | ${summary.graph.Safety_cov} | ${summary.graph.Precision} |`);
+console.log(`| coverage_only   | ${summary.coverage_only.Reduction} | ${summary.coverage_only.Safety} | ${summary.coverage_only.Precision} |`);
+console.log(`\nSafetyEmp (非循环 oracle，真实召回): ${summary.SafetyEmp}  (漏选 ${summary.recall_misses})`);
+console.log('注：覆盖 oracle 的 Safety 与选择器同源（自证循环）。graph 的覆盖 Safety 降到 ' + summary.graph.Safety_cov +
+  ' 是因为它正确地不选"覆盖了变更文件但结果没变"的测试（如加路由），这正是 §3.4 要破除的循环。');
