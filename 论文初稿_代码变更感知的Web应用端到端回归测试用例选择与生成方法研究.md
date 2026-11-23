@@ -246,6 +246,15 @@ Sel    = SelCov ∪ SelUI
 
 **推论**：UI 语义臂 `SelUI` 只做并集（只增不减），不可能破坏召回；它在并集中保证召回，并可能影响 Precision（新增选中项均受影响时可提高，含无关项时则降低），同时提供修复/生成锚点。这与"宁可多跑也不漏"一致：召回由 `SelCov` 保证，`SelUI` 是兜底而非增益来源。当对召回的信心高于对成本的敏感度时，本方法总是包含整个 `SelCov`，不做任何裁剪；本文 50 个过渡上 `SelUI` 未改变最终选中集合（§5.1）。
 
+**四层归因（`SelCov` 的实现）**：本文把 `cov(t)` 从"文件粒度"细化为**函数/变量/路由粒度**（§3.2 的 test-code graph），据此把选择实现为四层归因（§5.1.1）：
+
+1. **函数级 `executes`**：`cov(t)` 记录 `t` 执行到的具名函数（H2 从"文件级"细化为"函数级"），改哪个函数 → 选执行它的测试；
+2. **变量级 `references`**：模块级变量的改动沿"变量 → 读它的函数"边传播（value-reference），替代"改文件 → 选所有碰该文件的测试"；
+3. **路由级 route-diff**：路由表 ADD 选 0（新路由无测试访问）、REMOVE/MODIFY 选 `navigates` 到该路由的测试；
+4. **文件级回退 + config 全量**：无法归因的改动（config/flag/环境、或"无 reader 的变量"）保守回退文件级甚至 retest_all。
+
+召回仍由命题 1 保证——`executes`（动态）边是**唯一**参与召回承诺的边；`references` / 路由级 / 文件级只做精度细化与保守兜底，不改变 `A* ⊆ Sel` 的条件安全。
+
 **表 3-1　命题 1 的假设、失效场景与处理**
 
 | 假设 | 失效场景 | 后果 | 处理 |
@@ -514,6 +523,8 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 
 ### 5.2 RQ2：生成——diff 约束的相关性
 
+**缺口检测（graph）**：生成的目标缺口由 §3.2 的 test-code graph 提供——`detectGaps`（`select.mjs`）反向找"无 `executes`/`navigates` 入边"的函数/路由，替代文件级 `coverageGap`（"整个文件零覆盖"）。受控主体上，这能抓出文件级漏掉的**未使用函数**缺口（`util.js::discount/taxCents`——util.js 被 cart/orders 覆盖，故不算"零覆盖文件"，文件级方法漏掉），并给每个缺口提供 route/component 上下文供生成 prompt 使用（见 `out/rq2_rq3_graph.md`）。
+
 **语义有效性度量（方法）**：人工双标注成本高且带主观性，本文以**两个客观自动指标**作为语义有效性的主度量；人工 Cohen's κ 不用于替代自动评测，而用于对自动判据做**中等规模人工盲评一致性验证**：
 
 - **变异杀伤（mutation kill）**：向缺口新增源码注入可被测试观察到的变异（重命名各 `data-testid`、对结果文本整段替换为无共享子串的新文本、对 `label` 与 `aria-label` 按控件整链替换、删除结果容器、反转条件逻辑），重跑该生成用例。若其由通过转为失败即"杀掉"该变异，说明用例确实在验证新行为；恒真/仅占位的断言一个也杀不掉。指标为每条用例 killed/injected 的均值。文本类算子优先改**结果文本**（状态/计数/列表项/结果段落/结果串），属性类算子优先改**可访问名与 `label`** 的整条命名链，而不是改写标题或追加后缀——后者会被子串匹配吸收。
@@ -642,7 +653,17 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 ### 5.4 RQ4：成本——净收益
 
-**受控主体执行量**：跨 24 个过渡，retest-all 共执行 144 次用例，ours 仅执行 54 次 → 测试执行量下降 62.5%（Safety 仍=1.0）。生成/修复均按需触发（仅缺口/失效用例），额外成本与变更规模成正比。
+**受控主体执行量**：跨 24 个过渡，retest-all 共执行 144 次用例，文件级 `coverage_only` 执行 54 次（下降 62.5%），**函数级四层归因（test-code graph）仅执行 16 次（下降 88.9%，SafetyEmp 仍=1.0）**。生成/修复均按需触发（仅缺口/失效用例），额外成本与变更规模成正比。
+
+**真实项目 NetSaving（actual-budget，62 个 e2e 测试）**：实测 `T_full=168s`、`T_run(单测试)=19.5s`（Vite webServer 启动 ~17s 是固定成本）、`T_select≈9.1s`（tree-sitter 构建 1968 文件静态图 + 选择器）。据此，三种改动的 `NetSaving = 1 − (T_select + T_run(Sel))/T_full`：
+
+| 改动 | 选择器 | 选中 | NetSaving |
+|---|---|---|---|
+| 加路由（d05bd03） | route-level | 0 | **94.6%** |
+| 改共享常量 | value-reference | 1 | **83.0%** |
+| 改共享文件 | file-level | 62 | **−5.4%**（T_select 是纯税，比 retest_all 还差） |
+
+两个诚实现象：**Reduction ≫ TimeReduction**（value-reference 把用例数减 62→1，但 TimeReduction 只有 88.4%——webServer 启动成本省不掉）；**SelectionTax 是真实税**（T_select 占 T_full 的 5.4%，对小改动是主要开销，但相对文件级"全选 62 还白交税"仍是净赚）。详见 `out/real/actual_desktop_rq4_graph.md`。
 
 **RQ4 真实项目 wall-clock + NetSaving**，来源 `out/real/*_rq4.json`，每臂重复 3 次并报告 median/IQR（表 5-9）。
 
