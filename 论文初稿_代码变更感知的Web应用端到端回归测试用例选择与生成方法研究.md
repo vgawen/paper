@@ -310,7 +310,7 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 三处输出都先去掉 Markdown 围栏再写入单个 spec 文件；生成用例必须在新版本真实执行并通过，才计入可执行率。
 
-**（4）模型与调用参数**。provider 依次探测 `OPENAI_API_KEY`、`DEEPSEEK_API_KEY`、`ANTHROPIC_API_KEY`；本文真实数字均来自 `deepseek-v4-flash`，备选 `gpt-4o-mini` 与 `claude-3-5-sonnet-latest`（后者固定 `max_tokens=1200`，前两者不设上限）。生成与修复调用不设 `temperature`；人工校准流程显式取 `temperature=0`（§5.6）。无 key 时返回确定性模板，链路可离线复现（§4.5）。
+**（4）模型与调用参数**。provider 依次探测 `OPENAI_API_KEY`、`DEEPSEEK_API_KEY`、`ANTHROPIC_API_KEY`，默认模型可用 `LLM_MODEL` 环境变量覆盖；本文真实数字：生成（RQ2）与受控修复（RQ3 n=4）来自 `deepseek-v4-pro`，批量 ReproBreak 修复（RQ3 414 条）来自 `deepseek-v4-flash`（`deepseek-v4-pro` 为推理模型、单次约 80s，414 条批量修复不可行，见 §6）；备选 `gpt-4o-mini` 与 `claude-3-5-sonnet-latest`（后者固定 `max_tokens=1200`，前两者不设上限）。生成与修复调用不设 `temperature`；人工校准流程显式取 `temperature=0`（§5.6）。无 key 时返回确定性模板，链路可离线复现（§4.5）。
 
 **（5）评估参数**。每个缺口注入至多 3 个变异体（`k=3`），`change_sensitive` 要求在 V_new 通过且在 V_old 失败，自动语义有效性为 `executable ∧ change_sensitive ∧ killed>0`；§5.2 的杀伤率分母即该缺口实际注入的变异体数（至多 3），与本节参数一致。变异算子与指标定义见 §5.2 首段；RQ3 的规则臂与 LLM 臂分别对应本节（2）与（3）。
 
@@ -740,6 +740,7 @@ node experiments/annotate/render_kappa_backfill.mjs
 - **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性以变异杀伤率与版本差分敏感性两个客观自动指标为主度量，人工复核用于方向校准而非替代自动指标。RQ2 真实 DeepSeek 对照给出 diff vs nodiff 的自动语义指标差异（表 5-5，diff 臂自动语义有效率 1.0）；30 条真实项目复核的协议 B 三次多数票为 **diff 2/15、nodiff 0/15**，方向与自动指标一致但绝对水平远低于 1.0，只能作为**外部效度限定**，不能写成"复现 1.0"，也不能把自动语义有效率等同于人工语义判断。RQ3 受控主体仅 4 条，不支撑过时分类一致性结论，因此从 ReproBreak 414 条无泄漏评估样本中抽取 40 条做人工复核；协议 B 正式列为 **SO=40、EC=0、SR=0**，其中 39 条可判为结构性，`rb033` 经作者复核应为 EC、属遮蔽造成的协议固有边界并单列披露；样本构成偏向测试 API 迁移，κ 的少数类稳定性有限，且偏斜分布下 κ 可能接近 0 或为负，必须同报 `Po`/`Pe` 与混淆矩阵。三次重复 70 条中 69 条完全一致、1 条 2/3、无 1/3。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂 3.38% 与 DeepSeek LLM 臂 5.56%——二者均远低于上界，正面量化了信号检测的难度。仍存局限：端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
 - **选择环节的结论效度**：文件级选择（`dual` = `coverage_only` ∪ `uidiff_only`）与 `coverage_only` 持平（Reduction 0.625），因 `dual` 由并集构造、覆盖臂是其子集；`uidiff_only` 在 50 个过渡上未产生边际增益（前向开发中 testId/可见文本大多稳定，ADD 不触发 REMOVE/MODIFY）。**函数级四层归因（test-code graph，§5.1.1）把 Reduction 从 0.625 提升到 0.889（SafetyEmp=1.0、0 漏选）**：收益来自 (a) 5 个加路由过渡被正确归为 0（加新路由不影响现有测试），(b) 未使用函数与注释噪声被排除。但该增益有明确天花板：剩余过选是**真强耦合**（`main.js` 路由器被每条测试在导航时真实执行、`util.js` 被 cart+orders 真实 import），函数级归因也无法再省。三个诚实边界：**value-reference 的"无 reader"≠"没用"**（可能是跨文件读 / 动态访问 / 顶层读，故保守回退文件级而非选 0）；**config/flag/环境改动无法归因**，一律 retest_all；**覆盖 oracle 与选择器同源会自证**（函数级归因把加路由判为 0 个受影响、被覆盖 oracle 判成 Safety 下降），召回必须用非循环结果差异 oracle 衡量。
 - **覆盖映射粒度**：bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。Semantic UI Diff 在"文案与 handler 同时变更"时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。
+- **模型与批量修复的可扩展性**：`deepseek-v4-pro` 为推理模型，对 ~10KB 的修复 prompt 单次约 80s，ReproBreak 414 条批量修复需 ~9 小时、不可行，故该实验改用 `deepseek-v4-flash`（单次 ~5s）。这提示：**推理型模型不适用于大批量、低时延的测试修复场景**，是模型选择上的一个边界；受控主体 n=4 上 pro 与 flash 修复结果一致（§5.3），说明小样本上模型差异不显著。
 
 ---
 
