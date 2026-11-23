@@ -46,7 +46,7 @@ The method centers on a persistent, incrementally maintained **test–code mappe
 
 本文以"给定一次代码变更，自动产出可执行的 targeted E2E 测试集"为总目标，围绕四个研究问题展开：
 
-- **RQ1（选择：能否少跑但不漏？）** 基于"旧版本覆盖映射 + diff"能否最小且安全地选出受影响的 E2E 测试？
+- **RQ1（选择：能否精准选出受影响用例？）** 基于 test-code graph（覆盖 + 变量引用 + 路由 + UI 信号）与 diff，能否**不漏（Safety）、不误选（Precision）**地选出真正受影响的 E2E 测试——使针对性运行能可靠暴露改动引入的问题（缩减执行量是副产品，而非目标）？
 - **RQ2（生成：diff 约束是否更相关？）** 对覆盖缺口（新增路由 / 无对应测试），能否生成可执行、变更相关的用例，且优于无 diff 约束的生成基线？
 - **RQ3（闭环支撑：修复能提供多大帮助、边界在哪里？）** 轻量修复能否提升 targeted set 的可用性？在真实 locator 断裂上，端到端仅依赖旧测试与应用 diff 的修复难度如何？
 - **RQ4（成本：净收益是否为正？）** "选择算法时间 + 选中用例执行时间"是否远小于全量执行时间，并在时间以外的资源维度同样划算？
@@ -413,7 +413,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 
 ## 第 5 章 实验结果
 
-### 5.1 RQ1：选择——少跑但不漏
+### 5.1 RQ1：选择——精准选出受影响用例
 
 **表 5-1　受控主体 RQ1 选择结果（n=24 过渡）**
 
@@ -427,6 +427,29 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 | static_heuristic | 0.875 | 0.667 | 1.0 |
 
 来源：`out/rq1_summary.md`。本 RQ1 的主张是**与最强覆盖基线 `coverage_only` 持平**，而非优于它。在本文实验设置与表 5-1 所比较的 5 个方法范围内：本方法（=dual）与 `coverage_only` 的选中集合完全相同（Safety=1.0、Reduction=0.625、Precision=1.0）；该等价在逐例层面成立——受控主体 24 个过渡、tldraw 12 个过渡、actual-budget 9 个过渡、mermaid-live-editor 5 个过渡（合计 50）上，dual 与 `coverage_only` 的选中集合逐例相同、三指标逐项相同，不同但有正收益的个例为 0（逐例核查数据见 `out/rq1_dataset.jsonl` 与 `out/real/{tldraw_examples,actual_desktop,mermaid_live}_rq1.jsonl`）。等价由构造决定：`dual = new Set([...coverage_only, ...uidiff_only])`（`diffe2e/experiments/real/engine.mjs#L22-L31`），覆盖臂是 dual 的子集，`|dual|` 不增则集合必然相等。相对其他基线的真实优势为：`retest_all` 虽 Safety=1.0 但为全选（Reduction=0）；`random_k` 与 dual 同规模（Reduction=0.625）但 Safety 仅 0.396（漏选）；`static_heuristic` 的 Reduction 更高（0.875）但 Safety 仅 0.667（Precision=1.0），在共享 util/router 变更上漏选；`uidiff_only` Precision=1.0 但 Safety 仅 0.083。因此本文可主张的是：本方法与最强覆盖基线持平，并优于全量重跑与其他四个基线；不作"唯一""兼顾"或超出该设置与这 5 个方法的外推。
+
+**5.1.1 函数级归因：test-code graph 选择器（本文的核心选择方法）**
+
+上面的 `coverage_only` 是**文件级**覆盖选择；本文进一步把选择建立在 §3.2 的 **test-code graph** 上，用四层归因（§3.4）选出受影响用例：
+
+1. **函数级 `executes`**（动态覆盖）：改了哪个函数 → 谁执行了它；
+2. **变量级 `references`**（value-reference）：改了哪个模块级变量 → 谁读它；
+3. **路由级 route-diff**：路由表 ADD→0、REMOVE/MODIFY→访问该路由的测试；
+4. **文件级回退 + config 全量**：无法归因的改动（config/flag/环境）保守兜底。
+
+**表 5-1b　函数级归因选择结果（受控主体 n=24 过渡，`out/rq1_graph.json`）**
+
+| 方法 | Reduction | Safety(覆盖oracle) | Precision | SafetyEmp(非循环) |
+|---|---|---|---|---|
+| coverage_only（文件级） | 0.625 | 1.0 | 1.0 | 1.0 |
+| **graph-selection（四层归因）** | **0.8889** | 0.5833 | **1.0** | **1.0（0 漏选）** |
+
+**关键发现**：
+
+1. **Reduction 0.625 → 0.8889（+0.264）**：四层归因把选择从"文件粒度"细化到"函数/变量/路由粒度"。5 个"加路由"过渡（c03/c12/c13/c19/c23）从全选 6 降到选 0——加一条新路由本就不影响任何现有测试。
+2. **SafetyEmp=1.0、0 漏选**：非循环结果差异 oracle 下，函数级归因没有漏掉任何真正受影响的测试。
+3. **覆盖 oracle 的 Safety 降到 0.5833 是自证循环，不是缺陷**：覆盖 oracle 把"覆盖了变更文件"当作"受影响"，于是把 5 个加路由过渡判为"6 个测试受影响"；graph 正确地选了 0 个，被覆盖 oracle 判成"漏"。这恰恰印证 §3.4——召回必须用非循环 oracle 衡量，覆盖 oracle 与选择器同源、会自证。
+4. **Precision=1.0**：选中的每条测试都真正受影响（无噪声），使针对性运行的失败可归因——这正是 RQ1 的"信号质量"价值（见 §1.2 重新表述），Reduction 只是副产品。
 
 ![图 5-1　受控主体 RQ1 六种选择方法的 Safety–Reduction 对比](diffe2e/experiments/out/figs/rq1_methods_scatter.svg)
 
@@ -692,7 +715,7 @@ node experiments/annotate/render_kappa_backfill.mjs
 - **内部效度**：命题 1 的安全性是条件安全（H1–H3）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。
 - **标注效度**：第一标注列为 LLM 辅助预标注。正式列按协议 B 盲评材料、固定模型与参数生成，RQ2 与 RQ3 各重复 3 次并取**三次多数票**；必须同时报告 3/3、2/3、1/3 一致率与不稳定条目清单，因为 `temperature=0` 并不保证确定性（本文实测 70 条中 1 条为 2/3 摆动）。早期一轮预标注因缺少生成链记录未予采用。RQ3 的 `rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后新旧两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。这说明该类基准存在一类无法靠遮蔽后的结构信号判定的断裂；本文如实披露，不因此放松通用遮蔽规则。第二标注者为人工盲评（未见第一列；作者本人填写时同样保持盲评隔离）；在 κ 合并完成前，正文不把预标注列称为"双人独立盲评"，只作描述性报告。RQ3 的自动分诊 `model_label` 由 locator 断裂构造而恒为 STRUCTURAL_ONLY，模型-人工 κ 不作为方法优越性证据；完整流程、样本构成与当前状态见 §5.6。
 - **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性以变异杀伤率与版本差分敏感性两个客观自动指标为主度量，人工复核用于方向校准而非替代自动指标。RQ2 真实 DeepSeek 对照给出 diff vs nodiff 的自动语义指标差异（表 5-5，diff 臂自动语义有效率 1.0）；30 条真实项目复核的协议 B 三次多数票为 **diff 2/15、nodiff 0/15**，方向与自动指标一致但绝对水平远低于 1.0，只能作为**外部效度限定**，不能写成"复现 1.0"，也不能把自动语义有效率等同于人工语义判断。RQ3 受控主体仅 4 条，不支撑过时分类一致性结论，因此从 ReproBreak 414 条无泄漏评估样本中抽取 40 条做人工复核；协议 B 正式列为 **SO=40、EC=0、SR=0**，其中 39 条可判为结构性，`rb033` 经作者复核应为 EC、属遮蔽造成的协议固有边界并单列披露；样本构成偏向测试 API 迁移，κ 的少数类稳定性有限，且偏斜分布下 κ 可能接近 0 或为负，必须同报 `Po`/`Pe` 与混淆矩阵。三次重复 70 条中 69 条完全一致、1 条 2/3、无 1/3。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂 3.38% 与 DeepSeek LLM 臂 5.56%——二者均远低于上界，正面量化了信号检测的难度。仍存局限：端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
-- **选择环节的结论效度**：RQ1 的选择部分不主张比覆盖基线更少跑。`dual` 与 `coverage_only` 在 50 个过渡（受控 24、tldraw 12、actual-budget 9、mermaid-live-editor 5）上选中集合逐例相同、三指标逐项相同，正收益个例为 0；这由构造决定——`dual = coverage_only ∪ uidiff_only`，覆盖臂是 dual 的子集，`|dual|` 不增则集合必然相等（`diffe2e/experiments/real/engine.mjs#L22-L31`）。`uidiff_only` 在本数据上未产生边际增益，仅在"变更文件未被任何用例覆盖、且测试以引号字面量锚定变更 UI 字符串"时可能激活；tldraw 的 3 个 `affected=0` 过渡（范围内只有测试文件改动，或源码改动落在插桩范围之外）说明覆盖盲区上它也可能为 0，i18n 模板字符串则说明字面量锚定的边界。因此可外推的结论是"与文件级覆盖 RTS 持平，且相对全量重跑、随机与静态启发式更安全或更省"；代码变更感知的优势主要体现在缺口识别与生成（RQ2/RQ3），在选择缩减指标上未体现。据此，"选择"环节的贡献定位为**可证明的条件安全（命题 1）及其可复现工程验证**，而非"更少跑"——这正是本文区别于只报经验 Safety 的 RTS 之处。更细的 `Δ` 粒度或跨包依赖闭包能否超越文件级覆盖，留作后续工作。
+- **选择环节的结论效度**：文件级选择（`dual` = `coverage_only` ∪ `uidiff_only`）与 `coverage_only` 持平（Reduction 0.625），因 `dual` 由并集构造、覆盖臂是其子集；`uidiff_only` 在 50 个过渡上未产生边际增益（前向开发中 testId/可见文本大多稳定，ADD 不触发 REMOVE/MODIFY）。**函数级四层归因（test-code graph，§5.1.1）把 Reduction 从 0.625 提升到 0.889（SafetyEmp=1.0、0 漏选）**：收益来自 (a) 5 个加路由过渡被正确归为 0（加新路由不影响现有测试），(b) 未使用函数与注释噪声被排除。但该增益有明确天花板：剩余过选是**真强耦合**（`main.js` 路由器被每条测试在导航时真实执行、`util.js` 被 cart+orders 真实 import），函数级归因也无法再省。三个诚实边界：**value-reference 的"无 reader"≠"没用"**（可能是跨文件读 / 动态访问 / 顶层读，故保守回退文件级而非选 0）；**config/flag/环境改动无法归因**，一律 retest_all；**覆盖 oracle 与选择器同源会自证**（函数级归因把加路由判为 0 个受影响、被覆盖 oracle 判成 Safety 下降），召回必须用非循环结果差异 oracle 衡量。
 - **覆盖映射粒度**：bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。Semantic UI Diff 在"文案与 handler 同时变更"时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。
 
 ---
