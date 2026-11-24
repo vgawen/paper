@@ -14,7 +14,7 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { repair } from '../pipeline/src/repair.mjs';
 import { createClient } from '../pipeline/src/llm/client.mjs';
-import { extractCandidates, locatorEquivalent } from '../pipeline/src/locatorEquiv.mjs';
+import { extractCandidates, textHasEquivalentLocator } from '../pipeline/src/locatorEquiv.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const BREAKS = path.join(here, 'results', 'reprobreak_breaks.json');
@@ -114,7 +114,7 @@ async function main() {
     // RULE arm: signals derived from APP-source diff only (no new test file)
     const ruleOut = repair(brokenTest, appOld, appNew);
     const ruleFixed = ruleOut.text.includes(b.new_locator);
-    const ruleFixedSem = locatorEquivalent(ruleOut.text, b.new_locator);
+    const ruleFixedSem = textHasEquivalentLocator(ruleOut.text, b.new_locator);
     arms.rule.n++; if (ruleFixed) arms.rule.ok++;
     if (ruleFixedSem) arms.rule.ok_sem++;
 
@@ -140,7 +140,7 @@ async function main() {
       try {
         const ans = await completeWithRetry(client, prompt, { fallback: b.old_locator });
         llmFixed = norm(ans).includes(norm(b.new_locator));
-        llmFixedSem = locatorEquivalent(ans, b.new_locator);
+        llmFixedSem = textHasEquivalentLocator(ans, b.new_locator);
       } catch (e) {
         llmError = e.message || String(e);
         llmErrors.push({ id: b.id, repo: b.repository_name, error: llmError });

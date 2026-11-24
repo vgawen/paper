@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { canonicalLocator, locatorEquivalent, extractCandidates } from '../src/locatorEquiv.mjs';
+import { canonicalLocator, locatorEquivalent, extractCandidates, textHasEquivalentLocator } from '../src/locatorEquiv.mjs';
 
 test('canonicalLocator: Playwright and CSS forms map to the same kind:value', () => {
   assert.deepEqual(canonicalLocator("page.getByTestId('cart-add')"), { kind: 'testid', value: 'cart-add' });
@@ -32,4 +32,19 @@ test('extractCandidates: pulls testid/aria/text/id/class from app source', () =>
   assert.ok(keys.has('id:user-field'));
   assert.ok(keys.has('name:username'));
   assert.ok(keys.has('class:btn'));
+});
+
+test('textHasEquivalentLocator: compares ALL locators in a whole spec, not just the first', () => {
+  const spec = `
+    await page.getByTestId('title').click();
+    await page.locator('[data-testid="cart-add"]').click();
+  `;
+  // target appears as the SECOND locator -> must still be found
+  assert.equal(textHasEquivalentLocator(spec, "page.getByTestId('cart-add')"), true);
+  // a locator that is NOT in the spec -> false (no false positive)
+  assert.equal(textHasEquivalentLocator(spec, "page.getByTestId('nope')"), false);
+});
+
+test('textHasEquivalentLocator: falls back to exact when no locator syntax present', () => {
+  assert.equal(textHasEquivalentLocator('some plain text', 'some plain text'), true);
 });

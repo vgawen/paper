@@ -52,6 +52,30 @@ export function locatorEquivalent(a, b) {
   return norm(a) === norm(b);
 }
 
+// Every distinct locator expression in a text (spec body, or a single answer).
+const LOC_RE = /(?:getBy[A-Za-z]+|locator|cy\.get|cy\.contains)\(\s*(['"`])(?:(?!\1).)*\1[^)]*\)/gs;
+export function extractLocators(text) {
+  const out = [];
+  const t = String(text || '');
+  let m;
+  LOC_RE.lastIndex = 0;
+  while ((m = LOC_RE.exec(t))) out.push(m[0]);
+  return out;
+}
+
+// Does `text` contain a locator that is semantically the same as `target`?
+// (Correct for whole-spec bodies: we compare EVERY locator, not just the first.)
+export function textHasEquivalentLocator(text, target) {
+  const ct = canonicalLocator(target);
+  if (!ct) return norm(text).includes(norm(target));
+  const all = extractLocators(text);
+  if (all.length === 0) return norm(text).includes(norm(target)); // no locator syntax found -> exact fallback
+  return all.some((loc) => {
+    const c = canonicalLocator(loc);
+    return c && c.kind === ct.kind && c.value === ct.value;
+  });
+}
+
 // ---- candidate locators from application source (V_new) ----
 // Everything a test could legally point at, as {kind, value} — the rerank pool.
 export function extractCandidates(source) {
