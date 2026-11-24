@@ -99,12 +99,16 @@ async function main() {
       rows,
     }, null, 2));
   };
-  for (const b of breaks.slice(0, limit)) {
+  const concurrency = Math.max(1, parseInt(process.env.RB_CONCURRENCY || '1', 10));
+  const work = breaks.slice(0, limit);
+  const outRows = new Array(work.length).fill(null);
+
+  async function processOne(b, idx) {
     let repo;
-    try { repo = ensureClone(b.repository_name); } catch { skipped++; continue; }
+    try { repo = ensureClone(b.repository_name); } catch { skipped++; return; }
     const brokenTest = show(repo, b.previous_sha, b.test_file_path); // OLD test (input)
-    if (!brokenTest || !brokenTest.includes(b.old_locator)) { skipped++; continue; } // need broken locator present
-    if (brokenTest.includes(b.new_locator)) { skipped++; continue; } // OLD test must NOT already contain the answer
+    if (!brokenTest || !brokenTest.includes(b.old_locator)) { skipped++; return; } // need broken locator present
+    if (brokenTest.includes(b.new_locator)) { skipped++; return; } // OLD test must NOT already contain the answer
     const { appFiles, appOld, appNew } = appDiff(repo, b.previous_sha, b.commit_sha, b.test_file_path);
 
     // RULE arm: signals derived from APP-source diff only (no new test file)
@@ -120,17 +124,18 @@ async function main() {
     let llmError = null;
     if (client.provider !== 'stub') {
       const pom = pomClosure(repo, b.previous_sha, b.test_file_path);
-      const cands = extractCandidates(appNew).slice(0, 200);
+      const cands = extractCandidates(appNew).slice(0, 60);
       const candList = cands.map((c) => `${c.kind}: ${c.value}`).join('\n');
       const prompt = [
         'A Playwright/Cypress test locator broke after a structural change in the application UI.',
         `Broken locator (currently in the test): ${b.old_locator}`,
-        'The BROKEN test file (do not assume the fix is here):', brokenTest.slice(0, 2500),
-        pom.length ? `Imported helper / Page-Object modules used by the test (locators live here):\n${pom.map((p) => `--- ${p.file}\n${p.code.slice(0, 1200)}`).join('\n').slice(0, 3000)}` : '',
-        'Application source BEFORE the change:', appOld.slice(0, 2500),
-        'Application source AFTER the change:', appNew.slice(0, 2500),
-        candList ? `Candidate locators extracted from the AFTER source (prefer one of these):\n${candList}` : '',
-        'Using ONLY the application change above, output ONLY the single corrected locator string.',
+        'The BROKEN test file (do not assume the fix is here):', brokenTest.slice(0, 2000),
+        pom.length ? `Imported Page-Object / helper modules (locators live here):\n${pom.map((p) => `--- ${p.file}\n${p.code.slice(0, 800)}`).join('\n').slice(0, 2000)}` : '',
+        'Application source BEFORE the change:', appOld.slice(0, 1800),
+        'Application source AFTER the change:', appNew.slice(0, 1800),
+        candList ? `Candidate locators in the AFTER source (choose one if it fits):\n${candList}` : '',
+        'Reply with EXACTLY ONE line containing the corrected locator expression and NOTHING else.',
+        'No explanation, no markdown, no code fence, no quotes around the whole line.',
       ].filter(Boolean).join('\n');
       try {
         const ans = await completeWithRetry(client, prompt, { fallback: b.old_locator });
@@ -143,10 +148,25 @@ async function main() {
     }
     arms.llm.n++; if (llmFixed) arms.llm.ok++;
     if (llmFixedSem) arms.llm.ok_sem++;
-    rows.push({ id: b.id, repo: b.repository_name, app_files: appFiles.length, rule: ruleFixed, rule_sem: ruleFixedSem, llm: llmFixed, llm_sem: llmFixedSem, llm_error: llmError });
+    outRows[idx] = { id: b.id, repo: b.repository_name, app_files: appFiles.length, rule: ruleFixed, rule_sem: ruleFixedSem, llm: llmFixed, llm_sem: llmFixedSem, llm_error: llmError };
+    rows.length = 0; rows.push(...outRows.filter(Boolean));
     writeOut(true);
-    console.log(`#${b.id} ${b.repository_name} appFiles=${appFiles.length} rule=${ruleFixed} llm=${llmFixed}${llmError ? ' llm_error=' + llmError : ''}`);
+    console.log(`#${b.id} ${b.repository_name} appFiles=${appFiles.length} rule=${ruleFixed} llm=${llmFixed}${llmFixedSem ? '(sem)' : ''}${llmError ? ' llm_error=' + llmError : ''}`);
   }
+
+  if (concurrency <= 1) {
+    for (let i = 0; i < work.length; i++) { if (work[i]) await processOne(work[i], i); }
+  } else {
+    let cursor = 0;
+    const workers = Array.from({ length: concurrency }, async () => {
+      while (cursor < work.length) {
+        const i = cursor++;
+        try { await processOne(work[i], i); } catch { skipped++; }
+      }
+    });
+    await Promise.all(workers);
+  }
+  rows.length = 0; rows.push(...outRows.filter(Boolean));
   writeOut(false);
   const rate = (a) => (a.n ? +(a.ok / a.n).toFixed(4) : 0);
   console.log(`\nReproBreak e2e (leakage-free): rule=${rate(arms.rule)} llm=${rate(arms.llm)} | semantic-equiv rule=${rate({ n: arms.rule.n, ok: arms.rule.ok_sem })} llm=${rate({ n: arms.llm.n, ok: arms.llm.ok_sem })} (provider=${client.provider}, n=${rows.length}, skipped=${skipped})`);
