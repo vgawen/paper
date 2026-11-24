@@ -63,6 +63,19 @@ export function extractLocators(text) {
   return out;
 }
 
+// Is this locator anchor DISTINCTIVE enough for a semantic-equivalence claim?
+// CSS class / bare id in a component library repeat dozens of times (`.slick-cell`
+// appears all over a grid test), so "an equivalent locator exists in the text"
+// carries no information there. Only testId / label / placeholder / alt / title /
+// role / a reasonably long text label identify a unique target.
+export function isDistinctive(locator) {
+  const c = canonicalLocator(locator);
+  if (!c) return false;
+  if (c.kind === 'class' || c.kind === 'id') return false;
+  if (c.kind === 'text' || c.kind === 'label' || c.kind === 'placeholder' || c.kind === 'title' || c.kind === 'alt') return c.value.length >= 4;
+  return true; // testid / role / name
+}
+
 // Does `text` contain a locator that is semantically the same as `target`?
 // (Correct for whole-spec bodies: we compare EVERY locator, not just the first.)
 export function textHasEquivalentLocator(text, target) {

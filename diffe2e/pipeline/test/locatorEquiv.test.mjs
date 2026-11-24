@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { canonicalLocator, locatorEquivalent, extractCandidates, textHasEquivalentLocator } from '../src/locatorEquiv.mjs';
+import { canonicalLocator, locatorEquivalent, extractCandidates, textHasEquivalentLocator, isDistinctive } from '../src/locatorEquiv.mjs';
 
 test('canonicalLocator: Playwright and CSS forms map to the same kind:value', () => {
   assert.deepEqual(canonicalLocator("page.getByTestId('cart-add')"), { kind: 'testid', value: 'cart-add' });
@@ -47,4 +47,12 @@ test('textHasEquivalentLocator: compares ALL locators in a whole spec, not just 
 
 test('textHasEquivalentLocator: falls back to exact when no locator syntax present', () => {
   assert.equal(textHasEquivalentLocator('some plain text', 'some plain text'), true);
+});
+
+test('isDistinctive: CSS class/id are not distinctive; testId/text are', () => {
+  assert.equal(isDistinctive(`cy.get('.slick-cell')`), false);
+  assert.equal(isDistinctive(`cy.get('#row-3')`), false);
+  assert.equal(isDistinctive(`page.getByTestId('cart-add')`), true);
+  assert.equal(isDistinctive(`page.getByText('Payment successful')`), true);
+  assert.equal(isDistinctive(`page.getByText('ok')`), false); // too short to be unique
 });
