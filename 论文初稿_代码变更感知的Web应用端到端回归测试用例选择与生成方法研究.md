@@ -14,7 +14,7 @@
 
 方法的核心是一个持久化、可增量维护的**测试↔代码映射器**（带类型的二部索引），以及一个把源码层 UI 变更对应到测试定位器、断言和新增交互的 **Semantic UI Diff**，二者作为"源码 diff ↔ 浏览器操作"的语义桥，支撑"选择→缺口分析→生成"主链路，并在运行阶段提供轻量修复锚点。针对回归测试选择的核心诉求"召回不可妥协"，本文给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题及其证明，并用**非循环的结果差异 oracle** 经验验证；针对测试间共享状态引发的副作用，给出状态依赖闭包及其安全性命题。针对生成质量，本文引入可执行率、变更相关率、版本差分敏感性与变异杀伤等自动指标，避免只以"能运行"衡量生成用例。
 
-在受控主体的 24 个变更过渡上，本方法达到**可证明安全的选择：Safety=1.0、0 漏选**（经与选择器无关的非循环结果差异 oracle 与变异压力测试验证），Reduction=0.625、Precision=1.0，**与本文的最强覆盖基线 `coverage_only` 持平**（后者同为 Safety=1.0、0.625、1.0）——即"选择"环节与文件级覆盖 RTS 等价而非超越；二者等价由构造决定（`dual` 是覆盖臂与 UI 臂的并集，覆盖臂为其子集），且该比较只限于本文实验设置与此 5 个方法，不作普遍最优的外推。**进一步用 test-code graph 的函数级四层归因（`executes`/`references`/路由级/文件级回退）把 Reduction 从 0.625 提升到 0.889（SafetyEmp=1.0、0 漏选、Precision=1.0）**——收益来自"加路由归零"与未使用函数/注释噪声排除，天花板是真强耦合（共享路由器/工具）。非循环结果差异 oracle 与变异压力测试均未发现漏选；副作用场景下经典文件级覆盖选择会导致判定翻转，状态闭包恢复保真。代码变更感知主要体现在缺口识别与生成（RQ2/RQ3）：在三套互不合并的生成口径（n=3、n=8、n=10）下，diff 约束臂的可执行率、变更相关率、版本敏感率与自动语义有效率均为 1.0，均优于各自的无 diff 基线，三套结果不合成总数；真实项目复核样本的协议 B 预标注（2/30）与仲裁后人工盲评（0/30）绝对水平均远低于自动指标，只作外部效度限定。作为闭环支撑与边界分析，ReproBreak 的真实 locator 端到端修复率为 3.38%（规则臂）与 7.25%（DeepSeek LLM 臂），远低于已知信号下的改写上界，说明真实 locator 修复仍是困难问题；自动分诊的适用边界另由一批过时类型人工复核校准（协议 B 原始输出全为 STRUCTURAL_ONLY，作者复核确认其中 1 条应为 EXPECTATION_CHANGE，属遮蔽导致的协议固有边界）。第二标注者盲评已完成合并：RQ2 n=30、Po=0.9333、κ=0、Gwet's AC1=0.929（κ 因人工列为常量退化，AC1 在偏斜分布下仍有区分度，与混淆矩阵同报）；RQ3 n=40、Po=1.0，按既定口径不报 κ（§5.6）。
+在受控主体的 24 个变更过渡上，**test-code graph 的函数级四层归因（`executes`/`references`/路由级/文件级回退）把选择缩减率从文件级基线的 0.625 提升到 0.889，同时保持 SafetyEmp=1.0（0 漏选）与 Precision=1.0**——即"不漏且不误选"；收益来自"加新路由归零"与未使用函数/注释噪声的排除，天花板是共享路由器/工具的真强耦合。非循环结果差异 oracle 与变异压力测试均未发现漏选；副作用场景下经典文件级覆盖选择会导致判定翻转，状态闭包恢复保真。在真实项目 actual-budget（62 个 E2E 用例）上，该图选择把净收益从文件级的 **−5.4%** 扭转为 **+83.0%～94.6%**（选择开销已计入）。作为消融对照，仅用文件级覆盖 + UI 信号的选择与最强覆盖基线 `coverage_only` 持平（Reduction 0.625、Safety 1.0、Precision 1.0），二者等价由并集构造决定。代码变更感知主要体现在缺口识别与生成（RQ2）与断点诊断（RQ3）：diff 约束臂在生成的可执行率、变更相关率、版本敏感率与自动语义有效率上均为 1.0，优于无 diff 基线；但真实项目人工盲评显示，自动语义有效率只证明"可执行 + 变更敏感 + 能杀变异"，不证明人工意义上的语义有效性，该结果仅作外部效度限定。ReproBreak 真实 locator 端到端修复率为 3.38%（规则臂）与 7.25%（LLM 臂），远低于已知信号下的改写上界，说明真实 locator 修复仍是困难问题，本文据此将其定位为闭环支撑与边界研究而非主贡献。人工一致性校准采用协议 B 预标注 + 人工盲评双列：RQ2 n=30（Po=0.9333、κ=0 退化、Gwet's AC1=0.929）、RQ3 n=40（Po=1.0），详见 §5.6。
 
 **关键词**：回归测试选择；端到端测试；代码变更感知；测试生成；测试修复；持续集成
 
@@ -53,7 +53,7 @@ The method centers on a persistent, incrementally maintained **test–code mappe
 
 ### 1.3 研究内容与贡献
 
-本文的贡献可概括为**一个闭环框架 + 两个核心技术（映射器 + Semantic UI Diff）+ 一个量化模型**，其中**可证明的召回保证是全文的核心贡献**，其余能力围绕它展开。
+本文的贡献可概括为**一个 test-code graph（方法内核）+ 两个核心技术（函数级四层归因、Semantic UI Diff）+ 一个可证明的召回保证**，其中**函数级四层归因图是本文最能兑现"变更感知"价值的部分**，召回保证是它的安全底座。
 
 1. **可证明的安全选测与召回保证（核心贡献）**：给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题 1 及其证明，并以**非循环结果差异 oracle** 与变异压力测试经验验证，使"召回不可妥协"在 E2E 场景下**可证明**而非仅经验近似；针对副作用经共享状态的间接依赖，给出状态依赖闭包与命题 2。针对生成用例，采用可执行率、变更相关率、版本差分敏感性与变异杀伤率作为自动语义质量指标（第 3.4–3.5 节）。
 2. **测试↔代码映射器（源码↔浏览器语义桥的载体）**：把"源码 diff 难以直接对应到浏览器中的用户操作与测试脚本"这一 E2E 核心断点，形式化为一个**带类型的二部索引** `M ⊆ E×T`（动态覆盖边 + 静态 UI 语义边），并给出构建算法、增量维护规则与复杂度/摊销论证（第 3.2 节）。
@@ -424,7 +424,34 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 
 ### 5.1 RQ1：选择——精准选出受影响用例
 
-**表 5-1　受控主体 RQ1 选择结果（n=24 过渡）**
+**5.1.1 主结果：test-code graph 的函数级四层归因（本文的核心选择方法）**
+
+本文把选择建立在 §3.2 的 **test-code graph** 上，用四层归因（§3.4）选出受影响用例：
+
+1. **函数级 `executes`**（动态覆盖）：改了哪个函数 → 谁执行了它；
+2. **变量级 `references`**（value-reference）：改了哪个模块级变量 → 谁读它；
+3. **路由级 route-diff**：路由表 ADD→0、REMOVE/MODIFY→访问该路由的测试；
+4. **文件级回退 + config 全量**：无法归因的改动（config/flag/环境）保守兜底。
+
+**表 5-1　受控主体 RQ1 主结果：test-code graph 四层归因（n=24 过渡，`out/rq1_graph.json`）**
+
+| 方法 | Reduction | Safety(覆盖oracle) | Precision | SafetyEmp(非循环) |
+|---|---|---|---|---|
+| coverage_only（文件级，消融基线） | 0.625 | 1.0 | 1.0 | 1.0 |
+| **graph-selection（四层归因）** | **0.8889** | 0.5833 | **1.0** | **1.0（0 漏选）** |
+
+**关键发现**：
+
+1. **Reduction 0.625 → 0.8889（+0.264）**：四层归因把选择从"文件粒度"细化到"函数/变量/路由粒度"。5 个"加路由"过渡（c03/c12/c13/c19/c23）从全选 6 降到选 0——加一条新路由本就不影响任何现有测试。
+2. **SafetyEmp=1.0、0 漏选**：非循环结果差异 oracle 下，函数级归因没有漏掉任何真正受影响的测试。
+3. **覆盖 oracle 的 Safety 降到 0.5833 是自证循环，不是缺陷**：覆盖 oracle 把"覆盖了变更文件"当作"受影响"，于是把 5 个加路由过渡判为"6 个测试受影响"；graph 正确地选了 0 个，被覆盖 oracle 判成"漏"。这恰恰印证 §3.4——召回必须用非循环 oracle 衡量，覆盖 oracle 与选择器同源、会自证。
+4. **Precision=1.0**：选中的每条测试都真正受影响（无噪声），使针对性运行的失败可归因——这正是 RQ1 的"信号质量"价值（见 §1.2 重新表述），Reduction 只是副产品。
+
+**5.1.2 消融：文件级基线对照**
+
+作为消融对照，若只用**文件级**覆盖 + UI 信号（`dual = coverage_only ∪ uidiff_only`），结果如下表——它与最强覆盖基线 `coverage_only` 完全持平，说明"文件粒度"是本文四层归因的收益来源所在。
+
+**表 5-1a　文件级基线对照（消融，n=24 过渡）**
 
 | 方法 | Reduction | Safety | Precision |
 |---|---|---|---|
@@ -435,30 +462,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 | random_k | 0.625 | 0.396 | 0.396 |
 | static_heuristic | 0.875 | 0.667 | 1.0 |
 
-来源：`out/rq1_summary.md`。本 RQ1 的主张是**与最强覆盖基线 `coverage_only` 持平**，而非优于它。在本文实验设置与表 5-1 所比较的 5 个方法范围内：本方法（=dual）与 `coverage_only` 的选中集合完全相同（Safety=1.0、Reduction=0.625、Precision=1.0）；该等价在逐例层面成立——受控主体 24 个过渡、tldraw 12 个过渡、actual-budget 9 个过渡、mermaid-live-editor 5 个过渡（合计 50）上，dual 与 `coverage_only` 的选中集合逐例相同、三指标逐项相同，不同但有正收益的个例为 0（逐例核查数据见 `out/rq1_dataset.jsonl` 与 `out/real/{tldraw_examples,actual_desktop,mermaid_live}_rq1.jsonl`）。等价由构造决定：`dual = new Set([...coverage_only, ...uidiff_only])`（`diffe2e/experiments/real/engine.mjs#L22-L31`），覆盖臂是 dual 的子集，`|dual|` 不增则集合必然相等。相对其他基线的真实优势为：`retest_all` 虽 Safety=1.0 但为全选（Reduction=0）；`random_k` 与 dual 同规模（Reduction=0.625）但 Safety 仅 0.396（漏选）；`static_heuristic` 的 Reduction 更高（0.875）但 Safety 仅 0.667（Precision=1.0），在共享 util/router 变更上漏选；`uidiff_only` Precision=1.0 但 Safety 仅 0.083。因此本文可主张的是：本方法与最强覆盖基线持平，并优于全量重跑与其他四个基线；不作"唯一""兼顾"或超出该设置与这 5 个方法的外推。
-
-**5.1.1 函数级归因：test-code graph 选择器（本文的核心选择方法）**
-
-上面的 `coverage_only` 是**文件级**覆盖选择；本文进一步把选择建立在 §3.2 的 **test-code graph** 上，用四层归因（§3.4）选出受影响用例：
-
-1. **函数级 `executes`**（动态覆盖）：改了哪个函数 → 谁执行了它；
-2. **变量级 `references`**（value-reference）：改了哪个模块级变量 → 谁读它；
-3. **路由级 route-diff**：路由表 ADD→0、REMOVE/MODIFY→访问该路由的测试；
-4. **文件级回退 + config 全量**：无法归因的改动（config/flag/环境）保守兜底。
-
-**表 5-1b　函数级归因选择结果（受控主体 n=24 过渡，`out/rq1_graph.json`）**
-
-| 方法 | Reduction | Safety(覆盖oracle) | Precision | SafetyEmp(非循环) |
-|---|---|---|---|---|
-| coverage_only（文件级） | 0.625 | 1.0 | 1.0 | 1.0 |
-| **graph-selection（四层归因）** | **0.8889** | 0.5833 | **1.0** | **1.0（0 漏选）** |
-
-**关键发现**：
-
-1. **Reduction 0.625 → 0.8889（+0.264）**：四层归因把选择从"文件粒度"细化到"函数/变量/路由粒度"。5 个"加路由"过渡（c03/c12/c13/c19/c23）从全选 6 降到选 0——加一条新路由本就不影响任何现有测试。
-2. **SafetyEmp=1.0、0 漏选**：非循环结果差异 oracle 下，函数级归因没有漏掉任何真正受影响的测试。
-3. **覆盖 oracle 的 Safety 降到 0.5833 是自证循环，不是缺陷**：覆盖 oracle 把"覆盖了变更文件"当作"受影响"，于是把 5 个加路由过渡判为"6 个测试受影响"；graph 正确地选了 0 个，被覆盖 oracle 判成"漏"。这恰恰印证 §3.4——召回必须用非循环 oracle 衡量，覆盖 oracle 与选择器同源、会自证。
-4. **Precision=1.0**：选中的每条测试都真正受影响（无噪声），使针对性运行的失败可归因——这正是 RQ1 的"信号质量"价值（见 §1.2 重新表述），Reduction 只是副产品。
+来源：`out/rq1_summary.md`。该消融的主张是**与最强覆盖基线 `coverage_only` 持平**，而非优于它。在本文实验设置与表 5-1a 所比较的 5 个方法范围内：`dual` 与 `coverage_only` 的选中集合完全相同（Safety=1.0、Reduction=0.625、Precision=1.0）；该等价在逐例层面成立——受控主体 24 个过渡、tldraw 12 个过渡、actual-budget 9 个过渡、mermaid-live-editor 5 个过渡（合计 50）上，dual 与 `coverage_only` 的选中集合逐例相同、三指标逐项相同，不同但有正收益的个例为 0（逐例核查数据见 `out/rq1_dataset.jsonl` 与 `out/real/{tldraw_examples,actual_desktop,mermaid_live}_rq1.jsonl`）。等价由构造决定：`dual = new Set([...coverage_only, ...uidiff_only])`（`diffe2e/experiments/real/engine.mjs#L22-L31`），覆盖臂是 dual 的子集，`|dual|` 不增则集合必然相等。相对其他基线的真实优势为：`retest_all` 虽 Safety=1.0 但为全选（Reduction=0）；`random_k` 与 dual 同规模（Reduction=0.625）但 Safety 仅 0.396（漏选）；`static_heuristic` 的 Reduction 更高（0.875）但 Safety 仅 0.667（Precision=1.0），在共享 util/router 变更上漏选；`uidiff_only` Precision=1.0 但 Safety 仅 0.083。因此该消融可主张的是：文件级 dual 与最强覆盖基线持平，并优于全量重跑与其他四个基线；不作"唯一""兼顾"或超出该设置与这 5 个方法的外推。
 
 ![图 5-1　受控主体 RQ1 六种选择方法的 Safety–Reduction 对比](diffe2e/experiments/out/figs/rq1_methods_scatter.svg)
 
@@ -715,21 +719,7 @@ RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据
 
 预标注列的原始输出保留在 `out/annotator1_masked.json`；`rb033` 经作者复核应为 EXPECTATION_CHANGE，但不改动表内计数（见 §5.3 与 §6 的协议边界讨论）。稳定性：70 条中 69 条三次完全一致、1 条为 2/3（`rq2_023`）、无 1/3；三次重复共 210 次逐条调用，失败清单为空（`temperature=0` 不保证确定性，故正式列固定取三次多数票）。数据见 `out/repeats/variance_report.md`。
 
-第二标注者使用逐条工作表 `out/rq2_annotator2_worksheet.md`、`out/rq3_annotator_context_blind.md`（或对应的盲表 `out/rq2_annotator2_blind.csv`、`out/rq3_annotator2_blind.csv`），不得打开含预标注列的主表、`*_unblind.json`、逐条理由文件或 ReproBreak 原始 `breaks.json`。填写完成后按以下命令合并与评分：
-
-```bash
-cd diffe2e
-node experiments/annotate/collect_annotator2_md.mjs --write  # 填工作表时使用；直接填 CSV 可跳过
-node experiments/annotate/merge_second_annotator.mjs \
-  experiments/out/rq2_annotator2_blind.csv experiments/out/rq2_real_to_annotate.csv
-node experiments/annotate/merge_second_annotator.mjs \
-  experiments/out/rq3_annotator2_blind.csv experiments/out/rq3_reprobreak_to_annotate.csv
-node experiments/annotate/score.mjs experiments/out/rq2_real_to_annotate.csv --first-source=b-majority
-node experiments/annotate/score.mjs experiments/out/rq3_reprobreak_to_annotate.csv --first-source=b-majority
-node experiments/annotate/render_kappa_backfill.mjs
-```
-
-评分输出 `out/rq2_real_to_annotate_annotation.json`、`out/rq3_staleness_annotation.json` 与 `out/kappa_backfill.md`。合并已于 2026-11-21 完成：表 5-10 的人工列与一致性指标已替换为实测值，§5.2、§5.3、表 5-8 注、摘要与附录 A.3 已同步一致性结论；表 5-5 的自动指标与其余实验数字不受影响。RQ3 按既定口径未计算、未报告 κ（预标注为常量 SO、`Pe` 退化），正文只报告 `Po`、混淆矩阵、逐条分歧与样本构成。
+第二标注者的盲评纪律、逐条工作表与合并/评分命令见附录 A.3。合并已于 2026-11-21 完成：表 5-10 的人工列与一致性指标已替换为实测值，§5.2、§5.3、表 5-8 注、摘要与附录 A.3 已同步一致性结论；表 5-5 的自动指标与其余实验数字不受影响。RQ3 按既定口径未计算、未报告 κ（预标注为常量 SO、`Pe` 退化），正文只报告 `Po`、混淆矩阵、逐条分歧与样本构成。
 
 ---
 
@@ -793,7 +783,23 @@ node experiments/run_llm_cost.mjs
 
 ### A.3 人工标注与 κ 合并
 
-标注文件、盲评纪律与逐条判定标准见 `diffe2e/experiments/annotate/ANNOTATION_HANDOFF.md` 与 `ANNOTATION_GUIDE.md`。第二标注者优先填写逐条工作表 `out/rq2_annotator2_worksheet.md` 与 `out/rq3_annotator_context_blind.md`，再用 `collect_annotator2_md.mjs --write` 写回盲表；也可直接填写盲表 CSV。核心纪律：不打开含预标注列的主表、`*_unblind.json`、逐条理由或 ReproBreak 原始断裂文件；RQ3 上下文刻意不含 `new_locator`。合并与评分命令见 §5.6。
+标注文件、盲评纪律与逐条判定标准见 `diffe2e/experiments/annotate/ANNOTATION_HANDOFF.md` 与 `ANNOTATION_GUIDE.md`。第二标注者优先填写逐条工作表 `out/rq2_annotator2_worksheet.md` 与 `out/rq3_annotator_context_blind.md`，再用 `collect_annotator2_md.mjs --write` 写回盲表；也可直接填写盲表 CSV。核心纪律：不打开含预标注列的主表、`*_unblind.json`、逐条理由或 ReproBreak 原始断裂文件；RQ3 上下文刻意不含 `new_locator`。
+
+**合并与评分命令**（对应 §5.6 的人工列合并）：
+
+```bash
+cd diffe2e
+node experiments/annotate/collect_annotator2_md.mjs --write  # 填工作表时使用；直接填 CSV 可跳过
+node experiments/annotate/merge_second_annotator.mjs \
+  experiments/out/rq2_annotator2_blind.csv experiments/out/rq2_real_to_annotate.csv
+node experiments/annotate/merge_second_annotator.mjs \
+  experiments/out/rq3_annotator2_blind.csv experiments/out/rq3_reprobreak_to_annotate.csv
+node experiments/annotate/score.mjs experiments/out/rq2_real_to_annotate.csv --first-source=b-majority
+node experiments/annotate/score.mjs experiments/out/rq3_reprobreak_to_annotate.csv --first-source=b-majority
+node experiments/annotate/render_kappa_backfill.mjs
+```
+
+评分输出 `out/rq2_real_to_annotate_annotation.json`、`out/rq3_staleness_annotation.json` 与 `out/kappa_backfill.md`。
 
 **预标注的生成条件**。正式列按协议 B（与人工盲评相同的盲评材料）生成，沿用 `run_annotator1_masked.mjs`，固定 `deepseek-v4-flash`、`temperature=0`、`max_tokens=2000`（预算阶梯 2000→4000→8000）、`retries=3`，逐条独立调用同一 prompt；参数与材料哈希、密钥来源见 `out/annotator1_masked_manifest.json`。早期一轮预标注因缺少生成链记录（无模型/参数/prompt 记录）未予采用，本文不保留其它信息条件的对照材料。
 
