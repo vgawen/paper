@@ -158,7 +158,7 @@ async function main() {
     }
     arms.llm.n++; if (llmFixed) arms.llm.ok++;
     if (semanticApplicable && !preHadEquivalent) { arms.llm.n_sem++; if (llmFixedSem) arms.llm.ok_sem++; }
-    outRows[idx] = { id: b.id, repo: b.repository_name, app_files: appFiles.length, rule: ruleFixed, rule_sem: ruleFixedSem, pre_had_equiv: preHadEquivalent, sem_applicable: semanticApplicable, llm: llmFixed, llm_sem: llmFixedSem, llm_error: llmError };
+    outRows[idx] = { id: b.id, repo: b.repository_name, app_files: appFiles.length, rule: ruleFixed, rule_sem: semanticApplicable && ruleFixedSem, pre_had_equiv: preHadEquivalent, sem_applicable: semanticApplicable, llm: llmFixed, llm_sem: semanticApplicable && llmFixedSem, llm_error: llmError };
     rows.length = 0; rows.push(...outRows.filter(Boolean));
     writeOut(true);
     console.log(`#${b.id} ${b.repository_name} appFiles=${appFiles.length} rule=${ruleFixed} llm=${llmFixed}${llmFixedSem ? '(sem)' : ''}${llmError ? ' llm_error=' + llmError : ''}`);
