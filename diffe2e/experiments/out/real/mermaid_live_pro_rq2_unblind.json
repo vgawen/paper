@@ -1,0 +1,18 @@
+{
+  "r001": {
+    "arm": "diff",
+    "project": "mermaid_live",
+    "prev": "c2530549165a5185b19d355d505fe2dd27e66af6",
+    "sha": "a257f78d8e626da876b7cd9ae652db40bd7f4d43",
+    "gap_file": "src/lib/components/Preset.svelte",
+    "score": 2
+  },
+  "r002": {
+    "arm": "nodiff",
+    "project": "mermaid_live",
+    "prev": "c2530549165a5185b19d355d505fe2dd27e66af6",
+    "sha": "a257f78d8e626da876b7cd9ae652db40bd7f4d43",
+    "gap_file": "src/lib/components/Preset.svelte",
+    "score": 2
+  }
+}

@@ -5,14 +5,14 @@
   "leakage_free": true,
   "partial": false,
   "rule_rate": 0.0338,
-  "llm_rate": 0.0556,
+  "llm_rate": 0.0725,
   "arms": {
     "rule": {
       "ok": 14,
       "n": 414
     },
     "llm": {
-      "ok": 23,
+      "ok": 30,
       "n": 414
     }
   },
@@ -540,7 +540,7 @@
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -1180,7 +1180,7 @@
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -1508,7 +1508,7 @@
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -1892,7 +1892,7 @@
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 17,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -1972,7 +1972,7 @@
       "repo": "ghiscoding/angular-slickgrid",
       "app_files": 0,
       "rule": false,
-      "llm": true,
+      "llm": false,
       "llm_error": null
     },
     {
@@ -2100,7 +2100,7 @@
       "repo": "tryghost/koenig",
       "app_files": 24,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -2260,7 +2260,7 @@
       "repo": "tryghost/koenig",
       "app_files": 1,
       "rule": false,
-      "llm": true,
+      "llm": false,
       "llm_error": null
     },
     {
@@ -2588,7 +2588,7 @@
       "repo": "tryghost/koenig",
       "app_files": 3,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -2628,7 +2628,7 @@
       "repo": "nasa/openmct",
       "app_files": 27,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -3020,7 +3020,7 @@
       "repo": "microsoft/playwright",
       "app_files": 6,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -3036,7 +3036,7 @@
       "repo": "microsoft/playwright",
       "app_files": 6,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -3068,7 +3068,7 @@
       "repo": "microsoft/playwright",
       "app_files": 8,
       "rule": false,
-      "llm": false,
+      "llm": true,
       "llm_error": null
     },
     {
@@ -3140,7 +3140,7 @@
       "repo": "microsoft/playwright",
       "app_files": 7,
       "rule": false,
-      "llm": true,
+      "llm": false,
       "llm_error": null
     },
     {

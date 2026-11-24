@@ -26,7 +26,9 @@ function ensureClone(repoName) {
   const dest = path.join(CLONES, repoName.replace('/', '__'));
   if (!fs.existsSync(dest)) {
     fs.mkdirSync(CLONES, { recursive: true });
-    execSync(`git clone --filter=blob:none https://github.com/${repoName} ${JSON.stringify(dest)}`, { stdio: 'pipe' });
+    // full clone (no --filter=blob:none): the e2e repair does many `git show` calls,
+    // and a partial clone would fetch each blob on demand (slow). Full blobs are local.
+    execSync(`git clone https://github.com/${repoName} ${JSON.stringify(dest)}`, { stdio: 'pipe' });
   }
   return dest;
 }
