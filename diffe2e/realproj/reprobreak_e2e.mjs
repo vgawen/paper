@@ -14,11 +14,12 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { repair } from '../pipeline/src/repair.mjs';
 import { createClient } from '../pipeline/src/llm/client.mjs';
+import { extractCandidates, locatorEquivalent } from '../pipeline/src/locatorEquiv.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const BREAKS = path.join(here, 'results', 'reprobreak_breaks.json');
 const CLONES = path.join(here, 'clones', 'aut');
-const OUT = path.join(here, 'results', 'reprobreak_e2e.json');
+const OUT = process.env.RB_OUT ? path.resolve(process.env.RB_OUT) : path.join(here, 'results', 'reprobreak_e2e.json');
 const norm = (s) => (s || '').replace(/\s+/g, ' ').trim();
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -34,6 +35,34 @@ function ensureClone(repoName) {
 }
 const show = (repo, ref, file) => { try { return execSync(`git show ${ref}:${JSON.stringify(file).slice(1, -1)}`, { cwd: repo, stdio: 'pipe' }).toString(); } catch { return ''; } };
 const isTestPath = (f, testFile) => f === testFile || /(\.spec\.|\.test\.|(^|\/)(tests?|e2e|cypress|__tests__)\/)/i.test(f);
+
+// Resolve the spec's LOCAL imports (Page Object / helper modules) at `ref`, 1-2
+// levels deep — the same import-closure RQ1 uses. These carry the locator
+// definitions the test actually uses, so the repair prompt can see them.
+function pomClosure(repo, ref, testFile, depth = 2) {
+  const seen = new Set();
+  const out = [];
+  let frontier = [testFile];
+  for (let d = 0; d < depth && frontier.length; d++) {
+    const next = [];
+    for (const file of frontier) {
+      const code = show(repo, ref, file);
+      if (!code) continue;
+      const dir = file.includes('/') ? file.slice(0, file.lastIndexOf('/')) : '';
+      const re = /(?:from|require\()\s*['"](\.{1,2}\/[^'"]+)['"]/g;
+      let m;
+      while ((m = re.exec(code))) {
+        let target = m[1].replace(/\.(t|j)sx?$/, '');
+        const base = [dir, target].filter(Boolean).join('/');
+        const cand = [`${base}.ts`, `${base}.js`, `${base}.tsx`, `${base}.jsx`, `${base}/index.ts`, `${base}/index.js`]
+          .find((p) => show(repo, ref, p));
+        if (cand && !seen.has(cand)) { seen.add(cand); out.push({ file: cand, code: show(repo, ref, cand) }); next.push(cand); }
+      }
+    }
+    frontier = next;
+  }
+  return out;
+}
 
 // changed APPLICATION (non-test) source files in commit C — the legitimate
 // structural-change context. The new TEST file is deliberately excluded.
@@ -51,7 +80,7 @@ async function main() {
   const breaks = JSON.parse(fs.readFileSync(BREAKS, 'utf8'));
   const limit = parseInt(process.env.RB_LIMIT || '60', 10); // cap for cost/time
   const client = createClient();
-  const arms = { rule: { ok: 0, n: 0 }, llm: { ok: 0, n: 0 } };
+  const arms = { rule: { ok: 0, ok_sem: 0, n: 0 }, llm: { ok: 0, ok_sem: 0, n: 0 } };
   const rows = [];
   const llmErrors = [];
   let skipped = 0;
@@ -61,7 +90,10 @@ async function main() {
     const ruleWithApp = withApp.filter((r) => r.rule).length;
     fs.writeFileSync(OUT, JSON.stringify({
       provider: client.provider, n: rows.length, skipped, leakage_free: true, partial,
-      rule_rate: rate(arms.rule), llm_rate: rate(arms.llm), arms,
+      rule_rate: rate(arms.rule), llm_rate: rate(arms.llm),
+      rule_rate_sem: +(arms.rule.n ? arms.rule.ok_sem / arms.rule.n : 0).toFixed(4),
+      llm_rate_sem: +(arms.llm.n ? arms.llm.ok_sem / arms.llm.n : 0).toFixed(4),
+      arms,
       app_signal_subset: { n: withApp.length, rule_ok: ruleWithApp, rule_rate: withApp.length ? +(ruleWithApp / withApp.length).toFixed(4) : 0 },
       llm_errors: llmErrors,
       rows,
@@ -78,36 +110,46 @@ async function main() {
     // RULE arm: signals derived from APP-source diff only (no new test file)
     const ruleOut = repair(brokenTest, appOld, appNew);
     const ruleFixed = ruleOut.text.includes(b.new_locator);
+    const ruleFixedSem = locatorEquivalent(ruleOut.text, b.new_locator);
     arms.rule.n++; if (ruleFixed) arms.rule.ok++;
+    if (ruleFixedSem) arms.rule.ok_sem++;
 
-    // LLM arm: old broken test + APP diff context only (answer excluded)
+    // LLM arm: old broken test + APP diff context + POM closure + candidate locators
     let llmFixed = false;
+    let llmFixedSem = false;
     let llmError = null;
     if (client.provider !== 'stub') {
+      const pom = pomClosure(repo, b.previous_sha, b.test_file_path);
+      const cands = extractCandidates(appNew).slice(0, 200);
+      const candList = cands.map((c) => `${c.kind}: ${c.value}`).join('\n');
       const prompt = [
         'A Playwright/Cypress test locator broke after a structural change in the application UI.',
         `Broken locator (currently in the test): ${b.old_locator}`,
-        'The BROKEN test file (do not assume the fix is here):', brokenTest.slice(0, 3500),
-        'Application source BEFORE the change:', appOld.slice(0, 3500),
-        'Application source AFTER the change:', appNew.slice(0, 3500),
+        'The BROKEN test file (do not assume the fix is here):', brokenTest.slice(0, 2500),
+        pom.length ? `Imported helper / Page-Object modules used by the test (locators live here):\n${pom.map((p) => `--- ${p.file}\n${p.code.slice(0, 1200)}`).join('\n').slice(0, 3000)}` : '',
+        'Application source BEFORE the change:', appOld.slice(0, 2500),
+        'Application source AFTER the change:', appNew.slice(0, 2500),
+        candList ? `Candidate locators extracted from the AFTER source (prefer one of these):\n${candList}` : '',
         'Using ONLY the application change above, output ONLY the single corrected locator string.',
-      ].join('\n');
+      ].filter(Boolean).join('\n');
       try {
         const ans = await completeWithRetry(client, prompt, { fallback: b.old_locator });
         llmFixed = norm(ans).includes(norm(b.new_locator));
+        llmFixedSem = locatorEquivalent(ans, b.new_locator);
       } catch (e) {
         llmError = e.message || String(e);
         llmErrors.push({ id: b.id, repo: b.repository_name, error: llmError });
       }
     }
     arms.llm.n++; if (llmFixed) arms.llm.ok++;
-    rows.push({ id: b.id, repo: b.repository_name, app_files: appFiles.length, rule: ruleFixed, llm: llmFixed, llm_error: llmError });
+    if (llmFixedSem) arms.llm.ok_sem++;
+    rows.push({ id: b.id, repo: b.repository_name, app_files: appFiles.length, rule: ruleFixed, rule_sem: ruleFixedSem, llm: llmFixed, llm_sem: llmFixedSem, llm_error: llmError });
     writeOut(true);
     console.log(`#${b.id} ${b.repository_name} appFiles=${appFiles.length} rule=${ruleFixed} llm=${llmFixed}${llmError ? ' llm_error=' + llmError : ''}`);
   }
   writeOut(false);
   const rate = (a) => (a.n ? +(a.ok / a.n).toFixed(4) : 0);
-  console.log(`\nReproBreak e2e (leakage-free): rule=${rate(arms.rule)} llm=${rate(arms.llm)} (provider=${client.provider}, n=${rows.length}, skipped=${skipped})`);
+  console.log(`\nReproBreak e2e (leakage-free): rule=${rate(arms.rule)} llm=${rate(arms.llm)} | semantic-equiv rule=${rate({ n: arms.rule.n, ok: arms.rule.ok_sem })} llm=${rate({ n: arms.llm.n, ok: arms.llm.ok_sem })} (provider=${client.provider}, n=${rows.length}, skipped=${skipped})`);
 }
 main();
 
