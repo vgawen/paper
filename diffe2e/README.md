@@ -1,9 +1,15 @@
-# diffe2e — 面向代码变更的 Playwright E2E 针对性回归测试（RQ1 最小闭环）
+# diffe2e — 代码变更感知的 E2E 回归测试闭环
 
-本目录是论文核心 **RQ1** 的可运行最小验证：
-> 基于 **V_old 覆盖映射 + diff** 选择相关 E2E 测试，是否可行、有效？
+本目录是论文《代码变更感知的 Web 应用端到端回归测试闭环》的**完整实验代码**，覆盖 RQ1–RQ4：
 
-**只验证选择**，不涉及 LLM / 生成 / 修复（那是后续增强模块）。
+- **RQ1 选择**：三层 test-code graph（结构层 / 路由层 / 测试证据层）+ 四层归因
+  （`executes` 函数级覆盖 → `references` 变量引用 → 路由 diff → 文件级回退 + config 全量）；
+- **RQ2 生成**：graph 缺口检测（`detectGaps`）+ diff 约束生成 + Graph-RAG few-shot + 有界执行反馈；
+- **RQ3 修复**：graph `asserts` 边做断点诊断，规则臂 / LLM 臂修复，ReproBreak 端到端量化；
+- **RQ4 成本**：`NetSaving = 1 − (T_select + T_run(Sel)) / T_full`，真实 wall-clock + LLM token/$。
+
+> 快速上手见 `REPRODUCE.md`（环境安装 → 单测 → 主实验 → 真实项目）。
+> 数据产物到论文章节的映射见 `docs/THESIS_MAPPING.md`；产物汇总见 `EXPERIMENT_REPORT.md`。
 
 ## 流水线
 
