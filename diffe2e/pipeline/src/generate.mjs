@@ -42,10 +42,20 @@ export function buildSpecTemplate({ route, signals, title }) {
   return lines.join('\n');
 }
 
+// Shared Playwright API hard rules for all generation prompts.
+const RULES = [
+  'API RULES (violating these makes the test invalid):',
+  "- If a testId is given, address it as page.getByTestId('<id>'). NEVER write page.locator('<bare-name>').",
+  "- NEVER assert on the page body (e.g. expect(page.locator('body')).toBeVisible()); assert the SPECIFIC text/state that changes.",
+  "- Prefer page.getByRole('button', { name: '<text>' }) / page.getByText('<text>') for real controls.",
+  '- Exactly one test per output; no helper functions; no external URLs.',
+].join('\n');
+
 function buildPrompt({ route, code }) {
   return `A new route "${route}" was added with no E2E test. Source:\n\n${code}\n\n` +
     `Write ONE Playwright test (TypeScript) importing { test, expect } from './fixtures', ` +
-    `navigating to '/#${route}', exercising the main interaction, and asserting a visible outcome.`;
+    `navigating to '/#${route}', exercising the main interaction, and asserting a visible outcome.\n` +
+    RULES;
 }
 
 // Build a spec directly from semantic-UI-diff ADD nodes (newly added UI with
@@ -72,8 +82,11 @@ export function specFromUiNodes(addNodes, { title, route = null }) {
 
 export async function generateFromUiNodes({ addNodes, title, route = null, client }) {
   const fallback = specFromUiNodes(addNodes, { title, route });
-  const prompt = `New UI elements were added: ${JSON.stringify(addNodes.map((n) => ({ tag: n.tag, text: n.text, testId: n.testId })))}. ` +
-    `Write ONE Playwright test importing { test, expect } from './fixtures' that exercises them and asserts a visible outcome.`;
+  const prompt = [
+    `New UI elements were added: ${JSON.stringify(addNodes.map((n) => ({ tag: n.tag, text: n.text, testId: n.testId })))}.`,
+    `Write ONE Playwright test importing { test, expect } from './fixtures' that exercises them and asserts a visible outcome.`,
+    RULES,
+  ].join('\n');
   const out = await client.complete(prompt, { fallback });
   return { spec: cleanGeneratedSpec(out || fallback) };
 }

@@ -53,6 +53,10 @@ export function buildGapPromptWithFewShot({ addNodes, title, route = null, shots
     formatFewShot(shots),
     'Write ONE Playwright test (TypeScript) that: navigates to the changed route/UI, exercises the primary interaction, and asserts a visible outcome.',
     "Use only this import: import { test, expect } from './fixtures';",
+    'API RULES (violating these makes the test invalid):',
+    "- If a testId is given, address it as page.getByTestId('<id>'). NEVER write page.locator('<bare-name>').",
+    "- NEVER assert on the page body (e.g. expect(page.locator('body')).toBeVisible()); assert the SPECIFIC text/state that changes.",
+    "- Prefer page.getByRole('button', { name: '<text>' }) / page.getByText('<text>') for real controls.",
     'Output ONLY the test code.',
   ].filter(Boolean).join('\n\n');
 }
