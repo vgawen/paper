@@ -1,0 +1,24 @@
+{
+  "r001": {
+    "arm": "diff",
+    "project": "actual_desktop",
+    "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+    "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+    "gap_file": "packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx",
+    "score": 1,
+    "fewshot": [
+      "e2e/accounts.mobile.test.ts",
+      "e2e/accounts.test.ts"
+    ],
+    "pass_at_1": false,
+    "pass_at_n": false
+  },
+  "r002": {
+    "arm": "nodiff",
+    "project": "actual_desktop",
+    "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+    "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+    "gap_file": "packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx",
+    "score": 1
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "project": "actual_desktop",
+  "provider": "deepseek",
+  "contexts_found": 1,
+  "contexts_picked": 1,
+  "rows": [
+    {
+      "project": "actual_desktop",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "gap_file": "packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx",
+      "score": 1,
+      "add_nodes": 1,
+      "fewshot": 2,
+      "covered": false,
+      "pass_at_1": false,
+      "pass_at_n": false
+    }
+  ]
+}
