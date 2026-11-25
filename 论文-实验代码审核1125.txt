@@ -1,0 +1,76 @@
+
+
+基于你提供的论文定稿候选版（v1.1）、《test-code graph 设计（2026-11-22）》文档 以及 Archive.zip 实验代码包目录与产物清单，我们对图模型设计、实验代码工程架构、评测逻辑及仓库制品一致性进行了交叉审核。（注：Archive.zip 当前按归档目录树与产物元数据级核验，模块内部调用逻辑结合设计文档与论文第 3–5 章及附录交叉核对。）
+
+审核总览
+
+审核维度	风险等级	核心发现摘要
+图理论与召回安全纪律	高危（P0）	设计文档宣称“仅 executes 动态边参与召回承诺”，但实际选择算法利用静态边（references / route-diff）将文件级覆盖裁剪至函数/路由级，导致召回保证事实上强依赖静态边完备性。
+图增量更新与路由覆盖	中高（P1）	增量更新仅重解析“直接 import 变更文件的文件”，在存在 Barrel 重导出时会残留脏边；未重跑测试的 executes 边存在被 last_seen 机制误衰减的逻辑冲突。
+实验脚本与主干管线割裂	高危（P0）	图实验（run_graph_selection.mjs、validate_*）作为独立外挂脚本存在，未并入主实验驱动（run_rq1/2/3.mjs、aggregate.mjs）与附录 A.2 复现命令。
+评测公式与数据口径矛盾	高危（P0）	Precision=1.0 仍基于同源覆盖 Oracle 计算；状态闭包公式泄漏未来真值 A*；src/main.js 过滤规则前后矛盾；actual-budget 存在 34 条与 62 条两套不一致基数。
+制品包（Artifact）卫生与冲突	中危（P1）	仓库保留了论文明确声明“不保留”的 condA 对照产物，表 A-1 映射与新主表脱节，且混杂早期 demo-app/、冗余试跑批次与大量 __MACOSX 隐藏文件。
+一、 Test-Code Graph 图设计缺陷审核
+
+1.1 “召回只靠动态 executes 边”与“静态边裁剪选集”存在逻辑悖论（P0）
+
+⚬     冲突表现：设计文档 §3.3 将“executes（dynamic）边是唯一参与召回承诺的边；calls/navigates/renders/locates/asserts 绝不进召回”定为核心纪律，并据此认为加入不确定的 heuristic 边（如动态分派不准的 calls 边）“永远安全”。然而，设计文档 §4 将选择定义为“从 diff seed 出发沿结构层 K 正向传播到代码实体，再沿 executes 落到 test”，且论文 §5.1.1 用函数级 executes、变量级 references 与 route-diff 将文件级覆盖选集从 54 次裁剪到 16 次（Reduction 从 0.625 提升至 0.8889）。
+⚬     根因剖析：“只增不减才不影响召回”是集合并集的基本性质。一旦你放弃“改文件选全文件覆盖测试”，转而依赖静态 references（模块变量 → 读取函数）或 K 层 calls 边去定位受影响函数，静态边一旦漏抽（如跨模块间接引用、动态属性读取、高阶回调分派），就会直接导致漏选（破坏 Safety）。
+⚬     修复建议：修正设计文档 §3.3 与论文 §3.4 的安全边界表述——明确区分用于缩窄文件覆盖域的确定性静态边（symbolic，如模块内变量引用，且遇到导出符号或动态访问必须保守回退文件级），与仅用于排序或补充上下文的 heuristic 边（严禁用于裁剪覆盖集）。
+
+1.2 增量更新算法（§6.3）存在两处一致性漏洞（P1）
+
+⚬     漏洞 A（穿透重导出的脏边残留）：设计文档 §6 强调采用 TS typeChecker（semanticResolve.mjs）穿透 import 别名、barrel 文件与重导出；但 §6.3 第 4 步规定当变更文件 F 的符号改名或删除时，只重解析“直接 import 了 F 的文件”。若文件 A 通过桶文件 index.ts 间接重导出引用了 F 的符号，A 并未直接 import F，1 跳重解析会导致 A → F 的语义边无法更新，从而破坏 §6.4“增量更新必须与全量重建完全一致”的验收标准。
+⚬     漏洞 B（动态边复用与 last_seen 衰减冲突）：§6.3 第 5–6 步规定仅重跑触达变更文件的测试 T_touch，其余测试直接复用旧 executes 边；但第 7 步同时规定“每次更新给重新确认的边刷 last_seen；长期未确认的降 confidence”。对于长期稳定、未被 diff 波及因此无需重跑的测试，其合法的 executes 边会因为没有重跑确认而被误降置信度甚至淘汰。
+⚬     修复建议：静态波及范围应沿 imports / exports 图做重导出传递闭包而非仅看 1 跳 import；动态边的衰减时钟应绑定到“该测试被重跑但未再触达某实体”，未重跑测试的复用边应保持原置信度不变。
+
+1.3 图模块实现进度与设计阶段、论文章节严重错位（P1）
+
+⚬     进度断层：设计文档 §5 将函数级 executes 记为已完成的 Stage 1（Reduction 0.6805），将 K 层、route/component、locates/asserts、state_slice/flag 列为待建的 Stage 2–5；§9 又称已建成 extract.mjs、resolve.mjs、semanticResolve.mjs、fileRoutes.mjs、testEdges.mjs，其中路由提取器仅列出了 SvelteKit 的 fileRoutes.mjs（+page.svelte），尚未列出 actual-budget 和 tldraw 所需的 React Router 解析器。
+⚬     论文断层：论文 §3.2 和第 4 章全文仍在描述 Stage 0 的扁平二部索引 M ⊆ E × T 与文件级 coverageMap.mjs / selector.mjs，而第 5 章却已经报出了四层归因图（Reduction 0.8889）、detectGaps 与 asserts 断点诊断的实验结论。必须将三者的架构代际统一到同一实际完成状态。
+
+二、 实验代码架构与评测逻辑问题审核
+
+2.1 实验代码呈“双轨制”，新图脚本游离于主干流水线之外（P0）
+
+⚬     目录核验：从 Archive.zip 可见，仓库中同时并存两套实验脚本：
+    1.         旧版文件级主干脚本：run_rq1.mjs、run_rq2.mjs、run_rq3.mjs、analyze.mjs、aggregate.mjs（产出 rq1_dataset.jsonl、rq1_summary.md、aggregate.json）；
+    2.         新版图验证外挂脚本：run_a2_func.mjs、build_testcode_graph.mjs、run_graph_selection.mjs、verify_graph_incremental.mjs、verify_real_incremental.mjs、validate_real_graph.mjs、validate_real_routes.mjs、validate_real_selection.mjs、validate_real_value.mjs、validate_rq3_diagnosis.mjs（产出 rq1_graph.json、a2_func_result.json、rq2_rq3_graph.md）。
+⚬     严重后果：论文附录 A.2 给出的“主实验复现命令”以及汇总脚本 aggregate.mjs 跑的完全是旧版文件级管线，根本不会生成论文主表（表 5-1 out/rq1_graph.json）和图诊断结果（out/rq2_rq3_graph.md）。评审人若按 REPRODUCE.md 或附录 A.2 重跑，将无法复现论文的核心数据。
+
+2.2 真实项目 RQ2 试跑产物碎片化，RQ2 / RQ3 主脚本未真正跑在图上（P1）
+
+⚬     管线脱节：run_rq2.mjs 与 run_rq3.mjs 内部依然调用旧版文件级 coverageGap、extractDomSignals 及 staleness.mjs 的 sigMap/segMap 硬规则，图查询仅在独立脚本 validate_rq3_diagnosis.mjs 中做了受控主体小样本验证。
+⚬     产物混乱：在 experiments/out/real/ 目录下，堆积了多轮命名混杂的真实项目 RQ2 试验产物（actual_desktop_rq2_*、actual_desktop_pro_rq2_*、actual_desktop_v2_rq2_*、actual_desktop_fs_rq2_*、actual_desktop_fb_rq2_*、actual_desktop_gap_rq2_*），缺少单一清晰的入口脚本参数映射，复现链条极易混淆。
+
+2.3 评测代码与论文公式存在 4 处硬性逻辑冲突（P0）
+
+1.     Precision = 1.0 的覆盖自证循环：metrics.mjs 与表 5-1 用文件级覆盖 Affected 计算 Precision = |Sel ∩ Affected| / |Sel|，导致选 54 次的文件级基线与仅选 16 次的 graph-selection 同时拿到 Precision = 1.0，与 §5.1.1 宣称“选中的每条测试都真正受影响（无噪声）”直接矛盾。
+2.     状态闭包公式泄漏未来 Oracle A*：§3.5 定义 SelClosed 时写入了 s ∈ (Sel ∩ A*)，既违背“选择阶段不接触 V_new”的无泄漏纪律，又无法解释表 5-3（run_sideeffect.mjs）全量套件新旧版本均 pass（A* = ∅）时 closeSelection 仍能纳回前置生产者 A 的实际代码行为。
+3.     src/main.js 过滤逻辑矛盾：§4.4 称 lib.mjs / run_rq1.mjs 解析受控主体 diff 时排除了 src/main.js，而设计文档 §1 与论文 §5.1.1 均指出 main.js 路由器改动导致文件级覆盖在 5 个过渡上全选 6 条用例。需核查 run_rq1.mjs 与 run_graph_selection.mjs 对 src/main.js 的过滤条件是否不一致。
+4.     真实项目测试基数分裂且多 Commit 回放表缺席主方法：actual-budget 在 actual_desktop_rq1.jsonl（表 5-4、表 5-9）中全量为 34 条用例（T_full = 110.84s），而在 §5.2 和 §5.4 图成本实验中全量为 62 条用例（T_full = 168s）；且表 5-4 的 14 个真实过渡只跑了 coverage_only / dual / uidiff_only，未填入核心方法 graph-selection 的回放结果。
+
+三、 仓库制品（Artifact）卫生与论文陈述冲突审核
+
+1.     仓库保留了论文明确声明“不保留”的对照材料（直接打架）
+    ⚬         论文附录 A.3 明确写道：“早期一轮预标注因缺少生成链记录未予采用，本文不保留其它信息条件的对照材料。”
+    ⚬         但在 Archive.zip 的 experiments/out/ 與 experiments/annotate/ 下，完整保留了 annotator1_condA.json、annotator1_condA_manifest.json、condA_material/、build_condA_material.mjs、run_annotator1_condA.mjs 以及 annotator1_condA_vs_masked_comparison.md。定稿打包前必须删除 condA 相关文件或修改附录 A.3 的措辞，避免制品审查时被判定陈述不实。
+2.     附录表 A-1（数据产物映射）未同步更新
+    ⚬         论文已将表 5-1 替换为 out/rq1_graph.json 的四层归因结果（原文件级表改为表 5-1a），但表 A-1 仍将“表 5-1”映射到旧产物 out/rq1_summary.md，且漏掉了 out/rq1_graph.json、out/rq2_rq3_graph.md 与 realproj/results/reprobreak_e2e_v2.md。
+3.     废弃目录与系统垃圾文件污染代码包
+    ⚬         归档根目录仍留有早期原型 demo-app/（4 条用例对应的 home/login/cart/profile）与根目录 cov/vold|vnew/，与正式受控主体 subject/base/ 重叠易造成误读；同时包含 rq2_results_stub_backup.*、tldraw_examples_rq1_v1_apponly_superseded.* 等废弃备份，以及上千个 macOS 生成的 __MACOSX/._* 和 .DS_Store 文件。
+
+四、 分级整改行动清单
+
+优先级	整改模块	具体操作项
+P0	修正理论与评测口径	1. 修正设计文档 §3.3 与论文 §3.4：明确 symbolic 静态边裁剪覆盖集时的完备性前提与跨文件回退边界，禁止 heuristic 边参与裁剪。
+2. 修正论文 §3.5 状态闭包公式：移除未运行真值 A*，对齐 statedep.mjs 中 closeSelection 的真实实现逻辑。
+3. 拆分表 5-1 / 5-1a 的 Precision 口径（区分相对覆盖影响域的 Precision_cov 与相对结果差异的 Precision_emp）。
+P0	打通主干复现脚本	1. 将 build_testcode_graph.mjs、run_graph_selection.mjs、validate_rq3_diagnosis.mjs 纳入附录 A.2、REPRODUCE.md 与 aggregate.mjs。
+2. 核对并统一 run_rq1.mjs 与 run_graph_selection.mjs 对 src/main.js 的过滤逻辑。
+3. 补充说明 actual-budget 34 条与 62 条用例的提交/配置差异，并将 validate_real_selection.mjs 测得的真实过渡图选择结果补入表 5-4。
+P1	修补图增量更新细节	1. 在 update.mjs（设计文档 §6.3）中将符号变更波及范围从“直接 import F”扩展为沿重导出链的传递闭包，并跑通 verify_graph_incremental.mjs / verify_real_incremental.mjs 验证“增量 == 全量”。
+2. 修正 last_seen 衰减条件，仅对“重跑后未再覆盖”的动态边衰减，保护未重跑测试的复用边。
+3. 同步更新论文 §3.2 与第 4 章，补齐 pipeline/src/graph/ 各模块（extract/resolve/semanticResolve/fileRoutes/testEdges）的实现说明。
+P1	清理制品包与映射表	1. 更新附录表 A-1，对齐表 5-1（rq1_graph.json）、表 5-1a（rq1_summary.md）及新增的图与修复 v2 产物。
+2. 清理 condA 相关产物（或修正附录 A.3“不保留”的绝对化陈述），移除根目录废弃的 demo-app/、cov/、*_superseded*、*_stub_backup* 以及所有 .DS_Store / __MACOSX 文件。
