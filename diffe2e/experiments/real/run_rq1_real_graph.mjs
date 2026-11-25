@@ -82,6 +82,27 @@ function ensureBrowser() {
   try { execSync(cmd, { cwd: adapter.runAbs, stdio: 'pipe', timeout: 600000 }); } catch { /* best effort */ }
 }
 
+// Parse a Playwright JSON report into { "<file> > <title>": 'pass'|'fail' } so the
+// non-circular outcome oracle (A_obs) can be computed across V_old/V_new.
+function loadOutcomes(reportPath) {
+  const out = {};
+  if (!fs.existsSync(reportPath)) return out;
+  let rep; try { rep = JSON.parse(fs.readFileSync(reportPath, 'utf8')); } catch { return out; }
+  // test id must match the coverage fixture's id = testInfo.titlePath.join(' > '),
+  // i.e. "<file> > <describe...> > <test title>" — accumulate suite titles.
+  const walk = (suite, prefix) => {
+    const chain = suite.title ? [...prefix, suite.title] : prefix;
+    for (const spec of suite.specs || []) {
+      const file = path.basename(spec.file || suite.file || '');
+      const parts = chain[0] === file ? chain.slice(1) : chain;
+      out[[file, ...parts, spec.title].join(' > ')] = spec.ok ? 'pass' : 'fail';
+    }
+    for (const s of suite.suites || []) walk(s, chain);
+  };
+  for (const s of rep.suites || []) walk(s, []);
+  return out;
+}
+
 function changedEntities(prev, sha) {
   const srcGlobs = Array.isArray(adapter.srcGlobs) ? adapter.srcGlobs : [adapter.srcGlob];
   const diff = gitIn(adapter.repoAbs, `diff ${prev} ${sha} -- ${srcGlobs.join(' ')}`);
@@ -115,6 +136,7 @@ async function main() {
       injectCdpCoverage(adapter);
       const rOld = runSuiteLive(adapter);
       const covOld = loadCovFunc(rOld.covAbs);
+      const outOld = loadOutcomes(path.join(adapter.runAbs, 'rw-report.json'));
       if (!Object.keys(covOld).length) { out.push({ tag, skipped: 'no_cov_vold' }); console.log(`${tag} SKIP no_cov_vold`); continue; }
 
       // V_new: file-level coverage for the affected oracle + pass/fail
@@ -124,6 +146,7 @@ async function main() {
       injectCdpCoverage(adapter);
       const rNew = runSuiteLive(adapter);
       const covNew = loadCovFunc(rNew.covAbs);
+      const outNew = loadOutcomes(path.join(adapter.runAbs, 'rw-report.json'));
 
       // graph on V_old source + V_old evidence
       checkoutSha(adapter.repoAbs, t.prev);
@@ -152,7 +175,17 @@ async function main() {
         const hit = affected.filter((t) => s.has(t)).length;
         return { selected: s.size, Reduction: S ? +(1 - s.size / S).toFixed(4) : 0, Safety: affected.length ? +(hit / affected.length).toFixed(4) : 1, Precision: s.size ? +(hit / s.size).toFixed(4) : 1 };
       };
-      out.push({ tag, full: S, changed_files: ch.files.length, cov_only: m(selFile), graph: m(selGraph) });
+      // non-circular outcome oracle: tests whose verdict changed between V_old and V_new
+      const aObs = Object.keys(outOld).filter((t) => outNew[t] && outOld[t] !== outNew[t]);
+      const selGraphIds = new Set([...selGraph].map((x) => String(x).replace(/^test::/, '')));
+      const selFileIds = new Set(selFile);
+      const hitG = aObs.filter((t) => selGraphIds.has(t)).length;
+      const hitF = aObs.filter((t) => selFileIds.has(t)).length;
+      const safetyEmp = (hit, sel) => aObs.length === 0 ? null : hit;
+      out.push({ tag, full: S, changed_files: ch.files.length, cov_only: m(selFile), graph: m(selGraph),
+        a_obs: aObs.length,
+        safety_emp_graph: aObs.length ? +(hitG / aObs.length).toFixed(4) : null,
+        safety_emp_cov: aObs.length ? +(hitF / aObs.length).toFixed(4) : null });
       console.log(`${tag} full=${S} files=${ch.files.length} | cov R=${m(selFile).Reduction} S=${m(selFile).Safety} | graph R=${m(selGraph).Reduction} S=${m(selGraph).Safety}`);
     } catch (e) {
       out.push({ tag, error: e.message });
@@ -167,6 +200,12 @@ async function main() {
     console.log(`\n=== ${adapter.name} graph-selection (n=${ok.length}) ===`);
     console.log(`coverage_only: Reduction=${mean(ok.map((r) => r.cov_only.Reduction))} Safety=${mean(ok.map((r) => r.cov_only.Safety))}`);
     console.log(`graph        : Reduction=${mean(ok.map((r) => r.graph.Reduction))} Safety=${mean(ok.map((r) => r.graph.Safety))}`);
+    const obs = ok.filter((r) => (r.a_obs || 0) > 0);
+    if (obs.length) {
+      console.log(`SafetyEmp (非循环, n=${obs.length} 过渡): graph=${mean(obs.map((r) => r.safety_emp_graph))} cov=${mean(obs.map((r) => r.safety_emp_cov))}`);
+    } else {
+      console.log('SafetyEmp: 无过渡产生结果差异（A_obs 全空）');
+    }
   }
   console.log(`written: ${outFile}`);
 }
