@@ -45,6 +45,8 @@ function collectCandidates({ adapter, rq1Rows }) {
   const coveredFiles = coveredFileSet(adapter);
   for (const row of rq1Rows) {
     for (const file of row.changed || []) {
+      // never treat a TEST file as an application gap
+      if (/(\.spec\.|\.test\.|(^|\/)(tests?|e2e|__tests__)\/)/i.test(file)) continue;
       let oldCode = safeShow(adapter.repoAbs, row.prev, file);
       let newCode = safeShow(adapter.repoAbs, row.sha, file);
       if (!newCode) continue;
@@ -64,8 +66,12 @@ function collectCandidates({ adapter, rq1Rows }) {
       const fallbackNodes = addNodes.length ? addNodes : buildAddNodesFromDomSignals(newCode);
       const score = nodeCount + domCount || newNodeCount;
       if (score <= 0) continue;
-      // C1: skip files already exercised by some existing test (not a real gap)
-      const covered = coveredFiles.has(file) || coveredFiles.has(`packages/desktop-client/${file}`);
+      // C1: skip files already exercised by some existing test (not a real gap).
+      // Coverage keys are LEAF-relative (src/components/x.tsx) while the candidate
+      // path is repo-relative (packages/desktop-client/src/components/x.tsx) — strip
+      // the runDir prefix before looking up.
+      const leafPath = adapter.runRel ? file.replace(new RegExp(`^${adapter.runRel}/`), '') : file;
+      const covered = coveredFiles.has(file) || coveredFiles.has(leafPath);
       if (process.env.RQ2_REQUIRE_GAP === '1' && covered) continue;
       candidates.push({
         project: adapter.name,
