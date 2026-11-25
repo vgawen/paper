@@ -534,6 +534,8 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 | mermaid-live-editor | SvelteKit + Vite dev | 5 | coverage_only / dual | 0.0 | **1.0** | **1.0** |
 | | | | uidiff_only | 1.0 | 0.0 | **1.0** |
 
+**表 5-4 的口径说明**：该表的 14 个过渡是**文件级**方法的回放（coverage_only / uidiff_only / dual），用于回答"文件级选择与最强覆盖基线是否等价"这一消融问题；**函数级四层归因（graph-selection）的结果不在该表**，而在 §5.1.1（受控主体 24 过渡：0.625→0.889）与 §5.4（actual-budget 62 用例的 NetSaving −5.4%→+83.0~94.6%）。原因是函数级归因需要**逐过渡重跑函数级 CDP 覆盖**（两次全量套件 + 依赖安装），其成本远高于文件级回放；逐过渡的 graph-selection 回放脚本已随代码提供（`experiments/real/run_rq1_real_graph.mjs`，命令见附录 A.2），列入后续工作。
+
 跨项目合计 n=14：dual 在两项目上均 **Safety=1.0、Precision=1.0**（bootstrap 95% CI 均为 [1,1]）；coverage_only 与 dual 逐过渡选中集合相同（属上文 50 个过渡逐例等价的一部分，Wilcoxon dual vs coverage_only 三指标 p=1）。来源 `out/real/{actual_desktop,mermaid_live}_rq1.json`、`out/real/real_rq1_stats.md`。
 
 ![图 5-3　真实项目逐过渡的 Reduction 与 Safety 对比](diffe2e/experiments/out/figs/rq1_real_transitions.svg)
