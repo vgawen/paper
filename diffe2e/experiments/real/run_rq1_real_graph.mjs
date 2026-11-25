@@ -9,6 +9,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execSync } from 'node:child_process';
 import { loadAdapter, gitIn, checkoutSha, installLive, injectCdpCoverage, runSuiteLive } from './engine.mjs';
 import { Graph } from '../../pipeline/src/graph/graph.mjs';
 import { addTestEdges } from '../../pipeline/src/graph/testEdges.mjs';
@@ -16,7 +17,7 @@ import { selectAffected, routeDiff } from '../../pipeline/src/graph/select.mjs';
 import { changedEntitiesFromCode } from '../../pipeline/src/astEntities.mjs';
 import { parseUnifiedDiff } from '../../pipeline/src/diff.mjs';
 import { nodeId } from '../../pipeline/src/graph/extract.mjs';
-import { srcLeaf } from '../../pipeline/src/covinject.mjs';
+import { srcLeaf, mapLeafRelToRepoRel } from '../../pipeline/src/covinject.mjs';
 import { discoverWorkspace, collectSrc } from '../../pipeline/src/graph/workspace.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -40,9 +41,12 @@ function loadCovFunc(covAbs) {
     if (!f.endsWith('.json') || f.startsWith('_')) continue;
     let o; try { o = JSON.parse(fs.readFileSync(path.join(covAbs, f), 'utf8')); } catch { continue; }
     if (!o.test) continue;
+    // coverage keys are LEAF-relative (src/…); the diff is REPO-relative
+    // (packages/desktop-client/src/…) — map them into the same namespace.
+    const toRepo = (p) => mapLeafRelToRepoRel(norm(p), adapter.srcGlob);
     const funcs = {};
-    for (const [k, names] of Object.entries(o.funcs || {})) funcs[norm(k)] = names;
-    map[o.test] = { files: (o.files || []).map(norm), funcs };
+    for (const [k, names] of Object.entries(o.funcs || {})) funcs[toRepo(k)] = names;
+    map[o.test] = { files: (o.files || []).map(toRepo), funcs };
   }
   return map;
 }
@@ -57,6 +61,25 @@ function repoFilesAtRun() {
     if (!files.some((x) => x.path === f.path)) files.push(f);
   }
   return files;
+}
+
+// Fetch a single commit snapshot on demand (depth 1). Required when the local
+// clone is partial/shallow: without this, `checkout <sha>` fails on missing blobs.
+function ensureCommit(sha) {
+  try { gitIn(adapter.repoAbs, `cat-file -e ${sha}^{commit}`); } catch { /* missing */ }
+  try {
+    gitIn(adapter.repoAbs, `cat-file -e ${sha}^{commit}`);
+    return; // already present
+  } catch { /* need to fetch */ }
+  console.log(`  fetching ${sha.slice(0, 10)} (depth=1)`);
+  gitIn(adapter.repoAbs, `fetch --depth=1 origin ${sha}`);
+}
+
+// Playwright pins a browser build per version; an old commit needs its own
+// Chromium revision (see paper §4.5 "浏览器版本漂移"). Install it after deps.
+function ensureBrowser() {
+  const cmd = adapter.testOneCmd.replace(/ --?workers?=\d+/, '').replace(/\bplaywright test\b.*$/, 'playwright install chromium');
+  try { execSync(cmd, { cwd: adapter.runAbs, stdio: 'pipe', timeout: 600000 }); } catch { /* best effort */ }
 }
 
 function changedEntities(prev, sha) {
@@ -84,8 +107,11 @@ async function main() {
     const tag = `${t.prev.slice(0, 7)}→${t.sha.slice(0, 7)}`;
     try {
       // V_old: function-level coverage
+      ensureCommit(t.prev);
+      ensureCommit(t.sha);
       checkoutSha(adapter.repoAbs, t.prev);
       if (!installLive(adapter)) { out.push({ tag, skipped: 'install_vold' }); console.log(`${tag} SKIP install_vold`); continue; }
+      ensureBrowser();
       injectCdpCoverage(adapter);
       const rOld = runSuiteLive(adapter);
       const covOld = loadCovFunc(rOld.covAbs);
@@ -94,6 +120,7 @@ async function main() {
       // V_new: file-level coverage for the affected oracle + pass/fail
       checkoutSha(adapter.repoAbs, t.sha);
       if (!installLive(adapter)) { out.push({ tag, skipped: 'install_vnew' }); console.log(`${tag} SKIP install_vnew`); continue; }
+      ensureBrowser();
       injectCdpCoverage(adapter);
       const rNew = runSuiteLive(adapter);
       const covNew = loadCovFunc(rNew.covAbs);
