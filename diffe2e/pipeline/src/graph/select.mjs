@@ -51,7 +51,11 @@ export function selectAffected(graph, {
 
   // 1 + 2. changed functions + variables read by functions -> affected functions
   const affectedFns = new Set(changedFns);
-  for (const v of changedVars) for (const fn of readers.get(v) || []) affectedFns.add(fn);
+  const unsafeVars = new Set(); // narrowed only by an incomplete static edge -> file-level fallback
+  for (const v of changedVars) {
+    if (!readers.has(v) || !isSafelyNarrowable(graph, v)) { unsafeVars.add(v); continue; }
+    for (const fn of readers.get(v)) affectedFns.add(fn);
+  }
 
   const sel = new Set();
   for (const e of graph.edges) {
@@ -69,8 +73,9 @@ export function selectAffected(graph, {
     }
   }
 
-  // 4. file-level fallback: variables with no reader (not route table) -> tests touching their file
-  const unresolvedVars = [...changedVars].filter((v) => !readers.has(v) && !routeTableVars.has(v));
+  // 4. file-level fallback: variables that cannot be narrowed safely (no reader, or
+  // a reader set that is not provably complete: exported / dynamic-access file)
+  const unresolvedVars = [...changedVars].filter((v) => unsafeVars.has(v) && !routeTableVars.has(v));
   if (unresolvedVars.length) {
     const unresolvedFiles = new Set(
       unresolvedVars.map((v) => graph.nodes.find((n) => n.id === v)?.file).filter(Boolean)
@@ -99,4 +104,19 @@ export function detectGaps(graph, { kinds = ['function', 'method', 'route'] } = 
     if (e.kind === 'executes' || e.kind === 'navigates') covered.add(e.target);
   }
   return graph.nodes.filter((n) => kinds.includes(n.kind) && !covered.has(n.id));
+}
+
+// A changed variable can only be narrowed by static `references` when that
+// narrowing is PROVABLY complete. It is NOT when the variable is exported (another
+// module may read it through an edge we did not extract) or when the file has
+// dynamic property access (`obj[name]`, `window[...]`, string-keyed lookup), which
+// can read a variable without a syntactic identifier reference. In those cases the
+// caller must fall back to file-level selection, or recall is no longer guaranteed.
+export function isSafelyNarrowable(graph, varId) {
+  const v = graph.nodes.find((n) => n.id === varId);
+  if (!v) return false;
+  if (v.isExported) return false;
+  const file = v.file;
+  const dyn = graph.nodes.find((n) => n.id === `dynaccess::${file}`);
+  return !dyn; // no dynamic-access marker recorded for this file
 }

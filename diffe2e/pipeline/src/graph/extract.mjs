@@ -86,6 +86,7 @@ export function extractFile(filePath, code) {
   const moduleVarNames = new Set();
   const routeTableVars = new Set();
   const refSeen = new Set();
+  let dynAccess = false;
   const collectModuleVars = (node) => {
     if (node.type === 'lexical_declaration' || node.type === 'variable_declaration') {
       const p = node.parent;
@@ -113,6 +114,10 @@ export function extractFile(filePath, code) {
       const c = calleeName(node);
       if (c && c !== 'import') edges.push({ source: ownerId, target: `call::${c}`, kind: 'calls', provenance: 'heuristic', line: lineOf(node), callee: c });
     }
+    // dynamic property access (`obj[name]`, `window[k]`) can read a module variable
+    // without a syntactic identifier reference -> narrowing by static references is
+    // no longer provably complete for this file.
+    if (node.type === 'subscript_expression') dynAccess = true;
     // value-reference: identifier that names a module-level variable, read inside a function
     if (node.type === 'identifier' && ownerId && moduleVarNames.has(node.text)) {
       const varId = nodeId(filePath, node.text);
@@ -285,6 +290,9 @@ export function extractFile(filePath, code) {
 
   // mark route-table variables (handled by route-level, not value-reference)
   for (const n of nodes) if (n.kind === 'variable' && routeTableVars.has(n.name)) n.isRouteTable = true;
+
+  // record a dynamic-access marker so the selector knows narrowing is unsafe here
+  if (dynAccess) nodes.push({ id: `dynaccess::${filePath}`, kind: 'marker', name: 'dynaccess', qualifiedName: '<dynaccess>', file: filePath, startLine: 0, endLine: 0 });
 
   return { nodes, edges };
 }

@@ -4,7 +4,7 @@
     "graph": {
       "Reduction": 0.8889,
       "Safety_cov": 0.5833,
-      "Precision": 1
+      "Precision_cov": 1
     },
     "coverage_only": {
       "Reduction": 0.625,
@@ -12,6 +12,9 @@
       "Precision": 1
     },
     "SafetyEmp": 1,
+    "PrecisionEmp": 1,
+    "PrecisionEmp_transitions": 4,
+    "CoverageOnly_PrecisionEmp": 1,
     "recall_misses": 0
   },
   "rows": [
@@ -29,8 +32,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "home.spec.ts > home shows welcome title"
+      ]
     },
     {
       "tag": "c02",
@@ -46,8 +57,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "search.spec.ts > search filters items by query"
+      ]
     },
     {
       "tag": "c03",
@@ -63,8 +82,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 6,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c04",
@@ -80,8 +105,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 2,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c05",
@@ -97,8 +128,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "profile.spec.ts > profile edits the name"
+      ]
     },
     {
       "tag": "c06",
@@ -114,8 +153,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "login.spec.ts > login greets the user after submit"
+      ]
     },
     {
       "tag": "c07",
@@ -131,8 +178,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "orders.spec.ts > orders lists prior orders with totals"
+      ]
     },
     {
       "tag": "c08",
@@ -148,8 +203,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 1,
+      "precision_emp": 1,
+      "cov_sel": 1,
+      "cov_precision_emp": 1,
+      "safety_emp": 1,
+      "missed": 0,
+      "selected": [
+        "cart.spec.ts > cart adds an item and updates count and total"
+      ]
     },
     {
       "tag": "c09",
@@ -165,8 +228,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "search.spec.ts > search filters items by query"
+      ]
     },
     {
       "tag": "c10",
@@ -182,8 +253,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c11",
@@ -199,8 +276,17 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 2,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "cart.spec.ts > cart adds an item and updates count and total",
+        "login.spec.ts > login greets the user after submit"
+      ]
     },
     {
       "tag": "c12",
@@ -216,8 +302,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 6,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c13",
@@ -233,8 +325,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 6,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c14",
@@ -250,8 +348,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c15",
@@ -267,8 +371,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 1,
+      "precision_emp": 1,
+      "cov_sel": 1,
+      "cov_precision_emp": 1,
+      "safety_emp": 1,
+      "missed": 0,
+      "selected": [
+        "login.spec.ts > login greets the user after submit"
+      ]
     },
     {
       "tag": "c16",
@@ -284,8 +396,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "profile.spec.ts > profile edits the name"
+      ]
     },
     {
       "tag": "c17",
@@ -301,8 +421,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 2,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c18",
@@ -318,8 +444,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 1,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "profile.spec.ts > profile edits the name"
+      ]
     },
     {
       "tag": "c19",
@@ -335,8 +469,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 6,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c20",
@@ -352,8 +492,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 1,
+      "precision_emp": 1,
+      "cov_sel": 1,
+      "cov_precision_emp": 1,
+      "safety_emp": 1,
+      "missed": 0,
+      "selected": [
+        "search.spec.ts > search filters items by query"
+      ]
     },
     {
       "tag": "c21",
@@ -369,8 +517,16 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 1,
+      "precision_emp": 1,
+      "cov_sel": 1,
+      "cov_precision_emp": 1,
+      "safety_emp": 1,
+      "missed": 0,
+      "selected": [
+        "orders.spec.ts > orders lists prior orders with totals"
+      ]
     },
     {
       "tag": "c22",
@@ -386,8 +542,17 @@
         "full_suite": 6
       },
       "safety": 1,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 2,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": [
+        "home.spec.ts > home shows welcome title",
+        "profile.spec.ts > profile edits the name"
+      ]
     },
     {
       "tag": "c23",
@@ -403,8 +568,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 6,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     },
     {
       "tag": "c24",
@@ -420,8 +591,14 @@
         "full_suite": 6
       },
       "safety": 0,
-      "precision": 1,
-      "missed": 0
+      "precision_cov": 1,
+      "aobs": 0,
+      "precision_emp": null,
+      "cov_sel": 2,
+      "cov_precision_emp": null,
+      "safety_emp": null,
+      "missed": 0,
+      "selected": []
     }
   ]
 }

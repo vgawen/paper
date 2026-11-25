@@ -65,3 +65,62 @@ test('addStaticTestEdges: parses locators + assertions into asserts edges', () =
   assert.ok(targets.includes('ui:cart-count'));
   assert.ok(targets.includes('ui:1'));
 });
+
+test('selectAffected: exported variable falls back to file level (static readers are incomplete)', () => {
+  const graph = {
+    nodes: [
+      { id: 'src/a.ts::CONF', kind: 'variable', name: 'CONF', file: 'src/a.ts', isExported: true },
+      { id: 'src/a.ts::onlyReader', kind: 'function', name: 'onlyReader', file: 'src/a.ts' },
+      { id: 'src/a.ts::otherFn', kind: 'function', name: 'otherFn', file: 'src/a.ts' },
+      { id: 'test::t_reader', kind: 'test' },
+      { id: 'test::t_other', kind: 'test' },
+    ],
+    edges: [
+      { kind: 'references', source: 'src/a.ts::onlyReader', target: 'src/a.ts::CONF' },
+      { kind: 'executes', source: 'test::t_reader', target: 'src/a.ts::onlyReader' },
+      { kind: 'executes', source: 'test::t_other', target: 'src/a.ts::otherFn' },
+    ],
+  };
+  const sel = selectAffected(graph, { changedVars: new Set(['src/a.ts::CONF']) });
+  // exported var -> cannot narrow -> file-level: BOTH tests of that file are selected
+  assert.ok(sel.has('test::t_reader'));
+  assert.ok(sel.has('test::t_other'), 'exported variable must not be narrowed to the single static reader');
+});
+
+test('selectAffected: file with dynamic access falls back to file level', () => {
+  const graph = {
+    nodes: [
+      { id: 'src/b.ts::MAP', kind: 'variable', name: 'MAP', file: 'src/b.ts' },
+      { id: 'src/b.ts::reader', kind: 'function', name: 'reader', file: 'src/b.ts' },
+      { id: 'src/b.ts::dyn', kind: 'function', name: 'dyn', file: 'src/b.ts' },
+      { id: 'dynaccess::src/b.ts', kind: 'marker', name: 'dynaccess', file: 'src/b.ts' },
+      { id: 'test::x1', kind: 'test' }, { id: 'test::x2', kind: 'test' },
+    ],
+    edges: [
+      { kind: 'references', source: 'src/b.ts::reader', target: 'src/b.ts::MAP' },
+      { kind: 'executes', source: 'test::x1', target: 'src/b.ts::reader' },
+      { kind: 'executes', source: 'test::x2', target: 'src/b.ts::dyn' },
+    ],
+  };
+  const sel = selectAffected(graph, { changedVars: new Set(['src/b.ts::MAP']) });
+  assert.ok(sel.has('test::x1') && sel.has('test::x2'), 'dynamic-access file must fall back to file level');
+});
+
+test('selectAffected: non-exported variable in a static-only file IS narrowed', () => {
+  const graph = {
+    nodes: [
+      { id: 'src/c.ts::ITEMS', kind: 'variable', name: 'ITEMS', file: 'src/c.ts', isExported: false },
+      { id: 'src/c.ts::render', kind: 'function', name: 'render', file: 'src/c.ts' },
+      { id: 'src/c.ts::unused', kind: 'function', name: 'unused', file: 'src/c.ts' },
+      { id: 'test::r', kind: 'test' }, { id: 'test::u', kind: 'test' },
+    ],
+    edges: [
+      { kind: 'references', source: 'src/c.ts::render', target: 'src/c.ts::ITEMS' },
+      { kind: 'executes', source: 'test::r', target: 'src/c.ts::render' },
+      { kind: 'executes', source: 'test::u', target: 'src/c.ts::unused' },
+    ],
+  };
+  const sel = selectAffected(graph, { changedVars: new Set(['src/c.ts::ITEMS']) });
+  assert.ok(sel.has('test::r'));
+  assert.ok(!sel.has('test::u'), 'a provably-complete static reader set may be narrowed');
+});
