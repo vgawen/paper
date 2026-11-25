@@ -526,5 +526,24 @@
       "output_tokens_est": 19149,
       "estimated_usd": 0.111454
     }
-  }
+  },
+  "rq1_graph": {
+    "n": 24,
+    "graph": {
+      "Reduction": 0.8889,
+      "Safety_cov": 0.5833,
+      "Precision_cov": 1
+    },
+    "coverage_only": {
+      "Reduction": 0.625,
+      "Safety": 1,
+      "Precision": 1
+    },
+    "SafetyEmp": 1,
+    "PrecisionEmp": 1,
+    "PrecisionEmp_transitions": 4,
+    "CoverageOnly_PrecisionEmp": 1,
+    "recall_misses": 0
+  },
+  "rq1_graph_note": "four-layer attribution over test-code graph (main method, table 5-1); file-level dual is the ablation in table 5-1a"
 }

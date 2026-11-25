@@ -768,7 +768,7 @@ RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据
 - **外部效度**：主体为受控工程；真实多 commit replay（RQ1）已在 2 个真实开源项目（actual-budget、mermaid-live-editor，14 个稳定过渡）上完成并给出 dual Safety/Precision=1.0（§5.1），另接第三例 tldraw（12 个稳定过渡）**单列、不并入上述 14 个过渡的合并统计**，仅用于 50 个过渡的逐例等价核查；但项目数仍有限、且均为现代前端应用；真实 LLM 生成（RQ2）与修复（RQ3）对照已用 DeepSeek 跑通；真实 wall-clock（RQ4）已在 cand_coverage 与 actual_desktop 两个场景给出 NetSaving，并对 actual_desktop 给出多过渡平均，但 actual_desktop 的 `T_select` 尚未实测，仍需扩大项目与过渡数量。
 - **构造效度**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并辅以变异压力测试，破除 Safety 自证循环；但 `A_obs` 在自然 diff 下样本偏小（4 个过渡），变异增强部分缓解。复核还发现自动指标依赖结果记录的正确性：RQ2 受控 c03/nodiff 一格原记录与冻结用例的执行结果不符，已按钉住环境重跑修正（其余五个受控执行格逐格复现），详见 §5.2 与 `diffe2e/experiments/out/repro_c03_20261108/REPRO_C03_FORENSICS.md`。
 - **内部效度**：命题 1 的安全性是条件安全（H1–H3）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。
-- **标注效度**：第一标注列为 LLM 辅助预标注。正式列按协议 B 盲评材料、固定模型与参数生成，RQ2 与 RQ3 各重复 3 次并取**三次多数票**；必须同时报告 3/3、2/3、1/3 一致率与不稳定条目清单，因为 `temperature=0` 并不保证确定性（本文实测 70 条中 1 条为 2/3 摆动）。早期一轮预标注因缺少生成链记录未予采用。RQ3 的 `rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后新旧两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。这说明该类基准存在一类无法靠遮蔽后的结构信号判定的断裂；本文如实披露，不因此放松通用遮蔽规则。第二标注者为人工盲评（未见第一列；作者本人填写时同样保持盲评隔离）；两列的一致性已按 §5.6 合并并报告，正文仍不把 LLM 预标注列称为"双人独立盲评"。RQ3 的自动分诊 `model_label` 由 locator 断裂构造而恒为 STRUCTURAL_ONLY，模型-人工 κ 不作为方法优越性证据；完整流程、样本构成与当前状态见 §5.6。
+- **标注效度**：第一标注列为 LLM 辅助预标注。正式列按协议 B 盲评材料、固定模型与参数生成，RQ2 与 RQ3 各重复 3 次并取**三次多数票**；必须同时报告 3/3、2/3、1/3 一致率与不稳定条目清单，因为 `temperature=0` 并不保证确定性（本文实测 70 条中 1 条为 2/3 摆动）。早期一轮预标注因缺少生成链记录未予采用；其对照材料（condA 条件）已从随稿制品中移除，不在本稿保留。RQ3 的 `rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后新旧两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。这说明该类基准存在一类无法靠遮蔽后的结构信号判定的断裂；本文如实披露，不因此放松通用遮蔽规则。第二标注者为人工盲评（未见第一列；作者本人填写时同样保持盲评隔离）；两列的一致性已按 §5.6 合并并报告，正文仍不把 LLM 预标注列称为"双人独立盲评"。RQ3 的自动分诊 `model_label` 由 locator 断裂构造而恒为 STRUCTURAL_ONLY，模型-人工 κ 不作为方法优越性证据；完整流程、样本构成与当前状态见 §5.6。
 - **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性以变异杀伤率与版本差分敏感性两个客观自动指标为主度量，人工复核用于方向校准而非替代自动指标。RQ2 真实 DeepSeek 对照给出 diff vs nodiff 的自动语义指标差异（表 5-5，diff 臂自动语义有效率 1.0）；30 条真实项目复核的协议 B 三次多数票为 **diff 2/15、nodiff 0/15**，方向与自动指标一致但绝对水平远低于 1.0，只能作为**外部效度限定**，不能写成"复现 1.0"，也不能把自动语义有效率等同于人工语义判断。RQ3 受控主体仅 4 条，不支撑过时分类一致性结论，因此从 ReproBreak 414 条无泄漏评估样本中抽取 40 条做人工复核；协议 B 正式列为 **SO=40、EC=0、SR=0**，其中 39 条可判为结构性，`rb033` 经作者复核应为 EC、属遮蔽造成的协议固有边界并单列披露；样本构成偏向测试 API 迁移，κ 的少数类稳定性有限，且偏斜分布下 κ 可能接近 0 或为负，必须同报 `Po`/`Pe` 与混淆矩阵。三次重复 70 条中 69 条完全一致、1 条 2/3、无 1/3。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂 3.38% 与 DeepSeek LLM 臂 7.25%——二者均远低于上界，正面量化了信号检测的难度。仍存局限：端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
 - **RQ2 样本构造效度（新发现）**：事后复核发现，原 30 条真实项目"缺口"样本中 **12/14 个文件其实已被既有测试覆盖**（actual-budget 62 条 E2E 覆盖了 24 个变更 app 文件中的 20 个），即生成器在为新 UI 写测试、而该 UI 本有测试——生成任务在回答一个非缺口问题。按"文件确实无测试覆盖"筛选后只剩 4 个真实缺口文件（其中 1 个具可生成信号）。因此 RQ2 的 0/30 首先应归因于**样本缺口未经验证**，其次是生成能力；这是本文把 `detectGaps` 接入生成流程的直接动因，也说明真实前向开发中"有 UI 变更但完全无测试覆盖"的缺口天然稀缺。
 - **RQ3 语义口径的适用范围（新发现）**：端到端修复池中只有 **28%（115/414）** 的断裂具备语义锚点替换空间（testId/文本/label），占池 59% 的 `angular-slickgrid` 几乎全是 CSS class/XPath 断裂，语义等价口径与候选定位器在那里**原理上不可用**。因此语义口径必须限定在 distinctive 子集（n=90）报告，不能外推为全池水平；这也解释了两轮改进在全池 exact-match 上的"无提升"。
@@ -806,6 +806,22 @@ RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据
 cd diffe2e
 node --test pipeline/test/*.test.mjs experiments/*.test.mjs experiments/real/*.test.mjs experiments/annotate/*.test.mjs
 node subject/history/seed.mjs
+
+# —— 主方法（test-code graph 四层归因）——
+# 产出表 5-1（out/rq1_graph.json）与表 5-1a 的对照
+node experiments/run_graph_selection.mjs
+# 校验增量更新与全量重建逐例一致（含真实仓库）
+node experiments/verify_graph_incremental.mjs
+node experiments/verify_real_incremental.mjs real/mermaid-live-editor src 8
+node experiments/verify_real_incremental.mjs real/actual packages/desktop-client/src 8
+# 图规模/路由/解析率与 RQ2/RQ3 的图诊断演示
+node experiments/validate_real_graph.mjs real/actual packages/desktop-client/src
+node experiments/validate_real_routes.mjs
+node experiments/validate_rq3_diagnosis.mjs
+node experiments/a2_func_attribution.mjs
+node experiments/build_testcode_graph.mjs
+
+# —— 文件级基线 / 消融（表 5-1a）——
 node experiments/run_rq1.mjs
 node experiments/analyze.mjs
 node experiments/uidiff_loop.mjs
@@ -819,6 +835,9 @@ node experiments/run_rq4_cost.mjs experiments/real/adapters/cand_coverage.json "
 node experiments/run_rq4_cost.mjs experiments/real/adapters/actual_desktop.json "" 2 3 34
 node experiments/run_rq4_batch.mjs experiments/out/real/actual_desktop_rq1.jsonl experiments/out/real/actual_desktop_rq4.json dual
 node experiments/run_llm_cost.mjs
+
+# 真实项目上的函数级覆盖 + graph-selection（需先 clone 并安装 actual-budget）
+node experiments/real/run_rq1_real_graph.mjs experiments/real/adapters/actual_desktop.json 9
 ```
 
 依赖安装命令见 `diffe2e/REPRODUCE.md`。C1 动态实验与对应单测需要 `real/cand_coverage/`（被 gitignore，不随仓库分发）；缺失时该单测自动跳过，其余实验不受影响。
@@ -864,7 +883,10 @@ node experiments/annotate/render_kappa_backfill.mjs
 | 表/图 | 数据产物 |
 |---|---|
 | 表 3-1 | 方法论推导，见 `diffe2e/docs/SAFETY.md` |
-| 表 5-1、图 5-1 | `out/rq1_summary.md`、`out/figs/rq1_methods_scatter.svg` |
+| 表 5-1 | `out/rq1_graph.json`（四层归因：Reduction / SafetyEmp / Precision_cov / Precision_emp）、`out/real/<proj>_rq1_graph.jsonl` |
+| 表 5-1a、图 5-1 | `out/rq1_summary.md`、`out/figs/rq1_methods_scatter.svg` |
+| §5.2 图诊断、§5.3 断点诊断 | `out/rq2_rq3_graph.md` |
+| §5.3 改进试验 | `realproj/results/reprobreak_e2e_v2.md`、`reprobreak_e2e_v2.json` |
 | 图 5-2 | `out/rq1_dataset.jsonl`、`out/real/{tldraw_examples,actual_desktop,mermaid_live}_rq1.jsonl`、`out/figs/rq1_equiv50.svg` |
 | 表 5-2 | `out/rq1_stats.md` |
 | 表 5-3 | `out/sideeffect.json` |

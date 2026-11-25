@@ -1,35 +1,9 @@
 # 复现指南（DiffE2E 实验）
 
 ## 环境
-- Node 24+（用到内置 node:test）。
-- 首次运行先安装依赖（`node_modules/` 与 `real/cand_coverage/` 均被 gitignore，不在仓库内）：
-```bash
-cd diffe2e
-npm install --prefix pipeline
-npm install
-npm install --prefix subject/base
-npm install --prefix subject/sideeffect
-npx playwright install chromium
-```
+- Node 24+（用到内置 node:test）; 已随仓库安装 pipeline/subject 依赖。
 - 无 key 时走确定性 stub，只能复现 pipeline 可运行性；论文中的真实 RQ2/RQ3 LLM 数字需要 `.env` 中的 `DEEPSEEK_API_KEY`（或其他 provider key）。
 - `node --env-file=.env ...` 会读取本地 key；`.env` 不提交。
-- C1 动态实验依赖 `real/cand_coverage/`；缺失时对应测试会跳过（skip），不影响其余单测。
-
-### 浏览器版本隔离（历史批次复跑）
-
-`npx playwright install chromium` 装的是当前依赖（1.61.0）对应的 chromium 1228，只够主实验与 tldraw。阶段三（x01–x05 v1、`new5_v2`）与 c03 的 1.54 对照臂固定 `@playwright/test 1.54.0` + chromium 1181，而新装 1.61 会删掉默认缓存里的 1181，故改用独立目录，默认缓存不动：
-
-```bash
-PLAYWRIGHT_BROWSERS_PATH="$HOME/.cache/pw-1181" npx -y playwright@1.54.0 install chromium
-# 复跑示例（工作副本需自带 1.54.0 的 node_modules）
-cd /tmp/expv2/work_main
-PLAYWRIGHT_BROWSERS_PATH="$HOME/.cache/pw-1181" COV_OUT=/tmp/ver1181/cov npx playwright test tests/_gen_diff_c03.spec.ts
-```
-
-- 不设该变量时 1.54 会直接报 `Executable doesn't exist at …/ms-playwright/chromium_headless_shell-1181/…`，说明 1228 无法替代，必须隔离。
-- 已实测（2026-11-10）：`_gen_diff_c03` 在 c03 上 1 passed；`_gen_nodiff_c03` 在 c03 上因 `getByText(/Cart/i)` 命中 3 元素而 strict-mode 失败，与 c03/nodiff 的更正结论一致。
-- 1228 保持在默认路径 `~/Library/Caches/ms-playwright`，另镜像一份到 `~/.cache/pw-1228`，与 `~/.cache/pw-1181` 并列；复跑时按批次挂对应目录即可，默认缓存本身不被改动。
-- 已实测两个目录都能独立启动：`PLAYWRIGHT_BROWSERS_PATH=~/.cache/pw-1228 npx -y playwright@1.61.0 screenshot …` 与 `PLAYWRIGHT_BROWSERS_PATH=~/.cache/pw-1181 npx -y playwright@1.54.0 screenshot …` 均成功出图（各约 2 s）。
 
 ## 单元测试
 ```bash
@@ -78,9 +52,8 @@ RB_LIMIT=449 node --env-file=.env realproj/reprobreak_e2e.mjs  # 端到端规则
 
 ## 人工校准
 ```bash
-node experiments/annotate/make_sheet.mjs
-# 填写 experiments/annotate/sheet.csv 后：
-node experiments/annotate/score.mjs
+# 填写 experiments/out/rq2_real_to_annotate.csv 后：
+node experiments/annotate/score.mjs experiments/out/rq2_real_to_annotate.csv
 # 填写 experiments/out/rq3_staleness_to_annotate.csv 后：
 node experiments/annotate/score.mjs experiments/out/rq3_staleness_to_annotate.csv
 ```

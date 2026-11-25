@@ -15,6 +15,9 @@ function main() {
   const rq2 = readJ(path.join(OUT, 'rq2_results.json'));
   const rq3 = readJ(path.join(OUT, 'rq3_results.json'));
   const gate = readJ(path.join(DIFFE2E, 'realproj', 'results', 'gate.json'));
+  // test-code graph results (main method): table 5-1 + graph diagnosis
+  let rq1Graph = null;
+  try { rq1Graph = readJ(path.join(OUT, 'rq1_graph.json')); } catch { /* run run_graph_selection.mjs first */ }
 
   // RQ4 cost / efficiency
   const totalFull = dataset.reduce((s, r) => s + r.full_suite, 0);
@@ -58,6 +61,10 @@ function main() {
   const llmCostPath = path.join(OUT, 'llm_cost.json');
   const llmCost = fs.existsSync(llmCostPath) ? readJ(llmCostPath) : null;
   if (llmCost) agg.llm_cost = llmCost;
+  if (rq1Graph) {
+    agg.rq1_graph = rq1Graph.summary;
+    agg.rq1_graph_note = 'four-layer attribution over test-code graph (main method, table 5-1); file-level dual is the ablation in table 5-1a';
+  }
   fs.writeFileSync(path.join(OUT, 'aggregate.json'), JSON.stringify(agg, null, 2));
 
   const m = (x) => x.toFixed(3);

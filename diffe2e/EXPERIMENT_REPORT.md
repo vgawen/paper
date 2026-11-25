@@ -68,7 +68,7 @@
 - 自动语义有效率 = 可执行 ∧ 版本敏感（V_new 过、V_old 失败）∧ 杀掉≥1个注入变异；客观、无需人工。
 - 核心论点：真实 LLM 下，diff 约束臂在可执行率、变更相关率、版本敏感率和自动语义有效率上均明显高于无约束基线。
 - 工程护栏：真实 provider 请求失败或返回空 completion 时直接报错；LLM 输出会清洗 Markdown 代码围栏，并统一导入 `./fixtures` 以保留覆盖采集。
-- 人工双盲校准样本已生成（30 条真实项目样本；盲标注表见 out/rq2_real_to_annotate.csv，解盲键 rq2_real_to_annotate_unblind.json）；待填写后计算 κ。
+- 人工双盲校准（n=0）：语义有效率 0，Cohen's κ=0；分臂 diff=0 / nodiff=0。
 
 ## 3. RQ3 闭环支撑：让选中的失效用例重新可用
 - 修复成功率=0.750 (3/4)；TargetedSetUsability：before 0.000 → after 0.750。该结果说明轻量修复能支撑 selected tests 的闭环可用性，但不作为本文主创新点。
@@ -84,8 +84,8 @@
 - 数据：449 条执行验证断裂（导出自 SQLite），进入评估 n=414，泄漏护栏跳过 35 条。
 - **无泄漏设定**：修复输入仅「旧（断裂）测试 + 应用源码 old/new diff（已排除测试文件）」；`new_locator` 与新测试文件仅评估用。
 - **规则臂端到端 exact-match**：14/414 = 3.38%（有 app 信号子集 14/393 = 3.56%）。
-- **LLM 臂**：23/414 = 5.56%。
-- 关键对比：3.5 离线「已知 oracle 信号」上界 99.3% vs 本节端到端「从 app diff 自行还原信号」规则臂 3.38%、DeepSeek LLM 臂 5.56%——LLM 有增益，但整体 exact-match 仍低。因此 ReproBreak 在本文中主要作为真实修复难度和方法边界的量化证据。详见 realproj/results/reprobreak_e2e.md。
+- **LLM 臂**：30/414 = 7.25%。
+- 关键对比：3.5 离线「已知 oracle 信号」上界 99.3% vs 本节端到端「从 app diff 自行还原信号」规则臂 3.38%、DeepSeek LLM 臂 7.25%——LLM 有增益，但整体 exact-match 仍低。因此 ReproBreak 在本文中主要作为真实修复难度和方法边界的量化证据。详见 realproj/results/reprobreak_e2e.md。
 
 ## 4. RQ4 成本/效率
 - 跨 24 个过渡：retest-all 共执行 144 次用例；ours 仅执行 54 次 → 测试执行量下降 62.5%（Safety 仍=1.0）。
@@ -131,8 +131,11 @@
 | mermaid_live | 5 | coverage_only | 0 | 1 | 1 |
 | mermaid_live | 5 | uidiff_only | 1 | 0 | 1 |
 | mermaid_live | 5 | dual | 0 | 1 | 1 |
+| tldraw_examples | 12 | coverage_only | 0.25 | 1 | 1 |
+| tldraw_examples | 12 | uidiff_only | 1 | 0.25 | 1 |
+| tldraw_examples | 12 | dual | 0.25 | 1 | 1 |
 
-- 已接入 2 个真实项目、共 14 个稳定过渡（达计划 ≥2 个的外部效度目标）。
+- 已接入 3 个真实项目、共 26 个稳定过渡（达计划 ≥2 个的外部效度目标）。
 - 覆盖臂在两项目上 Safety=1.0（不漏选受影响用例）；Reduction 取决于项目结构：
   - 模块化 monorepo（actual-budget）覆盖选择有缩减；小型单页 SPA（mermaid-live-editor）核心组件被几乎所有用例加载，覆盖选择缩减有限（Reduction≈0）——覆盖法在“强耦合核心”应用上的固有局限。
   - uidiff 臂为**稀疏触发、高精度互补信号**：仅当 diff 触及测试引用的 testId/可见文本锚点时激活。actual 9 过渡中 1 个（commit 19cea1a：schedule 金额改 ± 符号、改动 testId `date`）激活，经页面对象导入闭包映射到 32 个用例，**uidiff_only Precision=1.0**（选中皆为受影响）；其余过渡为新增/逻辑改动不触发。锚点稀疏项目（如 mermaid）该臂多为空选。
