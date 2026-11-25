@@ -15,18 +15,6 @@ node --test pipeline/test/*.test.mjs experiments/*.test.mjs experiments/real/*.t
 ```bash
 cd diffe2e
 node subject/history/seed.mjs        # 构造 16-commit 真实历史到 subject/work/
-# 主方法：test-code graph 四层归因（产出表 5-1 -> out/rq1_graph.json）
-node experiments/run_graph_selection.mjs
-node experiments/verify_graph_incremental.mjs        # 增量 == 全量（受控主体）
-node experiments/verify_real_incremental.mjs real/mermaid-live-editor src 8
-node experiments/verify_real_incremental.mjs real/actual packages/desktop-client/src 8
-node experiments/validate_real_graph.mjs real/actual packages/desktop-client/src
-node experiments/validate_real_routes.mjs
-node experiments/validate_rq3_diagnosis.mjs
-node experiments/a2_func_attribution.mjs
-node experiments/build_testcode_graph.mjs
-
-# 文件级基线 / 消融（表 5-1a）
 node experiments/run_rq1.mjs         # RQ1 选择：dataset + summary
 node experiments/analyze.mjs         # RQ1 统计 + SVG 图
 node experiments/uidiff_loop.mjs     # C1 闭环(静态,真实JSX): 语义UI Diff 驱动 选/生/修
