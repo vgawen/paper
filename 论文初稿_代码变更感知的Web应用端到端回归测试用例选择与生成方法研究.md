@@ -720,7 +720,9 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 | 项目/场景 | workers | full_count | selected_count | Reduction | T_full (median/IQR) | T_run(Sel) | T_select | TimeReduction | NetSaving | break_even | machine-minutes(full/ours) |
 |---|---:|---:|---:|---:|---|---|---|---:|---:|---|---|
 | cand_coverage（C1 动态，选中 1/3） | 1 | 3 | 1 | 66.7% | 1.64s (1.64-2.27) | 1.43s (1.43-1.44) | 0.12s (0.12-0.13) | 12.4% | 5.0% | true | 0.027/0.026 |
-| actual_desktop（无影响过渡，空选集） | 2 | 34 | 0 | 100.0% | 110.84s (110.58-119.35) | 0.00s (0.00-0.00) | not measured | 100.0% | 100.0% | true | 3.695/0.000 |
+| actual_desktop（无影响过渡，空选集） | 2 | 34 | 0 | 100.0% | 110.84s (110.58-119.35) | 0.00s (0.00-0.00) | —† | 100.0% | 100.0% | true | 3.695/0.000 |
+
+> † 该行是"空选集"场景（selected=0），`T_select` 未单独计时，故记 `—`；图选择在 actual-budget（62 用例）上的实测 `T_select≈9.1s`（冷启动全量静态建图上界，见 §5.4 口径说明）不适用于本行的 34 用例早批口径。
 
 > 读法：`cand_coverage` 说明用例数量减少 66.7% 并不等价于 wall-clock 同比例下降，真实 TimeReduction 为 12.4%，计入 0.12s 选择开销后 NetSaving 为 5.0%，主要受浏览器启动、dev server 与单测时长不均影响；`actual_desktop` 单场景记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 全量执行，但不能代表该项目平均收益。进一步按 RQ1 的 9 个 actual_desktop 过渡做 batch-estimated 汇总：1 个 empty、0 个 partial、8 个 full，mean NetSaving 为 11.1%，median NetSaving 为 0，break-even rate 为 11.1%。逐条分布见图 5-9（a）：8 个全选集过渡的 NetSaving 均为 0，均值完全由 1 个空选集过渡贡献，中位数为 0。这说明真实平均收益受 full-selection 过渡比例限制，论文中应同时报告单场景收益与多过渡分布。
 
