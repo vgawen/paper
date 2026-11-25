@@ -1,0 +1,32 @@
+{
+  "project": "actual_desktop",
+  "provider": "deepseek",
+  "contexts_found": 14,
+  "contexts_picked": 2,
+  "rows": [
+    {
+      "project": "actual_desktop",
+      "prev": "fbdad57ff0aeee6561cc6fcbb9e65776b3118d75",
+      "sha": "a492453e1ccbae0f8ac1cc15da2b6417d408b607",
+      "gap_file": "packages/desktop-client/src/components/transactions/TransactionsTable.tsx",
+      "score": 23,
+      "add_nodes": 15,
+      "fewshot": 2,
+      "covered": false,
+      "pass_at_1": null,
+      "pass_at_n": null
+    },
+    {
+      "project": "actual_desktop",
+      "prev": "9cd5ed484974e24a782133ce87c680a2a2f7a719",
+      "sha": "19cea1aaff53b88058a78a8333585aa0d9553c30",
+      "gap_file": "packages/desktop-client/src/components/schedules/SchedulesTable.tsx",
+      "score": 10,
+      "add_nodes": 8,
+      "fewshot": 2,
+      "covered": false,
+      "pass_at_1": null,
+      "pass_at_n": null
+    }
+  ]
+}
