@@ -9,6 +9,7 @@ playwright-report/
 real/cand_coverage/
 real/cand_movies/
 real/actual/
+real/actual_t/
 real/tldraw/
 real/mermaid-live-editor/
 realproj/clones/
