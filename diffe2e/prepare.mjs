@@ -117,6 +117,50 @@ steps.push({
   },
 });
 
+// lock 一致性自检：node_modules 必须与 package-lock.json 一致（防止版本漂移）。
+// 用 `npm ls --package-lock-only` 校验依赖树可满足，并核对关键包的精确版本。
+const LOCK_TARGETS = [
+  { dir: 'pipeline', keys: ['tree-sitter', 'tree-sitter-typescript', 'typescript'] },
+  { dir: 'subject/base', keys: ['@playwright/test'] },
+  { dir: 'subject/sideeffect', keys: ['@playwright/test'] },
+];
+
+steps.push({
+  group: 'deps', name: 'lock 一致性 + 关键版本自检',
+  check: () => {
+    for (const t of LOCK_TARGETS) {
+      const dirAbs = path.join(ROOT, t.dir);
+      const lockPath = path.join(dirAbs, 'package-lock.json');
+      const pkgPath = path.join(dirAbs, 'package.json');
+      if (!exists(lockPath)) throw new Error(`${t.dir} 缺少 package-lock.json`);
+      const lock = JSON.parse(fs.readFileSync(lockPath, 'utf8'));
+      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+      const declared = { ...(pkg.dependencies || {}), ...(pkg.devDependencies || {}) };
+      for (const key of t.keys) {
+        const want = declared[key];
+        if (!want) throw new Error(`${t.dir}/package.json 未声明 ${key}`);
+        // 受控主体要求精确锁定（不允许 ^ / ~），否则不同时间安装会得到不同版本
+        if (t.dir.startsWith('subject/') && /[~^*]/.test(want)) {
+          throw new Error(`${t.dir}: ${key} 声明为 "${want}"，应精确锁定（去掉 ~/^/*）`);
+        }
+        const entry = lock.packages[`node_modules/${key}`];
+        if (!entry) throw new Error(`${t.dir}: package-lock.json 中缺少 ${key}`);
+        const locked = entry.version;
+        const installed = (() => {
+          try { return JSON.parse(fs.readFileSync(path.join(dirAbs, 'node_modules', key, 'package.json'), 'utf8')).version; }
+          catch { return null; }
+        })();
+        if (installed && installed !== locked) {
+          throw new Error(`${t.dir}: ${key} 已安装 ${installed} ≠ lock ${locked}（先 npm ci）`);
+        }
+        if (!installed) throw new Error(`${t.dir}: ${key} 未安装（先在 ${t.dir} 执行 npm ci）`);
+        info(`${t.dir}: ${key} ${locked}${/[~^*]/.test(want) ? `（声明 ${want}）` : '（精确锁定）'}`);
+      }
+    }
+    ok('lock 与 node_modules 一致');
+  },
+});
+
 // ---------- 3. 浏览器 ----------
 steps.push({
   group: 'browsers', name: 'Playwright Chromium',
