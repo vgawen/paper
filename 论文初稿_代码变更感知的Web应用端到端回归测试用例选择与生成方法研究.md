@@ -806,6 +806,17 @@ RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据
 
 ### A.2 主实验复现命令
 
+**阶段 0（实验准备，一次性完成）**：
+
+```bash
+cd diffe2e
+node prepare.mjs
+```
+
+该脚本完成运行时检查（Node 24+）、三处 `npm install`（含 tree-sitter 原生模块自检）、`playwright install chromium`，并对 `real/{mermaid-live-editor,actual}` 与 `realproj/clones/aut/{angular-slickgrid,koenig,openmct,playwright}` 做**全量克隆**（不使用 `--depth`/`--filter`），使后续实验不再触发网络访问。步骤幂等，失败可直接重跑。
+
+**阶段 1 及以后（准备完成后直接运行）**：
+
 ```bash
 cd diffe2e
 node --test pipeline/test/*.test.mjs experiments/*.test.mjs experiments/real/*.test.mjs experiments/annotate/*.test.mjs

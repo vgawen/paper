@@ -1,15 +1,31 @@
 # 复现指南（DiffE2E 实验）
 
-## 环境
-- Node 24+（用到内置 node:test）。
-- **依赖需自行安装**（仓库不含 node_modules）：
+## 阶段 0：实验准备（一次性）
+
+**先跑完准备，再跑实验**——所有仓库为**全量克隆**、依赖与浏览器提前装好，
+实验脚本执行期间不再触发 clone / install，避免网络与版本漂移带来的不确定性。
+
 ```bash
 cd diffe2e
-(cd pipeline && npm install)                      # typescript + tree-sitter + tree-sitter-typescript
-(cd subject/base && npm install && npx playwright install chromium)
+node prepare.mjs                 # 幂等：已就绪的步骤自动跳过
+node prepare.mjs --force         # 强制重装/重克隆
+node prepare.mjs --only=deps     # 只做依赖（deps | browsers | repos | data）
 ```
-- 真实项目（可选，RQ1 真实回放/RQ2 样本）：`git clone` mermaid-live-editor 与 actualbudget/actual 到 `real/`，actual 需 `corepack yarn install`。
-- 已知坑：旧 commit 需在其目录 `playwright install chromium`（版本漂移）；`--filter=blob:none` 部分克隆缺历史 blob（脚本 `ensureCommit()` 会自动 `--depth=1` 抓取）。
+
+`prepare.mjs` 做四件事：
+
+1. **运行时检查**：Node 24+；
+2. **依赖**：`pipeline`（typescript + tree-sitter 原生模块）、`subject/base`、`subject/sideeffect` 的 `npm install`，并自检 tree-sitter 可加载；
+3. **浏览器**：`subject/base` 下 `playwright install chromium`；
+4. **全量克隆**（无 `--depth` / `--filter`）：
+   - `real/mermaid-live-editor`、`real/actual`（后者自动 `corepack yarn install`）——RQ1 真实回放 / RQ2 真实样本；
+   - `realproj/clones/aut/{angular-slickgrid,koenig,openmct,playwright}`——RQ3 ReproBreak 端到端修复。
+
+完成后脚本会打印就绪清单；有步骤失败时（多为网络）**直接重跑即可**，已完成项自动跳过。
+
+> 已知环境坑（prepare 已覆盖）：`tree-sitter` 需要 C++ 构建链；Playwright 每版本绑定特定 Chromium，
+> 回放历史 commit 时需在其目录 `playwright install chromium`（`run_rq1_real_graph.mjs#ensureBrowser()` 会自动处理）。
+
 - 无 key 时走确定性 stub，只能复现 pipeline 可运行性；论文中的真实 RQ2/RQ3 LLM 数字需要 `.env` 中的 `DEEPSEEK_API_KEY`（或其他 provider key）。
 - `node --env-file=.env ...` 会读取本地 key；`.env` 不提交。
 
@@ -19,7 +35,7 @@ cd diffe2e
 node --test pipeline/test/*.test.mjs experiments/*.test.mjs experiments/real/*.test.mjs experiments/annotate/*.test.mjs
 ```
 
-## 快速复现（无需 LLM key）
+## 阶段 1：主实验（无需 LLM key，准备完成后直接运行）
 ```bash
 cd diffe2e
 node subject/history/seed.mjs        # 构造 25-commit 真实历史（c00–c24）
@@ -37,7 +53,7 @@ node realproj/gate.mjs               # 真实项目可插桩闸门
 node experiments/aggregate.mjs       # 汇总 -> EXPERIMENT_REPORT.md
 ```
 
-## 真实 LLM 与 RQ4 复现
+## 阶段 2：真实 LLM 与 RQ4
 ```bash
 cd diffe2e
 node --env-file=.env experiments/run_rq2.mjs
@@ -49,7 +65,7 @@ node experiments/run_llm_cost.mjs
 node experiments/aggregate.mjs
 ```
 
-## ReproBreak 复现
+## 阶段 3：ReproBreak（RQ3 修复边界）
 ```bash
 cd diffe2e
 git clone --depth 1 https://github.com/rub-sq/ReproBreak realproj/clones/ReproBreak  # 真实 locator 断裂数据

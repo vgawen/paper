@@ -22,19 +22,44 @@ V_new 全量跑(构造 oracle)   ──┘                    oracle Affected = 
 
 **无信息泄漏纪律**：选择只用 `V_old` 覆盖；`V_new` 全量跑仅用于构造 affected oracle，不参与选择。
 
-## 目录
+## 目录结构
 
-```
-demo-app/            受控被测应用（hash 路由 + 动态 import，按路由分文件，便于逐用例覆盖归属）
-  server.mjs         极简静态服务器（no-store，保证每次执行新鲜覆盖）
-  public/src/*.js    home/cart/login/profile + main(共享路由)
-tests/
-  fixtures.ts        覆盖采集 fixture：每个用例 start/stopJSCoverage，落盘 cov/<run>/<test>.json
-  *.spec.ts          4 个 E2E 用例
-tools/
-  select.mjs         选择 + oracle + 指标计算
-  mutate.mjs         模拟一次 diff（默认对 cart.js 做非破坏性变更）生成 V_new
-```
+| 路径 | 作用 |
+|---|---|
+| `pipeline/src/` | **纯函数内核**（无 IO）：diff 解析、覆盖映射、选择器、oracle、指标统计、Semantic UI Diff、规则修复、过时分类、LLM 客户端 |
+| `pipeline/src/graph/` | **test-code graph 建图管线**：`extract`（tree-sitter 抽取）、`resolve`（名字解析）、`semanticResolve`（typeChecker 别名/barrel）、`fileRoutes`（SvelteKit 路由）、`testEdges`（executes/navigates/asserts）、`select`（四层归因 + 缺口检测）、`workspace`（monorepo 别名） |
+| `pipeline/src/llm/` | 可插拔 LLM 客户端（provider 探测、`LLM_MODEL` 覆盖、无 key 降级 stub） |
+| `pipeline/test/` | **16 个测试文件、109 个单测**（纯函数级，不需要浏览器） |
+| `experiments/` | **实验驱动**：`lib.mjs`（受控主体 replay 原语）、`run_*.mjs`（各 RQ 脚本）、`compute/analyze/aggregate`（计算与汇总）、`annotate/`（人工校准流程） |
+| `experiments/real/` | **真实项目适配层**：`engine.mjs`（安装/注入 CDP 覆盖/跑套件/读覆盖）、`adapters/*.json`（项目配置）、`run_rq1_real*.mjs`、`run_rq2_real.mjs`、`scan_ui.mjs`（离线可激活窗口扫描） |
+| `experiments/out/` | **实验产物**：数据集（jsonl）、汇总（json/md）、图（figs/）、标注包与仲裁记录 |
+| `subject/base/` | **受控被测主体**：6 个路由的最小 Web 应用 + 6 条 Playwright 用例 |
+| `subject/sideeffect/` | **共享状态对照主体**（生产者/消费者两个用例，用于命题 2） |
+| `subject/history/` | `seed.mjs`：脚本化构造 25 个 commit（c00–c24）的嵌套 git 历史 |
+| `subject/work/` | seed 生成的 git 仓库（**不入库**，实验时生成） |
+| `real/` | **真实被测项目 + DOM/UI Diff 适配**（见下方说明） |
+| `realproj/` | **ReproBreak 基准实验**（见下方说明） |
+| `tools/` | 早期最小原型（`select.mjs` / `mutate.mjs`，跑在根 `tests/` 上），保留作历史参照 |
+| `docs/` | 方法文档：`SAFETY.md`（命题与假设）、`MAPPER.md`（映射器）、`COST_MODEL.md`（净收益模型）、`THESIS_MAPPING.md`（产物↔章节）、`RELATED_WORK.md`、`实验说明书.md` |
+| `prepare.mjs` | **实验准备脚本**：一次性安装依赖、装浏览器、**全量**克隆所有仓库 |
+| `REPRODUCE.md` | 复现指南（由 `aggregate.mjs` 生成） |
+| `EXPERIMENT_REPORT.md` | 结果汇总（由 `aggregate.mjs` 生成） |
+
+## `real/` 与 `realproj/` 的区别
+
+两者都涉及"真实项目"，但**服务的研究问题与数据流完全不同**：
+
+| | `real/` | `realproj/` |
+|---|---|---|
+| **服务对象** | **RQ1（真实项目回放）**、**RQ2（真实项目生成样本）** | **RQ3（真实 locator 修复的边界量化）** |
+| **被测项目** | `mermaid-live-editor`（SvelteKit）、`actual`（React，monorepo） | ReproBreak 的 4 个 AUT：`angular-slickgrid`、`koenig`、`openmct`、`microsoft/playwright` |
+| **克隆位置** | `real/<项目名>/`（实验时 checkout 各 commit） | `realproj/clones/aut/<owner>__<repo>/` |
+| **输入** | git diff + 逐用例覆盖（CDP 注入） | 断裂记录（`results/reprobreak_breaks.json`，449 条）+ 各 commit 的应用源码 |
+| **产出** | `experiments/out/real/*_rq1*.jsonl`、`*_rq2*`、净收益 | `realproj/results/reprobreak_e2e*.json/md`（规则臂/LLM 臂 exact-match 与语义等价） |
+| **适配代码** | `real/uidiff.mjs`（JSX 抽取）、`real/analyze.mjs`（istanbul 行级分析）、`real/link.mjs`（UI Diff → 测试的 USES_LOCATOR 边） | `realproj/gate.mjs`（可插桩闸门）、`reprobreak.mjs`（离线刻画）、`reprobreak_e2e.mjs`（端到端修复）、`reprobreak_db.mjs`（SQLite→JSON） |
+| **核心脚本入口** | `experiments/real/run_rq1_real.mjs`、`run_rq1_real_graph.mjs`、`run_rq2_real.mjs` | `node realproj/reprobreak_e2e.mjs` |
+
+一句话：**`real/` 是"在真实项目上做选择与生成"，`realproj/` 是"在 ReproBreak 基准上量化修复有多难"**。
 
 ## 一键复现
 
