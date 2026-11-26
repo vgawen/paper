@@ -1,0 +1,428 @@
+{
+  "title": "真实项目 actual_desktop",
+  "rows": [
+    {
+      "label": "b41776d→abb1e4f",
+      "type": "real",
+      "prev": "b41776d4ebc575d0e75cfccbdf21a14e883c5c04",
+      "sha": "abb1e4fbd74074adbcd72fb157bd4aca9fcef58c",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/components/reports/chart-theme.ts",
+          "entities": [
+            "variable:reducedMotion",
+            "variable:isAnimationActive",
+            "variable:animationDuration",
+            "function:useRechartsAnimation"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "abb1e4f→8f2302e",
+      "type": "real",
+      "prev": "abb1e4fbd74074adbcd72fb157bd4aca9fcef58c",
+      "sha": "8f2302eb1c449cdcad8c5dcb62deaad31d6f817b",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/components/autocomplete/CategoryAutocomplete.tsx",
+          "entities": [
+            "function:CategoryAutocomplete"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/autocomplete/filterCategorySuggestions.ts",
+          "entities": [
+            "variable:itemsById",
+            "variable:splitItem",
+            "variable:realSuggestions",
+            "variable:nameMatches",
+            "variable:nameMatchIds",
+            "variable:groupMatches",
+            "variable:filtered",
+            "function:rankMatches",
+            "function:filterCategorySuggestions"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "8f2302e→1279e7c",
+      "type": "real",
+      "prev": "8f2302eb1c449cdcad8c5dcb62deaad31d6f817b",
+      "sha": "1279e7cad8b1bf828d4896a8505f6d88db55b5d5",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/data/customThemeCatalog.json",
+          "entities": [],
+          "empty": true,
+          "commentOnly": false,
+          "fallback": true
+        }
+      ]
+    },
+    {
+      "label": "1279e7c→81ea158",
+      "type": "real",
+      "prev": "1279e7cad8b1bf828d4896a8505f6d88db55b5d5",
+      "sha": "81ea158cf6f721397516f8d032010e371e30d845",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/components/budget/goals/editor/HistoricalAutomationReadOnly.tsx",
+          "entities": [
+            "jsx:undefined",
+            "variable:base",
+            "function:HistoricalAutomationReadOnly",
+            "function:HistoricalAutomationReadOnly"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "81ea158→674c6f1",
+      "type": "real",
+      "prev": "81ea158cf6f721397516f8d032010e371e30d845",
+      "sha": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/components/formula/codeMirror-excelLanguage.tsx",
+          "entities": [
+            "variable:scrollContainer",
+            "variable:canScrollY",
+            "variable:canScrollX",
+            "variable:deltaMultiplier",
+            "variable:previousScrollTop",
+            "variable:previousScrollLeft",
+            "variable:completionItem",
+            "variable:completionItem",
+            "function:handleWheel",
+            "function:handleMouseDown",
+            "function:handleMouseMove",
+            "variable:hoveredCompletionItem",
+            "function:handleWheel",
+            "function:handleMouseDown",
+            "function:handleMouseMove",
+            "function:destroy",
+            "function:setHoveredCompletionItem",
+            "function:createCompletion",
+            "function:startState",
+            "function:token",
+            "function:createCompletion",
+            "variable:MATH_FUNCTIONS",
+            "variable:LOGICAL_FUNCTIONS",
+            "variable:TEXT_FUNCTIONS",
+            "variable:excelFormulaParser",
+            "variable:transactionFields",
+            "variable:autocompletePopoverTheme",
+            "variable:autocompletePopoverPointerHandler",
+            "function:FieldTooltip",
+            "function:getFunctionCompletions",
+            "function:isPointInsideRect",
+            "function:findAutocompleteElementAtPoint",
+            "function:excelFormulaExtension"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/formula/queryModeFunctions.ts",
+          "entities": [
+            "variable:queryModeFunctions"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/formula/transactionModeFunctions.ts",
+          "entities": [
+            "variable:transactionModeFunctions"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/reports/FormulaResult.tsx",
+          "entities": [
+            "jsx:undefined",
+            "variable:lines",
+            "variable:lineCount",
+            "variable:longestLineLength",
+            "variable:calculatedFontSize",
+            "jsx:undefined",
+            "variable:calculateFontSize",
+            "jsx:undefined",
+            "function:FormulaResult"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/reports/Overview.tsx",
+          "entities": [
+            "function:getWidgetMinHeight",
+            "function:getWidgetMinWidth"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/reports/reports/Formula.tsx",
+          "entities": [
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "function:onSaveWidgetName",
+            "jsx:undefined",
+            "variable:[showTitle, setShowTitle]",
+            "function:onSaveWidgetName",
+            "jsx:undefined",
+            "function:onSaveWidget",
+            "function:FormulaInner"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/reports/reports/FormulaCard.tsx",
+          "entities": [
+            "jsx:undefined",
+            "jsx:undefined",
+            "variable:showTitle",
+            "jsx:undefined",
+            "function:FormulaCard"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/settings/Format.tsx",
+          "entities": [
+            "jsx:undefined",
+            "jsx:undefined",
+            "variable:dispatch",
+            "variable:firstDayOfWeekIdx",
+            "variable:[_numberFormat]",
+            "jsx:undefined",
+            "function:FormatSettings"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/settings/index.tsx",
+          "entities": [
+            "function:onCloseBudget",
+            "function:onCloseBudget",
+            "variable:{ isNarrowWidth }",
+            "function:Settings"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/hooks/useFormulaExecution.ts",
+          "entities": [
+            "variable:key",
+            "variable:textValue",
+            "variable:browserLocale",
+            "variable:formulaLocale",
+            "variable:err",
+            "variable:cellValue",
+            "function:getKey",
+            "function:getKey",
+            "variable:matching",
+            "function:executeFormula",
+            "variable:[language]",
+            "variable:{ grouped: categoryGroups }",
+            "variable:groupNameById",
+            "variable:conditionResults",
+            "function:createFormulaQueryContext",
+            "function:useFormulaExecution",
+            "function:fetchQueryCount",
+            "function:extractCategoryConditions",
+            "function:getCategoriesFromConditions"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/hooks/useTransactionFormulaExecution.ts",
+          "entities": [
+            "variable:browserLocale",
+            "variable:formulaLocale",
+            "variable:err",
+            "function:executeFormula",
+            "variable:[language]",
+            "function:useTransactionFormulaExecution"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/util/bootstrapHyperFormula.ts",
+          "entities": [
+            "function:bootstrapHyperFormula"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "674c6f1→fbdad57",
+      "type": "real",
+      "prev": "674c6f1b53b45890db161ba9e4f6b13647b9086c",
+      "sha": "fbdad57ff0aeee6561cc6fcbb9e65776b3118d75",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/components/modals/SelectLinkedAccountsModal.tsx",
+          "entities": [
+            "function:SelectLinkedAccountsModal"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/rules/RuleEditor.tsx",
+          "entities": [
+            "function:RuleEditor"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/hooks/useInputRefValue.ts",
+          "entities": [
+            "function:_setValue",
+            "function:useInputRefValue"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "fbdad57→a492453",
+      "type": "real",
+      "prev": "fbdad57ff0aeee6561cc6fcbb9e65776b3118d75",
+      "sha": "a492453e1ccbae0f8ac1cc15da2b6417d408b607",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/components/transactions/TransactionList.tsx",
+          "entities": [
+            "variable:changes",
+            "variable:onSplit",
+            "function:TransactionList"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/transactions/TransactionsTable.tsx",
+          "entities": [
+            "variable:newTrans",
+            "variable:{ data, diff }",
+            "variable:onSplit",
+            "variable:TransactionTable"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "a492453→9cd5ed4",
+      "type": "real",
+      "prev": "a492453e1ccbae0f8ac1cc15da2b6417d408b607",
+      "sha": "9cd5ed484974e24a782133ce87c680a2a2f7a719",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/accounts/syncStatus.ts",
+          "entities": [
+            "function:isAccountFailedSync",
+            "function:getFailedSyncError"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "packages/desktop-client/src/components/accounts/AccountSyncCheck.tsx",
+          "entities": [
+            "variable:account",
+            "variable:error",
+            "function:AccountSyncCheck"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "9cd5ed4→19cea1a",
+      "type": "real",
+      "prev": "9cd5ed484974e24a782133ce87c680a2a2f7a719",
+      "sha": "19cea1aaff53b88058a78a8333585aa0d9553c30",
+      "files": [
+        {
+          "file": "packages/desktop-client/src/components/schedules/SchedulesTable.tsx",
+          "entities": [
+            "variable:amountStr",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "variable:isApprox",
+            "variable:isBetween",
+            "variable:cellText",
+            "jsx:undefined",
+            "variable:{ data: payees }",
+            "variable:{ data: accounts = [] }",
+            "variable:filteredSchedules",
+            "function:ScheduleAmountCell",
+            "function:SchedulesTable"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    }
+  ]
+}

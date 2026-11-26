@@ -1,0 +1,361 @@
+{
+  "title": "真实项目 mermaid_live",
+  "rows": [
+    {
+      "label": "144b4dc→5910562",
+      "type": "real",
+      "prev": "144b4dc190ca5f65f35000f724610adaaafd1e9e",
+      "sha": "59105628f4692549341ee262a1342dac78561bf9",
+      "files": [
+        {
+          "file": "src/lib/util/persist.svelte.test.ts",
+          "entities": [
+            "variable:settings"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/persist.svelte.ts",
+          "entities": [
+            "jsx:undefined",
+            "variable:readJSON"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "5910562→d2f067a",
+      "type": "real",
+      "prev": "59105628f4692549341ee262a1342dac78561bf9",
+      "sha": "d2f067a540f9aeb553670997287680a666117565",
+      "files": [
+        {
+          "file": "src/lib/util/state.svelte.test.ts",
+          "entities": [
+            "variable:counter",
+            "variable:runs",
+            "variable:stop",
+            "variable:cases",
+            "function:countEffectRuns",
+            "function:readStoredState",
+            "function:countEffectRuns",
+            "function:readStoredState"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/state.svelte.ts",
+          "entities": [
+            "variable:lastKey",
+            "variable:lastObject",
+            "variable:next",
+            "variable:error",
+            "variable:config",
+            "variable:key",
+            "variable:unsafePath",
+            "variable:processed",
+            "variable:snapshot",
+            "function:validatedStateOf",
+            "function:processState",
+            "function:persistAndProcess",
+            "function:update",
+            "function:sanitizeConfig",
+            "function:loadState",
+            "function:applyPartial",
+            "function:updateCodeStore",
+            "function:updateCode",
+            "function:updateConfig",
+            "function:toggleDarkTheme",
+            "function:replaceInputState",
+            "function:verifyState",
+            "variable:CODE_STORE_KEY",
+            "variable:input",
+            "variable:inputState",
+            "function:validatedStateOf",
+            "variable:initialState",
+            "variable:validatedCurrent",
+            "variable:lastDiagramType",
+            "function:processState",
+            "function:persistAndProcess",
+            "function:update",
+            "function:sanitizeConfig",
+            "function:loadState",
+            "variable:renderCount",
+            "function:applyPartial",
+            "function:updateCodeStore",
+            "function:updateCode",
+            "function:updateConfig",
+            "function:toggleDarkTheme",
+            "function:replaceInputState",
+            "function:verifyState"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "d2f067a→c253054",
+      "type": "real",
+      "prev": "d2f067a540f9aeb553670997287680a666117565",
+      "sha": "c2530549165a5185b19d355d505fe2dd27e66af6",
+      "files": [
+        {
+          "file": "src/lib/util/persist.svelte.ts",
+          "entities": [
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "variable:readJSON"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c253054→a257f78",
+      "type": "real",
+      "prev": "c2530549165a5185b19d355d505fe2dd27e66af6",
+      "sha": "a257f78d8e626da876b7cd9ae652db40bd7f4d43",
+      "files": [
+        {
+          "file": "src/lib/components/MobileEditor.svelte",
+          "entities": [
+            "jsx:undefined"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/components/Preset.svelte",
+          "entities": [
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/mermaid.test.ts",
+          "entities": [
+            "variable:example",
+            "variable:[name, examples]",
+            "variable:[name, examples]",
+            "variable:samples"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/mermaid.ts",
+          "entities": [
+            "variable:samples",
+            "variable:diagram",
+            "function:isValidDiagram",
+            "function:getSampleDiagrams",
+            "function:isValidDiagram",
+            "function:getSampleDiagrams"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/persist.svelte.test.ts",
+          "entities": [],
+          "empty": true,
+          "commentOnly": false,
+          "fallback": true
+        },
+        {
+          "file": "src/lib/util/persist.svelte.ts",
+          "entities": [
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "function:hasStorage",
+            "jsx:undefined",
+            "function:hasStorage",
+            "variable:readJSON"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/state.svelte.ts",
+          "entities": [
+            "variable:{ code, serialized }",
+            "variable:{ krokiRendererUrl, rendererUrl }",
+            "variable:png",
+            "variable:processed",
+            "variable:snapshot",
+            "variable:state",
+            "variable:error",
+            "variable:config",
+            "variable:key",
+            "function:validatedStateOf",
+            "function:processState",
+            "function:persistAndProcess",
+            "function:loadState",
+            "function:updateCodeStore",
+            "function:updateCode",
+            "function:toggleDarkTheme",
+            "function:replaceInputState",
+            "function:initURLSubscription",
+            "function:verifyState",
+            "variable:inputState",
+            "function:validatedStateOf",
+            "variable:validatedCurrent",
+            "variable:lastDiagramType",
+            "function:processState",
+            "function:persistAndProcess",
+            "variable:validatedState",
+            "variable:urlsCurrent",
+            "function:loadState",
+            "variable:renderCount",
+            "function:updateCodeStore",
+            "function:updateCode",
+            "function:toggleDarkTheme",
+            "function:replaceInputState",
+            "function:initURLSubscription",
+            "function:verifyState"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "a257f78→7f08e5b",
+      "type": "real",
+      "prev": "a257f78d8e626da876b7cd9ae652db40bd7f4d43",
+      "sha": "7f08e5b970e43b9c0394a2e715fcd8ae764df768",
+      "files": [
+        {
+          "file": "src/lib/components/MobileEditor.svelte",
+          "entities": [
+            "jsx:undefined"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/persist.svelte.test.ts",
+          "entities": [
+            "variable:settings"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/persist.svelte.ts",
+          "entities": [
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "jsx:undefined",
+            "variable:readJSON"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/state.svelte.test.ts",
+          "entities": [
+            "variable:counter",
+            "variable:runs",
+            "variable:stop",
+            "variable:cases",
+            "function:countEffectRuns",
+            "function:readStoredState",
+            "function:countEffectRuns",
+            "function:readStoredState"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "src/lib/util/state.svelte.ts",
+          "entities": [
+            "variable:lastKey",
+            "variable:lastObject",
+            "variable:next",
+            "variable:error",
+            "variable:config",
+            "variable:key",
+            "variable:unsafePath",
+            "variable:processed",
+            "variable:snapshot",
+            "function:validatedStateOf",
+            "function:processState",
+            "function:persistAndProcess",
+            "function:update",
+            "function:sanitizeConfig",
+            "function:loadState",
+            "function:applyPartial",
+            "function:updateCodeStore",
+            "function:updateCode",
+            "function:updateConfig",
+            "function:toggleDarkTheme",
+            "function:replaceInputState",
+            "function:verifyState",
+            "variable:CODE_STORE_KEY",
+            "variable:input",
+            "variable:inputState",
+            "function:validatedStateOf",
+            "variable:initialState",
+            "variable:validatedCurrent",
+            "variable:lastDiagramType",
+            "function:processState",
+            "function:persistAndProcess",
+            "function:update",
+            "function:sanitizeConfig",
+            "function:loadState",
+            "variable:renderCount",
+            "function:applyPartial",
+            "function:updateCodeStore",
+            "function:updateCode",
+            "function:updateConfig",
+            "function:toggleDarkTheme",
+            "function:replaceInputState",
+            "function:verifyState"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    }
+  ]
+}

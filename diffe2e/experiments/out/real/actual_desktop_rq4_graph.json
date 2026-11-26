@@ -1,0 +1,40 @@
+{
+  "project": "actual_desktop",
+  "repo_head_tests": 62,
+  "measured_at": "2026-11-22",
+  "measurements": {
+    "T_full_s": 168,
+    "T_run_one_s": 19.5,
+    "T_select_s": 9.1,
+    "T_select_note": "cold-start full static graph (tree-sitter, 1968 files) + selector; upper bound. Incremental CI updates re-parse only changed files."
+  },
+  "cost_model": "NetSaving = 1 - (T_select + T_run(Sel)) / T_full; TimeReduction = 1 - T_run(Sel) / T_full",
+  "rows": [
+    {
+      "change": "add route (d05bd03)",
+      "selector": "route-level",
+      "selected": 0,
+      "T_run_sel_s": 0,
+      "TimeReduction": 1.0,
+      "NetSaving": 0.9458
+    },
+    {
+      "change": "shared constant",
+      "selector": "value-reference",
+      "selected": 1,
+      "T_run_sel_s": 19.5,
+      "TimeReduction": 0.8839,
+      "NetSaving": 0.8298
+    },
+    {
+      "change": "shared file",
+      "selector": "file-level",
+      "selected": 62,
+      "T_run_sel_s": 168,
+      "TimeReduction": 0.0,
+      "NetSaving": -0.0542
+    }
+  ],
+  "basis": "The three NetSaving rows are analytical values obtained by substituting the measured T_full, T_run(1) and T_select into the cost model. They are NOT per-arm repeated runs; the measured median/IQR runs are in actual_desktop_rq4.json (paper table 5-9). T_run(Sel) uses 0 for 0 selected, the measured single-test time for 1 selected, and the measured full-suite time for 62 selected.",
+  "warning": "Do not read these rows as a distribution: a single measurement underlies T_full/T_run(1), and T_select is a cold-start upper bound."
+}

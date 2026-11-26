@@ -106,6 +106,39 @@ test('selectAffected: file with dynamic access falls back to file level', () => 
   assert.ok(sel.has('test::x1') && sel.has('test::x2'), 'dynamic-access file must fall back to file level');
 });
 
+test('selectAffected: an unattributed changed file falls back to file level', () => {
+  const graph = {
+    nodes: [
+      { id: 'src/a.ts::f', kind: 'function', name: 'f', file: 'src/a.ts' },
+      { id: 'test::t1', kind: 'test' },
+      { id: 'test::t2', kind: 'test' },
+    ],
+    edges: [
+      { kind: 'executes', source: 'test::t1', target: 'src/a.ts::f' },
+      { kind: 'executes', source: 'test::t2', target: 'src/b.ts::g' },
+    ],
+  };
+  // no changedFns/Vars/Routes at all, only the file whose change could not be attributed
+  const sel = selectAffected(graph, { fallbackFiles: new Set(['src/a.ts']) });
+  assert.ok(sel.has('test::t1'));
+  assert.ok(!sel.has('test::t2'));
+});
+
+test('selectAffected: fallbackFiles uses coversFile for module-eval-only files', () => {
+  const graph = {
+    nodes: [
+      { id: 'src/data.json::<file>', kind: 'file', name: 'data.json', file: 'src/data.json' },
+      { id: 'test::t1', kind: 'test' },
+      { id: 'test::t2', kind: 'test' },
+    ],
+    edges: [{ kind: 'coversFile', source: 'test::t1', target: 'src/data.json::<file>' }],
+  };
+  // no executes/navigates edges at all; the file was only module-eval'd
+  const sel = selectAffected(graph, { fallbackFiles: new Set(['src/data.json']) });
+  assert.ok(sel.has('test::t1'));
+  assert.ok(!sel.has('test::t2'));
+});
+
 test('selectAffected: non-exported variable in a static-only file IS narrowed', () => {
   const graph = {
     nodes: [

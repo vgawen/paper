@@ -2,19 +2,20 @@
 
 > 论文题目：《代码变更感知的 Web 应用端到端回归测试用例选择与生成方法研究》。
 > 本表把每个数据/代码产物对应到论文章节、图表与一句话结论，便于写作时直接引用。
-> 标注 `[κ 待合并]` 的行是唯一待并入项：第二标注者盲表填完后按论文 §5.6 合并；其余行均已回填，产物路径即论文数字来源。论文表图编号见各行“论文位置”。
+> 所有行均已回填，产物路径即论文数字来源；人工第二标注列由作者本人在未见第一列的条件下完成，κ 已按论文 §5.6 合并。论文表图编号见各行“论文位置”。
 
 ## 理论与方法（第 3 章）
 | 论文位置 | 来源 | 一句话结论 |
 |---|---|---|
 | 3.x 安全性命题与证明 | `docs/SAFETY.md` 命题 1 | H1–H3 假设下覆盖臂即安全：`A* ⊆ SelCov ⊆ Sel` |
 | 3.x 副作用与状态闭包 | `docs/SAFETY.md` §5 + 命题 2 | 放宽 H3 后用状态闭包 `SelClosed` 保证召回 |
-| 3.x 映射器结构与维护 | `docs/MAPPER.md` | 带类型二部索引 `M⊆E×T`：动态覆盖边 + 静态 UI 语义边，含增量维护与复杂度 |
+| 3.2 映射器结构与维护 | `docs/MAPPER.md`、`pipeline/src/graph/` | 三层 test-code graph（结构/路由/测试证据层）；`M⊆E×T` 是其测试↔实体投影，含增量维护与复杂度 |
+| 3.4 H2′ 归因完备性 | `out/attribution_audit.md`、`out/attribution_audit_actual_desktop.md`、`pipeline/test/attribution.test.mjs` | 匿名/HOC 与限定名错位的兜底：唯一同名解析 + 不可归因回退文件级；24 过渡 3 个零实体均为纯注释、回退 0 次 |
 | 3.x 成本模型 | `docs/COST_MODEL.md` | `NetSaving=1−(T_select+T_run(Sel))/T_full`、盈亏平衡、非时间资源 |
 | 图 2-1（两维分析框架） | `out/figs/fig2_1_quadrants.svg`；象限定义见论文 §2.1，格内编号取自 §2.2 与 §2.5 | 六格文献分布与 (A2, B1) 定位；编号为示例而非穷举 |
 | 图 3-1（系统架构） | `out/figs/fig3_1_arch.svg`；依论文 §3.1 第 124–136 行 | 组件—数据流（非分层），实线/虚线/双线✕ 对应无泄漏纪律三句 |
 | 图 3-2（五步闭环） | `out/figs/fig3_2_loop.svg`；依论文 §3.1 五步与 §3.2 增量维护 | ①→⑤ 主链 + ⑤→① 回填边；M 持久化 band |
-| 图 3-3（映射器增量维护） | `out/figs/fig3_3_mapper.svg`；依论文 §3.2 | 带类型二部图与 `update(M_old, diff)` 受影响子图重建 |
+| 图 3-3（映射器增量维护） | `out/figs/fig3_3_mapper.svg`；依论文 §3.2 | 三层 test-code graph；`update(G_old, diff)` 受影响子图重建（`M` 为投影视图） |
 | 图 3-4（Semantic UI Diff） | `out/figs/fig3_4_uidiff.svg`；例 A 依 `subject/history/seed.mjs` 复原的 c07→c08，例 B/C 依 `out/c1_loop.md` | 抽取→两轮匹配（key 精确 / 同标签+同 testId 或 onClick 回退）→ADD/REMOVE/MODIFY |
 | 图 5-4（RQ2 三口径） | `out/figs/rq2_three_scopes.svg`；数据 `out/rq2_results.json`、`out/new5_v2_20261108/rq2_new5_v2_results.json`、`out/new10_20261108/rq2_new10_combined.json` | 三套口径 n=3 / n=8 / n=10 并列，不合并；diff 臂四项指标均 1.0 |
 | 图 5-5（RQ2 缺口×算子杀伤） | `out/figs/rq2_gap_operator_matrix.svg`；数据 `out/new10_20261108/rq2_new10_combined.json`（逐缺口、`by_class`） | n=10 口径；diff 臂杀伤均值 0.8438，未杀伤点归因到用例未使用该信号 |
@@ -42,21 +43,23 @@
 | 表 5-5b（RQ2 扩样补充 b，n=8） | `out/new5_v2_20261108/RQ2_NEW5_V2_REPORT.md` + `rq2_new5_v2_results.json` | 同一批 16 条用例换用 v2 算子（文本优先改结果文本、属性改 label+aria 整链）；diff 变异杀伤均值 0.5625→0.7792，文本类 0/8→7/8、属性类 3/8→11/17 |
 | 表 5-5c（RQ2 扩样补充 c，n=10） | `out/new10_20261108/RQ2_NEW10_REPORT.md` + `rq2_new10_combined.json` | 新增 y01–y05 后与 x01–x05 合并（不含主实验 c03/c13/c19）；diff 变异杀伤均值 0.8438、exec/change-relevant/版本敏感 1.0，nodiff exec 0.2、其余 0；预注册清单 `manifest_expansion_v2.json` |
 | 扩样 diff 臂人工盲评包 | `out/new10_20261108/annotation_packet/`（独立 `SHA256SUMS`、`LEAKAGE_CHECK.json` PASS、解盲键 `new10_packet_unblind.json`） | 独立 case_id `nb001`–`nb005`，协议 B 第二列 + 第三人仲裁；与主实验包互不复用 |
-| 表 5-10（RQ2 人工复核）`[κ 待合并]` | `out/rq2_real_to_annotate.csv` + `out/rq2_real_to_annotate_unblind.json` + `out/rq2_annotator2_blind.csv` | 30 条真实项目样本（actual 28 + mermaid 2；diff/nodiff 各 15）；第一标注列 diff 5/15、nodiff 0/15；第二标注者待填 |
+| 表 5-10（RQ2 人工复核） | `out/rq2_real_to_annotate.csv` + `out/*_unblind.json` + `out/annotator1_masked.json` + `out/repeats/variance_report.md` | 30 条真实项目样本（actual 28 + mermaid 2；diff/nodiff 各 15）；现行协议 B 预标注 diff 2/15、nodiff 0/15；作者盲评第二列 30/30 判 n；Po=0.9333、κ=0（常量列退化）、AC1=0.929 |
 
 ## 第 5 章 RQ3：修复
 | 论文位置 | 数据/图表来源 | 一句话结论 |
 |---|---|---|
 | 表 5-6（RQ3 受控主体） | `out/rq3_results.md` | 规则 3/4、LLM 4/4；TargetedSetUsability 0→0.75 |
 | RQ3 ReproBreak 离线刻画 | `realproj/results/reprobreak.md` + `reprobreak.json` | 9604 真实断裂；语义可达 12.2%；改写器上界 574/578=99.3% |
-| 表 5-7（ReproBreak 端到端） | `realproj/results/reprobreak_e2e.json` | 规则 14/414=3.38%，DeepSeek 23/414=5.56%；真实 locator 修复边界证据 |
-| 表 5-8、表 5-10（RQ3 人工复核）`[κ 待合并]` | `out/rq3_reprobreak_to_annotate.csv` + `out/rq3_annotator2_blind.csv` + `out/rq3_annotator_context_blind.md` | 40 条第一标注列 SO=37、EC=2、SR=1；第二标注者待填；模型标签恒为 STRUCTURAL_ONLY，模型-人工 κ 仅描述性 |
+| 表 5-7（ReproBreak 端到端） | `realproj/results/reprobreak_e2e.json`、`reprobreak_e2e_v2.json` | 规则 14/414=3.38%；LLM 主批（flash）30/414=7.25%；v2 候选+POM 27/414=6.52%；语义子集 n=90 上 33.33%（flash）；真实 locator 修复边界证据 |
+| ReproBreak 语义子集 pro 对照 | `realproj/results/reprobreak_e2e_pro90.json`、`reprobreak_pro90_compare.{json,md}`、`llm_usage_pro90.jsonl` | 同 n=90 子集：pro 语义 30.00% vs flash 33.33%（exact 23.33% vs 26.67%）；配对 McNemar b=4/c=1、p=0.375，不显著；模型升级未提升修复率 |
+| 表 5-8、表 5-10（RQ3 人工复核） | `out/rq3_reprobreak_to_annotate.csv` + `out/*_blind.csv` + `out/annotator1_masked.json` | 40 条现行协议 B 预标注 SO=40、EC=0、SR=0；作者盲评第二列 40/40 SO；Po=1.0、不报 κ；模型标签恒为 STRUCTURAL_ONLY，模型-人工 κ 仅描述性 |
 
 ## 第 5 章 RQ4：成本
 | 论文位置 | 数据/图表来源 | 一句话结论 |
 |---|---|---|
 | RQ4 合成主体执行量 | `EXPERIMENT_REPORT.md` §4 | 测试执行量下降 62.5%（Safety=1.0） |
 | 表 5-9（RQ4 真实 wall-clock + NetSaving） | `out/real/cand_coverage_rq4.json`、`out/real/actual_desktop_rq4.json` | full vs selected 的 median/IQR、NetSaving、盈亏平衡、machine-minutes；cand_coverage 已计入 `T_select`，actual_desktop 单场景仍为 selected=0 边界案例 |
+| RQ4 图选择 62 用例成本测算 | `out/real/actual_desktop_rq4_graph.md` | T_full=168s、T_run(1)=19.5s、T_select≈9.1s（冷启动静态建图上界）；NetSaving 94.6% / 83.0% / −5.4% 为成本模型测算值，不是逐臂重复 3 次的分布 |
 | RQ4 多过渡平均 | `out/real/actual_desktop_rq4_batch.{json,md}` | actual_desktop 9 个过渡：1 empty / 8 full，mean NetSaving 11.1%、median NetSaving 0%、break-even 11.1%；说明平均收益受全选过渡限制 |
 | RQ4 LLM token/$ 成本 | `out/llm_cost.{json,md}` | 424 次 LLM 调用估算约 757.8k input / 19.1k output tokens，按 DeepSeek v4-flash 约 $0.111；早期实验未保存精确 usage，后续可用 `LLM_USAGE_OUT` 记录 |
 
@@ -77,12 +80,12 @@
 ## 2026-11-09 增补：§5.3 分仓构成披露与 RQ3 数字口径
 | 论文位置 | 来源 | 一句话结论 |
 |---|---|---|
-| §5.3「分仓构成与可读边界」 | `realproj/results/reprobreak_e2e.json` → `rows[].repo`、`rows[].rule`、`rows[].llm`；分项目表见 `realproj/results/reprobreak_e2e.md` | 414 条池构成 245/78/46/45（59.2%/18.8%/11.1%/10.9%）；规则臂 0/7/6/1、LLM 臂 1/2/6/14；LLM 23 条命中中 14 条（60.9%）来自 microsoft/playwright（14/45=31.1%），池量最大的 ghiscoding/angular-slickgrid 两臂合计 1/245=0.41%；总体 5.56% 为按池量加权的混合值，不宜读作各仓普适水平 |
+| §5.3「分仓构成与可读边界」 | `realproj/results/reprobreak_e2e.json` → `rows[].repo`、`rows[].rule`、`rows[].llm`；分项目表见 `realproj/results/reprobreak_e2e.md` | 414 条池构成 245/78/46/45（59.2%/18.8%/11.1%/10.9%）；规则臂 0/7/6/1、LLM 臂 4/3/7/16；LLM 30 条命中中 16 条（53.3%）来自 microsoft/playwright（16/45=35.6%），池量最大的 ghiscoding/angular-slickgrid 两臂合计 4/245=1.63%；总体 7.25% 为按池量加权的混合值，不宜读作各仓普适水平 |
 | §5.3「抽样设计带来的同类偏斜」 | `experiments/out/rq3_reprobreak_to_annotate.csv` → `repo` 列（40 行，各 10 条） | 40 条复核样本为每仓等额 10 条，抽样比 4.1%（10/245）–22.2%（10/45），小仓约为大仓 5.4 倍；分层只作用于仓库、不作用于过时类型，故 40 条分布不代表池构成，也不代表各仓普适水平 |
 | 图 5-9（已出图，不改） | `experiments/out/figs/rq3_per_repo_minority.svg` | 与上两段同源；正文新增段与图注在 14/45=31.1%、4.1%–22.2%、5.4 倍三处重复，属图内自洽与正文论证的双重表述，不需改图 |
-| 全文数字口径核查 | 论文全文（中英文摘要、§4.4、§5.3、§5.5、§6、§7） | 3.38%/5.56%/14/414/23/414 共 7 处（表 5-7 表体 2 处、正文 5 处），均带分母或限定在 ReproBreak/4 个真实项目，属描述性陈述，0 处需改写；逐处清单见 `论文回填改动记录_2026-11-08.md` §14.2 |
+| 全文数字口径核查 | 论文全文（中英文摘要、§4.4、§5.3、§5.5、§6、§7） | 当前主批为 3.38%（14/414）与 7.25%（30/414）；早期批 5.56%（23/414）仅作为重跑波动在 §5.3 非确定性说明中出现；语义子集 n=90 为 33.33%。各数字均带分母或限定在 ReproBreak/4 个真实项目，属描述性陈述 |
 
-口径说明：`5.56% = 23/414`、`3.38% = 14/414` 是四个仓库的混合率；分仓率只用于披露构成，不用于仓库类型归因（本文未做该类检验）。
+口径说明：当前主批 `7.25% = 30/414`、`3.38% = 14/414` 是四个仓库的混合率（早期批 `5.56% = 23/414` 仅作重跑波动披露）；分仓率只用于披露构成，不用于仓库类型归因（本文未做该类检验）。
 
 ## 2026-11-10 增补：五张示意图的前置正文定义
 | 论文位置 | 来源 | 一句话结论 |

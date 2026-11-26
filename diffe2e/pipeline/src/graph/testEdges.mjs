@@ -13,15 +13,24 @@ export function addTestEdges(rawGraph, testEvidence) {
 
   const fnByFile = new Map();    // `${file}\u0000${name}` -> node id (function/method)
   const routeByFile = new Map(); // `${file}\u0000${name}` -> route node id
+  const fileNode = new Map();    // file -> file node id
   for (const n of rawGraph.nodes) {
     if (n.kind === 'function' || n.kind === 'method') fnByFile.set(`${n.file}\u0000${n.name}`, n.id);
     else if (n.kind === 'route') routeByFile.set(`${n.file}\u0000${n.name}`, n.id);
+    else if (n.kind === 'file') fileNode.set(n.file, n.id);
   }
 
   for (const te of testEvidence) {
     const testId = `test::${te.test}`;
     if (!nodes.some((n) => n.id === testId)) {
       nodes.push({ id: testId, kind: 'test', name: te.test, qualifiedName: te.test, file: null, startLine: 0, endLine: 0 });
+    }
+    // True file-level coverage (test -> file). Needed by the conservative fallback
+    // for files that only execute top-level module code and therefore have no
+    // named-function `executes` edge (e.g. data modules, `export default () => ...`).
+    for (const file of te.files || []) {
+      const fid = fileNode.get(file);
+      if (fid) edges.push({ source: testId, target: fid, kind: 'coversFile', provenance: 'dynamic', line: 0 });
     }
     for (const [file, names] of Object.entries(te.funcs || {})) {
       for (const name of names) {

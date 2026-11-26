@@ -1,0 +1,45 @@
+{
+  "flash": {
+    "model": "deepseek-v4-flash",
+    "subset_n": 90,
+    "n": 90,
+    "exact": 0.2667,
+    "semantic": 0.3333,
+    "errors": 0
+  },
+  "pro": {
+    "model": "deepseek-v4-pro",
+    "subset_n": 90,
+    "n": 90,
+    "exact": 0.2333,
+    "semantic": 0.3,
+    "errors": 0
+  },
+  "intersection_n": 90,
+  "flash_on_intersection": {
+    "n": 90,
+    "exact": 0.2667,
+    "semantic": 0.3333,
+    "errors": 0
+  },
+  "pro_on_intersection": {
+    "n": 90,
+    "exact": 0.2333,
+    "semantic": 0.3,
+    "errors": 0
+  },
+  "mcnemar": {
+    "exact": {
+      "b": 4,
+      "c": 1,
+      "p": 0.375
+    },
+    "semantic": {
+      "b": 4,
+      "c": 1,
+      "p": 0.375
+    }
+  },
+  "only_flash": [],
+  "only_pro": []
+}

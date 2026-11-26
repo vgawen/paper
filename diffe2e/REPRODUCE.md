@@ -21,6 +21,10 @@ node prepare.mjs --only=deps     # 只做依赖（deps | browsers | repos | data
    - `real/mermaid-live-editor`、`real/actual`（后者自动 `corepack yarn install`）——RQ1 真实回放 / RQ2 真实样本；
    - `realproj/clones/aut/{angular-slickgrid,koenig,openmct,playwright}`——RQ3 ReproBreak 端到端修复。
 
+> **受限网络 / 离线复现**：`prepare.mjs` 支持 `DIFFE2E_CLONE_MIRROR=/path/to/mirror`，优先从本地镜像
+> （目录名同目标仓库，如 `microsoft__playwright`）克隆，origin 仍指回 GitHub；开始前用 `df` 检查可用空间
+> （`DIFFE2E_MIN_FREE_GB`，默认 10 GB）。全量历史不能换成 `--depth=1`：实验要在任意历史 commit 的父提交上 checkout。
+
 完成后脚本会打印就绪清单；有步骤失败时（多为网络）**直接重跑即可**，已完成项自动跳过。
 
 > 已知环境坑（prepare 已覆盖）：`tree-sitter` 需要 C++ 构建链；Playwright 每版本绑定特定 Chromium，
@@ -34,6 +38,16 @@ node prepare.mjs --only=deps     # 只做依赖（deps | browsers | repos | data
 cd diffe2e
 node --test pipeline/test/*.test.mjs experiments/*.test.mjs experiments/real/*.test.mjs experiments/annotate/*.test.mjs
 ```
+
+## 打包送审归档
+
+```bash
+cd diffe2e
+node tools/package_archive.mjs ../Archive.zip --force   # 顶层目录为 diffe2e/，仅含 git 跟踪文件
+```
+
+归档用 `git archive` 生成：不含 `.git/`、`node_modules/`、`.DS_Store`、`__MACOSX/`，也不会把根目录遗留的
+`cov/vold|vnew` 带进去。**先提交再打包**——`git archive` 取 HEAD，未提交改动不会进入归档。
 
 ## 阶段 1：主实验（无需 LLM key，准备完成后直接运行）
 ```bash
@@ -71,6 +85,18 @@ cd diffe2e
 git clone --depth 1 https://github.com/rub-sq/ReproBreak realproj/clones/ReproBreak  # 真实 locator 断裂数据
 node realproj/reprobreak.mjs         # ReproBreak 真实数据子实验(可达性+改写器精确匹配)
 RB_LIMIT=449 node --env-file=.env realproj/reprobreak_e2e.mjs  # 端到端规则臂 + LLM 臂
+```
+
+### 模型能力对照（pro vs flash，n=90，可选）
+
+```bash
+cd diffe2e
+# RB_SUBSET=semantic 只跑 distinctive 语义子集（与论文 n=90 完全相同的筛选）；RB_DRY=1 可先预览
+LLM_MODEL=deepseek-v4-pro RB_SUBSET=semantic RB_LIMIT=90 RB_CONCURRENCY=6 \
+  RB_OUT=realproj/results/reprobreak_e2e_pro90.json \
+  LLM_USAGE_OUT=realproj/results/llm_usage_pro90.jsonl \
+  node --env-file=.env realproj/reprobreak_e2e.mjs
+node experiments/real/compare_pro90.mjs   # 同子集配对对照 + McNemar -> reprobreak_pro90_compare.md
 ```
 
 ## 产物

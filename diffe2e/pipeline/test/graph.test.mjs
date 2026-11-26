@@ -248,3 +248,15 @@ test('buildTestCodeGraph: unifies code + route + test layers', () => {
   assert.ok(g.edges.some((e) => e.kind === 'executes' && e.target === 'src/cart.ts::render'));
   assert.ok(g.edges.some((e) => e.kind === 'calls' && e.resolved && e.target === 'src/util.ts::formatPrice'));
 });
+
+test('addTestEdges: records true file-level coverage (coversFile) for fallback', () => {
+  const g = addTestEdges({
+    nodes: [
+      { id: 'src/a.ts::<file>', kind: 'file', name: 'a.ts', file: 'src/a.ts' },
+      { id: 'src/a.ts::f', kind: 'function', name: 'f', file: 'src/a.ts' },
+    ],
+    edges: [],
+  }, [{ test: 't', files: ['src/a.ts'], funcs: { 'src/a.ts': ['f'] } }]);
+  assert.ok(g.edges.some((e) => e.kind === 'coversFile' && e.target === 'src/a.ts::<file>'));
+  assert.ok(g.edges.some((e) => e.kind === 'executes' && e.target === 'src/a.ts::f'));
+});

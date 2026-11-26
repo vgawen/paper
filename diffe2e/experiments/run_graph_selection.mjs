@@ -10,8 +10,8 @@ import { execSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { buildTestCodeGraph } from '../pipeline/src/graph/index.mjs';
 import { changedEntitiesFromCode } from '../pipeline/src/astEntities.mjs';
+import { isCommentOnlyChange, isTestPath, resolveEntityNode } from '../pipeline/src/graph/attribution.mjs';
 import { parseUnifiedDiff } from '../pipeline/src/diff.mjs';
-import { nodeId } from '../pipeline/src/graph/extract.mjs';
 import { selectAffected, routeDiff } from '../pipeline/src/graph/select.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
@@ -41,27 +41,47 @@ function loadEvidence(tag) {
     const o = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
     const funcs = {};
     for (const [k, names] of Object.entries(o.funcs || {})) funcs[k.replace(/^\/+/, '')] = names;
-    ev.push({ test: o.test, funcs });
+    const files = (o.files || []).map((x) => String(x).replace(/^\/+/, ''));
+    ev.push({ test: o.test, files, funcs });
   }
   return ev;
 }
 
-function changedEntities(oldT, newT) {
+function changedEntities(oldT, newT, graph) {
   const parsed = parseUnifiedDiff(git(`diff ${oldT} ${newT} -- app/public/src`));
   const fns = new Set();
   const vars = new Set();
   const routes = new Set();
+  const fallbackFiles = new Set();
   for (const repoF of parsed.files) {
     const f = repoF.replace('app/public/', '');
+    if (isTestPath(f)) continue; // spec/test changes are not application changes
     const newCode = git(`show ${newT}:${repoF}`);
-    const lines = parsed.byFile[repoF] ? [...parsed.byFile[repoF].added, ...parsed.byFile[repoF].removed] : [];
-    for (const e of changedEntitiesFromCode(newCode, lines, f)) {
-      if (e.kind === 'variable') { vars.add(nodeId(f, e.name)); continue; }
-      if (e.kind === 'route') { routes.add(nodeId(f, `route:${e.name}`)); continue; }
-      fns.add(nodeId(f, e.name));
+    const oldCode = git(`show ${oldT}:${repoF}`);
+    const added = parsed.byFile[repoF]?.added || [];
+    const removed = parsed.byFile[repoF]?.removed || [];
+    // JSX hits are UI-level, not function-level: they must not be treated as a
+    // function whose name happens to be `undefined`.
+    const ents = changedEntitiesFromCode(newCode, [...added, ...removed], f)
+      .filter((e) => e.kind === 'function' || e.kind === 'variable' || e.kind === 'route');
+    const commentOnly = isCommentOnlyChange({ addedLines: added, removedLines: removed }, oldCode, newCode, f);
+    // No attributable entity in an EXISTING file: a genuine semantic change the
+    // mapper could not name (anonymous arrow / top-level side effect) -> file
+    // fallback. Comment-only files and brand-new files are inert for old tests.
+    if (!ents.length) {
+      if (oldCode !== '' && !commentOnly) fallbackFiles.add(f);
+      continue;
+    }
+    for (const e of ents) {
+      const r = resolveEntityNode(graph, f, e.kind, e.name);
+      if (r.status === 'ambiguous') { fallbackFiles.add(f); continue; }
+      if (!r.id) continue; // new declaration: no OLD test could execute it
+      if (e.kind === 'variable') vars.add(r.id);
+      else if (e.kind === 'route') routes.add(r.id);
+      else fns.add(r.id);
     }
   }
-  return { fns, vars, routes };
+  return { fns, vars, routes, fallbackFiles };
 }
 
 // non-app, non-test file changes (config / env / build) -> global implicit dependency
@@ -75,7 +95,7 @@ for (let i = 1; i < manifest.length; i++) {
   const o = manifest[i - 1].tag, n = manifest[i].tag;
   const graph = buildTestCodeGraph(filesAt(o), loadEvidence(n));
   const staticNew = buildTestCodeGraph(filesAt(n), []);
-  const changed = changedEntities(o, n);
+  const changed = changedEntities(o, n, graph);
   const config = changedConfigFiles(o, n);
   const allTests = graph.nodes.filter((x) => x.kind === 'test').map((x) => x.id);
   const sel = selectAffected(graph, {
@@ -83,6 +103,7 @@ for (let i = 1; i < manifest.length; i++) {
     routeChanges: routeDiff(graph, staticNew),
     configChanged: config.length > 0,
     allTests,
+    fallbackFiles: changed.fallbackFiles,
   });
   const fr = frozen[n];
   const reduction = 1 - sel.size / fr.full;
@@ -102,7 +123,7 @@ for (let i = 1; i < manifest.length; i++) {
     cov_sel: covSelSet.size, cov_precision_emp: aobs.length && covSelSet.size ? +(covEmpHit / covSelSet.size).toFixed(4) : null,
     safety_emp: aobs.length ? +(empHit / aobs.length).toFixed(4) : null,
     missed: missed.length, selected: selIds.sort() });
-  console.log(`${n} sel=${sel.size}/${fr.full} red=${reduction.toFixed(3)} cov=${fr.cov.Reduction.toFixed(3)} safe=${safety.toFixed(2)} prec=${precision.toFixed(2)} missed=${missed.length}${config.length ? ' [CONFIG->all]' : ''}`);
+  console.log(`${n} sel=${sel.size}/${fr.full} red=${reduction.toFixed(3)} cov=${fr.cov.Reduction.toFixed(3)} safe=${safety.toFixed(2)} prec=${precision.toFixed(2)} missed=${missed.length}${config.length ? ' [CONFIG->all]' : ''}${changed.fallbackFiles.size ? ` [FALLBACK:${[...changed.fallbackFiles].join(',')}]` : ''}`);
 }
 
 const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;

@@ -145,7 +145,7 @@
 ## 6. 有效性威胁与局限
 - 主体为受控工程；外部效度已在 2 个真实开源项目（actual-budget、mermaid-live-editor）的多 commit replay 上初步验证（§5.1），但项目数仍有限。
 - 生成实验已接入真实 DeepSeek 对照；真实 provider 调用失败或返回空结果时实验会明确报错，避免把本地 stub 误当真实 LLM 结果。
-- 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂 3.38%、DeepSeek LLM 臂 5.56%）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
+- 修复在真实数据（ReproBreak）上已两层量化：3.5 离线可达性/改写器正确性（已知信号上界 99.3%），3.6 端到端无泄漏修复（449 执行验证断裂、4 真实项目，规则臂 3.38%、DeepSeek flash LLM 臂 30/414=7.25%；v2 候选+POM 27/414=6.52%；语义子集 n=90 上 flash 33.33%、pro 30.00%，配对 McNemar p=0.375，模型升级未提升）；仍存局限：端到端执行验证（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
 - 覆盖映射在 bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。
 - Semantic UI Diff 在“文案与 handler 同时变更”时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。
 

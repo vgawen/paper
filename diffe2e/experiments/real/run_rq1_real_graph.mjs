@@ -15,8 +15,8 @@ import { Graph } from '../../pipeline/src/graph/graph.mjs';
 import { addTestEdges } from '../../pipeline/src/graph/testEdges.mjs';
 import { selectAffected, routeDiff } from '../../pipeline/src/graph/select.mjs';
 import { changedEntitiesFromCode } from '../../pipeline/src/astEntities.mjs';
+import { isCommentOnlyChange, isTestPath, resolveEntityNode } from '../../pipeline/src/graph/attribution.mjs';
 import { parseUnifiedDiff } from '../../pipeline/src/diff.mjs';
-import { nodeId } from '../../pipeline/src/graph/extract.mjs';
 import { srcLeaf, mapLeafRelToRepoRel } from '../../pipeline/src/covinject.mjs';
 import { discoverWorkspace, collectSrc } from '../../pipeline/src/graph/workspace.mjs';
 
@@ -103,22 +103,35 @@ function loadOutcomes(reportPath) {
   return out;
 }
 
-function changedEntities(prev, sha) {
+function changedEntities(prev, sha, graph) {
   const srcGlobs = Array.isArray(adapter.srcGlobs) ? adapter.srcGlobs : [adapter.srcGlob];
   const diff = gitIn(adapter.repoAbs, `diff ${prev} ${sha} -- ${srcGlobs.join(' ')}`);
   const parsed = parseUnifiedDiff(diff);
-  const fns = new Set(), vars = new Set(), routes = new Set();
+  const fns = new Set(), vars = new Set(), routes = new Set(), fallbackFiles = new Set();
   for (const f of parsed.files) {
-    let newCode = '';
+    if (isTestPath(f)) continue; // spec/test changes are not application changes
+    let newCode = '', oldCode = '';
     try { newCode = gitIn(adapter.repoAbs, `show ${sha}:${f}`); } catch { continue; }
-    const lines = parsed.byFile[f] ? [...parsed.byFile[f].added, ...parsed.byFile[f].removed] : [];
-    for (const e of changedEntitiesFromCode(newCode, lines, f)) {
-      if (e.kind === 'variable') vars.add(nodeId(f, e.name));
-      else if (e.kind === 'route') routes.add(nodeId(f, `route:${e.name}`));
-      else fns.add(nodeId(f, e.name));
+    try { oldCode = gitIn(adapter.repoAbs, `show ${prev}:${f}`); } catch { oldCode = ''; }
+    const added = parsed.byFile[f]?.added || [];
+    const removed = parsed.byFile[f]?.removed || [];
+    const ents = changedEntitiesFromCode(newCode || oldCode, [...added, ...removed], f)
+      .filter((e) => e.kind === 'function' || e.kind === 'variable' || e.kind === 'route');
+    const commentOnly = isCommentOnlyChange({ addedLines: added, removedLines: removed }, oldCode, newCode, f);
+    if (!ents.length) {
+      if (oldCode !== '' && !commentOnly) fallbackFiles.add(f); // unattributed semantic change
+      continue;
+    }
+    for (const e of ents) {
+      const r = resolveEntityNode(graph, f, e.kind, e.name);
+      if (r.status === 'ambiguous') { fallbackFiles.add(f); continue; }
+      if (!r.id) continue; // new declaration in the old graph -> no OLD test executes it
+      if (e.kind === 'variable') vars.add(r.id);
+      else if (e.kind === 'route') routes.add(r.id);
+      else fns.add(r.id);
     }
   }
-  return { files: parsed.files, fns, vars, routes };
+  return { files: parsed.files, fns, vars, routes, fallbackFiles };
 }
 
 async function main() {
@@ -151,7 +164,7 @@ async function main() {
       // graph on V_old source + V_old evidence
       checkoutSha(adapter.repoAbs, t.prev);
       const files = repoFilesAtRun();
-      const evidence = Object.entries(covOld).map(([test, v]) => ({ test, funcs: v.funcs }));
+      const evidence = Object.entries(covOld).map(([test, v]) => ({ test, files: v.files, funcs: v.funcs }));
       const graph = addTestEdges(Graph.build(files).toJSON(), evidence);
       // routes at V_new (for ADD/REMOVE/MODIFY), then return to V_old for graph building
       checkoutSha(adapter.repoAbs, t.sha);
@@ -159,13 +172,14 @@ async function main() {
       const graphNew = addTestEdges(Graph.build(filesNew).toJSON(), []);
       checkoutSha(adapter.repoAbs, t.prev);
 
-      const ch = changedEntities(t.prev, t.sha);
+      const ch = changedEntities(t.prev, t.sha, graph);
       const allTests = [...new Set([...Object.keys(covOld), ...Object.keys(covNew)])];
       // affected oracle (coverage-based, V_new only) — same definition as the file-level run
       const affected = allTests.filter((id) => (covNew[id]?.files || []).some((f) => ch.files.includes(f)));
       const selGraph = selectAffected(graph, {
         changedFns: ch.fns, changedVars: ch.vars, changedRoutes: ch.routes,
         routeChanges: routeDiff(graph, graphNew), allTests: allTests.map((x) => `test::${x}`),
+        fallbackFiles: ch.fallbackFiles,
       });
       const selFile = allTests.filter((id) => (covOld[id]?.files || []).some((f) => ch.files.includes(f)));
 

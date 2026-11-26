@@ -42,7 +42,7 @@ export function routeDiff(graphOld, graphNew) {
 export function selectAffected(graph, {
   changedFns = new Set(), changedVars = new Set(), changedRoutes = new Set(),
   routeChanges = { added: [], removed: [], modified: [] },
-  configChanged = false, allTests = [],
+  configChanged = false, allTests = [], fallbackFiles = new Set(),
 } = {}) {
   // 0. config / flag / env — global implicit dependency, can't be attributed finer
   if (configChanged) return new Set(allTests);
@@ -74,21 +74,32 @@ export function selectAffected(graph, {
   }
 
   // 4. file-level fallback: variables that cannot be narrowed safely (no reader, or
-  // a reader set that is not provably complete: exported / dynamic-access file)
+  // a reader set that is not provably complete: exported / dynamic-access file),
+  // plus whole files whose change could not be attributed to any entity at all
+  // (anonymous arrows / top-level side effects / unsupported syntax). The caller
+  // excludes comment-only files, so an empty entity list here means a real risk.
   const unresolvedVars = [...changedVars].filter((v) => unsafeVars.has(v) && !routeTableVars.has(v));
-  if (unresolvedVars.length) {
-    const unresolvedFiles = new Set(
-      unresolvedVars.map((v) => graph.nodes.find((n) => n.id === v)?.file).filter(Boolean)
-    );
+  const fallbackFileSet = new Set(fallbackFiles);
+  for (const v of unresolvedVars) {
+    const f = graph.nodes.find((n) => n.id === v)?.file;
+    if (f) fallbackFileSet.add(f);
+  }
+  if (fallbackFileSet.size) {
+    const byId = new Map(graph.nodes.map((n) => [n.id, n]));
     const testFiles = new Map();
+    const addFile = (test, file) => {
+      if (!file) return;
+      if (!testFiles.has(test)) testFiles.set(test, new Set());
+      testFiles.get(test).add(file);
+    };
     for (const e of graph.edges) {
-      if (e.kind !== 'executes' && e.kind !== 'navigates') continue;
-      const target = graph.nodes.find((n) => n.id === e.target);
-      if (!target || !target.file) continue;
-      if (!testFiles.has(e.source)) testFiles.set(e.source, new Set());
-      testFiles.get(e.source).add(target.file);
+      // coversFile is true file-level coverage (including module-eval-only files);
+      // executes/navigates are a fallback for graphs that predate the file edge.
+      if (e.kind === 'coversFile' || e.kind === 'executes' || e.kind === 'navigates') {
+        addFile(e.source, byId.get(e.target)?.file);
+      }
     }
-    for (const [test, files] of testFiles) if ([...unresolvedFiles].some((f) => files.has(f))) sel.add(test);
+    for (const [test, files] of testFiles) if ([...fallbackFileSet].some((f) => files.has(f))) sel.add(test);
   }
 
   return sel;

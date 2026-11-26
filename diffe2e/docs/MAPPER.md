@@ -1,5 +1,7 @@
 # 测试↔代码映射器（Test–Code Mapper）：结构、构建与增量维护
 
+> **2026-11-26 更新（与论文 §3.2 对齐）**：映射器已演进为**三层 test-code graph**（结构层 `contains`/`calls`/`imports`/`renders`、路由层、测试证据层 `executes`/`navigates`/`coversFile`/`asserts`/`references`，每条边带 provenance），实现见 `pipeline/src/graph/`。本文的 `M ⊆ E×T` 是该图的**测试↔实体投影**，不是独立模型；构建/增量的完整叙述以论文 §3.2 为准，下文保留旧二部索引的推导，作为投影视图的说明。
+
 > 本文回应评审意见 #3（创新点是"测试到代码的映射器"，但其结构、如何高效构建与维护未说清）。这里把映射器形式化为一个**带类型的二部索引**，给出数据模型、构建算法、**增量维护**规则与复杂度，并定位它在创新点中的角色。对应代码：`coverageMap.mjs`（动态覆盖边）、`uidiff.mjs` / `selector.mjs`（静态 UI 语义边）、`diff.mjs`（变更实体抽取）。
 
 ## 1. 映射器是什么：带类型的二部索引

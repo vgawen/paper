@@ -1,0 +1,462 @@
+{
+  "title": "受控主体（24 过渡）",
+  "rows": [
+    {
+      "label": "c01",
+      "type": "ui_text",
+      "prev": "c00",
+      "sha": "c01",
+      "files": [
+        {
+          "file": "app/public/src/home.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c02",
+      "type": "logic",
+      "prev": "c01",
+      "sha": "c02",
+      "files": [
+        {
+          "file": "app/public/src/search.js",
+          "entities": [
+            "variable:ITEMS"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c03",
+      "type": "new_feature_gap",
+      "prev": "c02",
+      "sha": "c03",
+      "files": [
+        {
+          "file": "app/public/src/coupon.js",
+          "entities": [
+            "variable:b",
+            "variable:c",
+            "variable:m",
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "app/public/src/main.js",
+          "entities": [
+            "variable:routes"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c04",
+      "type": "multi_file",
+      "prev": "c03",
+      "sha": "c04",
+      "files": [
+        {
+          "file": "app/public/src/util.js",
+          "entities": [
+            "function:discount"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c05",
+      "type": "ui_text",
+      "prev": "c04",
+      "sha": "c05",
+      "files": [
+        {
+          "file": "app/public/src/profile.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c06",
+      "type": "logic",
+      "prev": "c05",
+      "sha": "c06",
+      "files": [
+        {
+          "file": "app/public/src/login.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c07",
+      "type": "logic",
+      "prev": "c06",
+      "sha": "c07",
+      "files": [
+        {
+          "file": "app/public/src/orders.js",
+          "entities": [
+            "variable:ORDERS"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c08",
+      "type": "locator_break",
+      "prev": "c07",
+      "sha": "c08",
+      "files": [
+        {
+          "file": "app/public/src/cart.js",
+          "entities": [
+            "variable:btn",
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c09",
+      "type": "ui_text",
+      "prev": "c08",
+      "sha": "c09",
+      "files": [
+        {
+          "file": "app/public/src/search.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c10",
+      "type": "refactor_noise",
+      "prev": "c09",
+      "sha": "c10",
+      "files": [
+        {
+          "file": "app/public/src/home.js",
+          "entities": [],
+          "empty": true,
+          "commentOnly": true,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c11",
+      "type": "multi_file",
+      "prev": "c10",
+      "sha": "c11",
+      "files": [
+        {
+          "file": "app/public/src/cart.js",
+          "entities": [
+            "variable:count"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "app/public/src/login.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c12",
+      "type": "route",
+      "prev": "c11",
+      "sha": "c12",
+      "files": [
+        {
+          "file": "app/public/src/main.js",
+          "entities": [
+            "variable:routes"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c13",
+      "type": "new_feature_gap",
+      "prev": "c12",
+      "sha": "c13",
+      "files": [
+        {
+          "file": "app/public/src/main.js",
+          "entities": [
+            "variable:routes"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "app/public/src/wishlist.js",
+          "entities": [
+            "variable:n",
+            "variable:b",
+            "variable:c",
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c14",
+      "type": "logic",
+      "prev": "c13",
+      "sha": "c14",
+      "files": [
+        {
+          "file": "app/public/src/orders.js",
+          "entities": [],
+          "empty": true,
+          "commentOnly": true,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c15",
+      "type": "assertion_break",
+      "prev": "c14",
+      "sha": "c15",
+      "files": [
+        {
+          "file": "app/public/src/login.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c16",
+      "type": "ui_text",
+      "prev": "c15",
+      "sha": "c16",
+      "files": [
+        {
+          "file": "app/public/src/profile.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c17",
+      "type": "logic",
+      "prev": "c16",
+      "sha": "c17",
+      "files": [
+        {
+          "file": "app/public/src/util.js",
+          "entities": [
+            "function:taxCents"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c18",
+      "type": "ui_text",
+      "prev": "c17",
+      "sha": "c18",
+      "files": [
+        {
+          "file": "app/public/src/profile.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c19",
+      "type": "new_feature_gap",
+      "prev": "c18",
+      "sha": "c19",
+      "files": [
+        {
+          "file": "app/public/src/faq.js",
+          "entities": [
+            "variable:b",
+            "variable:p",
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "app/public/src/main.js",
+          "entities": [
+            "variable:routes"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c20",
+      "type": "locator_break",
+      "prev": "c19",
+      "sha": "c20",
+      "files": [
+        {
+          "file": "app/public/src/search.js",
+          "entities": [
+            "variable:go",
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c21",
+      "type": "assertion_break",
+      "prev": "c20",
+      "sha": "c21",
+      "files": [
+        {
+          "file": "app/public/src/orders.js",
+          "entities": [
+            "variable:ORDERS"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c22",
+      "type": "multi_file",
+      "prev": "c21",
+      "sha": "c22",
+      "files": [
+        {
+          "file": "app/public/src/home.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        },
+        {
+          "file": "app/public/src/profile.js",
+          "entities": [
+            "function:render"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c23",
+      "type": "route",
+      "prev": "c22",
+      "sha": "c23",
+      "files": [
+        {
+          "file": "app/public/src/main.js",
+          "entities": [
+            "variable:routes"
+          ],
+          "empty": false,
+          "commentOnly": false,
+          "fallback": false
+        }
+      ]
+    },
+    {
+      "label": "c24",
+      "type": "refactor_noise",
+      "prev": "c23",
+      "sha": "c24",
+      "files": [
+        {
+          "file": "app/public/src/util.js",
+          "entities": [],
+          "empty": true,
+          "commentOnly": true,
+          "fallback": false
+        }
+      ]
+    }
+  ]
+}

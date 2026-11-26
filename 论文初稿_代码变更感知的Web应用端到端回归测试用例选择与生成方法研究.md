@@ -1,20 +1,14 @@
 # 代码变更感知的 Web 应用端到端回归测试闭环：安全选择、缺口生成与修复边界研究
 
-> **定稿候选版（v1.1，2026-11-21）**
->
-> 编写约定：本稿基于受控主体、真实项目 replay、真实 LLM 与 ReproBreak 结果撰写，所有数字均来自仓库实际产物（`diffe2e/experiments/out/`、`diffe2e/realproj/results/`）。正文不含合成数字；RQ2/RQ3 第二标注者与 Cohen's κ 已并入（合并位置、操作步骤与实测结果见 §5.6 与附录 A.3）。
->
-> 方法工具无关：定位器、覆盖映射与 UI 语义抽象均不绑定具体框架；Playwright 仅为实现实例，方法同样适用于 Selenium / Cypress。
-
 ---
 
 ## 摘要
 
-现代 Web 项目提交频繁，持续集成（CI）中每次都全量运行端到端（E2E）测试成本高昂；但若人工挑选少跑，又容易漏掉受本次代码变更影响的用例。与此同时，新增页面、路由或交互常常没有对应 E2E 覆盖，使回归测试既"跑得多"又"补得慢"。本文研究**代码变更感知的 Web 应用端到端回归测试闭环**：给定一次代码变更（diff），围绕"召回不可妥协"这一核心诉求自动构造 targeted E2E 测试集——在**可证明不漏（Safety=1.0）**的前提下从既有测试中安全选择受影响用例，并对既有测试覆盖不到的新变化进行 diff 约束生成。测试修复作为闭环支撑能力，用于提升选中失效用例的可用性并量化真实测试演化难度，而非本文主创新点。
+现代 Web 项目提交频繁，持续集成（CI）中每次都全量运行端到端（E2E）测试成本高昂；但若人工挑选少跑，又容易漏掉受本次代码变更影响的用例。与此同时，新增页面、路由或交互常常没有对应 E2E 覆盖，使回归测试既"跑得多"又"补得慢"。本文研究**代码变更感知的 Web 应用端到端回归测试闭环**：给定一次代码变更（diff），围绕"召回不可妥协"这一核心诉求自动构造 targeted E2E 测试集——在**条件安全命题（H1–H3 与 H2′）成立的前提下**从既有测试中安全选择受影响用例，并对既有测试覆盖不到的新变化进行 diff 约束生成。测试修复作为闭环支撑能力，用于提升选中失效用例的可用性并量化真实测试演化难度，而非本文主创新点。
 
-方法的核心是一个持久化、可增量维护的**测试↔代码映射器**（带类型的二部索引），以及一个把源码层 UI 变更对应到测试定位器、断言和新增交互的 **Semantic UI Diff**，二者作为"源码 diff ↔ 浏览器操作"的语义桥，支撑"选择→缺口分析→生成"主链路，并在运行阶段提供轻量修复锚点。针对回归测试选择的核心诉求"召回不可妥协"，本文给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题及其证明，并用**非循环的结果差异 oracle** 经验验证；针对测试间共享状态引发的副作用，给出状态依赖闭包及其安全性命题。针对生成质量，本文引入可执行率、变更相关率、版本差分敏感性与变异杀伤等自动指标，避免只以"能运行"衡量生成用例。
+方法的核心是一个持久化、可增量维护的**三层 test-code graph**（其测试↔实体投影是带类型的二部索引），以及一个把源码层 UI 变更对应到测试定位器、断言和新增交互的 **Semantic UI Diff**，二者作为"源码 diff ↔ 浏览器操作"的语义桥，支撑"选择→缺口分析→生成"主链路，并在运行阶段提供轻量修复锚点。针对回归测试选择的核心诉求"召回不可妥协"，本文给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题及其证明，并用**非循环的结果差异 oracle** 经验验证；针对测试间共享状态引发的副作用，给出状态依赖闭包及其安全性命题。针对生成质量，本文引入可执行率、变更相关率、版本差分敏感性与变异杀伤等自动指标，避免只以"能运行"衡量生成用例。
 
-在受控主体的 24 个变更过渡上，**test-code graph 的函数级四层归因（`executes`/`references`/路由级/文件级回退）把选择缩减率从文件级基线的 0.625 提升到 0.889，同时保持 SafetyEmp=1.0（0 漏选）与 Precision=1.0**——即"不漏且不误选"；收益来自"加新路由归零"与未使用函数/注释噪声的排除，天花板是共享路由器/工具的真强耦合。非循环结果差异 oracle 与变异压力测试均未发现漏选；副作用场景下经典文件级覆盖选择会导致判定翻转，状态闭包恢复保真。在真实项目 actual-budget（62 个 E2E 用例）上，该图选择把净收益从文件级的 **−5.4%** 扭转为 **+83.0%～94.6%**（选择开销已计入）。作为消融对照，仅用文件级覆盖 + UI 信号的选择与最强覆盖基线 `coverage_only` 持平（Reduction 0.625、Safety 1.0、Precision 1.0），二者等价由并集构造决定。代码变更感知主要体现在缺口识别与生成（RQ2）与断点诊断（RQ3）：diff 约束臂在生成的可执行率、变更相关率、版本敏感率与自动语义有效率上均为 1.0，优于无 diff 基线；但真实项目人工盲评显示，自动语义有效率只证明"可执行 + 变更敏感 + 能杀变异"，不证明人工意义上的语义有效性，该结果仅作外部效度限定。ReproBreak 真实 locator 端到端修复率为 3.38%（规则臂）与 7.25%（LLM 臂），远低于已知信号下的改写上界，说明真实 locator 修复仍是困难问题，本文据此将其定位为闭环支撑与边界研究而非主贡献。人工一致性校准采用协议 B 预标注 + 人工盲评双列：RQ2 n=30（Po=0.9333、κ=0 退化、Gwet's AC1=0.929）、RQ3 n=40（Po=1.0），详见 §5.6。
+在受控主体的 24 个变更过渡上，**test-code graph 的函数级四层归因（`executes`/`references`/路由级/文件级回退）把选择缩减率从文件级基线的 0.625 提升到 0.889，并在可观测断裂过渡上保持 SafetyEmp=1.0（0 漏选）**；同源覆盖口径下 Precision_cov=1.0，可测经验子集上 Precision_emp=1.0（仅 4 个单测试断裂过渡可测、判别力有限），因此本文不主张"每条选中测试都真正受影响"，只主张在非循环 oracle 可验证的样本上 0 漏选；收益来自"加新路由归零"与未使用函数/注释噪声的排除，天花板是共享路由器/工具的真强耦合。非循环结果差异 oracle 与变异压力测试在可观测样本上均未发现漏选；副作用场景下经典文件级覆盖选择会导致判定翻转，状态闭包恢复保真。在真实项目 actual-budget（62 个 E2E 用例）上，该图选择把净收益从文件级的 **−5.4%** 扭转为 **+83.0%～94.6%**（选择开销已计入）。作为消融对照，仅用文件级覆盖 + UI 信号的选择与最强覆盖基线 `coverage_only` 持平（Reduction 0.625、Safety 1.0、Precision_cov 1.0），二者等价由并集构造决定。代码变更感知主要体现在缺口识别与生成（RQ2）与断点诊断（RQ3）：diff 约束臂在生成的可执行率、变更相关率、版本敏感率与自动语义有效率上均为 1.0，优于无 diff 基线；但真实项目人工盲评显示，自动语义有效率只证明"可执行 + 变更敏感 + 能杀变异"，不证明人工意义上的语义有效性，该结果仅作外部效度限定。ReproBreak 真实 locator 端到端修复率为 3.38%（规则臂）与 7.25%（LLM 臂）；同子集换用推理模型 pro 也未提升（语义等价 30.00% vs 33.33%，配对 McNemar p=0.375），远低于已知信号下的改写上界，说明真实 locator 修复仍是困难问题，本文据此将其定位为闭环支撑与边界研究而非主贡献。一致性校准采用协议 B 的 LLM 预标注 + 作者本人盲评双列（作者未见第一列，非独立第三方）：RQ2 n=30（Po=0.9333、κ=0 退化、Gwet's AC1=0.929）、RQ3 n=40（Po=1.0），详见 §5.6。
 
 **关键词**：回归测试选择；端到端测试；代码变更感知；测试生成；测试修复；持续集成
 
@@ -22,9 +16,9 @@
 
 ## Abstract
 
-Modern web projects commit frequently, making full end-to-end (E2E) test execution in CI prohibitively expensive; yet manually trimming the suite risks missing tests affected by a change, while newly added routes or interactions often lack E2E coverage. This thesis studies a **code-change-aware E2E regression test closed loop** for web applications: given a code diff, it automatically yields a *targeted* E2E test set by **provably-safely** selecting affected existing tests (recall is non-negotiable) and generating diff-constrained tests for uncovered changes. Test repair is treated as a supporting capability in the closed loop, used to improve targeted-set usability and to quantify the difficulty of real test evolution rather than as the primary contribution.
+Modern web projects commit frequently, making full end-to-end (E2E) test execution in CI prohibitively expensive; yet manually trimming the suite risks missing tests affected by a change, while newly added routes or interactions often lack E2E coverage. This thesis studies a **code-change-aware E2E regression test closed loop** for web applications: given a code diff, it automatically yields a *targeted* E2E test set by **conditionally-safely** selecting affected existing tests under H1–H3 and H2′ (recall is non-negotiable) and generating diff-constrained tests for uncovered changes. Test repair is treated as a supporting capability in the closed loop, used to improve targeted-set usability and to quantify the difficulty of real test evolution rather than as the primary contribution.
 
-The method centers on a persistent, incrementally maintained **test–code mapper** (a typed bipartite index) and a **Semantic UI Diff** that bridges source-level UI changes to test locators, assertions, and newly added interactions, supporting the main chain of *selection → gap analysis → generation* and providing lightweight repair anchors when selected tests become stale. To make "recall is non-negotiable" provable, we define a selector-independent truly-affected set `A*`, state and prove a conditional safety proposition, and validate it empirically with a **non-circular outcome-difference oracle**; for side effects via shared state, we give a state-dependency closure with an accompanying safety proposition. On a controlled subject with 24 transitions, **function-level four-layer attribution over the test-code graph (`executes` / `references` / route-level / file-level fallback) raises the selection-reduction rate from the file-level baseline's 0.625 to 0.889 while keeping SafetyEmp=1.0 (zero misses) and Precision=1.0** — i.e. neither missing nor over-selecting; the gain comes from correctly assigning newly added routes to zero tests and excluding unused functions and comment-only noise, and its ceiling is genuine strong coupling (a shared router/utility module). The non-circular outcome-difference oracle and a mutation stress test find no misses; for side effects via shared state, classic file-level coverage selection flips verdicts while the state-dependency closure preserves fidelity. On the real project actual-budget (62 E2E tests), graph-based selection turns the net saving from **−5.4%** (file-level) into **+83.0%–94.6%**, with the selection overhead included. As an ablation, file-level coverage plus the UI signal ties the strongest coverage baseline `coverage_only` (Reduction 0.625, Safety 1.0, Precision 1.0), an equivalence forced by the union construction. Code-change awareness concentrates in gap identification/generation (RQ2) and breakage diagnosis (RQ3): the diff-constrained arm reaches 1.0 on executable, change-relevant, change-sensitive and automatically semantic-valid rates, above the no-diff baseline; yet human blind rating on real projects shows that the automatic rate only proves 'executable + change-sensitive + kills injected mutants', not human-judged semantic validity, so it serves only as an external-validity limitation. End-to-end locator repair on ReproBreak stays difficult: 3.38% for the rule arm and 7.25% for the LLM arm (33.3% on the 90-case distinctive-anchor subset under a semantic-equivalence criterion), far below the known-signal upper bound; we therefore position repair as closed-loop support and a boundary study rather than a primary contribution. Human-agreement calibration uses a protocol-B pre-annotation column plus a human blind-rating column: RQ2 n=30 (Po=0.9333, κ=0 degenerate, Gwet's AC1=0.929) and RQ3 n=40 (Po=1.0) (§5.6).
+The method centers on a persistent, incrementally maintained **three-layer test-code graph** (whose test–entity projection is a typed bipartite index) and a **Semantic UI Diff** that bridges source-level UI changes to test locators, assertions, and newly added interactions, supporting the main chain of *selection → gap analysis → generation* and providing lightweight repair anchors when selected tests become stale. To make "recall is non-negotiable" provable, we define a selector-independent truly-affected set `A*`, state and prove a conditional safety proposition, and validate it empirically with a **non-circular outcome-difference oracle**; for side effects via shared state, we give a state-dependency closure with an accompanying safety proposition. On a controlled subject with 24 transitions, **function-level four-layer attribution over the test-code graph (`executes` / `references` / route-level / file-level fallback) raises the selection-reduction rate from the file-level baseline's 0.625 to 0.889 while keeping SafetyEmp=1.0 (zero misses) on transitions with an observable outcome change**. Precision_cov=1.0 under the coverage-defined (same-source) criterion, and Precision_emp=1.0 only on the small measurable subset (4 single-test breakage transitions, with limited discriminating power); we therefore do not claim that every selected test is truly affected — only zero misses on the sample verifiable by the non-circular oracle. The gain comes from correctly assigning newly added routes to zero tests and excluding unused functions and comment-only noise, and its ceiling is genuine strong coupling (a shared router/utility module). The non-circular outcome-difference oracle and a mutation stress test find no misses; for side effects via shared state, classic file-level coverage selection flips verdicts while the state-dependency closure preserves fidelity. On the real project actual-budget (62 E2E tests), graph-based selection turns the net saving from **−5.4%** (file-level) into **+83.0%–94.6%**, with the selection overhead included. As an ablation, file-level coverage plus the UI signal ties the strongest coverage baseline `coverage_only` (Reduction 0.625, Safety 1.0, Precision_cov 1.0), an equivalence forced by the union construction. Code-change awareness concentrates in gap identification/generation (RQ2) and breakage diagnosis (RQ3): the diff-constrained arm reaches 1.0 on executable, change-relevant, change-sensitive and automatically semantic-valid rates, above the no-diff baseline; yet human blind rating on real projects shows that the automatic rate only proves 'executable + change-sensitive + kills injected mutants', not human-judged semantic validity, so it serves only as an external-validity limitation. End-to-end locator repair on ReproBreak stays difficult: 3.38% for the rule arm and 7.25% for the LLM arm (33.3% on the 90-case distinctive-anchor subset under a semantic-equivalence criterion); a pro-model rerun on the same subset does not improve it (30.0% vs 33.3%, paired McNemar p=0.375), far below the known-signal upper bound; we therefore position repair as closed-loop support and a boundary study rather than a primary contribution. Agreement calibration uses a protocol-B LLM pre-annotation column plus an author blind-rating column (the author did not see the first column; this is not an independent third-party rating): RQ2 n=30 (Po=0.9333, κ=0 degenerate, Gwet's AC1=0.929) and RQ3 n=40 (Po=1.0) (§5.6).
 
 **Keywords**: regression test selection; end-to-end testing; code-change awareness; test generation; test repair; continuous integration
 
@@ -46,17 +40,17 @@ The method centers on a persistent, incrementally maintained **test–code mappe
 
 本文以"给定一次代码变更，自动产出可执行的 targeted E2E 测试集"为总目标，围绕四个研究问题展开：
 
-- **RQ1（选择：能否精准选出受影响用例？）** 基于 test-code graph（覆盖 + 变量引用 + 路由 + UI 信号）与 diff，能否**不漏（Safety）、不误选（Precision）**地选出真正受影响的 E2E 测试——使针对性运行能可靠暴露改动引入的问题（缩减执行量是副产品，而非目标）？
+- **RQ1（选择：能否精准选出受影响用例？）** 基于 test-code graph（覆盖 + 变量引用 + 路由 + UI 信号）与 diff，能否**不漏（Safety）**地选出真正受影响的 E2E 测试，并在可测样本上保持精度（Precision）——使针对性运行能可靠暴露改动引入的问题（缩减执行量是副产品，而非目标）？
 - **RQ2（生成：diff 约束是否更相关？）** 对覆盖缺口（新增路由 / 无对应测试），能否生成可执行、变更相关的用例，且优于无 diff 约束的生成基线？
 - **RQ3（闭环支撑：修复能提供多大帮助、边界在哪里？）** 轻量修复能否提升 targeted set 的可用性？在真实 locator 断裂上，端到端仅依赖旧测试与应用 diff 的修复难度如何？
 - **RQ4（成本：净收益是否为正？）** "选择算法时间 + 选中用例执行时间"是否远小于全量执行时间，并在时间以外的资源维度同样划算？
 
 ### 1.3 研究内容与贡献
 
-本文的贡献可概括为**一个 test-code graph（方法内核）+ 两个核心技术（函数级四层归因、Semantic UI Diff）+ 一个可证明的召回保证**，其中**函数级四层归因图是本文最能兑现"变更感知"价值的部分**，召回保证是它的安全底座。
+本文的贡献可概括为**一个 test-code graph（方法内核）+ 两个核心技术（函数级四层归因、Semantic UI Diff）+ 一个条件可证明的召回保证**，其中**函数级四层归因图是本文最能兑现"变更感知"价值的部分**，召回保证是它的安全底座。
 
-1. **可证明的安全选测与召回保证（核心贡献）**：给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题 1 及其证明，并以**非循环结果差异 oracle** 与变异压力测试经验验证，使"召回不可妥协"在 E2E 场景下**可证明**而非仅经验近似；针对副作用经共享状态的间接依赖，给出状态依赖闭包与命题 2。针对生成用例，采用可执行率、变更相关率、版本差分敏感性与变异杀伤率作为自动语义质量指标（第 3.4–3.5 节）。
-2. **测试↔代码映射器（源码↔浏览器语义桥的载体）**：把"源码 diff 难以直接对应到浏览器中的用户操作与测试脚本"这一 E2E 核心断点，形式化为一个**带类型的二部索引** `M ⊆ E×T`（动态覆盖边 + 静态 UI 语义边），并给出构建算法、增量维护规则与复杂度/摊销论证（第 3.2 节）。
+1. **条件可证明的安全选测与召回保证（核心贡献）**：给出与选择器无关的真正受影响集 `A*` 定义、条件安全命题 1 及其证明，并以**非循环结果差异 oracle** 与变异压力测试经验验证，使"召回不可妥协"在 E2E 场景下具备**条件可证明**的底座（H1–H3 与 H2′），而非仅经验近似；针对副作用经共享状态的间接依赖，给出状态依赖闭包与命题 2。针对生成用例，采用可执行率、变更相关率、版本差分敏感性与变异杀伤率作为自动语义质量指标（第 3.4–3.5 节）。
+2. **测试↔代码映射器（源码↔浏览器语义桥的载体）**：把"源码 diff 难以直接对应到浏览器中的用户操作与测试脚本"这一 E2E 核心断点，形式化为一个**三层 test-code graph**（结构层 `contains`/`calls`/`imports`/`renders`、路由层、测试证据层 `executes`/`navigates`/`coversFile`/`asserts`/`references`，每条边带 provenance）；其测试↔实体投影即带类型的二部索引 `M ⊆ E×T`。本文给出建图、增量维护规则与复杂度/摊销论证（第 3.2 节）。
 3. **Semantic UI Diff 语义桥与 diff 约束缺口生成**：从 JSX/TSX/HTML 抽取 UI 语义节点（text/testId/role/aria/href/handler），比较新旧版本得到 UI 层增删改，用于关联受影响测试、识别未覆盖新增 UI，并约束生成用例必须触达 diff、包含变化相关断言且在新版本真实通过（第 3.3 节）。
 4. **端到端闭环原型与轻量修复边界分析**：实现 DiffE2E 原型，将覆盖映射、diff 分析、双信号选择、运行分诊、轻量修复与缺口生成串联起来；修复模块作为闭环支撑能力评估 targeted set 可用性，并用 ReproBreak 量化真实 locator 修复的困难边界（第 4–5 章）。
 5. **净收益成本模型**：把"少跑用例比例"（Reduction）与"实际时间节省"（TimeReduction）、"选择开销税"（SelectionTax）解耦，定义净收益 `NetSaving` 与盈亏平衡，并纳入 machine-minutes、LLM token 等非时间资源（第 3.6 节）。
@@ -81,7 +75,7 @@ The method centers on a persistent, incrementally maintained **test–code mappe
   - `B0` 局部：单元 / 集成测试，源码内可定位的上下文。
   - `B1` 全局：浏览器 E2E，跨越源码↔路由↔DOM↔定位器↔断言的全局上下文。
 
-本方法的目标象限是 **(A2, B1)**：代码变更感知 + 浏览器端到端全局上下文。下文说明现有工作几乎都落在其他象限，留下该象限的空白。另外两格的处置是：**(A1, B1)**（文件 / 方法级变更分析 + E2E）在本文检索范围内未见代表工作，属尚未被系统占据的相邻方向；**(A0, B0)**（与 diff 无关的单元 / 组件级生成与通用修复，如 [27][36]）已是成熟且拥挤的领域，本文只作背景引用，不逐篇穷举。
+本方法的目标象限是 **(A2, B1)**：代码变更感知 + 浏览器端到端全局上下文。下文说明现有工作几乎都落在其他象限，留下该象限的空白。另外两格的处置是：**(A1, B1)**（文件 / 方法级变更分析 + E2E）在工程实践中已有粗粒度探索——基于文件/URL 覆盖映射的 E2E 选测（即本文 `coverage_only` 基线所代表的路线）——但在本文检索范围内未见针对前端打包耦合与模块级顶层求值假阳性的细粒度机制；本文将其视为相邻方向而非空白；**(A0, B0)**（与 diff 无关的单元 / 组件级生成与通用修复，如 [27][36]）已是成熟且拥挤的领域，本文只作背景引用，不逐篇穷举。
 
 ![图 2-1　两维分析框架：现有工作分布与本文定位](diffe2e/experiments/out/figs/fig2_1_quadrants.svg)
 
@@ -146,7 +140,7 @@ E2E 修复多为"失败后修测试"，可按修复对象与输入分族评述�
 | (A0, B0) 无 diff × 单元/组件 | 泛化生成与通用修复 [27][36] 等 | 背景引用，不逐篇穷举（§2.1） |
 | (A1, B0) 文件/方法级 × 单元/集成 | 经典 RTS/CIA [19][20][21][22][23][24][25][26][64] | §2.2 逐篇评述 |
 | (A2, B0) diff 定向 × 单元/API | 变更感知生成 [3][49][50][51][52]、变更感知修复 [1][11][14][15] | §2.3/§2.4 评述 |
-| (A1, B1) 文件/方法级 × E2E | 本文检索范围内未见代表工作 | 相邻方向，未系统占据（§2.1） |
+| (A1, B1) 文件/方法级 × E2E | 工程实践中的文件级覆盖迁移（本文 `coverage_only` 基线所代表） | 相邻方向，机制未细化（§2.1） |
 | (A0, B1) 无 diff × 浏览器 E2E | AutoE2E[6]、屏幕转移图[7]、语义修复[12]、WEFix[13] 等 | §2.3/§2.4 评述 |
 | **(A2, B1) diff 定向 × 浏览器 E2E** | **本方法** | **研究空白 → 本文定位** |
 
@@ -160,7 +154,7 @@ E2E 修复多为"失败后修测试"，可按修复对象与输入分族评述�
 
 ![图 3-1　DiffE2E 系统架构：组件与数据依赖（不含执行时序）](diffe2e/experiments/out/figs/fig3_1_arch.svg)
 
-1. **建立旧版本覆盖映射**：在 `V_old` 上逐条运行 `T`，记录每条测试实际触达的源码文件、路由与组件，沉淀为测试↔代码映射器 `M` 的动态边。
+1. **建立旧版本覆盖映射**：在 `V_old` 上逐条运行 `T`，记录每条测试实际触达的源码文件、路由与组件，沉淀为 test-code graph `G` 的 `executes`/`navigates` 动态边（其测试↔实体投影记为 `M`）。
 2. **分析本次代码变更**：解析 git diff 得到变更实体 `Δ`（文件/函数/组件/路由/UI 语义节点），并对 UI 源码做 Semantic UI Diff。
 3. **选择相关 E2E 测试**：在 `M` 上做邻居查询，取覆盖信号臂与 UI 语义信号臂的并集 `Sel`。
 4. **运行、分诊与轻量修复**：在 `V_new` 上运行 `Sel`；通过者直接进入 targeted set（**targeted set** 即第 ④ 步输出的目标测试集，是选择通过者与修复通过者的并集，也是本轮实际执行的用例集合）；失败者分诊为疑似回归或测试过时。对明显定位器/断言过时的样本，结合 diff/DOM/trace/Semantic UI Diff 给出轻量修复候选，修复通过后进入 targeted set；疑似回归不进入自动修复，排除出 targeted set，交人工判定（§5.3）；复杂真实修复不作为本文主贡献。
@@ -170,34 +164,38 @@ E2E 修复多为"失败后修测试"，可按修复对象与输入分族评述�
 
 > **无信息泄漏纪律（贯穿全程）**：选择只用 `V_old` 覆盖 + diff；`V_new` 全量执行仅用于构造评估 oracle，不参与选择。修复的输入只能是"旧（断裂）测试 + 应用源码 old/new diff + DOM/trace/候选元素"；`V_new` 的测试文件与 `new_locator` 只能用于评估，绝不进入修复输入或生成 prompt。
 
-### 3.2 测试↔代码映射器
+### 3.2 测试↔代码映射器：三层 test-code graph
 
-映射器 `M` 是连接源码实体与测试的**带类型二部图**：
+映射器 `G=(V,E)` 是连接源码实体与测试的**三层 test-code graph**（图 3-3）。它把"测试跑过哪些代码"与"代码之间如何相连"放在同一张带类型的图上；旧版的扁平二部映射器只是它的投影。
+
+**节点** `V = V_code ∪ V_test`：
+- `V_test`：每条 E2E 测试，id 取 `"<spec 文件> > <用例标题>"`。
+- `V_code`：文件 `file`、函数 `function`、方法 `method`、类 `class`、变量 `variable`、类型 `interface`、路由 `route`、组件 `component`、UI 语义节点 `ui`。UI 节点 `{kind,key}` 的 `kind` 取六类信号：`text`（可见文本，以及 `name`/`title`/`placeholder` 三类可读文本属性）、`testId`（`data-testid`/`testID`）、`role`、`aria`（`aria-label`）、`href`、`handler`（`onClick`/`onSubmit` 所指具名处理函数，属**非属性类信号**）；`key` 取该类信号的值（如 `testId=cart-add`、`text=Add to cart`、`handler=handleAdd`）。
+
+**三层边**（每条边带 **provenance** 维度：`dynamic` 运行时插桩、`symbolic` AST/静态抽取、`heuristic` 推断/匹配）：
+
+1. **结构层（code→code）**：`contains`（文件/类/函数→其成员）、`imports`（文件→导入模块/符号）、`calls`（函数→被调函数，`heuristic`，只用于排序与上下文，严禁参与缩减）、`renders`（路由或组件→被渲染组件）。
+2. **路由层（route）**：路由节点与 `renders` 边。路由识别覆盖两类真实形态：SvelteKit 文件路由（`+page.svelte`，含 `[slug]`→`:slug` 与 `(group)` 分组）与 React Router（对象式 `{path, element}` 与 JSX `<Route path element>`）。
+3. **测试证据层（test→code / function→variable）**：`executes`（test→function/method，`dynamic`，V8 函数级覆盖）、`navigates`（test→route，`dynamic`）、`coversFile`（test→file，`dynamic`，文件级覆盖，供不可归因文件的保守回退使用）、`asserts`（test→UI 节点，`symbolic`，即旧称 `ui` 边，来源是测试源码中的定位器/断言字面量）、`references`（function→模块级变量，`symbolic`，value-reference）。
+
+**投影视图**：把测试证据层投影到"实体—测试"对，得到带类型的二部索引 `M ⊆ E×T`（`E=E_file∪E_func∪E_route∪E_comp∪E_ui`），即旧版扁平映射器。它是 `G` 的**逻辑视图**，不是独立于 `G` 的第二套模型。反向映射 `entityIndex[e] = { t ∈ T | (e,t) ∈ M }` 供选择查表；实现上按边集扫描即可，无需持久物理结构。**选择**即对 `Δ` 中每个实体取 `entityIndex[e]` 求并；**修复/生成**沿 `asserts`/UI 边找锚点。选择查询复杂度为 `O(变更实体数 × 平均度)`。
+
+**召回承诺只依赖动态边**：`executes`/`navigates` 是安全底座；`references`（静态）仅在可证明完备时才允许用于缩窄（H2′，§3.4）；`calls`（heuristic）不参与任何缩减；`asserts`/UI 边只用于精度细化与修复/生成上下文。这与旧版"dynamic 边保召回、其余边只增精度"的原则一致，但把边放在同一张图上，避免"二部图"与"四层归因"两套叙述割裂。
+
+**构建（一次全量）**：`extract.mjs` 用 tree-sitter 对每个文件做**单文件纯提取**（节点 + `contains`/`imports`/`calls`/`renders` 边 + 字节跨度；单文件纯性是"增量==全量"成立的前提）；`resolve.mjs` 做名字解析，`semanticResolve.mjs` 用 TypeScript typeChecker 穿透 `import { A as B }` 别名、barrel 重导出与遮蔽；`testEdges.mjs` 把 V8 函数级覆盖接成 `executes`/`navigates`，把测试源码的定位器/断言接成 `asserts`。动态边成本 ≈ `O(T_run(all))`（一次性）；静态边 `O(|源码| + |T|×|锚点|)`。
+
+**增量维护（关键）**：给定上一版图与本次 `diff`，只重解析变更文件、只对触达变更实体的测试重插桩，其余边复用：
 
 ```
-M ⊆ E × T,   E = E_file ∪ E_func ∪ E_route ∪ E_comp ∪ E_ui
-```
-
-- 测试节点 `T`：每条 E2E 测试（`"<spec 文件> > <用例标题>"` 作 id）。
-- 实体节点 `E`（多粒度）：文件 `E_file`、函数 `E_func`、路由 `E_route`、组件 `E_comp`、UI 语义节点 `E_ui = {kind, key}`。`kind` 取六类信号：`text`（可见文本，以及 `name`/`title`/`placeholder` 三类可读文本属性）、`testId`（`data-testid`/`testID`）、`role`、`aria`（`aria-label`）、`href`、`handler`（`onClick`/`onSubmit` 所指具名处理函数，属**非属性类信号**）；`key` 取该类信号的值（如 `testId=cart-add`、`text=Add to cart`、`handler=handleAdd`）。
-- 边 `(e, t)` 带类型标签：`dynamic`（`t` 在 `V_old` 上执行到 `e`，插桩证据）或 `ui`（`t` 源码引用了 UI 语义节点 `e`，定位器/文本匹配证据）。每条边同时携带 **provenance 维度**（借鉴 codegraph 的 `provenance` 范式），把证据强度显式标出：`dynamic`（运行时插桩，确定）、`symbolic`（AST/静态抽取，确定来源）、`heuristic`（推断/匹配，如 UI 锚点的引号字面量匹配、以及后续可能补入的函数级 `calls` 边，不确定）。召回保证只依赖 `dynamic` 边；`ui`/`symbolic`/`heuristic` 边仅用于精度细化与修复/生成上下文，不参与召回承诺（命题 1 不动摇）。
-
-`M` 同时编码"测试跑过哪些代码"（dynamic）与"测试通过哪些 UI 锚点定位"（ui）。在 `M` 之上定义反向映射 `entityIndex`：对实体 `e ∈ E`，`entityIndex[e] = { t ∈ T | (e, t) ∈ M }`，即与 `e` 存在任一类边的全部测试。它是 `M` 的**逻辑视图**（供从变更实体取测试的查表使用），不是独立于 `M` 的第三类边，也不需要维护为持久物理结构；实现上按边集扫描即可得到同一结果。**选择**即对 `Δ` 中每个实体取 `entityIndex[e]` 求并；**修复/生成**沿 `ui` 边找锚点。由此，选择查询复杂度为 `O(变更实体数 × 平均度)`。
-
-**构建（一次全量）**：动态边由逐用例插桩执行得到（≈ `O(T_run(all))`，一次性成本）；UI 边由 AST 抽取 + 锚点匹配得到（`O(|源码| + |T|×|锚点|)`）。
-
-**增量维护（关键）**：映射器不需每次提交重建。给定上一版本 `M_old` 与本次 `diff`，仅对"触达变更实体的测试 `T_touch`"重插桩、对"变更文件"重抽 UI 语义边，其余原样复用：
-
-```
-update(M_old, diff) -> M_new:
+update(G_old, diff) -> G_new:
   Δ = changedEntities(diff)
   T_touch = ∪_{e∈Δ} entityIndex[e]
-  for t ∈ T_touch:               dynamic_new[t] = instrumentRun(t, V_new)
-  for f ∈ changedFiles(diff):    reExtractUiEdges(f)
-  其余边从 M_old 复用；重建受影响部分的 entityIndex
+  for f ∈ changedFiles(diff):  reExtract(f)           # 结构/路由/UI 边
+  for t ∈ T_touch:             reInstrument(t, V_new) # executes/navigates 边
+  其余边从 G_old 复用；重建受影响部分的 entityIndex
 ```
 
-增量复杂度 `O(|T_touch|×单测插桩 + |changedFiles|×静态抽取)`，与"变更规模"成正比而非"全量规模"。**正确性条件**：未触达变更实体的测试在假设 H1–H3（见 3.4）下覆盖不变，故复用旧边安全。**摊销结论**：首次全量构建 `C_build` 单列；此后每次 CI 的更新成本 `C_update ≪ C_build`，使长期 CI 中平均每提交的 `T_select` 远小于 `T_run(all)`。若检测到插桩盲区或索引偏差超阈值，则触发强制重建或回退全量，保证安全优先于效率。
+增量复杂度 `O(|T_touch|×单测插桩 + |changedFiles|×静态抽取)`，与"变更规模"成正比而非"全量规模"。**正确性条件**：未触达变更实体的测试在 H1–H3 与 H2′（§3.4）下覆盖不变，故复用旧边安全。**摊销结论**：首次全量构建 `C_build` 单列；此后每次 CI 的更新成本 `C_update ≪ C_build`，使长期 CI 中平均每提交的 `T_select` 远小于 `T_run(all)`。若检测到插桩盲区或索引偏差超阈值，则触发强制重建或回退全量，保证安全优先于效率。
 
 ![图 3-3　测试↔代码映射器与增量更新](diffe2e/experiments/out/figs/fig3_3_mapper.svg)
 
@@ -253,13 +251,19 @@ Sel    = SelCov ∪ SelUI
 3. **路由级 route-diff**：路由表 ADD 选 0（新路由无测试访问）、REMOVE/MODIFY 选 `navigates` 到该路由的测试；
 4. **文件级回退 + config 全量**：无法归因的改动（config/flag/环境、或"无 reader 的变量"）保守回退文件级甚至 retest_all。
 
-**召回的安全边界（重要修正）**：`executes`（动态）边是召回承诺的**基础**；但当四层归因用**静态** `references` 把文件级覆盖缩窄到"读该变量的函数"时，召回的完备性就额外依赖"**静态引用边对本次变更完备**"。该前提并不总成立：一个变量可能被**导出**（其它模块读取，而我们未抽取该跨模块边），或所在文件存在**动态属性访问**（`obj[name]`、`window[k]`），此时静态 `references` 会漏掉读者。因此本文给出可执行的判据：
+**召回的安全边界（重要修正）**：四层归因把文件级覆盖缩窄到函数/变量/路由粒度，因此召回除 H1–H3 外还依赖两条**归因完备性**前提，合称 (H2′)：
 
-- 仅当变量**未被导出**且其所在文件**无动态属性访问**时，才允许用 `references` 缩窄（`select.mjs#isSafelyNarrowable`）；
-- 否则**回退文件级**（保守纳入该文件的所有相关测试）；
-- **heuristic 边（如名字匹配的 `calls`）严禁参与任何缩减**，只可用于排序或上下文。
+**(H2′-a) 静态引用边完备**：仅当变量**未被导出**且所在文件**无动态属性访问**（`obj[name]`、`window[k]`）时，才允许用 `references` 缩窄（`select.mjs#isSafelyNarrowable`）；否则回退文件级。启发式 `calls` 边严禁参与缩减。该判据有单测覆盖（导出变量、动态访问两种情形均回退）。
 
-据此，命题 1 的条件安全在启用四层归因时需扩展假设 **(H2′)：对被裁剪的变量，其静态引用边集合是完备的**（由上述判据保证，或触发回退）。该判据已实现并有单测覆盖（导出变量、动态访问两种情形均回退文件级）。
+**(H2′-b) 动态函数身份可匹配**：`executes` 边由 V8 函数级覆盖的 `functionName` 与静态函数节点按 (文件, 名字) 匹配得到。V8 对匿名箭头/高阶组件包装报空名（`React.memo(() => …)`、`forwardRef(…)`、`export default () => …` 实测均为 `''`），本文实现**显式过滤 `functionName === ''`** 以排除 Vite "import-即-覆盖"的顶层模块求值假阳性（§5.1 表 5-4）。这一过滤的代价是：匿名函数不会被当作独立可选中实体。为不因此漏选，归因采用三条保守规则：
+
+1. **归到外层具名实体**：改动行若落在匿名回调内，行号→实体映射会同时命中其外层具名函数/组件，`executes` 边按外层实体选择；常见 React 组件（`const Foo = () => …` 由 V8 推断名字）因此不受影响。
+2. **不可归因即回退**：既有文件若没有产生任何函数/变量/路由实体（顶层副作用、无法解析的语法等），且改动**不是纯注释/空行**，则整文件回退到文件级选择（`select.mjs#fallbackFiles`）；回退使用测试→文件的真实覆盖边 `coversFile`，而不是只沿具名函数的 `executes` 边找测试——否则"只有模块顶层求值、没有具名函数"的文件（数据模块、`export default () => …`）会回退成空集。纯注释改动选 0 是正确的，新增文件/新增声明也选 0——旧版本中不存在，旧测试不可能执行它。
+3. **限定名错位用唯一同名解析**：行号→实体返回裸名，而图节点用限定名（`file::Class::method`、`file::outer::inner`）。先按精确 id，再按"同文件唯一同名"解析（`attribution.mjs#resolveEntityNode`）；同名歧义才回退文件级。
+
+纯注释判定不是按行首字符猜测：`isCommentOnlyChange` 用 TypeScript scanner 证明改动行的每个非空白字符都位于注释 trivia 内，模板字符串中的 `//` 不会被误判；JSX `{/* … */}` 的包裹花括号放行。该组判据有单测（24 项）覆盖；`out/attribution_audit.md` 对受控主体 24 个过渡逐文件审计：3 个"零实体"文件全部是纯注释，回退 0 次，故表 5-1 的 0.8889 不变；`out/attribution_audit_actual_desktop.md` 对真实项目 9 个过渡审计出 1 个非注释零实体（`customThemeCatalog.json` 数据文件），按规则回退文件级；该文件未被任何 E2E 覆盖记录命中（`cov_pertest` 无匹配），故回退为 no-op，表 5-4 的 9 过渡数字不变；测试文件已从应用源码 Δ 中排除。
+
+据此，命题 1 的条件安全在启用四层归因时扩展为 **(H2′)：对被裁剪的变量，其静态引用边集合是完备的；对动态边，函数身份可按名字匹配，或由上述保守规则触发回退**。局限是：该方法依赖未被压缩/混淆的函数名（实验均在 Vite dev server 下进行）；生产构建的函数名改写与字节偏移级匿名函数识别列为后续工作（§6）。**若上述规则均未触发而函数身份仍不可匹配，则存在理论漏选风险**——本文不声称 H2′ 在任意构建形态下成立。
 
 **表 3-1　命题 1 的假设、失效场景与处理**
 
@@ -268,8 +272,9 @@ Sel    = SelCov ∪ SelUI
 | H1 确定性 | flaky、时间/并发相关 | 结果差异非 diff 引起 → 污染 `A_obs` | 多次重跑取稳定结果；flaky 单列不计入主 `A_obs` |
 | H2 覆盖完备 | 动态 import、SSR、未插桩第三方 | `cov(t)` 漏记 → 可能漏选 | 插桩自检；盲区实体做保守纳入（路由/组件粒度兜底） |
 | H3 实体完备 | 配置/数据驱动改动；**副作用经共享状态** | 改动不在 `Δ` → 可能漏选 | 副作用交 3.5 状态闭包；配置/数据纳入 `Δ` 扩展 |
+| H2′ 归因完备 | 匿名箭头/HOC、类方法限定名、导出变量、动态属性访问、压缩构建 | `references`/`executes` 漏记 → 可能漏选 | 唯一同名解析；不可归因回退文件级；纯注释/新增声明豁免；压缩构建列为局限 |
 
-命题 1 是**条件安全**（在 H1–H3 下）。论文显式陈述这三个假设，并用经验真值（第 5.1 节）检验其在实践中是否被违反。
+命题 1 是**条件安全**（在 H1–H3 与 H2′ 下）。论文显式陈述这三个假设，并用经验真值（第 5.1 节）检验其在实践中是否被违反。
 
 **经验召回验证（非循环）**：在 `V_old/V_new` 全量执行，用结果差异取 `A_obs`（`A*` 的经验实例），计算 `SafetyEmp = |Sel ∩ A_obs| / |A_obs|`，目标=1.0；任何 `A_obs \ Sel ≠ ∅` 的个案逐条审计并归因 H1/H2/H3 哪条失效，不得掩盖。为扩大真值规模，对 `Δ` 中实体注入小型语义变异、重跑全量得到 `A_obs^mut`，做主动压力测试。
 
@@ -285,6 +290,8 @@ SelClosed = { t : t 与某个 s ∈ Sel 在 ⤳ 关系下共享资源 } ∪ Sel
 ```
 
 **命题 2（放宽 H3 后的安全性）**：在 (H1)(H2) 成立、允许副作用（放宽 H3）下，若状态足迹 `rw` 完备，则 `A* ⊆ SelClosed`。该闭包**不含任何结果真值**（不引用 `A*`），只依赖测试间的读写足迹，因此可在选择阶段计算（与 §3.1 的无泄漏纪律一致）；其代价是 `Reduction` 下降，安全性以 `rw` 完备为前提。代价是 Reduction 下降——这是"召回不可妥协"下可接受的权衡。选择器以可选开关 `--state-closure`（默认开，体现保守取向）接入。
+
+**工程边界（原型）**：当前足迹采集只拦截 HTTP 请求，`GET` 判 read、其余判 write，资源键直接取请求路径；`localStorage`/`cookie`/数据库表尚未自动 Hook。对 `POST /api/search` 这类读操作、以及 `POST /api/orders` 与 `GET /api/orders/123` 这类路径键不一致的 REST/GraphQL/RPC 语义，精确路径键会漏建或误建 `t_i ⤳ t_j` 边。因此命题 2 的"`rw` 完备"在原型中只对同构路径的 HTTP 足迹近似成立；生产级实现需 URL 归一化（剥离动态 ID 段）与 GraphQL/POST 查询语义识别。
 
 ### 3.6 净收益成本模型
 
@@ -329,11 +336,11 @@ SelectionTax  = T_select / T_full                 # 选择本身的"税"
 
 DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 
-- **纯函数内核** `pipeline/src/`（18 个模块 + `llm/client.mjs`，以纯函数为主、IO 集中在实验层与客户端）：diff 解析、覆盖映射与路径归一、CDP 覆盖注入的纯函数部分、双信号选择、JSX 语义 UI Diff 与实体索引、覆盖缺口计算、生成与修复的模板/prompt 构造、过时三分类、状态依赖图与闭包、两类 oracle、指标与统计、报告渲染、可插拔 LLM 客户端。
+- **纯函数内核** `pipeline/src/`（20 个顶层模块 + `graph/` 9 个建图模块 + `llm/client.mjs`，以纯函数为主、IO 集中在实验层与客户端）：diff 解析、覆盖映射与路径归一、CDP 覆盖注入的纯函数部分、双信号选择、JSX 语义 UI Diff 与实体索引、覆盖缺口计算、生成与修复的模板/prompt 构造、过时三分类、状态依赖图与闭包、两类 oracle、指标与统计、报告渲染、可插拔 LLM 客户端；`graph/` 承担 §3.2 的三层建图（`extract`/`resolve`/`semanticResolve`/`fileRoutes`/`testEdges`）、四层选择（`select`）、增量工作区（`workspace`）与归因完备性兜底（`attribution`）。
 - **实验驱动** `experiments/`：`lib.mjs` 提供 replay 原语（checkout、跑套件、读覆盖、解析失败），`run_rq1/rq2/rq3.mjs` 与 `compute.mjs` 负责逐过渡编排，`analyze.mjs`/`aggregate.mjs` 出统计与图，`run_rq4_cost.mjs`/`run_rq4_batch.mjs`/`run_llm_cost.mjs` 做成本测量与估算，`uidiff_loop.mjs`/`run_c1_dynamic.mjs` 做 JSX 闭环的静态与动态案例。
 - **真实项目适配** `experiments/real/engine.mjs` 与 `realproj/`：前者把"安装依赖—注入 CDP 覆盖—跑套件—归因覆盖"抽象成与具体项目无关的适配器；后者做可插桩闸门与 ReproBreak 修复实验。
 - **被测主体** `subject/`：`base/` 是受控应用与既有 E2E 套件，`history/seed.mjs` 生成带 tag 的嵌套 git 历史与 `manifest.json`，`sideeffect/` 是共享状态对照。
-- **人工校准** `experiments/annotate/`：盲评包生成、预标注重跑、一致率统计、第二标注者回填与 κ 渲染。
+- **人工校准** `experiments/annotate/`：盲评包生成、预标注重跑、一致率统计、作者盲评回填与 κ 渲染。
 
 技术栈：Node.js（ESM、`node:test`）、Playwright + Chromium、CDP `page.coverage`（V8 覆盖）与 istanbul（Vite 项目走 istanbul）、git、Python3（仅在读取 ReproBreak SQLite 时使用）。图 3-1 的每个组件都落在上述某个组成部分内：输入与 `Sel` 查询由 `experiments/lib.mjs` 与 `pipeline/src/selector.mjs` 承担，映射器两条边与实体索引见 §4.2，Semantic UI Diff 对应 `uidiff.mjs`/`astEntities.mjs`，运行—分诊—修复对应 `run_rq3.mjs` 与 `repair.mjs`，缺口生成对应 `generate.mjs`，评估 oracle 与全量执行对应 `oracle.mjs`/`outcome_oracle.mjs`（仅评估，§3.4）。
 
@@ -355,7 +362,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 
 **（8）LLM 客户端。** `llm/client.mjs` 的 `detectProvider` 依次探测 `OPENAI_API_KEY`、`DEEPSEEK_API_KEY`、`ANTHROPIC_API_KEY`，都没有则返回 `stub`；`createClient` 在无 key 时返回调用方传入的 `fallback` 模板，使全链路可离线确定性复现，有 key 时调用对应 chat 接口并把 usage 记录到产物。论文中的真实数字均来自 DeepSeek 臂。
 
-**（9）test-code graph 建图管线（`pipeline/src/graph/`）。** 第 3.2 节与第 5.1.1 节的核心方法在此实现，五个模块按"提取→解析→接线"分层：
+**（9）test-code graph 建图管线（`pipeline/src/graph/`）。** 第 3.2 节与第 5.1.1 节的核心方法在此实现，共 9 个模块，按"提取→解析→接线→查询"分层；其中五个核心建图模块如下（另有 `graph.mjs`/`index.mjs` 负责装配、`select.mjs` 承担四层选择与回退、`workspace.mjs` 管理增量工作区）：
 
 - `extract.mjs`：用 **tree-sitter**（typescript/tsx 语法）做**单文件纯提取**——产出 `file/function/method/class/variable/interface/route` 节点与 `contains`/`imports`/`calls`/`renders` 边，并保留字节级跨度（`startByte/endByte`）。单文件纯性（输出只依赖该文件源码）是"增量 == 全量"能够成立的前提；对无法解析的超大文件降级为 file-only 节点，不中断建图。
 - `resolve.mjs`：**名字解析层**——把 `call::<name>` 解析为可见的导出符号（同文件或经由 import），跨文件调用据此连边。
@@ -363,7 +370,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 - `fileRoutes.mjs` / `extract.mjs` 的路由分支：识别 SvelteKit 文件路由（`+page.svelte`，含 `[slug]`→`:slug` 与 `(group)` 分组）与 React Router（对象式 `{path, element}` 与 JSX `<Route path element>`）两种形态，产出 `route` 节点与 `renders` 边。
 - `testEdges.mjs`：把运行时证据接到图上——函数级 CDP 覆盖转成 `executes`（test→function）与 `navigates`（test→route）边；测试源码中的定位器/断言解析成 `asserts`（test→UI 节点）边，供 RQ3 断点诊断。
 
-**函数级覆盖的采集与归因**：`tests/fixtures.ts`（受控主体）与 `covinject.mjs` 的 CDP 夹具（真实项目）在每条用例结束时读取 `page.coverage` 的函数级记录，只保留 `functionName ≠ ''`（排除顶层模块求值）且存在 `count > 0` range 的函数名，写成 `{test, files, funcs}`。归因据此把"测试 → 文件"细化为"测试 → 具名函数"，这是 Reduction 从 0.625 提升到 0.889 的直接来源。
+**函数级覆盖的采集与归因**：`tests/fixtures.ts`（受控主体）与 `covinject.mjs` 的 CDP 夹具（真实项目）在每条用例结束时读取 `page.coverage` 的函数级记录，只保留 `functionName ≠ ''`（排除顶层模块求值）且存在 `count > 0` range 的函数名，写成 `{test, files, funcs}`。归因据此把"测试 → 文件"细化为"测试 → 具名函数"，这是 Reduction 从 0.625 提升到 0.889 的直接来源。**该过滤的代价与兜底**（对应 §3.4 H2′）：V8 对 `React.memo(() => …)`、`forwardRef(…)`、`export default () => …` 同样报空名，故匿名函数不被当作独立可选中实体；改动会归到外层具名函数/组件，若既有文件无任何可归因实体且改动非纯注释，则触发文件级回退（`select.mjs#fallbackFiles`，沿 `coversFile` 真实文件覆盖边选测试）；类方法/嵌套声明的限定名错位由 `attribution.mjs#resolveEntityNode` 的"同文件唯一同名"解析修复，同名歧义才回退。`out/attribution_audit.md` 给出 24 过渡逐文件审计：3 个零实体文件均为纯注释、回退 0 次，因此表 5-1 数字不变。
 
 **增量更新**：给定上一版图与 diff，只对变更文件重做 extraction、只对 `T_touch`（触达变更实体的测试）重跑插桩，其余复用；`verify_graph_incremental.mjs` / `verify_real_incremental.mjs` 在受控主体（25 commit）与两个真实仓库（各 8 commit）上验证"增量结果 == 全量重建"。
 
@@ -435,7 +442,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 3. **闭环支撑与修复边界对照（RQ3）**：受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 30/414；另从 414 条无泄漏评估样本中抽取 40 条做过时类型人工复核（§5.3、§5.6）。
 4. **成本证据（RQ4）**：cand_coverage 与 actual_desktop 两个场景的真实 wall-clock、NetSaving、多过渡平均，以及 LLM token/$ 估算（§5.4）。
 
-所有真实数据均来自仓库产物。人工复核采用两阶段流程：第一列为 LLM 辅助预标注（附逐条理由，供作者复核；按现行协议以固定模型与参数生成），第二列为人工盲评（未见第一列）。早期一轮预标注因缺少生成链记录（无模型/参数/prompt 记录）未予采用，本文报告的是按现行协议重新生成的结果。第二标注与 Cohen's κ 的样本、合并命令与实测结果见 §5.6 与附录 A.3。第二标注已并入：RQ2 为 Po=0.9333、κ=0（人工列常量退化），RQ3 为 Po=1.0、不报 κ；第一列为 LLM 辅助预标注，两列不构成双人独立盲评结论，正文按描述性证据表述。
+所有真实数据均来自仓库产物。人工复核采用两阶段流程：第一列为 LLM 辅助预标注（附逐条理由，供作者复核；按现行协议以固定模型与参数生成），第二列为**作者本人**盲评（未见第一列）。早期一轮预标注因缺少生成链记录（无模型/参数/prompt 记录）未予采用，本文报告的是按现行协议重新生成的结果。第二标注与 Cohen's κ 的样本、合并命令与实测结果见 §5.6 与附录 A.3。第二标注已并入：RQ2 为 Po=0.9333、κ=0（人工列常量退化），RQ3 为 Po=1.0、不报 κ；第一列为 LLM 辅助预标注，两列不构成双人独立盲评结论，正文按描述性证据表述。
 
 ---
 
@@ -465,9 +472,9 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 **关键发现**：
 
 1. **Reduction 0.625 → 0.8889（+0.264）**：四层归因把选择从"文件粒度"细化到"函数/变量/路由粒度"。5 个"加路由"过渡（c03/c12/c13/c19/c23）从全选 6 降到选 0——加一条新路由本就不影响任何现有测试。
-2. **SafetyEmp=1.0、0 漏选**：非循环结果差异 oracle 下，函数级归因没有漏掉任何真正受影响的测试。
+2. **SafetyEmp=1.0、0 漏选（在可观测断裂过渡上）**：非循环结果差异 oracle 下，函数级归因没有漏掉任何真正受影响的测试。需限定：24 个过渡中只有 4 个 `A_obs ≠ ∅`，其余过渡的"0 漏选"在经验上不可观测，不能外推为任意构造下的召回证明。配合 §3.4 H2′ 的保守回退与 `out/attribution_audit.md` 的逐文件审计（3 个零实体文件均为纯注释、回退 0 次），本文把结论限定为"可观测样本上的经验召回"。
 3. **覆盖 oracle 的 Safety 降到 0.5833 是自证循环，不是缺陷**：覆盖 oracle 把"覆盖了变更文件"当作"受影响"，于是把 5 个加路由过渡判为"6 个测试受影响"；graph 正确地选了 0 个，被覆盖 oracle 判成"漏"。这恰恰印证 §3.4——召回必须用非循环 oracle 衡量，覆盖 oracle 与选择器同源、会自证。
-4. **Precision**：`Precision_cov=1.0` 属口径内结果（覆盖定义的自证），`Precision_emp=1.0` 但仅在 4 个单测试断裂过渡上可测、判别力有限；因此本文不主张"每条选中测试都真正受影响"，只主张**在非循环 oracle 可验证的样本上 0 漏选**。Reduction 是副产品，RQ1 的核心价值是"可证明不漏 + 高召回"。
+4. **Precision**：`Precision_cov=1.0` 属口径内结果（覆盖定义的自证），`Precision_emp=1.0` 但仅在 4 个单测试断裂过渡上可测、判别力有限；因此本文不主张"每条选中测试都真正受影响"，只主张**在非循环 oracle 可验证的样本上 0 漏选**。Reduction 是副产品，RQ1 的核心价值是"条件可证明不漏 + 高召回"。
 
 **5.1.2 消融：文件级基线对照**
 
@@ -484,7 +491,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 | random_k | 0.625 | 0.396 | 0.396 |
 | static_heuristic | 0.875 | 0.667 | 1.0 |
 
-来源：`out/rq1_summary.md`。该消融的主张是**与最强覆盖基线 `coverage_only` 持平**，而非优于它。在本文实验设置与表 5-1a 所比较的 5 个方法范围内：`dual` 与 `coverage_only` 的选中集合完全相同（Safety=1.0、Reduction=0.625、Precision=1.0）；该等价在逐例层面成立——受控主体 24 个过渡、tldraw 12 个过渡、actual-budget 9 个过渡、mermaid-live-editor 5 个过渡（合计 50）上，dual 与 `coverage_only` 的选中集合逐例相同、三指标逐项相同，不同但有正收益的个例为 0（逐例核查数据见 `out/rq1_dataset.jsonl` 与 `out/real/{tldraw_examples,actual_desktop,mermaid_live}_rq1.jsonl`）。等价由构造决定：`dual = new Set([...coverage_only, ...uidiff_only])`（`diffe2e/experiments/real/engine.mjs#L22-L31`），覆盖臂是 dual 的子集，`|dual|` 不增则集合必然相等。相对其他基线的真实优势为：`retest_all` 虽 Safety=1.0 但为全选（Reduction=0）；`random_k` 与 dual 同规模（Reduction=0.625）但 Safety 仅 0.396（漏选）；`static_heuristic` 的 Reduction 更高（0.875）但 Safety 仅 0.667（Precision=1.0），在共享 util/router 变更上漏选；`uidiff_only` Precision=1.0 但 Safety 仅 0.083。因此该消融可主张的是：文件级 dual 与最强覆盖基线持平，并优于全量重跑与其他四个基线；不作"唯一""兼顾"或超出该设置与这 5 个方法的外推。
+来源：`out/rq1_summary.md`。表中 Precision 均为覆盖口径（`Precision_cov`），其分母由覆盖定义、与选择器同源，不能当作"零误选"的证据（§5.1.1 脚注）。该消融的主张是**与最强覆盖基线 `coverage_only` 持平**，而非优于它。在本文实验设置与表 5-1a 所比较的 5 个方法范围内：`dual` 与 `coverage_only` 的选中集合完全相同（Safety=1.0、Reduction=0.625、Precision_cov=1.0）；该等价在逐例层面成立——受控主体 24 个过渡、tldraw 12 个过渡、actual-budget 9 个过渡、mermaid-live-editor 5 个过渡（合计 50）上，dual 与 `coverage_only` 的选中集合逐例相同、三指标逐项相同，不同但有正收益的个例为 0（逐例核查数据见 `out/rq1_dataset.jsonl` 与 `out/real/{tldraw_examples,actual_desktop,mermaid_live}_rq1.jsonl`）。等价由构造决定：`dual = new Set([...coverage_only, ...uidiff_only])`（`diffe2e/experiments/real/engine.mjs#L22-L31`），覆盖臂是 dual 的子集，`|dual|` 不增则集合必然相等。相对其他基线的真实优势为：`retest_all` 虽 Safety=1.0 但为全选（Reduction=0）；`random_k` 与 dual 同规模（Reduction=0.625）但 Safety 仅 0.396（漏选）；`static_heuristic` 的 Reduction 更高（0.875）但 Safety 仅 0.667（Precision_cov=1.0），在共享 util/router 变更上漏选；`uidiff_only` Precision_cov=1.0 但 Safety 仅 0.083。因此该消融可主张的是：文件级 dual 与最强覆盖基线持平，并优于全量重跑与其他四个基线；不作"唯一""兼顾"或超出该设置与这 5 个方法的外推。
 
 ![图 5-1　受控主体 RQ1 六种选择方法的 Safety–Reduction 对比](diffe2e/experiments/out/figs/rq1_methods_scatter.svg)
 
@@ -536,7 +543,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 
 **函数级归因在真实项目上的逐过渡回放（n=9）**：另一轮实验在每个过渡上重跑函数级 CDP 覆盖（V_old 与 V_new 各一次全量套件）并执行四层归因，结果如右列：coverage_only 的 Reduction 为 **0.111**（34 条用例几乎全选），graph-selection 为 **0.742**——与受控主体 0.625→0.889 同一方向。`Safety` 在覆盖 oracle 口径下由 1.0 降到 **0.369**，但这是**同源自证**的结果（与 §5.1.1 相同）：9 个过渡中 2 个 graph 选 0 条而覆盖选 34 条，逐条核查确认**graph 正确**——改动分别是 `HistoricalAutomationReadOnly` 的一句文案与 `SelectLinkedAccountsModal` 的一个 prop 默认值，两个组件都**从未被 e2e 渲染**；文件级之所以"覆盖"，是 Vite 在应用启动时 import 并执行了模块级代码（**import-即-覆盖的假阳性**），两过渡的 `A_obs` 均为空。非循环 oracle 的判别力仍然有限：9 个过渡中仅 1 个产生结果差异，该过渡上两法 `SafetyEmp` 均为 1.0。复现：`node experiments/real/run_rq1_real_graph.mjs <adapter.json> 9`（附录 A.2）。
 
-跨项目合计 n=14：dual 在两项目上均 **Safety=1.0、Precision=1.0**（bootstrap 95% CI 均为 [1,1]）；coverage_only 与 dual 逐过渡选中集合相同（属上文 50 个过渡逐例等价的一部分，Wilcoxon dual vs coverage_only 三指标 p=1）。来源 `out/real/{actual_desktop,mermaid_live}_rq1.json`、`out/real/real_rq1_stats.md`。
+跨项目合计 n=14：dual 在两项目上均 **Safety=1.0、Precision_cov=1.0**（覆盖口径；bootstrap 95% CI 均为 [1,1]；非循环 `A_obs` 在两项目上均极小，精度不可测）；coverage_only 与 dual 逐过渡选中集合相同（属上文 50 个过渡逐例等价的一部分，Wilcoxon dual vs coverage_only 三指标 p=1）。来源 `out/real/{actual_desktop,mermaid_live}_rq1.json`、`out/real/real_rq1_stats.md`。
 
 ![图 5-3　真实项目逐过渡的 Reduction 与 Safety 对比](diffe2e/experiments/out/figs/rq1_real_transitions.svg)
 
@@ -545,7 +552,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 两点诚实观察，与受控主体相互印证，量化了方法的适用边界：
 
 - **覆盖选择的缩减取决于"覆盖耦合度"**：actual 的多数过渡改动核心/共享文件，6 个 spec 的 34 个用例几乎全部触及→Reduction 仅 0.111；mermaid 为单页编辑器，核心组件被几乎每个用例加载→Reduction≈0。这是覆盖型 RTS 在强耦合应用上的固有局限，而非本方法特有；Safety 始终为 1.0。
-- **UI 信号臂是稀疏触发的召回兜底，不是缩减增益来源**：前向开发中 testId/可见文本大多稳定（新功能多为 ADD，不触发 REMOVE/MODIFY），故 uidiff 自然较少选中。actual 9 个过渡中仅 commit `19cea1a`（"schedule 金额改用 ± 符号"，改动 testId `date`）触发，经页面对象导入闭包映射到 32 个用例，**uidiff_only Precision=1.0**（选中皆受影响）；但这 32 条全部已在覆盖臂内，dual 仍为 34 条，最终选中集合未变。§5.5 C1 在单组件应用上给出 uidiff 把精度从覆盖级 0.333 提升到 1.0 的动态证据，那是**精度**而非缩减，且发生在覆盖粒度过粗的场景；在本 RQ1 的 50 个过渡上，UI 信号未带来任何集合变化。
+- **UI 信号臂是稀疏触发的召回兜底，不是缩减增益来源**：前向开发中 testId/可见文本大多稳定（新功能多为 ADD，不触发 REMOVE/MODIFY），故 uidiff 自然较少选中。actual 9 个过渡中仅 commit `19cea1a`（"schedule 金额改用 ± 符号"，改动 testId `date`）触发，经页面对象导入闭包映射到 32 个用例，**uidiff_only Precision_cov=1.0**（覆盖口径，选中皆受影响）；但这 32 条全部已在覆盖臂内，dual 仍为 34 条，最终选中集合未变。§5.5 C1 在单组件应用上给出 uidiff 把精度从覆盖级 0.333 提升到 1.0 的动态证据，那是**精度**而非缩减，且发生在覆盖粒度过粗的场景；在本 RQ1 的 50 个过渡上，UI 信号未带来任何集合变化。
 
 > 工程化要点（使 uidiff 能在真实工程激活，见 §3.3）：抽取器纳入携带定位锚点属性的设计系统组件（`<Button>/<TapField>` 等，非仅原生标签）；信号→测试匹配要求引号字面量（消除 `date`→`update` 误匹配）并对 spec 做本地导入闭包展开（覆盖 Page Object 间接层）。离线扫描器 `scan_ui.mjs` 可在不安装、不跑测试的前提下定位可激活窗口。
 
@@ -596,7 +603,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 
 **缺口样本的有效性复核（重要）**：事后用 test-code graph 的缺口检测复核上述 30 条样本，发现其中 **12/14 个"缺口"文件其实已被既有测试覆盖**（actual-budget 的 62 条 E2E 覆盖了 24 个变更 app 文件中的 20 个），即这些样本生成的是"为新 UI 写测试"，而该 UI 本就有测试——**生成器在回答一个非缺口问题**。按"文件确实无测试覆盖"重新筛选后，actual-budget 的 9 个过渡只剩 **4 个**真实缺口文件，其中 1 个具备可生成的 UI 新增信号。因此上述 0/30 应读作**样本构造效度**问题（缺口未被验证），而不仅是生成能力问题；这也是后续把 `detectGaps` 接入生成流程（RQ2 缺口检测改为函数/路由级）的直接动因。针对上述两项缺陷，另做一轮**生成 prompt 硬化**（在真实项目 13 个上下文上对比）：要求"给定 testId 必须用 `page.getByTestId(...)`、禁止 `page.locator('裸名')`、禁止对 body 做空可见性断言、优先 `getByRole`/`getByText`"。结果：使用真实角色/文本定位器的样本由 6/14 升至 **9/13**，裸名 `locator()` 由 11/14 降至 **6/13**，body 空断言由 4/14 降至 **3/13**——**方向正确但未根除**，说明 prompt 只能缓解"写法"问题，不能解决"缺口是否可测"。在该唯一可生成的真实缺口上另试了**有界执行反馈**（生成→运行→回传 Playwright 报错→重写，至多 3 轮）：首轮与第 3 轮均未通过（`pass@1=false`、`pass@3=false`）——该缺口是 CodeMirror 语言配置文件，不构成可导航的 UI 页面，说明"真实缺口"未必"可测"，单点样本仅作机制验证、不作统计结论。
 
-为验证自动语义判据与人工判断的方向是否一致，本文从两个真实项目（actual-budget、mermaid-live-editor）中构建 30 条人工复核样本（`out/rq2_real_to_annotate.csv` + `out/rq2_real_to_annotate_unblind.json`），diff/nodiff 各 15 条。该 30 条的协议 B 正式列（三次重复多数票）为 **diff 臂 2/15、nodiff 臂 0/15**（y 为 `rq2_023`、`rq2_029`，均在 diff 臂），绝对水平远低于自动指标。该 30 条的三次重复中 29 条标签完全一致、1 条为 2/3（`rq2_023`）、无 1/3。第二标注者盲评已完成并按 §5.6 合并：**人工第二列 30/30 均判 n**；两列不一致仅 2 条（`rq2_023`、`rq2_029`），经独立第三人先盲后明仲裁后 `final` 均为 n，即**仲裁后人工语义有效率为 0/30**（diff 0/15、nodiff 0/15）。一致性为 **Po=0.9333、Pe=0.9333、κ=0、Gwet's AC1=0.929**：κ=0 系人工列为常量导致的退化（患病率悖论），AC1=0.929 则给出偏斜分布下有区分度的一致度（§5.6），与 93.3% 的原始一致率并存，须与 2×2 混淆矩阵（y→n 2 条、n→n 28 条）同报。据此，自动判据与人工判据的关系应读作：自动语义有效率 1.0 只证明生成测试可执行、版本敏感且能杀死注入变异，**不证明**其通过人工严格四问（有真实步骤、真实断言、步骤落在变更交互上、断言验证变更效果）的语义有效性；协议 B 预标注（2/30）与人工盲评（0/30）都只能作为**外部效度限定**，不得写成“复现 1.0”。
+为验证自动语义判据与人工判断的方向是否一致，本文从两个真实项目（actual-budget、mermaid-live-editor）中构建 30 条人工复核样本（`out/rq2_real_to_annotate.csv` + `out/rq2_real_to_annotate_unblind.json`），diff/nodiff 各 15 条。该 30 条的协议 B 正式列（三次重复多数票）为 **diff 臂 2/15、nodiff 臂 0/15**（y 为 `rq2_023`、`rq2_029`，均在 diff 臂），绝对水平远低于自动指标。该 30 条的三次重复中 29 条标签完全一致、1 条为 2/3（`rq2_023`）、无 1/3。作者盲评已完成并按 §5.6 合并：**人工第二列 30/30 均判 n**；两列不一致仅 2 条（`rq2_023`、`rq2_029`），经独立第三人先盲后明仲裁后 `final` 均为 n，即**仲裁后人工语义有效率为 0/30**（diff 0/15、nodiff 0/15）。一致性为 **Po=0.9333、Pe=0.9333、κ=0、Gwet's AC1=0.929**：κ=0 系人工列为常量导致的退化（患病率悖论），AC1=0.929 则给出偏斜分布下有区分度的一致度（§5.6），与 93.3% 的原始一致率并存，须与 2×2 混淆矩阵（y→n 2 条、n→n 28 条）同报。据此，自动判据与人工判据的关系应读作：自动语义有效率 1.0 只证明生成测试可执行、版本敏感且能杀死注入变异，**不证明**其通过人工严格四问（有真实步骤、真实断言、步骤落在变更交互上、断言验证变更效果）的语义有效性；协议 B 预标注（2/30）与人工盲评（0/30）都只能作为**外部效度限定**，不得写成“复现 1.0”。
 
 针对表 5-5c 的扩样 diff 臂，另生成了**独立的人工盲评包**（`out/new10_20261108/annotation_packet/`）：case_id 使用独立命名空间 `nb001`–`nb005`，与主实验包的编号和哈希清单互不复用；包内附一页标注说明，沿用协议 B（第一列为三次多数票；本包只收第二标注列 `annotator2_yn`，不一致交第三人仲裁填 `final`）。遮蔽与泄漏复核已通过（`LEAKAGE_CHECK.json`，PASS）：包内只保留变更文件、路由、源码 diff 与生成 spec，不含主实验或任何批次的具体数值、不含分布统计，也不引用解盲键；解盲键存放在包外 `new10_packet_unblind.json`。该包与主实验盲评包是两份独立交付物，不合并统计；定稿中该包仅作**自动判据的独立归档材料**，不纳入人工一致性统计。
 
@@ -659,6 +666,15 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 即 exact-match 确实误杀了部分正确修复（LLM 臂 26.67%→33.33%，相对 +25%），增益集中在语义锚点为主的项目（koenig 8→14）。**结论**：修复难度的瓶颈不在"上下文不足"，而在 **ReproBreak 池的构成**——只有约 28%（115/414）的断裂具备语义锚点替换空间，其余是 CSS class/XPath 改名与结构重排，需 DOM 拓扑或执行验证才能修。该结果独立复现了 E2 的 12.2% 可达率。
 
+**模型能力对照：pro vs flash（同子集 n=90）**。为检验"批量用 flash 导致修复率偏低"这一替代解释，本文在**同一** distinctive 语义子集（`sem_applicable && !pre_had_equiv`，n=90）上用 `deepseek-v4-pro` 重跑同一 prompt、同一"只输出一行定位器"约束与同一判据（`RB_SUBSET=semantic`、并发 6；产物 `realproj/results/reprobreak_e2e_pro90.json`，配对对照 `reprobreak_pro90_compare.md`）：
+
+| 指标（n=90） | flash | pro | 差值 |
+|---|---:|---:|---:|
+| exact-match | 26.67%（24/90） | 23.33%（21/90） | −3.33 pp |
+| 语义等价 | 33.33%（30/90） | 30.00%（27/90） | −3.33 pp |
+
+配对 McNemar（两指标相同）：b=4（flash 对、pro 错）、c=1（flash 错、pro 对）、exact p=0.375；两模型调用错误均为 0；规则臂在两模型下相同（12/90 exact、13/90 语义，确定性）。**结论**：把批量修复模型从 flash 换成 pro，没有提升（反而低 3.33 pp，统计上不显著），远不足以解释全池 7.25% 与已知信号上界 99.3% 之间的差距。因此"模型降级"不是低修复率的主因，瓶颈仍是池构成（59% CSS class/XPath 无锚点）与从应用 diff 自行还原信号的难度；推理型模型在"单行定位器输出"这类窄任务上也没有转化为更高修复率。
+
 ![图 5-6　RQ3 从 9604 条断裂到端到端修复率的证据阶梯](diffe2e/experiments/out/figs/rq3_evidence_ladder.svg)
 
 （源：`realproj/results/reprobreak.json`（①②③）与 `realproj/results/reprobreak_e2e.json`（④）；图题与注已随图。四级分母不同：9604 / 9604 / 578 / 414，④ 与 ③ 为并列口径而非包含关系。）
@@ -682,9 +698,9 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 | SUSPECTED_REGRESSION | 0 | 无法排除新版本真实回归，保守归类 |
 | 调用失败（未计入） | 0 | 无调用失败 |
 
-> **作者复核（不计入表内计数）**：`rb033` 应为 `EXPECTATION_CHANGE`。上表保留协议 B 的原始输出 40/0/0，不改为 39/1/0；第二标注者盲评 40/40 判 STRUCTURAL_ONLY，与表内计数一致（Po=1.0，§5.6）；`rb033` 经第三人先盲后明仲裁维持作者复核结论；其偏差的遮蔽成因单列讨论于 §5.3 与 §6。
+> **作者复核（不计入表内计数）**：`rb033` 应为 `EXPECTATION_CHANGE`。上表保留协议 B 的原始输出 40/0/0，不改为 39/1/0；作者盲评 40/40 判 STRUCTURAL_ONLY，与表内计数一致（Po=1.0，§5.6）；`rb033` 经第三人先盲后明仲裁维持作者复核结论；其偏差的遮蔽成因单列讨论于 §5.3 与 §6。
 
-需要强调三点限制：(i) ReproBreak 由 locator 断裂构造，自动分诊标签 `model_label` 恒为 STRUCTURAL_ONLY，模型-人工 κ 不具区分度，只能作描述性准确率报告；(ii) 40 条的三次重复全部一致（40/40 为 3/3），正式列取多数票并同时报告 3/3、2/3、1/3 与不稳定条目清单；仍需同时报告样本构成与混淆矩阵，避免把“高一致率”误读为“强区分能力”；(iii) `rb033` 属协议固有边界：该类断裂的业务语义只由被遮蔽的属性承载，遮蔽后结构信号不足以判定，故预标注只能判 `STRUCTURAL_ONLY`；作者复核确认为 `EXPECTATION_CHANGE`，本文单列披露，不因此放松通用遮蔽规则。第二标注者盲评已完成并按 §5.6 合并：人工第二列 40/40 均为 STRUCTURAL_ONLY，与协议 B 正式列完全一致（Po=1.0、混淆矩阵仅 SO/SO=40、逐条分歧为空），按既定口径不报 κ（常量列 `Pe` 退化）。`rb033` 在人工列中同样标为 STRUCTURAL_ONLY；其作者复核结论经独立第三人先盲后明仲裁维持 EXPECTATION_CHANGE，仍单列披露、不回改表内计数。
+需要强调三点限制：(i) ReproBreak 由 locator 断裂构造，自动分诊标签 `model_label` 恒为 STRUCTURAL_ONLY，模型-人工 κ 不具区分度，只能作描述性准确率报告；(ii) 40 条的三次重复全部一致（40/40 为 3/3），正式列取多数票并同时报告 3/3、2/3、1/3 与不稳定条目清单；仍需同时报告样本构成与混淆矩阵，避免把“高一致率”误读为“强区分能力”；(iii) `rb033` 属协议固有边界：该类断裂的业务语义只由被遮蔽的属性承载，遮蔽后结构信号不足以判定，故预标注只能判 `STRUCTURAL_ONLY`；作者复核确认为 `EXPECTATION_CHANGE`，本文单列披露，不因此放松通用遮蔽规则。作者盲评已完成并按 §5.6 合并：人工第二列 40/40 均为 STRUCTURAL_ONLY，与协议 B 正式列完全一致（Po=1.0、混淆矩阵仅 SO/SO=40、逐条分歧为空），按既定口径不报 κ（常量列 `Pe` 退化）。`rb033` 在人工列中同样标为 STRUCTURAL_ONLY；其作者复核结论经独立第三人先盲后明仲裁维持 EXPECTATION_CHANGE，仍单列披露、不回改表内计数。
 
 ![图 5-8　RQ3 40 条过时类型的协议 B 分布（40/0/0）](diffe2e/experiments/out/figs/rq3_protocolb_distribution.svg)
 
@@ -712,6 +728,8 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 | 加路由（d05bd03） | route-level | 0 | **94.6%** |
 | 改共享常量 | value-reference | 1 | **83.0%** |
 | 改共享文件 | file-level | 62 | **−5.4%**（T_select 是纯税，比 retest_all 还差） |
+
+**口径说明（重要）**：上表三行 NetSaving 是**成本模型测算值**，不是每臂独立重复 3 次的分布统计：`T_run(Sel)` 对 0 选中取 0s、对 1 选中取实测单测 19.5s、对 62 选中取实测全量 168s，再与实测 `T_select≈9.1s` 一起代入 `NetSaving = 1 − (T_select + T_run(Sel))/T_full`。逐臂重复 3 次并报告 median/IQR 的实测是表 5-9；两者口径不同，不能混用。测算的输入、公式与逐行结果落盘在 `out/real/actual_desktop_rq4_graph.json`（`basis` 字段明确标注为 analytical values，非重复实测）。
 
 **关于 `T_select≈9.1s` 的口径**：该值来自 tree-sitter 对 1968 个文件的全量静态建图 + 选择器计算，属**冷启动上界**；在 CI 连续提交场景下，只需重解析 diff 触及的文件（增量更新，与全量逐例一致已验证），该开销可降至亚秒级。本文按上界报告，属保守口径。两个诚实现象：**Reduction ≫ TimeReduction**（value-reference 把用例数减 62→1，但 TimeReduction 只有 88.4%——webServer 启动成本省不掉）；**SelectionTax 是真实税**（T_select 占 T_full 的 5.4%，对小改动是主要开销，但相对文件级"全选 62 还白交税"仍是净赚）。详见 `out/real/actual_desktop_rq4_graph.md`。
 
@@ -742,12 +760,12 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 ### 5.6 人工一致性校准：样本、当前状态与 κ 合并
 
-RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据做预标注（附逐条理由，作者可在合并前逐条复核），形成预标注列，再由一名人工标注者在未见预标注的条件下完成第二标注列（优先由未参与预标注的独立标注者完成；若由作者本人完成，仍须保持同样的盲评隔离）；两列不一致的条目由第三人仲裁填入 `final`。
+RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据做预标注（附逐条理由，作者可在合并前逐条复核），形成预标注列，再由**作者本人**在未见预标注的条件下完成第二标注列（盲评隔离与锁定步骤见附录 A.3）；两列不一致的条目由第三人仲裁填入 `final`。这不是独立第三方标注，故两列只构成**人工-预标注一致性校准**，不构成双人独立盲评。
 
 本节的"第一标注列"是按现行协议生成的 LLM 预标注，外加一列人工盲评：
 
 1. **预标注列（正式列，一致性计算的第一列）**：与人工盲评使用同一套盲评材料（含应用源码 diff、完整旧测试块、遮蔽 locator 的断言级 diff），固定 `deepseek-v4-flash`、`temperature=0`、`max_tokens=2000`（预算阶梯 2000→4000→8000）、`retries=3`，逐条独立调用同一 prompt（`out/annotator1_masked.json`，参数与材料哈希见 manifest）。RQ2 与 RQ3 各重复 3 次（共 210 次逐条调用），正式列取**三次多数票**，并同时报告 3/3、2/3、1/3 一致率与不稳定条目清单（`out/repeats/variance_report.md`）；单次运行只作运行记录，不作为正式数值。评分脚本的第一列固定取这一列（`--first-source=b-majority`，读取 `out/repeats/variance_report.json` 中 `masked` 条件下各 case 的 `majority`）。
-2. **人工第二列**：由人工标注者盲评填写。已完成回收与合并（2026-11-21）：RQ2 30/30 均判 n，RQ3 40/40 均判 STRUCTURAL_ONLY；逐条工作表与回写产物归档于 `out/return_20261121/`，处理记录见 `out/annotation_return_20261121_report.md`。
+2. **人工第二列**：由作者本人盲评填写（未见第一列）。已完成回收与合并（2026-11-21）：RQ2 30/30 均判 n，RQ3 40/40 均判 STRUCTURAL_ONLY；逐条工作表与回写产物归档于 `out/return_20261121/`，处理记录见 `out/annotation_return_20261121_report.md`。
 3. **早期未采用的一轮**：因生成链（模型、版本、温度、prompt、材料快照）无记录，未予采用；本文不报告其结果，也不将其作为对照。主表 CSV 中保留两列早期预标注（RQ2 的 `annotator1_yn`、RQ3 的 `human1`，分布分别为 y=5/30 与 SO=37、EC=2、SR=1），它们**仅作历史留档**，已从评分脚本中移除，不参与任何 κ、一致率、分母或混淆矩阵计算；若误用旧列，评分会打印 `WARNING`，且 RQ2 的第一列分布会是 y=5/n=25、RQ3 会是 SO=37/EC=2/SR=1，可据此自查。
 
 由此，RQ2 的 κ 为 `human vs 现行预标注（协议 B 三次多数票）`。它反映人工盲评与 LLM 辅助预标注的一致性，不是人际 κ。合并后的实测结果为：**RQ2 n=30、Po=0.9333、Pe=0.9333、κ=0**——人工第二列为常量（30/30 判 n），`Pe` 退化至与 `Po` 相等，κ=0 是偏斜分布下的患病率悖论而非“无一致性”，故与 2×2 混淆矩阵（y→n 2 条、n→n 28 条）同报；两列不一致的 `rq2_023`、`rq2_029` 经独立第三人先盲后明仲裁，`final` 均为 n。**RQ3 n=40、Po=1.0**，两列均为常量 STRUCTURAL_ONLY，混淆矩阵仅 SO/SO=40、逐条分歧为空；按既定口径**不报 κ**——常量列使 `Pe` 退化，κ 不能反映超出随机一致的程度，本文只报 `Po`、混淆矩阵与分歧清单，不以准确率或 F1 冒充 κ。
@@ -763,30 +781,30 @@ RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据
 
 预标注列的原始输出保留在 `out/annotator1_masked.json`；`rb033` 经作者复核应为 EXPECTATION_CHANGE，但不改动表内计数（见 §5.3 与 §6 的协议边界讨论）。稳定性：70 条中 69 条三次完全一致、1 条为 2/3（`rq2_023`）、无 1/3；三次重复共 210 次逐条调用，失败清单为空（`temperature=0` 不保证确定性，故正式列固定取三次多数票）。数据见 `out/repeats/variance_report.md`。
 
-第二标注者的盲评纪律、逐条工作表与合并/评分命令见附录 A.3。合并已于 2026-11-21 完成：表 5-10 的人工列与一致性指标已替换为实测值，§5.2、§5.3、表 5-8 注、摘要与附录 A.3 已同步一致性结论；表 5-5 的自动指标与其余实验数字不受影响。RQ3 按既定口径未计算、未报告 κ（预标注为常量 SO、`Pe` 退化），正文只报告 `Po`、混淆矩阵、逐条分歧与样本构成。
+作者盲评的纪律、逐条工作表与合并/评分命令见附录 A.3。合并已于 2026-11-21 完成：表 5-10 的人工列与一致性指标已替换为实测值，§5.2、§5.3、表 5-8 注、摘要与附录 A.3 已同步一致性结论；表 5-5 的自动指标与其余实验数字不受影响。RQ3 按既定口径未计算、未报告 κ（预标注为常量 SO、`Pe` 退化），正文只报告 `Po`、混淆矩阵、逐条分歧与样本构成。
 
 ---
 
 ## 第 6 章 讨论：有效性威胁与局限
 
-- **外部效度**：主体为受控工程；真实多 commit replay（RQ1）已在 2 个真实开源项目（actual-budget、mermaid-live-editor，14 个稳定过渡）上完成并给出 dual Safety/Precision=1.0（§5.1），另接第三例 tldraw（12 个稳定过渡）**单列、不并入上述 14 个过渡的合并统计**，仅用于 50 个过渡的逐例等价核查；但项目数仍有限、且均为现代前端应用；真实 LLM 生成（RQ2）与修复（RQ3）对照已用 DeepSeek 跑通；真实 wall-clock（RQ4）已在 cand_coverage 与 actual_desktop 两个场景给出 NetSaving，并对 actual_desktop 给出多过渡平均，但 actual_desktop 的 `T_select` 尚未实测，仍需扩大项目与过渡数量。
+- **外部效度**：主体为受控工程；真实多 commit replay（RQ1）已在 2 个真实开源项目（actual-budget、mermaid-live-editor，14 个稳定过渡）上完成并给出 dual Safety=1.0、Precision_cov=1.0（覆盖口径，§5.1），另接第三例 tldraw（12 个稳定过渡）**单列、不并入上述 14 个过渡的合并统计**，仅用于 50 个过渡的逐例等价核查；但项目数仍有限、且均为现代前端应用；真实 LLM 生成（RQ2）与修复（RQ3）对照已用 DeepSeek 跑通；真实 wall-clock（RQ4）已在 cand_coverage 与 actual_desktop 两个场景给出 NetSaving，并对 actual_desktop 给出多过渡平均，但早批 34 用例回放未单独拆解 `T_select`；HEAD（62 用例）上仅测得冷启动全量静态建图上界（≈9.1s），增量连续提交下的稳态 `T_select` 仍需多过渡实测，仍需扩大项目与过渡数量。
 - **构造效度**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并辅以变异压力测试，破除 Safety 自证循环；但 `A_obs` 在自然 diff 下样本偏小（4 个过渡），变异增强部分缓解。复核还发现自动指标依赖结果记录的正确性：RQ2 受控 c03/nodiff 一格原记录与冻结用例的执行结果不符，已按钉住环境重跑修正（其余五个受控执行格逐格复现），详见 §5.2 与 `diffe2e/experiments/out/repro_c03_20261108/REPRO_C03_FORENSICS.md`。
-- **内部效度**：命题 1 的安全性是条件安全（H1–H3）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。
-- **标注效度**：第一标注列为 LLM 辅助预标注。正式列按协议 B 盲评材料、固定模型与参数生成，RQ2 与 RQ3 各重复 3 次并取**三次多数票**；必须同时报告 3/3、2/3、1/3 一致率与不稳定条目清单，因为 `temperature=0` 并不保证确定性（本文实测 70 条中 1 条为 2/3 摆动）。早期一轮预标注因缺少生成链记录未予采用；其对照材料（condA 条件）已从随稿制品中移除，不在本稿保留。RQ3 的 `rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后新旧两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。这说明该类基准存在一类无法靠遮蔽后的结构信号判定的断裂；本文如实披露，不因此放松通用遮蔽规则。第二标注者为人工盲评（未见第一列；作者本人填写时同样保持盲评隔离）；两列的一致性已按 §5.6 合并并报告，正文仍不把 LLM 预标注列称为"双人独立盲评"。RQ3 的自动分诊 `model_label` 由 locator 断裂构造而恒为 STRUCTURAL_ONLY，模型-人工 κ 不作为方法优越性证据；完整流程、样本构成与当前状态见 §5.6。
+- **内部效度**：命题 1 的安全性是条件安全（H1–H3 与 H2′）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）、归因不完备（H2′）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。**函数身份与构建形态（H2′）**：`executes` 边按 (文件, 名字) 匹配 V8 函数名，而 V8 对 `React.memo(() => …)`、`forwardRef(…)`、`export default () => …` 报空名；本文不按字节偏移识别匿名函数，而是依赖三条保守规则（外层具名实体归属、不可归因回退文件级、同文件唯一同名解析，§3.4）。因此 H2′ 的完备性依赖"匿名函数总有具名外层或触发回退"，且依赖未被压缩/混淆的函数名——实验均在 Vite dev server 下进行，生产构建（minify/mangle）会改写函数名，需 sourcemap 或构建期插桩恢复身份，列为后续工作。若上述规则均未触发而函数身份仍不可匹配，则存在理论漏选风险。
+- **标注效度**：第一标注列为 LLM 辅助预标注。正式列按协议 B 盲评材料、固定模型与参数生成，RQ2 与 RQ3 各重复 3 次并取**三次多数票**；必须同时报告 3/3、2/3、1/3 一致率与不稳定条目清单，因为 `temperature=0` 并不保证确定性（本文实测 70 条中 1 条为 2/3 摆动）。早期一轮预标注因缺少生成链记录未予采用；其对照材料（condA 条件）已从随稿制品中移除，不在本稿保留。RQ3 的 `rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后新旧两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。这说明该类基准存在一类无法靠遮蔽后的结构信号判定的断裂；本文如实披露，不因此放松通用遮蔽规则。第二标注列为**作者本人**盲评（未见第一列；隔离与锁定见附录 A.3）；两列的一致性已按 §5.6 合并并报告，正文不把 LLM 预标注列或作者列称为"双人独立盲评"。RQ3 的自动分诊 `model_label` 由 locator 断裂构造而恒为 STRUCTURAL_ONLY，模型-人工 κ 不作为方法优越性证据；完整流程、样本构成与当前状态见 §5.6。
 - **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性以变异杀伤率与版本差分敏感性两个客观自动指标为主度量，人工复核用于方向校准而非替代自动指标。RQ2 真实 DeepSeek 对照给出 diff vs nodiff 的自动语义指标差异（表 5-5，diff 臂自动语义有效率 1.0）；30 条真实项目复核的协议 B 三次多数票为 **diff 2/15、nodiff 0/15**，方向与自动指标一致但绝对水平远低于 1.0，只能作为**外部效度限定**，不能写成"复现 1.0"，也不能把自动语义有效率等同于人工语义判断。RQ3 受控主体仅 4 条，不支撑过时分类一致性结论，因此从 ReproBreak 414 条无泄漏评估样本中抽取 40 条做人工复核；协议 B 正式列为 **SO=40、EC=0、SR=0**，其中 39 条可判为结构性，`rb033` 经作者复核应为 EC、属遮蔽造成的协议固有边界并单列披露；样本构成偏向测试 API 迁移，κ 的少数类稳定性有限，且偏斜分布下 κ 可能接近 0 或为负，必须同报 `Po`/`Pe` 与混淆矩阵。三次重复 70 条中 69 条完全一致、1 条 2/3、无 1/3。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂 3.38% 与 DeepSeek LLM 臂 7.25%——二者均远低于上界，正面量化了信号检测的难度。仍存局限：端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
 - **RQ2 样本构造效度（新发现）**：事后复核发现，原 30 条真实项目"缺口"样本中 **12/14 个文件其实已被既有测试覆盖**（actual-budget 62 条 E2E 覆盖了 24 个变更 app 文件中的 20 个），即生成器在为新 UI 写测试、而该 UI 本有测试——生成任务在回答一个非缺口问题。按"文件确实无测试覆盖"筛选后只剩 4 个真实缺口文件（其中 1 个具可生成信号）。因此 RQ2 的 0/30 首先应归因于**样本缺口未经验证**，其次是生成能力；这是本文把 `detectGaps` 接入生成流程的直接动因，也说明真实前向开发中"有 UI 变更但完全无测试覆盖"的缺口天然稀缺。
 - **RQ3 语义口径的适用范围（新发现）**：端到端修复池中只有 **28%（115/414）** 的断裂具备语义锚点替换空间（testId/文本/label），占池 59% 的 `angular-slickgrid` 几乎全是 CSS class/XPath 断裂，语义等价口径与候选定位器在那里**原理上不可用**。因此语义口径必须限定在 distinctive 子集（n=90）报告，不能外推为全池水平；这也解释了两轮改进在全池 exact-match 上的"无提升"。
-- **选择环节的结论效度**：文件级选择（`dual` = `coverage_only` ∪ `uidiff_only`）与 `coverage_only` 持平（Reduction 0.625），因 `dual` 由并集构造、覆盖臂是其子集；`uidiff_only` 在 50 个过渡上未产生边际增益（前向开发中 testId/可见文本大多稳定，ADD 不触发 REMOVE/MODIFY）。**函数级四层归因（test-code graph，§5.1.1）把 Reduction 从 0.625 提升到 0.889（SafetyEmp=1.0、0 漏选）**：收益来自 (a) 5 个加路由过渡被正确归为 0（加新路由不影响现有测试），(b) 未使用函数与注释噪声被排除。但该增益有明确天花板：剩余过选是**真强耦合**（`main.js` 路由器被每条测试在导航时真实执行、`util.js` 被 cart+orders 真实 import），函数级归因也无法再省。三个诚实边界：**value-reference 的"无 reader"≠"没用"**（可能是跨文件读 / 动态访问 / 顶层读，故保守回退文件级而非选 0）；**config/flag/环境改动无法归因**，一律 retest_all；**覆盖 oracle 与选择器同源会自证**（函数级归因把加路由判为 0 个受影响、被覆盖 oracle 判成 Safety 下降），召回必须用非循环结果差异 oracle 衡量。
+- **选择环节的结论效度**：文件级选择（`dual` = `coverage_only` ∪ `uidiff_only`）与 `coverage_only` 持平（Reduction 0.625），因 `dual` 由并集构造、覆盖臂是其子集；`uidiff_only` 在 50 个过渡上未产生边际增益（前向开发中 testId/可见文本大多稳定，ADD 不触发 REMOVE/MODIFY）。**函数级四层归因（test-code graph，§5.1.1）把 Reduction 从 0.625 提升到 0.889（SafetyEmp=1.0、0 漏选，限于可观测过渡）**：收益来自 (a) 5 个加路由过渡被正确归为 0（加新路由不影响现有测试），(b) 未使用函数与注释噪声被排除。但该增益有明确天花板：剩余过选是**真强耦合**（`main.js` 路由器被每条测试在导航时真实执行、`util.js` 被 cart+orders 真实 import），函数级归因也无法再省。三个诚实边界：**value-reference 的"无 reader"≠"没用"**（可能是跨文件读 / 动态访问 / 顶层读，故保守回退文件级而非选 0）；**config/flag/环境改动无法归因**，一律 retest_all；**覆盖 oracle 与选择器同源会自证**（函数级归因把加路由判为 0 个受影响、被覆盖 oracle 判成 Safety 下降），召回必须用非循环结果差异 oracle 衡量。
 - **覆盖映射粒度**：bundler 行号变换下子文件级需 sourcemap 反查；本实验采用文件级归属（干净）+ locator/UI 信号（不依赖行号）。Semantic UI Diff 在"文案与 handler 同时变更"时静态匹配会退化为 ADD/REMOVE，需运行时 DOM 邻域匹配消歧。
-- **模型与批量修复的可扩展性**：`deepseek-v4-pro` 为推理模型，对 ~10KB 的修复 prompt 单次约 80s，ReproBreak 414 条批量修复需 ~9 小时、不可行，故该实验改用 `deepseek-v4-flash`（单次 ~5s）。这提示：**推理型模型不适用于大批量、低时延的测试修复场景**，是模型选择上的一个边界；受控主体 n=4 上 pro 与 flash 修复结果一致（§5.3），说明小样本上模型差异不显著。
+- **模型与批量修复的可扩展性**：`deepseek-v4-pro` 为推理模型，对 ~10KB 的修复 prompt 单次约 80s，ReproBreak 414 条批量修复需 ~9 小时、不可行，故该实验改用 `deepseek-v4-flash`（单次 ~5s）。这提示：**推理型模型不适用于大批量、低时延的测试修复场景**，是模型选择上的一个边界；受控主体 n=4 上 pro 与 flash 修复结果一致（§5.3），说明小样本上模型差异不显著。为直接检验"换弱模型导致修复率低"的替代解释，本文又在 distinctive 语义子集（n=90）上用 pro 重跑同一 prompt 与判据：语义等价 **30.00%** vs flash **33.33%**（配对 McNemar b=4、c=1、exact p=0.375，不显著；规则臂两模型相同：12/90 exact、13/90 语义）。因此批量使用 flash 不是低修复率的主因，推理型模型在这类单行输出任务上也没有转化为收益。
 
 ---
 
 ## 第 7 章 总结与展望
 
-本文研究代码变更感知的 Web 应用端到端回归测试用例选择与生成方法，把安全选测、覆盖缺口识别、断点诊断与 diff 约束生成统一进一个以 diff 为核心输入的闭环。方法内核是把 §3.2 的扁平映射器升级为**三层 test-code graph**（结构层 `contains`/`calls`/`imports`、路由层 `route`→`renders`、测试证据层 `executes`/`navigates`/`asserts`，每条边带 provenance），并给出增量更新（只重解析变更文件、只重插桩受影响测试，增量与全量重建逐例一致）。理论上给出与选择器无关的 `A*` 定义、条件安全命题 1 及证明、副作用状态闭包命题 2，并以净收益模型量化成本。**选择环节的核心结果是函数级四层归因**（`executes` / `references` / 路由级 / 文件级回退）：受控主体 24 个过渡上把 Reduction 从文件级基线的 **0.625 提升到 0.889**，SafetyEmp=1.0（0 漏选）、Precision=1.0；真实项目 actual-budget（62 条 E2E）上净收益从文件级的 **−5.4%** 扭转为 **+83.0%～94.6%**（选择开销已计入）；天花板是真强耦合（共享路由器/工具模块）。文件级 `dual` 与 `coverage_only` 持平（0.625，50 个过渡逐例相同）作为消融对照保留。非循环 oracle 与变异压力测试均给出 0 漏选，副作用场景下状态闭包恢复判定保真。**生成与修复的边界被如实量化**：受控主体上 diff 约束臂的自动语义有效率为 1.0；但真实项目复核发现原 30 条"缺口"样本中 **12/14 个文件其实已被既有测试覆盖**（伪缺口），按真缺口筛后仅剩个位数可生成样本，说明该 0/30 首先是**样本构造效度**问题；改进试验中注入候选定位器与 Page Object 闭包对全池 **无提升**（6.52% vs 7.25%），证伪了"上下文不足"假设——占池 59% 的 CSS class/XPath 断裂原理上不存在语义锚点替换空间，仅约 28%（115/414）具备，而在适用的 90 条子集上语义等价口径把 LLM 臂从 26.67% 提到 **33.33%**。ReproBreak 端到端修复仍困难（规则 3.38%、LLM 7.25%），本文据此把它定位为闭环支撑与边界研究，不作主贡献夸大。
+本文研究代码变更感知的 Web 应用端到端回归测试用例选择与生成方法，把安全选测、覆盖缺口识别、断点诊断与 diff 约束生成统一进一个以 diff 为核心输入的闭环。方法内核是 §3.2 的**三层 test-code graph**（结构层 `contains`/`calls`/`imports`/`renders`、路由层、测试证据层 `executes`/`navigates`/`coversFile`/`asserts`/`references`，每条边带 provenance；旧版扁平二部映射器仅作为其测试↔实体投影），并给出增量更新（只重解析变更文件、只重插桩受影响测试，增量与全量重建逐例一致）。理论上给出与选择器无关的 `A*` 定义、条件安全命题 1 及证明、副作用状态闭包命题 2，并以净收益模型量化成本。**选择环节的核心结果是函数级四层归因**（`executes` / `references` / 路由级 / 文件级回退）：受控主体 24 个过渡上把 Reduction 从文件级基线的 **0.625 提升到 0.889**，SafetyEmp=1.0（0 漏选，限于可观测断裂过渡）；Precision_cov=1.0（同源覆盖口径）、Precision_emp=1.0（仅 4 个可测过渡，判别力有限）；真实项目 actual-budget（62 条 E2E）上净收益从文件级的 **−5.4%** 扭转为 **+83.0%～94.6%**（选择开销已计入，NetSaving 为成本模型测算值，口径见 §5.4）；天花板是真强耦合（共享路由器/工具模块）。文件级 `dual` 与 `coverage_only` 持平（0.625，50 个过渡逐例相同）作为消融对照保留。非循环 oracle 与变异压力测试在可观测样本上均给出 0 漏选，副作用场景下状态闭包恢复判定保真。**生成与修复的边界被如实量化**：受控主体上 diff 约束臂的自动语义有效率为 1.0；但真实项目复核发现原 30 条"缺口"样本中 **12/14 个文件其实已被既有测试覆盖**（伪缺口），按真缺口筛后仅剩个位数可生成样本，说明该 0/30 首先是**样本构造效度**问题；改进试验中注入候选定位器与 Page Object 闭包对全池 **无提升**（6.52% vs 7.25%），证伪了"上下文不足"假设——占池 59% 的 CSS class/XPath 断裂原理上不存在语义锚点替换空间，仅约 28%（115/414）具备，而在适用的 90 条子集上语义等价口径把 LLM 臂从 26.67% 提到 **33.33%**。ReproBreak 端到端修复仍困难（规则 3.38%、LLM 7.25%）；同子集上把批量模型换成 pro 也没有提升（语义等价 30.00% vs 33.33%，配对 McNemar p=0.375），说明低修复率主要来自池构成与信号还原难度，而非模型降级。本文据此把它定位为闭环支撑与边界研究，不作主贡献夸大。
 
-**展望（按优先级）**：① 扩大真实项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并在更多项目上实测 `T_select` 与多过渡 NetSaving；② 把已完成的双人盲评扩展到更多项目与变更类型；同时探索不依赖 locator 断裂构造的过时类型样本，以提升少数类比例与 κ/AC1 的区分度；③ 补 ReproBreak 端到端修复的执行验证版（Docker overwrite）与 DOM/trace 候选元素上下文；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
+**展望（按优先级）**：① 扩大真实项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并在更多项目上实测 `T_select` 与多过渡 NetSaving；② 把已完成的人工-预标注盲评校准扩展到更多项目与变更类型，并引入独立第三方标注者形成真正的双人独立盲评；同时探索不依赖 locator 断裂构造的过时类型样本，以提升少数类比例与 κ/AC1 的区分度；③ 补 ReproBreak 端到端修复的执行验证版（Docker overwrite）与 DOM/trace 候选元素上下文；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
 
 ---
 
@@ -813,7 +831,7 @@ cd diffe2e
 node prepare.mjs
 ```
 
-该脚本完成运行时检查（Node 24+）、三处 `npm install`（含 tree-sitter 原生模块自检）、`playwright install chromium`，并对 `real/{mermaid-live-editor,actual}` 与 `realproj/clones/aut/{angular-slickgrid,koenig,openmct,playwright}` 做**全量克隆**（不使用 `--depth`/`--filter`），使后续实验不再触发网络访问。步骤幂等，失败可直接重跑。
+该脚本完成运行时检查（Node 24+）、三处 `npm install`（含 tree-sitter 原生模块自检）、`playwright install chromium`，并对 `real/{mermaid-live-editor,actual}` 与 `realproj/clones/aut/{angular-slickgrid,koenig,openmct,playwright}` 做**全量克隆**（不使用 `--depth`/`--filter`），使后续实验不再触发网络访问。全量历史是必需的：实验要在任意历史 commit 的父提交上 checkout，浅克隆无法覆盖。为适配受限网络，脚本支持 `DIFFE2E_CLONE_MIRROR=/path/to/mirror`：存在时优先从本地镜像（目录名与目标仓库相同）克隆，而不是访问 GitHub；并在开始前用 `df` 检查可用磁盘空间（可用 `DIFFE2E_MIN_FREE_GB` 调整阈值，默认 10 GB），不足时给出明确警告。步骤幂等，失败可直接重跑。
 
 **阶段 1 及以后（准备完成后直接运行）**：
 
@@ -859,7 +877,7 @@ node experiments/real/run_rq1_real_graph.mjs experiments/real/adapters/actual_de
 
 ### A.3 人工标注与 κ 合并
 
-标注文件、盲评纪律与逐条判定标准见 `diffe2e/experiments/annotate/ANNOTATION_HANDOFF.md` 与 `ANNOTATION_GUIDE.md`。第二标注者优先填写逐条工作表 `out/rq2_annotator2_worksheet.md` 与 `out/rq3_annotator_context_blind.md`，再用 `collect_annotator2_md.mjs --write` 写回盲表；也可直接填写盲表 CSV。核心纪律：不打开含预标注列的主表、`*_unblind.json`、逐条理由或 ReproBreak 原始断裂文件；RQ3 上下文刻意不含 `new_locator`。
+标注文件、盲评纪律与逐条判定标准见 `diffe2e/experiments/annotate/ANNOTATION_HANDOFF.md` 与 `ANNOTATION_GUIDE.md`。第二标注列由作者本人填写（未见第一列）：填写逐条工作表 `out/rq2_annotator2_worksheet.md` 与 `out/rq3_annotator_context_blind.md`，再用 `collect_annotator2_md.mjs --write` 写回盲表；也可直接填写盲表 CSV。核心纪律：不打开含预标注列的主表、`*_unblind.json`、逐条理由或 ReproBreak 原始断裂文件；RQ3 上下文刻意不含 `new_locator`。
 
 **合并与评分命令**（对应 §5.6 的人工列合并）：
 
@@ -889,7 +907,7 @@ node experiments/annotate/render_kappa_backfill.mjs
 
 协议 B 的断言级 diff 只遮蔽机械寻址路径，40/40 条逐条验证机械片段零命中；语义锚保留，逐条清单见 `context/redaction_verification.md`。
 
-当前状态（预标注 2026-11-08，第二标注合并 2026-11-21）：协议 B 正式列（三次多数票）——RQ2 为 diff 2/15、nodiff 0/15（y 为 `rq2_023`、`rq2_029`），RQ3 为有效 40、SO=40、EC=0、SR=0。三次重复共 210 次逐条调用，失败清单为空；70 条中 69 条三次完全一致、1 条为 2/3（`rq2_023`）、无 1/3（`out/repeats/variance_report.md`）。`rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。表 5-8 保留协议 B 原始输出 40/0/0，不改为 39/1/0；该类基准存在一类无法靠遮蔽后的结构信号判定的断裂，本文已单列披露且不放松通用遮蔽规则。预标注列为 LLM 辅助预标注（附逐条理由），不能表述为独立人类标注。`human vs 预标注` 的一致性已合并（2026-11-21，第二标注者盲评回收、独立第三人先盲后明仲裁完成）：**RQ2 n=30、Po=0.9333、Pe=0.9333、κ=0、AC1=0.929**——人工列 30/30 判 n，常量列使 `Pe` 退化，κ=0 为患病率悖论，AC1=0.929 在偏斜分布下仍有区分度，与 2×2 混淆矩阵（y→n 2 条、n→n 28 条）同报；分歧 `rq2_023`、`rq2_029` 仲裁 `final` 均为 n，仲裁后人工语义有效率 0/30；**RQ3 n=40、Po=1.0、AC1=1.0**——两列均常量 SO，混淆仅 SO/SO=40、逐条分歧为空，按既定口径不报 κ（AC1=1.0 亦因常量列退化而无判别力），不以准确率或 F1 替代。`rb033` 经第三人先盲后明仲裁维持 EXPECTATION_CHANGE，仍单列。§5.2、§5.3、§5.6、表 5-8、表 5-10、摘要与 `定稿自动审计清单.md` 已同步。
+当前状态（预标注 2026-11-08，第二标注合并 2026-11-21）：协议 B 正式列（三次多数票）——RQ2 为 diff 2/15、nodiff 0/15（y 为 `rq2_023`、`rq2_029`），RQ3 为有效 40、SO=40、EC=0、SR=0。三次重复共 210 次逐条调用，失败清单为空；70 条中 69 条三次完全一致、1 条为 2/3（`rq2_023`）、无 1/3（`out/repeats/variance_report.md`）。`rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。表 5-8 保留协议 B 原始输出 40/0/0，不改为 39/1/0；该类基准存在一类无法靠遮蔽后的结构信号判定的断裂，本文已单列披露且不放松通用遮蔽规则。预标注列为 LLM 辅助预标注（附逐条理由），不能表述为独立人类标注。`human vs 预标注` 的一致性已合并（2026-11-21，作者盲评回收、独立第三人先盲后明仲裁完成）：**RQ2 n=30、Po=0.9333、Pe=0.9333、κ=0、AC1=0.929**——人工列 30/30 判 n，常量列使 `Pe` 退化，κ=0 为患病率悖论，AC1=0.929 在偏斜分布下仍有区分度，与 2×2 混淆矩阵（y→n 2 条、n→n 28 条）同报；分歧 `rq2_023`、`rq2_029` 仲裁 `final` 均为 n，仲裁后人工语义有效率 0/30；**RQ3 n=40、Po=1.0、AC1=1.0**——两列均常量 SO，混淆仅 SO/SO=40、逐条分歧为空，按既定口径不报 κ（AC1=1.0 亦因常量列退化而无判别力），不以准确率或 F1 替代。`rb033` 经第三人先盲后明仲裁维持 EXPECTATION_CHANGE，仍单列。§5.2、§5.3、§5.6、表 5-8、表 5-10 与摘要已同步。
 
 ### A.4 表图与数据产物映射
 
@@ -898,7 +916,9 @@ node experiments/annotate/render_kappa_backfill.mjs
 | 表/图 | 数据产物 |
 |---|---|
 | 表 3-1 | 方法论推导，见 `diffe2e/docs/SAFETY.md` |
+| 图 3-3 / §3.2 三层建图 | `out/figs/fig3_3_mapper.svg`、`pipeline/src/graph/{extract,resolve,semanticResolve,fileRoutes,testEdges,select,attribution}.mjs` |
 | 表 5-1 | `out/rq1_graph.json`（四层归因：Reduction / SafetyEmp / Precision_cov / Precision_emp）、`out/real/<proj>_rq1_graph.jsonl` |
+| §3.4 H2′ 审计 | `out/attribution_audit.md`、`out/attribution_audit_actual_desktop.md`、`pipeline/test/attribution.test.mjs` |
 | 表 5-1a、图 5-1 | `out/rq1_summary.md`、`out/figs/rq1_methods_scatter.svg` |
 | §5.2 图诊断、§5.3 断点诊断 | `out/rq2_rq3_graph.md` |
 | §5.3 改进试验 | `realproj/results/reprobreak_e2e_v2.md`、`reprobreak_e2e_v2.json` |
@@ -907,16 +927,23 @@ node experiments/annotate/render_kappa_backfill.mjs
 | 表 5-3 | `out/sideeffect.json` |
 | 表 5-4、图 5-3 | `out/real/{actual_desktop,mermaid_live}_rq1.json`、`out/real/real_rq1_stats.md`、`out/figs/rq1_real_transitions.svg` |
 | 表 5-5 | `out/rq2_results.md`、`out/rq2_results.json` |
+| 表 5-5b | `out/new5_v2_20261108/rq2_new5_v2_results.json`（独立批次，不并入表 5-5） |
+| 表 5-5c | `out/new10_20261108/rq2_new10_combined.json`（逐缺口与 `by_class`） |
 | 图 5-4 | `out/rq2_results.json`、`out/new5_v2_20261108/rq2_new5_v2_results.json`、`out/new10_20261108/rq2_new10_combined.json`、`out/figs/rq2_three_scopes.svg` |
 | 图 5-5 | `out/new10_20261108/rq2_new10_combined.json`（逐缺口与 `by_class`）、`out/figs/rq2_gap_operator_matrix.svg` |
 | 表 5-6 | `out/rq3_results.md` |
+| §5.3.1 扩展批次（`rbx001`–`rbx040`） | `out/expansion_20261108/`、`out/annotation_arbitration_expansion_return_20261121/`、`out/annotation_expansion_return_20261121_report.md` |
 | 表 5-7 | `realproj/results/reprobreak_e2e.md`、`reprobreak_e2e.json` |
 | 图 5-6 | `realproj/results/reprobreak.json`、`realproj/results/reprobreak_e2e.json`、`out/figs/rq3_evidence_ladder.svg` |
 | 图 5-7 | `realproj/results/reprobreak_e2e.json`（`rows[].repo`）、`out/figs/rq3_per_repo_minority.svg` |
 | 表 5-8、表 5-10 | `out/rq2_real_to_annotate.csv`、`out/rq3_reprobreak_to_annotate.csv`、`out/*_unblind.json`、`out/annotator1_masked.json`（协议 B 正式列 run1）、`out/repeats/masked_run2.json`、`out/repeats/masked_run3.json`（三次多数票）、`out/repeats/variance_report.md`（一致率与不稳定清单）、`out/annotator1_masked_comparison.md`（原列 vs B） |
 | 表 5-9 | `out/real/cand_coverage_rq4.json`、`out/real/actual_desktop_rq4.json`、`out/real/actual_desktop_rq4_batch.json` |
+| §5.4 62 用例 NetSaving | `out/real/actual_desktop_rq4_graph.{md,json}`（成本模型测算值，`basis` 字段注明非重复实测；逐臂实测分布见表 5-9 产物） |
+| 图 5-9 | `out/real/actual_desktop_rq4_batch.json`（`transitions_detail`）、`out/llm_cost.json`（`by_experiment`/`total`）、`out/figs/rq4_net_saving.svg` |
 | 图 5-8 | `out/annotator1_masked.json`、`out/repeats/variance_report.json`、`out/figs/rq3_protocolb_distribution.svg` |
+| §5.6 κ 合并 | `out/kappa_backfill.md`、`out/annotation_arbitration_20261121/`、`out/annotation_arbitration_expansion_return_20261121/` |
 | LLM 成本 | `out/llm_cost.json`、`out/llm_cost.md` |
+| ReproBreak pro n=90 对照 | `realproj/results/reprobreak_e2e_pro90.json`、`realproj/results/llm_usage_pro90.jsonl` |
 | ReproBreak 离线指标 | `realproj/results/reprobreak.md`、`reprobreak.json` |
 
 ---

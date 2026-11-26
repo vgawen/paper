@@ -49,6 +49,29 @@ function repairWorktree(dest) {
   } catch { return true; }
 }
 
+// 离线镜像：DIFFE2E_CLONE_MIRROR 指向一个包含同名仓库的本地目录（如
+//   /data/mirrors/microsoft__playwright 或 /data/mirrors/microsoft/playwright）。
+// 存在时优先从镜像克隆，避免受限网络下访问 GitHub；origin 仍指回原 URL。
+function mirrorFor(url, dest) {
+  const root = process.env.DIFFE2E_CLONE_MIRROR;
+  if (!root || !exists(root)) return null;
+  const slug = url.replace(/^https?:\/\/github\.com\//, '').replace(/\.git$/, '').replace(/\//g, '__');
+  const cands = [path.join(root, path.basename(dest)), path.join(root, slug), path.join(root, slug + '.git')];
+  for (const c of cands) if (exists(path.join(c, '.git')) || exists(path.join(c, 'HEAD'))) return c;
+  return null;
+}
+
+function checkDiskSpace() {
+  const minGb = parseFloat(process.env.DIFFE2E_MIN_FREE_GB || '10');
+  try {
+    const out = execSync(`df -Pk ${JSON.stringify(ROOT)}`, { stdio: 'pipe' }).toString().trim().split('\n');
+    const cols = out[out.length - 1].split(/\s+/);
+    const availGb = parseInt(cols[3], 10) / 1024 / 1024;
+    if (availGb < minGb) warn(`可用磁盘约 ${availGb.toFixed(1)} GB，低于建议的 ${minGb} GB（可用 DIFFE2E_MIN_FREE_GB 调整）；全量克隆可能失败`);
+    else ok(`可用磁盘约 ${availGb.toFixed(1)} GB（建议 ≥ ${minGb} GB）`);
+  } catch { /* df 不可用时不影响主流程 */ }
+}
+
 function cloneFull(url, dest, { retries = 3 } = {}) {
   if (exists(path.join(dest, '.git'))) {
     if (!FORCE) { ok(`${rel(dest)} 已存在，跳过`); repairWorktree(dest); return true; }
@@ -56,10 +79,13 @@ function cloneFull(url, dest, { retries = 3 } = {}) {
     fs.rmSync(dest, { recursive: true, force: true });
   }
   fs.mkdirSync(path.dirname(dest), { recursive: true });
+  const mirror = mirrorFor(url, dest);
+  const src = mirror || url;
   for (let i = 1; i <= retries; i++) {
     try {
-      info(`克隆 ${url} → ${rel(dest)}（第 ${i}/${retries} 次，全量）`);
-      execSync(`git clone --quiet ${url} ${JSON.stringify(dest)}`, { stdio: 'pipe', timeout: 3600000 });
+      info(`克隆 ${mirror ? `${src}（本地镜像）` : url} → ${rel(dest)}（第 ${i}/${retries} 次，全量）`);
+      execSync(`git clone --quiet ${JSON.stringify(src)} ${JSON.stringify(dest)}`, { stdio: 'pipe', timeout: 3600000 });
+      if (mirror) { try { run(`git remote set-url origin ${JSON.stringify(url)}`, dest); } catch { /* best effort */ } }
       ok(`${rel(dest)} 克隆完成`);
       return true;
     } catch (e) {
@@ -235,6 +261,7 @@ const groups = ['deps', 'browsers', 'repos', 'data'];
 for (const g of groups) {
   if (ONLY && ONLY !== g) continue;
   console.log(`\n\x1b[1m[${g}]\x1b[0m`);
+  if (g === 'repos') checkDiskSpace();
   for (const s of steps.filter((x) => x.group === g)) {
     try { await s.check(); }
     catch (e) { bad(`${s.name}: ${String(e.message).split('\n')[0].slice(0, 160)}`); failures.push(s.name); }

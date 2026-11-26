@@ -23,6 +23,26 @@ const OUT = process.env.RB_OUT ? path.resolve(process.env.RB_OUT) : path.join(he
 const norm = (s) => (s || '').replace(/\s+/g, ' ').trim();
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+// RB_SUBSET=semantic restricts the run to the semantic-equivalence subset used in
+// the paper: distinctive anchor + the OLD test does not already contain an
+// equivalent form of the answer. Selection is deterministic and makes NO LLM calls.
+// Without RB_SUBSET the behaviour is unchanged (first RB_LIMIT breaks).
+function selectWork(breaks, limit, subset) {
+  if (subset !== 'semantic') return breaks.slice(0, limit);
+  const out = [];
+  for (const b of breaks) {
+    if (!isDistinctive(b.new_locator)) continue;
+    let repo;
+    try { repo = ensureClone(b.repository_name); } catch { continue; }
+    const oldTest = show(repo, b.previous_sha, b.test_file_path);
+    if (!oldTest || !oldTest.includes(b.old_locator) || oldTest.includes(b.new_locator)) continue;
+    if (textHasEquivalentLocator(oldTest, b.new_locator)) continue;
+    out.push(b);
+    if (out.length >= limit) break;
+  }
+  return out;
+}
+
 function ensureClone(repoName) {
   const dest = path.join(CLONES, repoName.replace('/', '__'));
   if (!fs.existsSync(dest)) {
@@ -79,6 +99,7 @@ async function main() {
   if (!fs.existsSync(BREAKS)) { console.log('SKIPPED: run reprobreak_db.mjs first'); return; }
   const breaks = JSON.parse(fs.readFileSync(BREAKS, 'utf8'));
   const limit = parseInt(process.env.RB_LIMIT || '60', 10); // cap for cost/time
+  const subset = process.env.RB_SUBSET || ''; // '' = all; 'semantic' = distinctive & no pre-existing equivalent
   const client = createClient();
   const arms = { rule: { ok: 0, ok_sem: 0, n: 0, n_sem: 0 }, llm: { ok: 0, ok_sem: 0, n: 0, n_sem: 0 } };
   const rows = [];
@@ -89,7 +110,10 @@ async function main() {
     const withApp = rows.filter((r) => r.app_files > 0);
     const ruleWithApp = withApp.filter((r) => r.rule).length;
     fs.writeFileSync(OUT, JSON.stringify({
-      provider: client.provider, n: rows.length, skipped, leakage_free: true, partial,
+      provider: client.provider,
+      model: client.provider === 'deepseek' ? (process.env.LLM_MODEL || 'deepseek-v4-pro') : null,
+      subset: subset || 'all',
+      n: rows.length, skipped, leakage_free: true, partial,
       rule_rate: rate(arms.rule), llm_rate: rate(arms.llm),
       rule_rate_sem: +(arms.rule.n_sem ? arms.rule.ok_sem / arms.rule.n_sem : 0).toFixed(4),
       llm_rate_sem: +(arms.llm.n_sem ? arms.llm.ok_sem / arms.llm.n_sem : 0).toFixed(4),
@@ -101,7 +125,14 @@ async function main() {
     }, null, 2));
   };
   const concurrency = Math.max(1, parseInt(process.env.RB_CONCURRENCY || '1', 10));
-  const work = breaks.slice(0, limit);
+  let work = selectWork(breaks, limit, subset);
+  const onlyIds = (process.env.RB_ONLY_IDS || '').split(',').map((s) => s.trim()).filter(Boolean);
+  if (onlyIds.length) work = work.filter((b) => onlyIds.includes(String(b.id)));
+  if (process.env.RB_DRY === '1') {
+    console.log(`RB_SUBSET=${subset || '(all)'} selected ${work.length} of ${breaks.length}`);
+    for (const b of work) console.log(`${b.id}\t${b.repository_name}`);
+    return;
+  }
   const outRows = new Array(work.length).fill(null);
 
   async function processOne(b, idx) {
