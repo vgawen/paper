@@ -197,7 +197,9 @@ update(G_old, diff) -> G_new:
 
 增量复杂度 `O(|T_touch|×单测插桩 + |changedFiles|×静态抽取)`，与"变更规模"成正比而非"全量规模"。**正确性条件**：未触达变更实体的测试在 H1–H3 与 H2′（§3.4）下覆盖不变，故复用旧边安全。**摊销结论**：首次全量构建 `C_build` 单列；此后每次 CI 的更新成本 `C_update ≪ C_build`，使长期 CI 中平均每提交的 `T_select` 远小于 `T_run(all)`。若检测到插桩盲区或索引偏差超阈值，则触发强制重建或回退全量，保证安全优先于效率。
 
-![图 3-3　测试↔代码映射器与增量更新](diffe2e/experiments/out/figs/fig3_3_mapper.svg)
+图 3-3 给出该图的**测试↔实体投影视图**（二部索引 `M`）与增量更新；三层结构的完整边类型以本节文字为准。
+
+![图 3-3　测试↔代码映射器（二部投影视图）与增量更新](diffe2e/experiments/out/figs/fig3_3_mapper.svg)
 
 ### 3.3 Semantic UI Diff：源码 diff ↔ 浏览器操作的桥
 
@@ -274,7 +276,7 @@ Sel    = SelCov ∪ SelUI
 | H3 实体完备 | 配置/数据驱动改动；**副作用经共享状态** | 改动不在 `Δ` → 可能漏选 | 副作用交 3.5 状态闭包；配置/数据纳入 `Δ` 扩展 |
 | H2′ 归因完备 | 匿名箭头/HOC、类方法限定名、导出变量、动态属性访问、压缩构建 | `references`/`executes` 漏记 → 可能漏选 | 唯一同名解析；不可归因回退文件级；纯注释/新增声明豁免；压缩构建列为局限 |
 
-命题 1 是**条件安全**（在 H1–H3 与 H2′ 下）。论文显式陈述这三个假设，并用经验真值（第 5.1 节）检验其在实践中是否被违反。
+命题 1 是**条件安全**（在 H1–H3 与 H2′ 下）。论文显式陈述这四项假设，并用经验真值（第 5.1 节）检验其在实践中是否被违反。
 
 **经验召回验证（非循环）**：在 `V_old/V_new` 全量执行，用结果差异取 `A_obs`（`A*` 的经验实例），计算 `SafetyEmp = |Sel ∩ A_obs| / |A_obs|`，目标=1.0；任何 `A_obs \ Sel ≠ ∅` 的个案逐条审计并归因 H1/H2/H3 哪条失效，不得掩盖。为扩大真值规模，对 `Δ` 中实体注入小型语义变异、重跑全量得到 `A_obs^mut`，做主动压力测试。
 
@@ -746,7 +748,9 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 > 读法：`cand_coverage` 说明用例数量减少 66.7% 并不等价于 wall-clock 同比例下降，真实 TimeReduction 为 12.4%，计入 0.12s 选择开销后 NetSaving 为 5.0%，主要受浏览器启动、dev server 与单测时长不均影响；`actual_desktop` 单场景记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 全量执行，但不能代表该项目平均收益。进一步按 RQ1 的 9 个 actual_desktop 过渡做 batch-estimated 汇总：1 个 empty、0 个 partial、8 个 full，mean NetSaving 为 11.1%，median NetSaving 为 0，break-even rate 为 11.1%。逐条分布见图 5-9（a）：8 个全选集过渡的 NetSaving 均为 0，均值完全由 1 个空选集过渡贡献，中位数为 0。这说明真实平均收益受 full-selection 过渡比例限制，论文中应同时报告单场景收益与多过渡分布。
 
-**LLM token/$ 非时间成本**，来源 `out/llm_cost.{json,md}`：已完成的真实 LLM 实验共 424 次调用（RQ2 6 次、RQ3 受控 4 次、ReproBreak 414 次），估算约 757.8k input tokens 与 19.1k output tokens；按 DeepSeek 官方 `deepseek-v4-flash` cache-miss 输入 $0.14/M、输出 $0.28/M 计，成本约 $0.111。该表为估算，因为早期真实运行未持久化 provider usage 字段；后续运行已支持通过 `LLM_USAGE_OUT` 记录 API 返回的精确 usage。按实验拆分见图 5-9（b）。
+**LLM token/$ 非时间成本**，来源 `out/llm_cost.{json,md}`：主链路真实 LLM 实验共 424 次调用（RQ2 6 次、RQ3 受控 4 次、ReproBreak 414 次），估算约 757.8k input tokens 与 19.1k output tokens；按 DeepSeek 官方 `deepseek-v4-flash` cache-miss 输入 $0.14/M、输出 $0.28/M 计，成本约 $0.111。该表为估算，因为早期真实运行未持久化 provider usage 字段；后续运行已支持通过 `LLM_USAGE_OUT` 记录 API 返回的精确 usage。按实验拆分见图 5-9（b）。
+
+**口径说明（补充实验单列）**：上述 424 次仅覆盖主链路。后续扩展与对照**不并入**该成本表，单独归档：§5.2 扩样 `new10` 20 次（3,768 input / 16,600 output tokens）、`expansion_20261108/gaps` 10 次（1,867 / 8,243）；协议 B 三轮预标注 210 次（`deepseek-v4-flash`，逐次 usage 未持久化）；§5.3 模型对照 90 次（`deepseek-v4-pro`，输入 162,291 / 输出 354,841 tokens，其中 reasoning 353,700，精确用量见 `realproj/results/llm_usage_pro90.jsonl`）。pro 的价目与 flash 不同，故不按 flash 费率折算进 $0.111；主链路成本表与图 5-9（b）保持原口径。
 
 ![图 5-9　RQ4 逐过渡净收益分布与 LLM 非时间成本拆分](diffe2e/experiments/out/figs/rq4_net_saving.svg)
 
@@ -853,6 +857,9 @@ node experiments/validate_real_routes.mjs
 node experiments/validate_rq3_diagnosis.mjs
 node experiments/a2_func_attribution.mjs
 node experiments/build_testcode_graph.mjs
+# 归因完备性审计（H2′：零实体 / 纯注释 / 文件级回退）→ out/attribution_audit*.md
+node experiments/audit_attribution_empties.mjs
+node experiments/audit_attribution_empties.mjs experiments/real/adapters/actual_desktop.json
 
 # —— 文件级基线 / 消融（表 5-1a）——
 node experiments/run_rq1.mjs
@@ -871,6 +878,13 @@ node experiments/run_llm_cost.mjs
 
 # 真实项目上的函数级覆盖 + graph-selection（需先 clone 并安装 actual-budget）
 node experiments/real/run_rq1_real_graph.mjs experiments/real/adapters/actual_desktop.json 9
+
+# ReproBreak 语义子集模型对照（n=90，需 DEEPSEEK_API_KEY）→ reprobreak_pro90_compare.md
+LLM_MODEL=deepseek-v4-pro RB_SUBSET=semantic RB_LIMIT=90 RB_CONCURRENCY=6 \
+  RB_OUT=realproj/results/reprobreak_e2e_pro90.json \
+  LLM_USAGE_OUT=realproj/results/llm_usage_pro90.jsonl \
+  node --env-file=.env realproj/reprobreak_e2e.mjs
+node experiments/real/compare_pro90.mjs
 ```
 
 依赖安装命令见 `diffe2e/REPRODUCE.md`。C1 动态实验与对应单测需要 `real/cand_coverage/`（被 gitignore，不随仓库分发）；缺失时该单测自动跳过，其余实验不受影响。
@@ -918,7 +932,7 @@ node experiments/annotate/render_kappa_backfill.mjs
 | 表 3-1 | 方法论推导，见 `diffe2e/docs/SAFETY.md` |
 | 图 3-3 / §3.2 三层建图 | `out/figs/fig3_3_mapper.svg`、`pipeline/src/graph/{extract,resolve,semanticResolve,fileRoutes,testEdges,select,attribution}.mjs` |
 | 表 5-1 | `out/rq1_graph.json`（四层归因：Reduction / SafetyEmp / Precision_cov / Precision_emp）、`out/real/<proj>_rq1_graph.jsonl` |
-| §3.4 H2′ 审计 | `out/attribution_audit.md`、`out/attribution_audit_actual_desktop.md`、`pipeline/test/attribution.test.mjs` |
+| §3.4 H2′ 审计 | `out/attribution_audit.md`、`out/attribution_audit_actual_desktop.md`、`out/attribution_audit_mermaid_live.md`、`experiments/audit_attribution_empties.mjs`、`pipeline/test/attribution.test.mjs` |
 | 表 5-1a、图 5-1 | `out/rq1_summary.md`、`out/figs/rq1_methods_scatter.svg` |
 | §5.2 图诊断、§5.3 断点诊断 | `out/rq2_rq3_graph.md` |
 | §5.3 改进试验 | `realproj/results/reprobreak_e2e_v2.md`、`reprobreak_e2e_v2.json` |
@@ -943,7 +957,7 @@ node experiments/annotate/render_kappa_backfill.mjs
 | 图 5-8 | `out/annotator1_masked.json`、`out/repeats/variance_report.json`、`out/figs/rq3_protocolb_distribution.svg` |
 | §5.6 κ 合并 | `out/kappa_backfill.md`、`out/annotation_arbitration_20261121/`、`out/annotation_arbitration_expansion_return_20261121/` |
 | LLM 成本 | `out/llm_cost.json`、`out/llm_cost.md` |
-| ReproBreak pro n=90 对照 | `realproj/results/reprobreak_e2e_pro90.json`、`realproj/results/llm_usage_pro90.jsonl` |
+| ReproBreak pro n=90 对照 | `realproj/results/reprobreak_e2e_pro90.json`、`realproj/results/llm_usage_pro90.jsonl`、`realproj/results/reprobreak_pro90_compare.{md,json}`、`experiments/real/compare_pro90.mjs` |
 | ReproBreak 离线指标 | `realproj/results/reprobreak.md`、`reprobreak.json` |
 
 ---
