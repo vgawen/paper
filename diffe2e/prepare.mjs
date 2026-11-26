@@ -155,6 +155,19 @@ for (const r of REPOS) {
 
 // ---------- 5. 数据文件自检 ----------
 steps.push({
+  group: 'data', name: '清理遗留 demo 服务器',
+  check: () => {
+    // Playwright 的 webServer 在 reuseExistingServer=true 时会一直存活；若 subject/work
+    // 已被 seed 重建，旧进程仍持有原 cwd，容易造成"准备→运行"链路不确定。这里清掉。
+    let pids = '';
+    try { pids = run('lsof -nP -iTCP:5181 -sTCP:LISTEN -t', ROOT, 10000).trim(); } catch { /* 端口空闲 */ }
+    if (!pids) { ok('端口 5181 空闲，无需清理'); return; }
+    for (const pid of pids.split('\n')) { try { execSync(`kill ${pid}`, { stdio: 'pipe' }); } catch { /* 已退出 */ } }
+    ok(`已清理占用 5181 的遗留进程（${pids.split('\n').join(', ')}）`);
+  },
+});
+
+steps.push({
   group: 'data', name: 'ReproBreak 断裂数据',
   check: () => {
     const p = path.join(ROOT, 'realproj/results/reprobreak_breaks.json');
