@@ -33,9 +33,25 @@ function run(cmd, cwd = ROOT, timeout = 1800000) {
 }
 
 // 克隆：全量（不用 --depth / --filter），失败重试 3 次并退避。
+// 已有仓库可能处于"工作区被删文件/稀疏检出残留"的损坏状态（例如之前的 sparse-checkout
+// 实验留下了大量未恢复的删除）。检测到只有删除、没有本地修改时自动 reset --hard 修复。
+function repairWorktree(dest) {
+  try {
+    const st = run('git status --porcelain', dest).trim();
+    if (!st) return true;
+    const lines = st.split('\n');
+    const onlyDeletions = lines.every((l) => /^\s*D\s/.test(l) || /^D\s/.test(l));
+    if (!onlyDeletions) { warn(`${rel(dest)} 有本地修改，未自动修复`); return true; }
+    info(`${rel(dest)} 工作区有 ${lines.length} 个缺失文件（损坏/残留），自动 git reset --hard`);
+    run('git reset --hard HEAD', dest);
+    ok(`${rel(dest)} 工作区已修复`);
+    return true;
+  } catch { return true; }
+}
+
 function cloneFull(url, dest, { retries = 3 } = {}) {
   if (exists(path.join(dest, '.git'))) {
-    if (!FORCE) { ok(`${rel(dest)} 已存在，跳过`); return true; }
+    if (!FORCE) { ok(`${rel(dest)} 已存在，跳过`); repairWorktree(dest); return true; }
     info(`${rel(dest)} 已存在，--force 重新克隆`);
     fs.rmSync(dest, { recursive: true, force: true });
   }
