@@ -439,7 +439,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 
 受控主体给出零依赖、可复现的主结果；真实外部效度由四组真实数据补齐：
 
-1. **真实项目多 commit replay（RQ1）**：actual-budget 与 mermaid-live-editor 两个真实 Playwright 项目，共 14 个稳定过渡；dual 的 Safety/Precision 均为 1.0（§5.1）。**用例基数说明（不同时点，非口径差异）**：RQ1/RQ4 的早批回放运行在历史窗口的早期 commit 上，同一组 6 个 spec 文件在当时共 **34 条用例**（`T_full=110.84s`）；后续 §5.2/§5.4 的图选择与成本实验运行在仓库 HEAD，同样 6 个 spec 已增长到 **62 条用例**（`T_full=168s`）。两者是**不同代码时点**的基数（期间上游新增了大量 E2E 用例），因此其 Reduction 与 NetSaving 不可跨时点直接比较；正文引用时始终标注对应基数。另接入第三例 tldraw（`apps/examples/src` + `packages/tldraw/src`，12 个稳定过渡），该批**单列、不并入前述 14 的合并统计**，仅用于 §5.1 的 50 个过渡逐例等价核查。
+1. **真实项目多 commit replay（RQ1）**：actual-budget 与 mermaid-live-editor 两个真实 Playwright 项目，共 14 个稳定过渡；dual 的 Safety=1.0、Precision_cov=1.0（覆盖口径，§5.1）。**用例基数说明（不同时点，非口径差异）**：RQ1/RQ4 的早批回放运行在历史窗口的早期 commit 上，同一组 6 个 spec 文件在当时共 **34 条用例**（`T_full=110.84s`）；后续 §5.2/§5.4 的图选择与成本实验运行在仓库 HEAD，同样 6 个 spec 已增长到 **62 条用例**（`T_full=168s`）。两者是**不同代码时点**的基数（期间上游新增了大量 E2E 用例），因此其 Reduction 与 NetSaving 不可跨时点直接比较；正文引用时始终标注对应基数。另接入第三例 tldraw（`apps/examples/src` + `packages/tldraw/src`，12 个稳定过渡），该批**单列、不并入前述 14 的合并统计**，仅用于 §5.1 的 50 个过渡逐例等价核查。
 2. **真实 LLM 生成对照（RQ2）**：DeepSeek 对 diff 约束臂与无 diff 基线做自动语义指标评估，并从两个真实项目构建 30 条人工复核样本（diff/nodiff 各 15，§5.2、§5.6）。
 3. **闭环支撑与修复边界对照（RQ3）**：受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 30/414；另从 414 条无泄漏评估样本中抽取 40 条做过时类型人工复核（§5.3、§5.6）。
 4. **成本证据（RQ4）**：cand_coverage 与 actual_desktop 两个场景的真实 wall-clock、NetSaving、多过渡平均，以及 LLM token/$ 估算（§5.4）。
@@ -654,12 +654,16 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 **改进试验：候选定位器 + Page Object 闭包 + 双口径**（`realproj/results/reprobreak_e2e_v2.md`）。为检验"上下文不足"这一解释是否成立，另做一轮改进：修复 prompt 注入 (i) 从 V_new 应用源码抽取的**候选定位器**（testId/aria/可见文本/id/class，≤60 个）、(ii) 被测 spec 的 **Page Object 导入闭包**（1–2 层本地 import），并要求只输出一行定位器。结果（n=414，同一池）：
 
+**表 5-7a　改进试验的 exact-match 对比**
+
 | 臂 | 旧批 exact-match | 改进版 exact-match |
 |---|---|---|
 | 规则 | 3.38% | 3.38% |
 | LLM | 7.25% | **6.52%** |
 
 **在全池上候选与 POM 闭包没有带来提升**——它们对占池 **59%** 的 CSS class / XPath 断裂（`ghiscoding/angular-slickgrid`，245 条）原理上无效。**新增语义等价口径**（`getByTestId('x')` ≡ `[data-testid="x"]`）后，在"答案锚点具有区分度（distinctive：testId/文本/label，且修复前不含等价形式）"的 **90 条子集**上：
+
+**表 5-7b　语义等价口径（子集 n=90）**
 
 | 指标（子集 n=90） | 规则臂 | LLM 臂 |
 |---|---|---|
@@ -669,6 +673,8 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 即 exact-match 确实误杀了部分正确修复（LLM 臂 26.67%→33.33%，相对 +25%），增益集中在语义锚点为主的项目（koenig 8→14）。**结论**：修复难度的瓶颈不在"上下文不足"，而在 **ReproBreak 池的构成**——只有约 28%（115/414）的断裂具备语义锚点替换空间，其余是 CSS class/XPath 改名与结构重排，需 DOM 拓扑或执行验证才能修。该结果独立复现了 E2 的 12.2% 可达率。
 
 **模型能力对照：pro vs flash（同子集 n=90）**。为检验"批量用 flash 导致修复率偏低"这一替代解释，本文在**同一** distinctive 语义子集（`sem_applicable && !pre_had_equiv`，n=90）上用 `deepseek-v4-pro` 重跑同一 prompt、同一"只输出一行定位器"约束与同一判据（`RB_SUBSET=semantic`、并发 6；产物 `realproj/results/reprobreak_e2e_pro90.json`，配对对照 `reprobreak_pro90_compare.md`）：
+
+**表 5-7c　pro vs flash 同子集对照（n=90）**
 
 | 指标（n=90） | flash | pro | 差值 |
 |---|---:|---:|---:|
@@ -724,6 +730,8 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 **受控主体执行量**：跨 24 个过渡，retest-all 共执行 144 次用例，文件级 `coverage_only` 执行 54 次（下降 62.5%），**函数级四层归因（test-code graph）仅执行 16 次（下降 88.9%，SafetyEmp 仍=1.0）**。生成/修复均按需触发（仅缺口/失效用例），额外成本与变更规模成正比。
 
 **真实项目 NetSaving（actual-budget，62 个 e2e 测试）**：实测 `T_full=168s`、`T_run(单测试)=19.5s`（Vite webServer 启动 ~17s 是固定成本）、`T_select≈9.1s`（tree-sitter 构建 1968 文件静态图 + 选择器）。据此，三种改动的 `NetSaving = 1 − (T_select + T_run(Sel))/T_full`：
+
+**表 5-9a　62 用例 NetSaving 成本模型测算**
 
 | 改动 | 选择器 | 选中 | NetSaving |
 |---|---|---|---|
@@ -910,6 +918,8 @@ node experiments/annotate/render_kappa_backfill.mjs
 评分输出 `out/rq2_real_to_annotate_annotation.json`、`out/rq3_staleness_annotation.json` 与 `out/kappa_backfill.md`。
 
 **预标注的生成条件**。正式列按协议 B（与人工盲评相同的盲评材料）生成，沿用 `run_annotator1_masked.mjs`，固定 `deepseek-v4-flash`、`temperature=0`、`max_tokens=2000`（预算阶梯 2000→4000→8000）、`retries=3`，逐条独立调用同一 prompt；参数与材料哈希、密钥来源见 `out/annotator1_masked_manifest.json`。早期一轮预标注因缺少生成链记录（无模型/参数/prompt 记录）未予采用，本文不保留其它信息条件的对照材料。
+
+**表 A-2　协议 B 材料与参数**
 
 | 项目 | 协议 B（正式列） |
 |---|---|

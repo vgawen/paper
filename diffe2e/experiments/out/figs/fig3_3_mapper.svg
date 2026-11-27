@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="160.0mm" height="136.0mm" viewBox="0 0 160.0 136.0" version="1.1">
+<svg xmlns="http://www.w3.org/2000/svg" width="160.0mm" height="139.0mm" viewBox="0 -3.0 160.0 139.0" version="1.1">
 <title>图 3-3 测试↔代码映射器与增量更新</title>
-<rect x="0" y="0" width="160.0" height="136.0" fill="#ffffff"/>
+<rect x="0" y="-3.0" width="160.0" height="139.0" fill="#ffffff"/>
 <g font-family="Noto Sans CJK SC, Source Han Sans SC, PingFang SC, Hiragino Sans GB, Microsoft YaHei, sans-serif"><defs>
 <pattern id="hatch" width="1.4" height="1.4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
 <line x1="0" y1="0" x2="0" y2="1.4" stroke="#333333" stroke-width="0.3"/>
