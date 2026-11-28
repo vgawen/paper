@@ -6,15 +6,16 @@
 
 ## 总览
 
-- 分类清单合计 **66 篇**，已成功下载 **61 篇 PDF**（约 126 MB）。
+- 分类清单合计 **76 篇**（2026-11-28 补充 D 类 10 篇），已成功下载 **71 篇 PDF**（约 132 MB）。
 - 未自动下载 **5 篇**：见下方“待手动获取”，均已给出合法获取入口。
 - 文件名前缀对应分类编号：`A`=核心、`B`=支撑、`C`=最新前沿。
 
-## 已下载（61 篇）
+## 已下载（71 篇）
 
 - **A 类核心 16 篇**：A01–A11、A13–A17（A12、A18 见下方待办）。
 - **B 类支撑 23 篇**：B01–B03、B05–B20、B22–B25、B27–B30（B04、B21、B26 见下方待办）。
 - **C 类前沿 18 篇**：C01–C18 全部下载完成（均为 arXiv 开放获取）。
+- **D 类补充 10 篇**：D01–D10 全部下载完成（见下方“2026-11-28 补充”）。
 
 非 arXiv 的开放版本来源说明：
 - `B02_MorePreciseRTS` ← 作者主页（UT Austin）
@@ -23,6 +24,23 @@
 - `B06_JcgEks-HybridRTS` ← 作者主页（zbchen.github.io）
 - `B08_RTS-in-TDD-RichTest` ← Research Square 开放预印本（CC BY 4.0）
 - `B30_E2EGit` ← 作者主页（valeriapontillo.github.io）
+
+## 2026-11-28 补充：D 类（10 篇）
+
+对应正文参考文献 [67]–[76]，均已下载：
+
+| 编号 | 文件 | 对应文献 | 来源 |
+|---|---|---|---|
+| D01 | `D01_Ekstazi.pdf` | Ekstazi, ISSTA 2015 | 作者主页（UT Austin） |
+| D02 | `D02_STARTS.pdf` | STARTS, ASE 2017 | 作者主页（Cornell） |
+| D03 | `D03_HyRTS.pdf` | HyRTS, ICSE 2018 | 作者主页（UIUC） |
+| D04 | `D04_HITS.pdf` | HITS, ASE 2024 | arXiv:2408.11324 |
+| D05 | `D05_KTester-KnowledgeMatters.pdf` | Knowledge Matters / KTester, ICSE 2026 | arXiv:2511.14224 |
+| D06 | `D06_DiffTestGen.pdf` | DiffTestGen, arXiv 2026 | arXiv:2607.16024 |
+| D07 | `D07_ReAssert.pdf` | ReAssert, ASE 2009 | 作者项目页（UIUC） |
+| D08 | `D08_Ceprot.pdf` | Ceprot, ASE 2023 | 作者主页（xing-hu.github.io） |
+| D09 | `D09_MuMuTestUp.pdf` | MuMuTestUp, ISSTA 2026 | arXiv:2605.19265 |
+| D10 | `D10_EvoSuite.pdf` | EvoSuite, ESEC/FSE 2011 | evosuite.org |
 
 ## 待手动获取（5 篇）
 

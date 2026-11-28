@@ -53,3 +53,13 @@ C15_AgenticPR-TestCode.pdf
 C16_NameRTS-Python.pdf
 C17_Formalizing-RegressionTesting.pdf
 C18_APR-Agents-Traceability.pdf
+D01_Ekstazi.pdf
+D02_STARTS.pdf
+D03_HyRTS.pdf
+D04_HITS.pdf
+D05_KTester-KnowledgeMatters.pdf
+D06_DiffTestGen.pdf
+D07_ReAssert.pdf
+D08_Ceprot.pdf
+D09_MuMuTestUp.pdf
+D10_EvoSuite.pdf
