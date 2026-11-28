@@ -6,14 +6,14 @@
 
 ## 总览
 
-- 分类清单合计 **76 篇**（2026-11-28 补充 D 类 10 篇），已成功下载 **71 篇 PDF**（约 132 MB）。
-- 未自动下载 **5 篇**：见下方“待手动获取”，均已给出合法获取入口。
+- 分类清单合计 **76 篇**（2026-11-28 补充 D 类 10 篇），已成功下载 **75 篇 PDF**（约 139 MB）。
+- 未自动下载 **1 篇**：见下方“待手动获取”，均已给出合法获取入口。
 - 文件名前缀对应分类编号：`A`=核心、`B`=支撑、`C`=最新前沿。
 
-## 已下载（71 篇）
+## 已下载（75 篇）
 
-- **A 类核心 16 篇**：A01–A11、A13–A17（A12、A18 见下方待办）。
-- **B 类支撑 23 篇**：B01–B03、B05–B20、B22–B25、B27–B30（B04、B21、B26 见下方待办）。
+- **A 类核心 18 篇**：A01–A18 全部下载完成。
+- **B 类支撑 29 篇**：B01–B03、B05–B20、B21–B30（B04 见下方待办）。
 - **C 类前沿 18 篇**：C01–C18 全部下载完成（均为 arXiv 开放获取）。
 - **D 类补充 10 篇**：D01–D10 全部下载完成（见下方“2026-11-28 补充”）。
 
@@ -25,7 +25,14 @@
 - `B08_RTS-in-TDD-RichTest` ← Research Square 开放预印本（CC BY 4.0）
 - `B30_E2EGit` ← 作者主页（valeriapontillo.github.io）
 
-## 2026-11-28 补充：D 类（10 篇）
+## 2026-11-28 补充：A12、A18、B21、B26 与 D 类
+
+- `A12_SemanticTestRepair-WebApps.pdf` 已补下（ACM 机构访问）。
+- `A18_PredictingFragility-E2E.pdf` 已补下（ACM 开放获取，CC BY 4.0）。
+- `B21_EffortlessTestMaintenance.pdf` 已补下（IJRASET 开放获取）。
+- `B26_challenges_ICST_2023_ps.pdf` 已补下（UC3M e-Archivo 开放获取，postprint）。
+
+### D 类（10 篇）
 
 对应正文参考文献 [67]–[76]，均已下载：
 
@@ -42,15 +49,11 @@
 | D09 | `D09_MuMuTestUp.pdf` | MuMuTestUp, ISSTA 2026 | arXiv:2605.19265 |
 | D10 | `D10_EvoSuite.pdf` | EvoSuite, ESEC/FSE 2011 | evosuite.org |
 
-## 待手动获取（5 篇）
+## 待手动获取（1 篇）
 
 | 编号 | 题目 | venue | 状态 | 合法获取入口 |
 |------|------|-------|------|-------------|
-| A12 | Semantic Test Repair for Web Applications (Semter) | ESEC/FSE 2023 | 需机构访问 | ACM DL: https://doi.org/10.1145/3611643.3616324 （未找到开放版，建议学校图书馆/馆际互借/邮件联系作者 Xiaofang Qi, 东南大学） |
-| A18 | Towards Predicting Fragility in End-to-End Web Tests | EASE 2024 | 需机构访问 | ACM DL: https://doi.org/10.1145/3661167.3661179 （作者主页仅提供 replication package，无开放 PDF：https://luistar.github.io/publications/conference/2024-ease/ ） |
-| B04 | Change impact analysis in microservice systems: A SLR | JSS 2024 | 需机构访问 | Elsevier: https://doi.org/10.1016/j.jss.2024.112241 （建议学校图书馆订阅） |
-| B21 | Effortless Test Maintenance: A Critical Review of Self-Healing Frameworks | IJRASET 2023 | 开放·需手动 | 出版社开放页面（点 PDF 下载）：https://www.ijraset.com/research-paper/effortless-test-maintenance |
-| B26 | Challenges of End-to-End Testing with Selenium WebDriver: A Survey | ICST 2023 | 开放·本机网络不可达 | uc3m 开放仓储（直链当前网络超时，换网络可下）：https://e-archivo.uc3m.es/rest/api/core/bitstreams/a16270ef-38b0-4d3f-aa78-055782a9a5e2/content |
+| B04 | Change impact analysis in microservice systems: A SLR | JSS 2024 | 需机构访问 | Elsevier DOI: https://doi.org/10.1016/j.jss.2024.112241 ；作者稿入口: https://www.sciencedirect.com/science/article/am/pii/S0164121224002851?via%3Dihub ；学校 VPN/图书馆或联系作者 |
 
 ## 备注
 
