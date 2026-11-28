@@ -63,7 +63,7 @@ D07_ReAssert.pdf
 D08_Ceprot.pdf
 D09_MuMuTestUp.pdf
 D10_EvoSuite.pdf
-B21_EffortlessTestMaintenance.pdf
+B21_LLM-WebElementLocalization.pdf
 B26_challenges_ICST_2023_ps.pdf
 A12_SemanticTestRepair-WebApps.pdf
 A18_PredictingFragility-E2E.pdf

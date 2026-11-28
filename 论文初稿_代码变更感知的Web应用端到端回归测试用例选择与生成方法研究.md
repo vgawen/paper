@@ -129,7 +129,7 @@ E2E 修复多为"失败后修测试"，可按修复对象与输入分族评述�
 
 **变更感知的测试修复**。TaRGET [11] 用语言模型修复受变更影响的测试，Fix the Tests [14] 以静态收集器加神经重排器补足上下文，单测更新 [15] 通过上下文收集与错误类型感知的迭代改写单元测试；更早的 ReAssert [73] 以断言模板建议修复，Ceprot [74] 用 Transformer 同时识别过时测试并生成更新，MuMuTestUp [75] 用变异引导的多智能体强化断言与覆盖；这些工作的结论都支持"变更上下文能提高修复针对性"，但对象均是单元测试；其评测口径也多是"修复后单测是否通过"，而非"修复后能否重新进入回归选择集"，后者恰是本文关心的闭环可用性。UTFix [1] 是其中最接近本文的工作：它以变更为条件修复单元测试，并显式利用变更信息；其边界也很清楚——没有 DOM 与定位器概念，无法处理浏览器用例的断裂。本文与它的差别不在"是否使用变更"，而在把变更感知推进到浏览器层，并让修复服务于 targeted 集的整体可用性而非单条测试通过（§3.1、§5.3）。
 
-**更广义的修复与维护**。模板式 APR [36]、flaky 测试修复 [37][56]、测试桩生成 [38]、自愈测试框架综述 [39]、工业测试维护中的 LLM 应用 [41]、APR 综述与 agent 可追溯性分析 [46][66]、知识注入式程序修复 [58]，以及测试修复在 LLM 单元测试生成中的作用 [57]，多以失败测试或缺陷本身为输入，而非应用 diff；灰文献综述 [40] 从工业实践印证了"维护成本高、上下文不足"这一共同痛点。
+**更广义的修复与维护**。模板式 APR [36]、flaky 测试修复 [37][56]、测试桩生成 [38]、基于 LLM 的 Web 元素定位 [39]、工业测试维护中的 LLM 应用 [41]、APR 综述与 agent 可追溯性分析 [46][66]、知识注入式程序修复 [58]，以及测试修复在 LLM 单元测试生成中的作用 [57]，多以失败测试或缺陷本身为输入，而非应用 diff；灰文献综述 [40] 从工业实践印证了"维护成本高、上下文不足"这一共同痛点。
 
 **真值数据**。ReproBreak [55] 提供可复现的 Web 定位器断裂真值，本身不是修复方法；本文用它构造 RQ3 的无泄漏评估池。
 
@@ -818,19 +818,18 @@ RQ2 n=30：人工列 30/30 判 n，预标注列 y=2、n=28，Po=0.9333、κ=0（
 
 ## 参考文献
 
-> 沿用研究进展汇报的统一编号。A 类核心、B 类支撑、C 类前沿。
+> 按正文引用顺序连续编号。
 
-### A 类：核心文献（直接对标）
 [1] Shanto Rahman, Sachit Kuhar, Berk Çirisci, et al. UTFix: Change Aware Unit Test Repairing using LLM[J]. Proceedings of the ACM on Programming Languages, 2025, 9(OOPSLA1): 143-168. https://doi.org/10.1145/3720419
-[2] Gabriel Ryan, Siddhartha Jain, Mingyue Shang, et al. Code-Aware Prompting (SymPrompt)[J]. FSE, 2024. https://arxiv.org/abs/2402.00097
-[3] Jing Liu, Seongmin Lee, Eleonora Losiouk, et al. Can LLM Generate Regression Tests for Software Commits?[EB/OL]. arXiv:2501.11086, 2025.
+[2] Gabriel Ryan, Siddhartha Jain, Mingyue Shang, et al. Code-Aware Prompting: A Study of Coverage-Guided Test Generation in Regression Setting using LLM[J]. Proceedings of the ACM on Software Engineering, 2024, 1(FSE): 951-971. https://doi.org/10.1145/3643769
+[3] Jing Liu, Seongmin Lee, Eleonora Losiouk, et al. Evaluating LLM-Based Regression Test Generation[EB/OL]. arXiv:2501.11086, 2025.
 [4] Michael Pradel. Testora: Using Natural Language Intent to Detect Behavioral Regressions[C]//ICSE, 2026. https://doi.org/10.1145/3744916.3764527
-[5] Milad Moradi, Ke Yan, David Colwell, et al. AI for Context-Aware Visual Change Detection in Software Test Automation[J]. PAI, 2024. https://arxiv.org/abs/2405.00874
+[5] Milad Moradi, Ke Yan, David Colwell, et al. Artificial Intelligence for Context-Aware Visual Change Detection in Software Test Automation[J]. Progress in Artificial Intelligence, 2025. https://arxiv.org/abs/2405.00874
 [6] Parsa Alian, Noor Nashid, Mobina Shahbandeh, et al. Feature-Driven End-to-End Test Generation (AutoE2E)[C]//ICSE, 2025. https://arxiv.org/abs/2408.01894
 [7] Nguyen-Khang Le, Quan Minh Bui, Minh Ngoc Nguyen, et al. Automated Web Application Testing: E2E Test Case Generation with LLMs and Screen Transition Graphs[EB/OL]. arXiv:2506.02529, 2025.
 [8] Shengcheng Yu, Yuchen Ling, Chunrong Fang, et al. Scenario-Guided LLM-based Mobile App GUI Testing[J]. ACM TOSEM, 2025. https://arxiv.org/abs/2506.05079
 [9] Elvis Júnior, Alan Valejo, Jorge Valverde-Rebaza, et al. GenIA-E2ETest: A Generative AI-Based Approach for End-to-End Test Automation[C]//SBES, 2025. https://arxiv.org/abs/2510.01024
-[10] Hyukjoo Lee. Practical Limits of Autonomous Test Repair: A Multi-Agent Case Study[EB/OL]. arXiv:2605.01471, 2026.
+[10] Hyukjoo Lee. Practical Limits of Autonomous Test Repair: A Multi-Agent Case Study with LLM-Driven Discovery and Self-Correction[EB/OL]. arXiv:2605.01471, 2026.
 [11] Ahmadreza Saboor Yaraghi, Darren Holden, Nafiseh Kahani, Lionel Briand. Automated Test Case Repair Using Language Models (TaRGET)[J]. IEEE TSE, 2025, 51(4): 1104-1133. https://doi.org/10.1109/TSE.2025.3541166
 [12] Xiaofang Qi, Xiang Qian, Yanhui Li. Semantic Test Repair for Web Applications[C]//ESEC/FSE, 2023. https://doi.org/10.1145/3611643.3616324
 [13] Xinyue Liu, Zihe Song, Weike Fang, et al. WEFix: Automatic Generation of Explicit Waits for Web E2E Flaky Tests[C]//WWW, 2024. https://arxiv.org/abs/2402.09745
@@ -840,7 +839,6 @@ RQ2 n=30：人工列 30/30 判 n，预标注列 y=2、n=28，Po=0.9333、κ=0（
 [17] Yu Pei, Jeongju Sohn, Sarra Habchi, et al. Non-Flaky and Nearly Optimal Time-Based Treatment of Asynchronous Wait Web Tests (TRaf)[J]. ACM TOSEM, 2025, 34(2): 45.1-45.29. https://doi.org/10.1145/3695989
 [18] Sergio Di Meglio, Luigi Libero Lucio Starace. Towards Predicting Fragility in End-to-End Web Tests[C]//EASE, 2024. https://doi.org/10.1145/3661167.3661179
 
-### B 类：支撑文献（方法论与背景）
 [19] Jiale Amber Wang, Kaiyuan Wang, Pengyu Nie. Efficient Incremental Code Coverage Analysis (iJaCoCo)[C]//ASE, 2024. https://arxiv.org/abs/2410.21798
 [20] Yu Liu, Jiyang Zhang, Pengyu Nie, et al. More Precise RTS via Reasoning about Semantics-Modifying Changes[C]//ISSTA, 2023. https://doi.org/10.1145/3597926.3598086
 [21] Shuai Wang, Xinyu Lian, Darko Marinov, et al. Test Selection for Unified Regression Testing[C]//ICSE, 2023. https://doi.org/10.1109/ICSE48619.2023.00145
@@ -851,7 +849,7 @@ RQ2 n=30：人工列 30/30 判 n，预标注列 y=2、n=28，Po=0.9333、κ=0（
 [26] Zohreh Mafi, Seyed-Hassan Mirian-Hosseinabadi. Regression Test Selection in Test-Driven Development[J]. ASE Journal, 2023. https://doi.org/10.1007/s10515-023-00405-w
 [27] Max Schäfer, Sarah Nadi, Aryaz Eghbali, et al. An Empirical Evaluation of Using LLMs for Automated Unit Test Generation[J]. TSE, 2023. https://arxiv.org/abs/2302.06527
 [28] Caroline Lemieux, Jeevana Priya Inala, Shuvendu K. Lahiri, et al. CodaMosa: Escaping Coverage Plateaus in Test Generation with Pre-trained Large Language Models[C]//ICSE, 2023. https://doi.org/10.1109/ICSE48619.2023.00085
-[29] Yinghao Chen, Zehao Hu, Chen Zhi, et al. ChatUniTest: A Framework for LLM-Based Test Generation[C]//FSE Companion, 2023. https://arxiv.org/abs/2305.04764
+[29] Yinghao Chen, Zehao Hu, Chen Zhi, et al. ChatUniTest: A Framework for LLM-Based Test Generation[C]//FSE Companion, 2024: 572-576. https://doi.org/10.1145/3663529.3663801
 [30] Arghavan Moradi Dakhel, Amin Nikanjam, Vahid Majdinasab, et al. Effective Test Generation Using Pre-trained LLMs and Mutation Testing[J]. IST, 2023. https://arxiv.org/abs/2308.16557
 [31] Yutian Tang, Zhijie Liu, Zhichao Zhou, et al. An Empirical Study of Using ChatGPT for Unit Test Generation (ChatGPT vs SBST)[J]. TSE, 2023. https://arxiv.org/abs/2307.00588
 [32] Nikitha Rao, Kush Jain, Uri Alon, et al. CAT-LM: Training Language Models on Aligned Code and Tests[C]//ASE, 2023. https://arxiv.org/abs/2310.01602
@@ -861,48 +859,45 @@ RQ2 n=30：人工列 30/30 判 n，预标注列 y=2、n=28，Po=0.9333、κ=0（
 [36] Quanjun Zhang, Chunrong Fang, Tongke Zhang, et al. GAMMA: Revisiting Template-Based APR via Mask Prediction[C]//ASE, 2023. https://arxiv.org/abs/2309.09308
 [37] Sakina Fatima, Hadi Hemmati, Lionel Briand. FlakyFix: Using Large Language Models for Predicting Flaky Test Fix Categories and Test Code Repair[J]. TSE, 2024. https://arxiv.org/abs/2307.00012
 [38] Hengcheng Zhu, Lili Wei, Valerio Terragni, et al. StubCoder: Automated Generation and Repair of Stub Code for Mock Objects[J]. ACM TOSEM, 2023. https://arxiv.org/abs/2307.14733
-[39] Rohit Khankhoje. Effortless Test Maintenance: A Critical Review of Self-Healing Frameworks[J]. IJRASET, 2023. https://doi.org/10.22214/ijraset.2023.56048
+[39] Michel Nass, Emil Alégroth, Robert Feldt. Improving Web Element Localization by Using a Large Language Model[J]. Software Testing, Verification and Reliability, 2024, 34(7). https://doi.org/10.1002/stvr.1893
 [40] Filippo Ricca, Alessandro Marchetto, Andrea Stocco. A Multi-Year Grey Literature Review on AI-assisted Test Automation[J]. IST, 2024. https://arxiv.org/abs/2408.06224
-[41] Jingxiong Liu, Ludvig Lemner, Linnea Wahlgren, et al. Exploring the Integration of LLMs in Industrial Test Maintenance Processes[EB/OL]. arXiv:2409.06416, 2024.
+[41] Jingxiong Liu, Ludvig Lemner, Linnea Wahlgren, et al. Exploring the Integration of Large Language Models in Industrial Test Maintenance Processes[EB/OL]. arXiv:2409.06416, 2024.
 [42] Junjie Wang, Yuchao Huang, Chunyang Chen, et al. Software Testing With LLMs: Survey, Landscape, and Vision[J]. TSE, 2023. https://arxiv.org/abs/2307.07221
 [43] Iva Kertusha, Gebremariem Assress, Onur Duman, et al. A Survey on Web Testing: On the Rise of AI and Applications in Industry[EB/OL]. arXiv:2503.05378, 2025.
 [44] Maurizio Leotta, Boni García, Filippo Ricca, et al. Challenges of E2E Testing with Selenium WebDriver: A Survey[C]//ICST, 2023. https://doi.org/10.1109/ICST57152.2023.00039
 [45] Shengcheng Yu, Chunrong Fang, Ziyuan Tuo, et al. Vision-Based Mobile App GUI Testing: A Survey[J]. ACM CSUR, 2023. https://arxiv.org/abs/2310.13518
-[46] Avinash Anand, Akshit Gupta, Nishchay Yadav, et al. A Comprehensive Survey of AI-Driven Advancements in APR and Code Generation[EB/OL]. arXiv:2411.07586, 2024.
+[46] Avinash Anand, Akshit Gupta, Nishchay Yadav, et al. A Comprehensive Survey of AI-Driven Advancements and Techniques in Automated Program Repair and Code Generation[EB/OL]. arXiv:2411.07586, 2024.
 [47] Nadia Alshahwan, Mark Harman, Alexandru Marginean, et al. Observation-Based Unit Test Generation at Meta (TestGen)[C]//FSE Companion, 2024. https://arxiv.org/abs/2402.06111
 [48] Sergio Di Meglio, Luigi Libero Lucio Starace, Valeria Pontillo, et al. E2EGit: A Dataset of End-to-End Web Tests in Open Source Projects[C]//MSR, 2025. https://doi.org/10.1109/MSR66628.2025.00121
 
-### C 类：最新前沿（2025–2026）
 [49] Zitong Zhou, Matteo Paltenghi, Miryung Kim, et al. Change And Cover: Last-Mile, Pull Request-Based Regression Test Augmentation[C]//ICSE, 2026. https://doi.org/10.1145/3744916.3787768
 [50] Vahid Haratian, Atakan Akar, Berk Çakar, et al. PR-Aware Automated Unit Test Generation: Challenges and Opportunities[EB/OL]. arXiv:2605.25285, 2026.
 [51] Matthew Becker, Yifei Chen, Nicholas Cochran, et al. Just-in-Time Catching Test Generation at Meta[EB/OL]. arXiv:2601.22832, 2026.
 [52] Cuong Chi Le, Cuong Duc Van, Tung Duy Vu, et al. TestWeaver: Execution-Aware, Feedback-Driven Regression Test Generation with Large Language Models[C]//ICSE, 2026: 1288-1300. https://doi.org/10.1145/3744916.3787805
 [53] Sabaat Haroon, Mohammad Taha Khan, Muhammad Ali Gulzar. Evaluating LLM-Based Test Generation Under Software Evolution[EB/OL]. arXiv:2603.23443, 2026.
-[54] Aozhe Wang, Yuchen Yan, Nan Zhou, et al. Code-A1: Adversarial Co-Evolution of Code LLM and Test LLM via Reinforcement Learning[EB/OL]. arXiv:2603.15611, 2026.
+[54] Aozhe Wang, Yuchen Yan, Nan Zhou, et al. Code-A1: Adversarial Evolving of Code LLM and Test LLM via Reinforcement Learning[EB/OL]. arXiv:2603.15611, 2026.
 [55] Thiago Santos de Moura, Leon Adamietz, Samra Mehboob, et al. ReproBreak: A Dataset of Reproducible Web Locator Breaks[EB/OL]. arXiv:2605.12158, 2026.
 [56] Chengpeng Li, Farnaz Behrang, August Shi, et al. FlakyGuard: Automatically Fixing Flaky Tests at Industry Scale[C]//ASE, 2025. https://arxiv.org/abs/2511.14002
 [57] Michael Konstantinou, Renzo Degiovanni, Jie M. Zhang, et al. YATE: The Role of Test Repair in LLM-Based Unit Test Generation[EB/OL]. arXiv:2507.18316, 2025.
 [58] Ramtin Ehsani, Esteban Parra, Sonia Haiduc, et al. Hierarchical Knowledge Injection for Improving LLM-based Program Repair[C]//ASE, 2025. https://arxiv.org/abs/2506.24015
 [59] Parsa Alian, Martin Tang, Ali Mesbah. VISCA: Inferring Component Abstractions for Automated E2E Testing[EB/OL]. arXiv:2506.04161, 2025.
-[60] Mario Fuksa, Sandro Speth, Steffen Becker. ViMoTest: Specifying ViewModel-Based GUI Test Scenarios using Projectional Editing[C]//ICSCT, 2025. https://arxiv.org/abs/2504.16753
+[60] Mario Fuksa, Sandro Speth, Steffen Becker. ViMoTest: A Tool to Specify ViewModel-Based GUI Test Scenarios Using Projectional Editing[C]//ICST, 2025: 752-756. https://doi.org/10.1109/ICST62969.2025.10988969
 [61] Yuying Wang, Kaifeng Huang, Hao Deng, et al. Automated Functional Testing for Malleable Mobile Application Driven from User Intent[EB/OL]. arXiv:2604.02079, 2026.
-[62] Hamid Parsazadeh, Taher A. Ghaleb, Safwat Hassan. Android Instrumentation Testing in CI: Practices, Patterns, and Performance[EB/OL]. arXiv:2604.03438, 2026.
+[62] Hamid Parsazadeh, Taher A. Ghaleb, Safwat Hassan. Android Instrumentation Testing in Continuous Integration: Practices, Patterns, and Performance[EB/OL]. arXiv:2604.03438, 2026.
 [63] Sabrina Haque, Sarvesh Ingale, Christoph Csallner. Do Autonomous Agents Contribute Test Code? A Study of Tests in Agentic Pull Requests[EB/OL]. arXiv:2601.03556, 2026.
 [64] You Wang, Michael Pradel, Zhongxin Liu. Names Are All You Need: Effective and Safe Regression Test Selection for Python[C]//ISSTA, 2026. https://doi.org/10.1145/3832218
 [65] Suddhasvatta Das, Kevin Gary. Formalizing Regression Testing for Agile and CI Environments[EB/OL]. arXiv:2511.02810, 2025.
-[66] Ira Ceka, Hailie Mitchell, Saurabh Pujar, et al. Understanding APR Agents Through the Lens of Traceability[EB/OL]. arXiv:2506.08311, 2025.
+[66] Ira Ceka, Hailie Mitchell, Saurabh Pujar, et al. Understanding Automated Program Repair Agents Through the Lens of Traceability: An Empirical Study[EB/OL]. arXiv:2506.08311, 2025.
 
 ---
 
 ---
 
-
-### D 类：补充经典基线与近期对照
 
 [67] Milos Gligoric, Lamyaa Eloussi, Darko Marinov. Practical Regression Test Selection with Dynamic File Dependencies[C]//ISSTA, 2015: 211-222. https://doi.org/10.1145/2771783.2771784
 [68] Owolabi Legunsen, August Shi, Darko Marinov. STARTS: STAtic Regression Test Selection[C]//ASE, 2017: 949-954. https://doi.org/10.1109/ASE.2017.8115710
 [69] Lingming Zhang. Hybrid Regression Test Selection[C]//ICSE, 2018: 199-209. https://doi.org/10.1145/3180155.3180198
-[70] Zhiqiang Wang, Kai Liu, Ge Li, Zhi Jin. HITS: High-coverage LLM-based Unit Test Generation via Method Slicing[C]//ASE, 2024: 1258-1268. https://doi.org/10.1145/3691620.3695501
+[70] Zejun Wang, Kaibo Liu, Ge Li, Zhi Jin. HITS: High-coverage LLM-based Unit Test Generation via Method Slicing[C]//ASE, 2024: 1258-1268. https://doi.org/10.1145/3691620.3695501
 [71] Anji Li, Mingwei Liu, Zhenxi Chen, et al. Knowledge Matters: Injecting Project and Testing Knowledge into LLM-based Unit Test Generation[C]//ICSE, 2026. https://doi.org/10.1145/3744916.3787769
 [72] Huimin Hu, Cristian Cadar, Michael Pradel. DiffTestGen: Change-Directed LLM-Based Testing for Exposing Behavioral Differences[EB/OL]. arXiv:2607.16024, 2026.
 [73] Brett Daniel, Vilas Jagannath, Danny Dig, Darko Marinov. ReAssert: Suggesting Repairs for Broken Unit Tests[C]//ASE, 2009: 433-444. https://doi.org/10.1109/ASE.2009.17

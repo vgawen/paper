@@ -29,7 +29,7 @@
 
 - `A12_SemanticTestRepair-WebApps.pdf` 已补下（ACM 机构访问）。
 - `A18_PredictingFragility-E2E.pdf` 已补下（ACM 开放获取，CC BY 4.0）。
-- `B21_EffortlessTestMaintenance.pdf` 已补下（IJRASET 开放获取）。
+- `B21_LLM-WebElementLocalization.pdf` 已补下（Nass et al., STVR 2024，arXiv 开放获取；替换原 IJRASET 综述）。
 - `B26_challenges_ICST_2023_ps.pdf` 已补下（UC3M e-Archivo 开放获取，postprint）。
 
 ### D 类（10 篇）
