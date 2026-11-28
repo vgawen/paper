@@ -99,7 +99,7 @@ Experimental results on controlled subjects and real-world open-source Web appli
 
 **服务与流水线场景**。[22] 以系统文献综述梳理微服务间的变更传播，[23] 用 Datalog 做语言无关的服务级影响分析，二者说明服务边界可以承载跨语言依赖，但粒度停在服务 / 接口；[25] 把选择与执行放进 CI 流水线，结论是工程阶段会影响实际收益，其成本模型却不含浏览器启动与页面加载；[65] 把回归条件写成可检验的形式化约束，结论是选择规则可以被验证，但框架停留在抽象层，未落到浏览器会话。
 
-**统一与混合粒度的选择**。[21] 把不同类型的测试放进同一选择框架，主张用统一口径替代按套件各自选择；[24] 则把文件级与方法级依赖合并，结论是两级依赖互补优于单级。两者的共同前提仍是源码 / 字节码依赖图，无法表达"浏览器用例经过哪些页面与组件"。本文要补的正是这层映射：把 E2E 用例的覆盖边与 DOM 锚点一起纳入选择（§3.2、§3.4）。
+**统一与混合粒度的选择**。[21] 把不同类型的测试放进同一选择框架，主张用统一口径替代按套件各自选择；在文件级基线上，Ekstazi [67] 以动态文件依赖实现工业级 RTS，STARTS [68] 用静态类型依赖图避免插桩；HyRTS [69] 首次把方法级与文件级结合，JcgEks [24] 进一步用方法调用图精化文件级选择，结论是两级依赖互补优于单级。上述工作的共同前提仍是源码 / 字节码依赖图，无法表达"浏览器用例经过哪些页面与组件"。本文要补的正是这层映射：把 E2E 用例的覆盖边与 DOM 锚点一起纳入选择（§3.2、§3.4）。
 
 **判定口径的扩展**。[64] 以命名信息近似依赖关系，主张在动态语言上以较低分析成本获得安全的选择；[26] 利用 TDD"先写测试"的结构约束缩小选择范围；[4] 用自然语言意图判断行为是否回归。三者都说明"受影响"可以超出语法 diff，但都没有浏览器执行上下文。[62] 从设备与流水线角度报告 Android instrumentation 的执行约束，结论是设备级成本主要来自环境，选择粒度仍是源码 / 模块。
 
@@ -113,9 +113,9 @@ E2E 生成工作多落在 (A0, B1)，可按"测试意图从哪里来"分族评�
 
 **图结构与组件抽象**。屏幕转移图 + LLM 生成 [7] 先构建页面转移图，再在图上约束生成路径，结论是图结构能减少无效跳转；VISCA [59] 从页面结构推断组件抽象，用组件级操作替代脆弱的元素定位，结论是抽象层提升了 E2E 的稳定性；GenIA-E2ETest [9] 的生成式流水线也属此类。它们优化的是"如何生成一条能跑通的 E2E"，而不是变更定向。
 
-**变更感知生成**。提交回归测试生成 [3] 直接以提交为输入考察 LLM 能否产出回归测试；TestWeaver [52] 用执行反馈迭代生成回归用例；JIT catching [51] 在代码评审时即时生成捕获性测试；ChaCo [49] 以"变更行是否被覆盖"为目标；PR-aware 单测 [50] 把 PR 上下文纳入生成。这一族已经以 diff 为核心输入，但产出停在单元 / API 层，既没有浏览器会话，也没有路由与定位器。本文与它们的差别是：把"变更感知"推进到浏览器层，以路由为单位识别缺口，并用可直接执行与版本敏感两个条件约束生成物（§3.1、§5.2）。
+**变更感知生成**。提交回归测试生成 [3] 直接以提交为输入考察 LLM 能否产出回归测试；TestWeaver [52] 用执行反馈迭代生成回归用例；JIT catching [51] 在代码评审时即时生成捕获性测试；ChaCo [49] 以"变更行是否被覆盖"为目标；PR-aware 单测 [50] 把 PR 上下文纳入生成；DiffTestGen [72] 用静态调用图定位可达变更的入口点，并以新旧版本联合覆盖率反馈驱动 LLM 生成能暴露行为差异的测试。这一族已经以 diff 为核心输入，但产出停在单元 / API 层，既没有浏览器会话，也没有路由与定位器。本文与它们的差别是：把"变更感知"推进到浏览器层，以路由为单位识别缺口，并用可直接执行与版本敏感两个条件约束生成物（§3.1、§5.2）。
 
-**单元 / 组件层的方法供给**。LLM 与搜索式混合生成 [27][28][29][31][32] 覆盖了覆盖率平台期逃逸、上下文提示与测试语料训练等路线；代码上下文感知提示 [2] 与变异反馈驱动的生成 [30] 分别从上下文与判据两端改进生成质量；测试生成基准 [33]、工业级 TestGen-LLM 与 TestGen [34][47]、测试脚本生成与迁移 [35]、软件演化条件下的生成评估 [53] 以及自主 agent 测试代码研究 [63] 提供了可复用的判据与工程证据。这些结论构成本文生成环节的方法底座，但不解决 E2E 的变更定向问题。
+**单元 / 组件层的方法供给**。搜索式生成 EvoSuite [76] 与 LLM/混合生成 [27][28][29][31][32] 覆盖了覆盖率平台期逃逸、上下文提示与测试语料训练等路线；方法切片 [70] 把复杂焦点方法拆成切片以提升覆盖；项目知识与测试知识注入 [71] 用类层次、调用关系与测试习惯约束 LLM；代码上下文感知提示 [2] 与变异反馈驱动的生成 [30] 分别从上下文与判据两端改进生成质量；测试生成基准 [33]、工业级 TestGen-LLM 与 TestGen [34][47]、测试脚本生成与迁移 [35]、软件演化条件下的生成评估 [53] 以及自主 agent 测试代码研究 [63] 提供了可复用的判据与工程证据。这些结论构成本文生成环节的方法底座，但不解决 E2E 的变更定向问题。
 
 **E2E 场景信号与数据集**。E2EGit [48] 提供 E2E 测试演化样本，面向 UI 视觉变化的上下文感知检测 [5] 与 E2E 脆弱性预测 [18] 提供可复用的场景信号，但均不以 diff 为选择或生成的核心输入。综述层面，LLM 测试生成 [42]、Web 测试 [43][44]、视觉 / 移动 GUI 测试 [45] 与代码模型能力演进 [54] 给出了领域图景与能力边界。
 
@@ -127,7 +127,7 @@ E2E 修复多为"失败后修测试"，可按修复对象与输入分族评述�
 
 **面向 Web / E2E 的修复**。语义化 Web 测试修复 [12] 利用页面语义信息修复失效用例，结论是语义定位比脆弱选择器更稳健；引导 ChatGPT 修 Web UI 测试 [16] 研究修复时哪些属性更可靠，说明属性优先级会直接影响修复成功率；WEFix [13] 为 E2E flaky 测试生成显式等待，异步等待修复 [17] 从时间维度处理同一类问题，二者针对的是时序而非变更语义；自治修复多智能体案例 [10] 则给出这类方法在真实项目上的现实上限。这一族的输入是失败报告或页面状态，不以源码 diff 为核心上下文，也不产出可整体复用的 targeted 集。
 
-**变更感知的测试修复**。TaRGET [11] 用语言模型修复受变更影响的测试，Fix the Tests [14] 以静态收集器加神经重排器补足上下文，单测更新 [15] 通过上下文收集与错误类型感知的迭代改写单元测试；三者的结论都支持"变更上下文能提高修复针对性"，但对象均是单元测试；其评测口径也多是"修复后单测是否通过"，而非"修复后能否重新进入回归选择集"，后者恰是本文关心的闭环可用性。UTFix [1] 是其中最接近本文的工作：它以变更为条件修复单元测试，并显式利用变更信息；其边界也很清楚——没有 DOM 与定位器概念，无法处理浏览器用例的断裂。本文与它的差别不在"是否使用变更"，而在把变更感知推进到浏览器层，并让修复服务于 targeted 集的整体可用性而非单条测试通过（§3.1、§5.3）。
+**变更感知的测试修复**。TaRGET [11] 用语言模型修复受变更影响的测试，Fix the Tests [14] 以静态收集器加神经重排器补足上下文，单测更新 [15] 通过上下文收集与错误类型感知的迭代改写单元测试；更早的 ReAssert [73] 以断言模板建议修复，Ceprot [74] 用 Transformer 同时识别过时测试并生成更新，MuMuTestUp [75] 用变异引导的多智能体强化断言与覆盖；这些工作的结论都支持"变更上下文能提高修复针对性"，但对象均是单元测试；其评测口径也多是"修复后单测是否通过"，而非"修复后能否重新进入回归选择集"，后者恰是本文关心的闭环可用性。UTFix [1] 是其中最接近本文的工作：它以变更为条件修复单元测试，并显式利用变更信息；其边界也很清楚——没有 DOM 与定位器概念，无法处理浏览器用例的断裂。本文与它的差别不在"是否使用变更"，而在把变更感知推进到浏览器层，并让修复服务于 targeted 集的整体可用性而非单条测试通过（§3.1、§5.3）。
 
 **更广义的修复与维护**。模板式 APR [36]、flaky 测试修复 [37][56]、测试桩生成 [38]、自愈测试框架综述 [39]、工业测试维护中的 LLM 应用 [41]、APR 综述与 agent 可追溯性分析 [46][66]、知识注入式程序修复 [58]，以及测试修复在 LLM 单元测试生成中的作用 [57]，多以失败测试或缺陷本身为输入，而非应用 diff；灰文献综述 [40] 从工业实践印证了"维护成本高、上下文不足"这一共同痛点。
 
@@ -143,15 +143,15 @@ E2E 修复多为"失败后修测试"，可按修复对象与输入分族评述�
 2. **缺可证明的召回保证**：RTS 工作多报经验 Safety，但 E2E 场景下缺少"与选择器无关"的真值定义与安全性论证，且未处理副作用经共享状态的间接影响。→ 本方法给出条件安全命题 + 非循环结果差异 oracle + 状态依赖闭包。
 3. **缺端到端闭环与净收益量化**：现有工作多为单点（选择 或 生成），少有"选出受影响测试之后如何识别未覆盖 diff 并定向生成"的闭环，也少有"选择开销 + 执行时间 vs 全量"的净收益与资源量化。→ 本方法以选择与生成为主链路，把选择→运行→缺口分析→生成串成代码变更感知闭环，轻量修复仅作为支撑环节，并以净收益模型量化。
 
-> **一句话定位**：现有工作要么"变更感知但停在单元层"（象限 `(A2, B0)`：[1][3][49][50][51][52]），要么"做浏览器 E2E 但与变更无关"（象限 `(A0, B1)`：[6][7][9][12][16]）。本方法在该组合上开展系统研究，并给出可执行的选择—缺口识别—生成闭环；`(A1, B1)` 与 `(A0, B0)` 两格的处置见 §2.1。
+> **一句话定位**：现有工作要么"变更感知但停在单元层"（象限 `(A2, B0)`：[1][3][49][50][51][52][72][74][75]），要么"做浏览器 E2E 但与变更无关"（象限 `(A0, B1)`：[6][7][9][12][16]）。本方法在该组合上开展系统研究，并给出可执行的选择—缺口识别—生成闭环；`(A1, B1)` 与 `(A0, B0)` 两格的处置见 §2.1。
 
 **表 2-1　两维象限 → 文献映射表**
 
 | 象限（A 变更感知 × B 测试层级） | 代表工作 | 本文处置 |
 |---|---|---|
-| (A0, B0) 无 diff × 单元/组件 | 泛化生成与通用修复 [27][36] 等 | 背景引用，不逐篇穷举（§2.1） |
-| (A1, B0) 文件/方法级 × 单元/集成 | 经典 RTS/CIA [19][20][21][22][23][24][25][26][64] | §2.2 逐篇评述 |
-| (A2, B0) diff 定向 × 单元/API | 变更感知生成 [3][49][50][51][52]、变更感知修复 [1][11][14][15] | §2.3/§2.4 评述 |
+| (A0, B0) 无 diff × 单元/组件 | 泛化生成与通用修复 [27][36][70][71][73][76] 等 | 背景引用，不逐篇穷举（§2.1） |
+| (A1, B0) 文件/方法级 × 单元/集成 | 经典 RTS/CIA [19][20][21][22][23][24][25][26][64][67][68][69] | §2.2 逐篇评述 |
+| (A2, B0) diff 定向 × 单元/API | 变更感知生成 [3][49][50][51][52][72]、变更感知修复 [1][11][14][15][74][75] | §2.3/§2.4 评述 |
 | (A1, B1) 文件/方法级 × E2E | 工程实践中的文件级覆盖迁移（本文 `coverage_only` 基线所代表） | 相邻方向，机制未细化（§2.1） |
 | (A0, B1) 无 diff × 浏览器 E2E | AutoE2E[6]、屏幕转移图[7]、语义修复[12]、WEFix[13] 等 | §2.3/§2.4 评述 |
 | **(A2, B1) diff 定向 × 浏览器 E2E** | **本方法** | **研究空白 → 本文定位** |
@@ -873,7 +873,7 @@ RQ2 n=30：人工列 30/30 判 n，预标注列 y=2、n=28，Po=0.9333、κ=0（
 [48] Sergio Di Meglio, Luigi Libero Lucio Starace, Valeria Pontillo, et al. E2EGit: A Dataset of End-to-End Web Tests in Open Source Projects[C]//MSR, 2025. https://doi.org/10.1109/MSR66628.2025.00121
 
 ### C 类：最新前沿（2025–2026）
-[49] Zitong Zhou, Matteo Paltenghi, Miryung Kim, et al. Change And Cover (ChaCo)[EB/OL]. arXiv:2601.10942, 2026.
+[49] Zitong Zhou, Matteo Paltenghi, Miryung Kim, et al. Change And Cover: Last-Mile, Pull Request-Based Regression Test Augmentation[C]//ICSE, 2026. https://doi.org/10.1145/3744916.3787768
 [50] Vahid Haratian, Atakan Akar, Berk Çakar, et al. PR-Aware Automated Unit Test Generation: Challenges and Opportunities[EB/OL]. arXiv:2605.25285, 2026.
 [51] Matthew Becker, Yifei Chen, Nicholas Cochran, et al. Just-in-Time Catching Test Generation at Meta[EB/OL]. arXiv:2601.22832, 2026.
 [52] Cuong Chi Le, Cuong Duc Van, Tung Duy Vu, et al. TestWeaver: Execution-Aware, Feedback-Driven Regression Test Generation with Large Language Models[C]//ICSE, 2026: 1288-1300. https://doi.org/10.1145/3744916.3787805
@@ -888,9 +888,33 @@ RQ2 n=30：人工列 30/30 判 n，预标注列 y=2、n=28，Po=0.9333、κ=0（
 [61] Yuying Wang, Kaifeng Huang, Hao Deng, et al. Automated Functional Testing for Malleable Mobile Application Driven from User Intent[EB/OL]. arXiv:2604.02079, 2026.
 [62] Hamid Parsazadeh, Taher A. Ghaleb, Safwat Hassan. Android Instrumentation Testing in CI: Practices, Patterns, and Performance[EB/OL]. arXiv:2604.03438, 2026.
 [63] Sabrina Haque, Sarvesh Ingale, Christoph Csallner. Do Autonomous Agents Contribute Test Code? A Study of Tests in Agentic Pull Requests[EB/OL]. arXiv:2601.03556, 2026.
-[64] You Wang, Michael Pradel, Zhongxin Liu. Names Are All You Need (NameRTS)[EB/OL]. arXiv:2605.25356, 2026.
+[64] You Wang, Michael Pradel, Zhongxin Liu. Names Are All You Need: Effective and Safe Regression Test Selection for Python[C]//ISSTA, 2026. https://doi.org/10.1145/3832218
 [65] Suddhasvatta Das, Kevin Gary. Formalizing Regression Testing for Agile and CI Environments[EB/OL]. arXiv:2511.02810, 2025.
 [66] Ira Ceka, Hailie Mitchell, Saurabh Pujar, et al. Understanding APR Agents Through the Lens of Traceability[EB/OL]. arXiv:2506.08311, 2025.
+
+---
+
+---
+
+
+### D 类：补充经典基线与近期对照
+
+[67] Milos Gligoric, Lamyaa Eloussi, Darko Marinov. Practical Regression Test Selection with Dynamic File Dependencies[C]//ISSTA, 2015: 211-222. https://doi.org/10.1145/2771783.2771784
+[68] Owolabi Legunsen, August Shi, Darko Marinov. STARTS: STAtic Regression Test Selection[C]//ASE, 2017: 949-954. https://doi.org/10.1109/ASE.2017.8115710
+[69] Lingming Zhang. Hybrid Regression Test Selection[C]//ICSE, 2018: 199-209. https://doi.org/10.1145/3180155.3180198
+[70] Zhiqiang Wang, Kai Liu, Ge Li, Zhi Jin. HITS: High-coverage LLM-based Unit Test Generation via Method Slicing[C]//ASE, 2024: 1258-1268. https://doi.org/10.1145/3691620.3695501
+[71] Anji Li, Mingwei Liu, Zhenxi Chen, et al. Knowledge Matters: Injecting Project and Testing Knowledge into LLM-based Unit Test Generation[C]//ICSE, 2026. https://doi.org/10.1145/3744916.3787769
+[72] Huimin Hu, Cristian Cadar, Michael Pradel. DiffTestGen: Change-Directed LLM-Based Testing for Exposing Behavioral Differences[EB/OL]. arXiv:2607.16024, 2026.
+[73] Brett Daniel, Vilas Jagannath, Danny Dig, Darko Marinov. ReAssert: Suggesting Repairs for Broken Unit Tests[C]//ASE, 2009: 433-444. https://doi.org/10.1109/ASE.2009.17
+[74] Xing Hu, Zhuang Liu, Xin Xia, et al. Identify and Update Test Cases When Production Code Changes: A Transformer-Based Approach (Ceprot)[C]//ASE, 2023: 1111-1122. https://doi.org/10.1109/ASE56229.2023.00165
+[75] Dawei Tian, Jiakun Liu, Yun Peng, et al. MuMuTestUp: Mutation-based Multi-Agent Test Case Update[C]//ISSTA, 2026. https://doi.org/10.1145/3832217
+[76] Gordon Fraser, Andrea Arcuri. EvoSuite: Automatic Test Suite Generation for Object-Oriented Software[C]//FSE, 2011: 416-419. https://doi.org/10.1145/2025113.2025179
+
+---
+
+## 致谢
+
+衷心感谢导师刘爽老师在选题、研究思路、实验设计与论文写作中的悉心指导。感谢学院各位老师在课程学习、论文开题与预答辩中提出的宝贵意见。感谢同门同学在实验环境、数据核对与讨论中给予的帮助。感谢家人与朋友一直以来的理解和支持。最后，感谢所有参与论文评审与答辩的老师。
 
 ---
 
@@ -939,7 +963,3 @@ RQ2 n=30：人工列 30/30 判 n，预标注列 y=2、n=28，Po=0.9333、κ=0（
 - **RQ3 扩展批**：每仓按 hash 排序取第 11–20 条，共 40 条，与主批零重叠；真实分诊为 SO=38、SR=2；人工列为 SO=39、EC=1；两列一致性 Po=0.9250、κ=-0.0169、Gwet's AC1=0.922；仲裁后 final 分布为 SO=38、SR=1、EC=1。扩展批只用于检验分布稳定性，不并入主批、不与主批合并 κ 或 p 值。
 
 ---
-
-## 致谢
-
-衷心感谢导师刘爽老师在选题、研究思路、实验设计与论文写作中的悉心指导。感谢学院各位老师在课程学习、论文开题与预答辩中提出的宝贵意见。感谢同门同学在实验环境、数据核对与讨论中给予的帮助。感谢家人与朋友一直以来的理解和支持。最后，感谢所有参与论文评审与答辩的老师。
