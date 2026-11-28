@@ -63,7 +63,7 @@ Experimental results on controlled subjects and real-world open-source Web appli
 |---|---|---|---|
 | 四层归因降低选择集 | Reduction 0.625→0.889（受控 24 个过渡） | 受控主体；真实项目 0.111→0.742；天花板是强耦合 | §5.1 |
 | 条件安全、0 漏选 | 4 个可观测过渡 + 变异压力测试 | 非全称证明；依赖 H1–H3/H2′ | §3.4、§5.1 |
-| 代表性改动净收益转正 | 图选择 −5.4%→+83.0%～94.6%（成本模型） | 三个代表性改动；文件级 dual 的 9 过渡 mean 11.1%/median 0 是另一口径 | §5.4 |
+| 代表性改动净收益转正 | 图选择 +83.0%～94.6%（成本模型；对照：文件级 −5.4%） | 三个代表性改动；文件级 dual 的 9 过渡 mean 11.1%/median 0 是另一口径 | §5.4 |
 | diff 约束生成有效 | n=3 主实验与 n=10 扩样自动语义有效率 1.0 | 自动代理；人工 0/30；样本构造效度 | §5.2 |
 | 修复边界可量化 | 3.38%/7.25% vs 99.3% oracle 上界 | 59% 无锚点；28% 可适用；单行输出任务 | §5.3 |
 
@@ -464,7 +464,7 @@ DiffE2E 原型由五部分组成：
 
 **本节结论（先行）**：本节回答 RQ1——四层归因能否在不漏选的前提下降低选择集。受控主体 24 个过渡上，Reduction 从文件级 0.625 提升至 0.889，SafetyEmp=1.0（4 个可观测过渡，0 漏选）；真实项目方向一致（0.111→0.742），但收益受覆盖耦合度限制。`Precision_cov` 与选择器同源，不能作为“零误选”证据；`Precision_emp` 只在 4 个单测试断裂过渡上可测。以下先给主结果，再给消融、真实项目回放与召回证据。
 
-#### 5.1.1 主结果：test-code graph 的函数级四层归因（本文的核心选择方法）
+#### 5.1.1 主结果：test-code graph 的函数级四层归因
 
 本文把选择建立在 §3.2 的 **test-code graph** 上，用四层归因（§3.4）选出受影响用例：
 
@@ -737,7 +737,7 @@ DiffE2E 原型由五部分组成：
 
 > † 该行是"空选集"场景（selected=0），`T_select` 未单独计时，故记 `—`；图选择在 actual-budget（62 用例）上的实测 `T_select≈9.1s`（冷启动全量静态建图上界，见 §5.4 口径说明）不适用于本行的 34 用例早批口径。
 
-> 读法：`cand_coverage` 说明用例数量减少 66.7% 并不等价于 wall-clock 同比例下降，真实 TimeReduction 为 12.4%，计入 0.12s 选择开销后 NetSaving 为 5.0%，主要受浏览器启动、dev server 与单测时长不均影响；`actual_desktop` 单场景记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 全量执行，但不能代表该项目平均收益。进一步按 RQ1 的 9 个 actual_desktop 过渡做 batch-estimated 汇总：1 个 empty、0 个 partial、8 个 full，mean NetSaving 为 11.1%，median NetSaving 为 0，break-even rate 为 11.1%。逐条分布见图 5-9（a）：8 个全选集过渡的 NetSaving 均为 0，均值完全由 1 个空选集过渡贡献，中位数为 0。这说明真实平均收益受 full-selection 过渡比例限制，论文中应同时报告单场景收益与多过渡分布。
+> 读法：`cand_coverage` 说明用例数量减少 66.7% 并不等价于 wall-clock 同比例下降，真实 TimeReduction 为 12.4%，计入 0.12s 选择开销后 NetSaving 为 5.0%，主要受浏览器启动、dev server 与单测时长不均影响；`actual_desktop` 单场景记录的是一个 selected=0 的无影响过渡，说明空选集可避免约 111s 全量执行，但不能代表该项目平均收益。进一步对**文件级 dual 基线**按 RQ1 的 9 个 actual_desktop 过渡做 batch-estimated 汇总：1 个 empty、0 个 partial、8 个 full，mean NetSaving 为 11.1%，median NetSaving 为 0，break-even rate 为 11.1%。逐条分布见图 5-9（a）：8 个全选集过渡的 NetSaving 均为 0，均值完全由 1 个空选集过渡贡献，中位数为 0。这说明真实平均收益受 full-selection 过渡比例限制，论文中应同时报告单场景收益与多过渡分布。
 
 **LLM token/$ 非时间成本**，来源：实验产物（附录 A.1）：主链路真实 LLM 实验共 424 次调用（RQ2 6 次、RQ3 受控 4 次、ReproBreak 414 次），估算约 757.8k input tokens 与 19.1k output tokens；按 DeepSeek 官方 `deepseek-v4-flash` cache-miss 输入 $0.14/M、输出 $0.28/M 计，成本约 $0.111。该表为估算，因为早期真实运行未持久化 provider usage 字段；后续运行已支持通过 `LLM_USAGE_OUT` 记录 API 返回的精确 usage。按实验拆分见图 5-9（b）。
 
