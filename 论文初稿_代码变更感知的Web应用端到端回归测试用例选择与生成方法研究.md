@@ -444,7 +444,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 3. **闭环支撑与修复边界对照（RQ3）**：受控主体 LLM 臂 4/4，ReproBreak 端到端 LLM 臂 30/414；另从 414 条无泄漏评估样本中抽取 40 条做过时类型人工复核（§5.3、§5.6）。
 4. **成本证据（RQ4）**：cand_coverage 与 actual_desktop 两个场景的真实 wall-clock、NetSaving、多过渡平均，以及 LLM token/$ 估算（§5.4）。
 
-所有真实数据均来自仓库产物。人工复核采用两阶段流程：第一列为 LLM 辅助预标注（附逐条理由，供作者复核；按现行协议以固定模型与参数生成），第二列为**作者本人**盲评（未见第一列）。早期一轮预标注因缺少生成链记录（无模型/参数/prompt 记录）未予采用，本文报告的是按现行协议重新生成的结果。第二标注与 Cohen's κ 的样本、合并命令与实测结果见 §5.6 与附录 A.3。第二标注已并入：RQ2 为 Po=0.9333、κ=0（人工列常量退化），RQ3 为 Po=1.0、不报 κ；第一列为 LLM 辅助预标注，两列不构成双人独立盲评结论，正文按描述性证据表述。
+所有真实数据均来自仓库产物。人工复核采用两阶段流程：第一列为 LLM 辅助预标注（附逐条理由，供作者复核；按现行协议以固定模型与参数生成），第二列为**作者本人**盲评（未见第一列）。早期一轮预标注因缺少生成链记录（无模型/参数/prompt 记录）未予采用，本文报告的是按现行协议重新生成的结果。第二标注与 Cohen's κ 的样本、合并命令与实测结果见 §5.6。第二标注已并入：RQ2 为 Po=0.9333、κ=0（人工列常量退化），RQ3 为 Po=1.0、不报 κ；第一列为 LLM 辅助预标注，两列不构成双人独立盲评结论，正文按描述性证据表述。
 
 ---
 
@@ -543,7 +543,7 @@ DiffE2E 由五个部分组成，代码位于仓库 `diffe2e/`：
 | mermaid-live-editor | SvelteKit + Vite dev | 5 | coverage_only / dual | 0.0 | **1.0** | **1.0** |
 | | | | uidiff_only | 1.0 | 0.0 | **1.0** |
 
-**函数级归因在真实项目上的逐过渡回放（n=9）**：另一轮实验在每个过渡上重跑函数级 CDP 覆盖（V_old 与 V_new 各一次全量套件）并执行四层归因，结果如右列：coverage_only 的 Reduction 为 **0.111**（34 条用例几乎全选），graph-selection 为 **0.742**——与受控主体 0.625→0.889 同一方向。`Safety` 在覆盖 oracle 口径下由 1.0 降到 **0.369**，但这是**同源自证**的结果（与 §5.1.1 相同）：9 个过渡中 2 个 graph 选 0 条而覆盖选 34 条，逐条核查确认**graph 正确**——改动分别是 `HistoricalAutomationReadOnly` 的一句文案与 `SelectLinkedAccountsModal` 的一个 prop 默认值，两个组件都**从未被 e2e 渲染**；文件级之所以"覆盖"，是 Vite 在应用启动时 import 并执行了模块级代码（**import-即-覆盖的假阳性**），两过渡的 `A_obs` 均为空。非循环 oracle 的判别力仍然有限：9 个过渡中仅 1 个产生结果差异，该过渡上两法 `SafetyEmp` 均为 1.0。复现：`node experiments/real/run_rq1_real_graph.mjs <adapter.json> 9`（附录 A.2）。
+**函数级归因在真实项目上的逐过渡回放（n=9）**：另一轮实验在每个过渡上重跑函数级 CDP 覆盖（V_old 与 V_new 各一次全量套件）并执行四层归因，结果如右列：coverage_only 的 Reduction 为 **0.111**（34 条用例几乎全选），graph-selection 为 **0.742**——与受控主体 0.625→0.889 同一方向。`Safety` 在覆盖 oracle 口径下由 1.0 降到 **0.369**，但这是**同源自证**的结果（与 §5.1.1 相同）：9 个过渡中 2 个 graph 选 0 条而覆盖选 34 条，逐条核查确认**graph 正确**——改动分别是 `HistoricalAutomationReadOnly` 的一句文案与 `SelectLinkedAccountsModal` 的一个 prop 默认值，两个组件都**从未被 e2e 渲染**；文件级之所以"覆盖"，是 Vite 在应用启动时 import 并执行了模块级代码（**import-即-覆盖的假阳性**），两过渡的 `A_obs` 均为空。非循环 oracle 的判别力仍然有限：9 个过渡中仅 1 个产生结果差异，该过渡上两法 `SafetyEmp` 均为 1.0。复现：`node experiments/real/run_rq1_real_graph.mjs <adapter.json> 9`。
 
 跨项目合计 n=14：dual 在两项目上均 **Safety=1.0、Precision_cov=1.0**（覆盖口径；bootstrap 95% CI 均为 [1,1]；非循环 `A_obs` 在两项目上均极小，精度不可测）；coverage_only 与 dual 逐过渡选中集合相同（属上文 50 个过渡逐例等价的一部分，Wilcoxon dual vs coverage_only 三指标 p=1）。来源 `out/real/{actual_desktop,mermaid_live}_rq1.json`、`out/real/real_rq1_stats.md`。
 
@@ -772,7 +772,7 @@ RQ3 的目的不是证明本文已经解决真实 Web 测试修复，而是回�
 
 ### 5.6 人工一致性校准：样本、当前状态与 κ 合并
 
-RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据做预标注（附逐条理由，作者可在合并前逐条复核），形成预标注列，再由**作者本人**在未见预标注的条件下完成第二标注列（盲评隔离与锁定步骤见附录 A.3）；两列不一致的条目由第三人仲裁填入 `final`。这不是独立第三方标注，故两列只构成**人工-预标注一致性校准**，不构成双人独立盲评。
+RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据做预标注（附逐条理由，作者可在合并前逐条复核），形成预标注列，再由**作者本人**在未见预标注的条件下完成第二标注列；两列不一致的条目由第三人仲裁填入 `final`。这不是独立第三方标注，故两列只构成**人工-预标注一致性校准**，不构成双人独立盲评。
 
 本节的"第一标注列"是按现行协议生成的 LLM 预标注，外加一列人工盲评：
 
@@ -793,7 +793,7 @@ RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据
 
 预标注列的原始输出保留在 `out/annotator1_masked.json`；`rb033` 经作者复核应为 EXPECTATION_CHANGE，但不改动表内计数（见 §5.3 与 §5.7 的协议边界讨论）。稳定性：70 条中 69 条三次完全一致、1 条为 2/3（`rq2_023`）、无 1/3；三次重复共 210 次逐条调用，失败清单为空（`temperature=0` 不保证确定性，故正式列固定取三次多数票）。数据见 `out/repeats/variance_report.md`。
 
-作者盲评的纪律、逐条工作表与合并/评分命令见附录 A.3。合并已于 2026-11-21 完成：表 5-10 的人工列与一致性指标已替换为实测值，§5.2、§5.3、表 5-8 注、摘要与附录 A.3 已同步一致性结论；表 5-5 的自动指标与其余实验数字不受影响。RQ3 按既定口径未计算、未报告 κ（预标注为常量 SO、`Pe` 退化），正文只报告 `Po`、混淆矩阵、逐条分歧与样本构成。
+作者盲评的纪律、逐条工作表与合并/评分命令记录在随稿归档的标注产物中。合并已于 2026-11-21 完成：表 5-10 的人工列与一致性指标已替换为实测值，§5.2、§5.3、表 5-8 注、摘要已同步一致性结论；表 5-5 的自动指标与其余实验数字不受影响。RQ3 按既定口径未计算、未报告 κ（预标注为常量 SO、`Pe` 退化），正文只报告 `Po`、混淆矩阵、逐条分歧与样本构成。
 
 ---
 
@@ -802,7 +802,7 @@ RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据
 - **外部效度**：主体为受控工程；真实多 commit replay（RQ1）已在 2 个真实开源项目（actual-budget、mermaid-live-editor，14 个稳定过渡）上完成并给出 dual Safety=1.0、Precision_cov=1.0（覆盖口径，§5.1），另接第三例 tldraw（12 个稳定过渡）**单列、不并入上述 14 个过渡的合并统计**，仅用于 50 个过渡的逐例等价核查；但项目数仍有限、且均为现代前端应用；真实 LLM 生成（RQ2）与修复（RQ3）对照已用 DeepSeek 跑通；真实 wall-clock（RQ4）已在 cand_coverage 与 actual_desktop 两个场景给出 NetSaving，并对 actual_desktop 给出多过渡平均，但早批 34 用例回放未单独拆解 `T_select`；HEAD（62 用例）上仅测得冷启动全量静态建图上界（≈9.1s），增量连续提交下的稳态 `T_select` 仍需多过渡实测，仍需扩大项目与过渡数量。
 - **构造效度**：召回保证已从"用覆盖映射自证"升级为"用与选择器无关的真实结果差异 oracle 验证"，并辅以变异压力测试，破除 Safety 自证循环；但 `A_obs` 在自然 diff 下样本偏小（4 个过渡），变异增强部分缓解。复核还发现自动指标依赖结果记录的正确性：RQ2 受控 c03/nodiff 一格原记录与冻结用例的执行结果不符，已按钉住环境重跑修正（其余五个受控执行格逐格复现），详见 §5.2 与 `diffe2e/experiments/out/repro_c03_20261108/REPRO_C03_FORENSICS.md`。
 - **内部效度**：命题 1 的安全性是条件安全（H1–H3 与 H2′）；flaky（H1）、覆盖盲区（H2）、配置/副作用（H3）、归因不完备（H2′）均可能使其失效。副作用情形已由状态闭包（命题 2）专门处理并有 live 证据；flaky 与覆盖盲区以多次重跑、保守纳入与失配回退应对。**函数身份与构建形态（H2′）**：`executes` 边按 (文件, 名字) 匹配 V8 函数名，而 V8 对 `React.memo(() => …)`、`forwardRef(…)`、`export default () => …` 报空名；本文不按字节偏移识别匿名函数，而是依赖三条保守规则（外层具名实体归属、不可归因回退文件级、同文件唯一同名解析，§3.4）。因此 H2′ 的完备性依赖"匿名函数总有具名外层或触发回退"，且依赖未被压缩/混淆的函数名——实验均在 Vite dev server 下进行，生产构建（minify/mangle）会改写函数名，需 sourcemap 或构建期插桩恢复身份，列为后续工作。若上述规则均未触发而函数身份仍不可匹配，则存在理论漏选风险。
-- **标注效度**：第一标注列为 LLM 辅助预标注。正式列按协议 B 盲评材料、固定模型与参数生成，RQ2 与 RQ3 各重复 3 次并取**三次多数票**；必须同时报告 3/3、2/3、1/3 一致率与不稳定条目清单，因为 `temperature=0` 并不保证确定性（本文实测 70 条中 1 条为 2/3 摆动）。早期一轮预标注因缺少生成链记录未予采用；其对照材料（condA 条件）已从随稿制品中移除，不在本稿保留。RQ3 的 `rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后新旧两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。这说明该类基准存在一类无法靠遮蔽后的结构信号判定的断裂；本文如实披露，不因此放松通用遮蔽规则。第二标注列为**作者本人**盲评（未见第一列；隔离与锁定见附录 A.3）；两列的一致性已按 §5.6 合并并报告，正文不把 LLM 预标注列或作者列称为"双人独立盲评"。RQ3 的自动分诊 `model_label` 由 locator 断裂构造而恒为 STRUCTURAL_ONLY，模型-人工 κ 不作为方法优越性证据；完整流程、样本构成与当前状态见 §5.6。
+- **标注效度**：第一标注列为 LLM 辅助预标注。正式列按协议 B 盲评材料、固定模型与参数生成，RQ2 与 RQ3 各重复 3 次并取**三次多数票**；必须同时报告 3/3、2/3、1/3 一致率与不稳定条目清单，因为 `temperature=0` 并不保证确定性（本文实测 70 条中 1 条为 2/3 摆动）。早期一轮预标注因缺少生成链记录未予采用；其对照材料（condA 条件）已从随稿制品中移除，不在本稿保留。RQ3 的 `rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后新旧两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。这说明该类基准存在一类无法靠遮蔽后的结构信号判定的断裂；本文如实披露，不因此放松通用遮蔽规则。第二标注列为**作者本人**盲评（未见第一列）；两列的一致性已按 §5.6 合并并报告，正文不把 LLM 预标注列或作者列称为"双人独立盲评"。RQ3 的自动分诊 `model_label` 由 locator 断裂构造而恒为 STRUCTURAL_ONLY，模型-人工 κ 不作为方法优越性证据；完整流程、样本构成与当前状态见 §5.6。
 - **结论效度**：生成/修复在无 LLM key 时走确定性 stub，可测可执行率/相关性/修复率；语义有效性以变异杀伤率与版本差分敏感性两个客观自动指标为主度量，人工复核用于方向校准而非替代自动指标。RQ2 真实 DeepSeek 对照给出 diff vs nodiff 的自动语义指标差异（表 5-5，diff 臂自动语义有效率 1.0）；30 条真实项目复核的协议 B 三次多数票为 **diff 2/15、nodiff 0/15**，方向与自动指标一致但绝对水平远低于 1.0，只能作为**外部效度限定**，不能写成"复现 1.0"，也不能把自动语义有效率等同于人工语义判断。RQ3 受控主体仅 4 条，不支撑过时分类一致性结论，因此从 ReproBreak 414 条无泄漏评估样本中抽取 40 条做人工复核；协议 B 正式列为 **SO=40、EC=0、SR=0**，其中 39 条可判为结构性，`rb033` 经作者复核应为 EC、属遮蔽造成的协议固有边界并单列披露；样本构成偏向测试 API 迁移，κ 的少数类稳定性有限，且偏斜分布下 κ 可能接近 0 或为负，必须同报 `Po`/`Pe` 与混淆矩阵。三次重复 70 条中 69 条完全一致、1 条 2/3、无 1/3。ReproBreak 修复已两层量化：E3 离线给出"已知 oracle 信号"的改写器上界（99.3%），§5.3 端到端在 449 条执行验证断裂、4 个真实项目上给出"从应用 diff 自行还原信号"的规则臂 3.38% 与 DeepSeek LLM 臂 7.25%——二者均远低于上界，正面量化了信号检测的难度。仍存局限：端到端执行验证版（Docker overwrite）与 DOM/trace 候选元素作为更强上下文为后续。
 - **RQ2 样本构造效度（新发现）**：事后复核发现，原 30 条真实项目"缺口"样本中 **12/14 个文件其实已被既有测试覆盖**（actual-budget 62 条 E2E 覆盖了 24 个变更 app 文件中的 20 个），即生成器在为新 UI 写测试、而该 UI 本有测试——生成任务在回答一个非缺口问题。按"文件确实无测试覆盖"筛选后只剩 4 个真实缺口文件（其中 1 个具可生成信号）。因此 RQ2 的 0/30 首先应归因于**样本缺口未经验证**，其次是生成能力；这是本文把 `detectGaps` 接入生成流程的直接动因，也说明真实前向开发中"有 UI 变更但完全无测试覆盖"的缺口天然稀缺。
 - **RQ3 语义口径的适用范围（新发现）**：端到端修复池中只有 **28%（115/414）** 的断裂具备语义锚点替换空间（testId/文本/label），占池 59% 的 `angular-slickgrid` 几乎全是 CSS class/XPath 断裂，语义等价口径与候选定位器在那里**原理上不可用**。因此语义口径必须限定在 distinctive 子集（n=90）报告，不能外推为全池水平；这也解释了两轮改进在全池 exact-match 上的"无提升"。
@@ -821,158 +821,6 @@ RQ2 与 RQ3 的人工校准采用同一套流程：先由 LLM 依据显式判据
 ### 6.2 工作展望
 
 **展望（按优先级）**：① 扩大真实项目数与栈多样性（含生产构建/sourcemap 归因、带后端者），并在更多项目上实测 `T_select` 与多过渡 NetSaving；② 把已完成的人工-预标注盲评校准扩展到更多项目与变更类型，并引入独立第三方标注者形成真正的双人独立盲评；同时探索不依赖 locator 断裂构造的过时类型样本，以提升少数类比例与 κ/AC1 的区分度；③ 补 ReproBreak 端到端修复的执行验证版（Docker overwrite）与 DOM/trace 候选元素上下文；④ 扩大变更类型与样本规模以提升统计可信度；⑤ 做 CI（如 GitHub Actions）集成 demo，展示工程落地形态。
-
----
-
-## 附录 A 复现材料与人工校准流程
-
-### A.1 代码与产物目录
-
-| 目录 | 内容 |
-|---|---|
-| `diffe2e/pipeline/src/` | 纯函数核心：diff 解析、覆盖映射、双信号选择、oracle、状态闭包、指标与统计、Semantic UI Diff、规则修复、过时三分类、LLM 客户端 |
-| `diffe2e/experiments/` | RQ1–RQ4 实验脚本、真实项目适配器、标注脚本与测试 |
-| `diffe2e/realproj/` | 真实项目 replay、CDP 覆盖注入、ReproBreak 离线与端到端实验 |
-| `diffe2e/experiments/out/` | RQ1–RQ4 结果、图、标注表与评分输出 |
-| `diffe2e/realproj/results/` | ReproBreak 结果与报告 |
-| `diffe2e/docs/THESIS_MAPPING.md` | 数据产物到论文章节的逐项映射 |
-| `diffe2e/REPRODUCE.md` | 一键复现说明 |
-
-### A.2 主实验复现命令
-
-**阶段 0（实验准备，一次性完成）**：
-
-```bash
-cd diffe2e
-node prepare.mjs
-```
-
-该脚本完成运行时检查（Node 24+）、三处 `npm install`（含 tree-sitter 原生模块自检）、`playwright install chromium`，并对 `real/{mermaid-live-editor,actual}` 与 `realproj/clones/aut/{angular-slickgrid,koenig,openmct,playwright}` 做**全量克隆**（不使用 `--depth`/`--filter`），使后续实验不再触发网络访问。全量历史是必需的：实验要在任意历史 commit 的父提交上 checkout，浅克隆无法覆盖。为适配受限网络，脚本支持 `DIFFE2E_CLONE_MIRROR=/path/to/mirror`：存在时优先从本地镜像（目录名与目标仓库相同）克隆，而不是访问 GitHub；并在开始前用 `df` 检查可用磁盘空间（可用 `DIFFE2E_MIN_FREE_GB` 调整阈值，默认 10 GB），不足时给出明确警告。步骤幂等，失败可直接重跑。
-
-**阶段 1 及以后（准备完成后直接运行）**：
-
-```bash
-cd diffe2e
-node --test pipeline/test/*.test.mjs experiments/*.test.mjs experiments/real/*.test.mjs experiments/annotate/*.test.mjs
-node subject/history/seed.mjs
-
-# —— 主方法（test-code graph 四层归因）——
-# 产出表 5-1（out/rq1_graph.json）与表 5-1a 的对照
-node experiments/run_graph_selection.mjs
-# 校验增量更新与全量重建逐例一致（含真实仓库）
-node experiments/verify_graph_incremental.mjs
-node experiments/verify_real_incremental.mjs real/mermaid-live-editor src 8
-node experiments/verify_real_incremental.mjs real/actual packages/desktop-client/src 8
-# 图规模/路由/解析率与 RQ2/RQ3 的图诊断演示
-node experiments/validate_real_graph.mjs real/actual packages/desktop-client/src
-node experiments/validate_real_routes.mjs
-node experiments/validate_rq3_diagnosis.mjs
-node experiments/a2_func_attribution.mjs
-node experiments/build_testcode_graph.mjs
-# 归因完备性审计（H2′：零实体 / 纯注释 / 文件级回退）→ out/attribution_audit*.md
-node experiments/audit_attribution_empties.mjs
-node experiments/audit_attribution_empties.mjs experiments/real/adapters/actual_desktop.json
-
-# —— 文件级基线 / 消融（表 5-1a）——
-node experiments/run_rq1.mjs
-node experiments/analyze.mjs
-node experiments/uidiff_loop.mjs
-node experiments/run_c1_dynamic.mjs
-node experiments/aggregate.mjs
-
-# 真实 LLM 与成本实验（需要 .env 中的 DEEPSEEK_API_KEY）
-node --env-file=.env experiments/run_rq2.mjs
-node --env-file=.env experiments/run_rq3.mjs
-node experiments/run_rq4_cost.mjs experiments/real/adapters/cand_coverage.json "App.test.ts -g \"use Red as a background color\"" 1 3 3
-node experiments/run_rq4_cost.mjs experiments/real/adapters/actual_desktop.json "" 2 3 34
-node experiments/run_rq4_batch.mjs experiments/out/real/actual_desktop_rq1.jsonl experiments/out/real/actual_desktop_rq4.json dual
-node experiments/run_llm_cost.mjs
-
-# 真实项目上的函数级覆盖 + graph-selection（需先 clone 并安装 actual-budget）
-node experiments/real/run_rq1_real_graph.mjs experiments/real/adapters/actual_desktop.json 9
-
-# ReproBreak 语义子集模型对照（n=90，需 DEEPSEEK_API_KEY）→ reprobreak_pro90_compare.md
-LLM_MODEL=deepseek-v4-pro RB_SUBSET=semantic RB_LIMIT=90 RB_CONCURRENCY=6 \
-  RB_OUT=realproj/results/reprobreak_e2e_pro90.json \
-  LLM_USAGE_OUT=realproj/results/llm_usage_pro90.jsonl \
-  node --env-file=.env realproj/reprobreak_e2e.mjs
-node experiments/real/compare_pro90.mjs
-```
-
-依赖安装命令见 `diffe2e/REPRODUCE.md`。C1 动态实验与对应单测需要 `real/cand_coverage/`（被 gitignore，不随仓库分发）；缺失时该单测自动跳过，其余实验不受影响。
-
-### A.3 人工标注与 κ 合并
-
-标注文件、盲评纪律与逐条判定标准见 `diffe2e/experiments/annotate/ANNOTATION_HANDOFF.md` 与 `ANNOTATION_GUIDE.md`。第二标注列由作者本人填写（未见第一列）：填写逐条工作表 `out/rq2_annotator2_worksheet.md` 与 `out/rq3_annotator_context_blind.md`，再用 `collect_annotator2_md.mjs --write` 写回盲表；也可直接填写盲表 CSV。核心纪律：不打开含预标注列的主表、`*_unblind.json`、逐条理由或 ReproBreak 原始断裂文件；RQ3 上下文刻意不含 `new_locator`。
-
-**合并与评分命令**（对应 §5.6 的人工列合并）：
-
-```bash
-cd diffe2e
-node experiments/annotate/collect_annotator2_md.mjs --write  # 填工作表时使用；直接填 CSV 可跳过
-node experiments/annotate/merge_second_annotator.mjs \
-  experiments/out/rq2_annotator2_blind.csv experiments/out/rq2_real_to_annotate.csv
-node experiments/annotate/merge_second_annotator.mjs \
-  experiments/out/rq3_annotator2_blind.csv experiments/out/rq3_reprobreak_to_annotate.csv
-node experiments/annotate/score.mjs experiments/out/rq2_real_to_annotate.csv --first-source=b-majority
-node experiments/annotate/score.mjs experiments/out/rq3_reprobreak_to_annotate.csv --first-source=b-majority
-node experiments/annotate/render_kappa_backfill.mjs
-```
-
-评分输出 `out/rq2_real_to_annotate_annotation.json`、`out/rq3_staleness_annotation.json` 与 `out/kappa_backfill.md`。
-
-**预标注的生成条件**。正式列按协议 B（与人工盲评相同的盲评材料）生成，沿用 `run_annotator1_masked.mjs`，固定 `deepseek-v4-flash`、`temperature=0`、`max_tokens=2000`（预算阶梯 2000→4000→8000）、`retries=3`，逐条独立调用同一 prompt；参数与材料哈希、密钥来源见 `out/annotator1_masked_manifest.json`。早期一轮预标注因缺少生成链记录（无模型/参数/prompt 记录）未予采用，本文不保留其它信息条件的对照材料。
-
-**表 A-2　协议 B 材料与参数**
-
-| 项目 | 协议 B（正式列） |
-|---|---|
-| RQ2 材料 | 盲评工作表可见内容（route + gap_file + spec 等） |
-| RQ3 材料 | 完整旧测试块、完整 commit、应用源码 diff、遮蔽 locator 的断言级 diff |
-| 模型 / 参数 | `deepseek-v4-flash` / `temperature=0` / `max_tokens=2000`（预算阶梯 2000→4000→8000） / `retries=3` |
-| prompt | 同一份 system prompt 与模板 |
-| 与原列的关系 | 无（原列不参与） |
-
-协议 B 的断言级 diff 只遮蔽机械寻址路径，40/40 条逐条验证机械片段零命中；语义锚保留，逐条清单见 `context/redaction_verification.md`。
-
-当前状态（预标注 2026-11-08，第二标注合并 2026-11-21）：协议 B 正式列（三次多数票）——RQ2 为 diff 2/15、nodiff 0/15（y 为 `rq2_023`、`rq2_029`），RQ3 为有效 40、SO=40、EC=0、SR=0。三次重复共 210 次逐条调用，失败清单为空；70 条中 69 条三次完全一致、1 条为 2/3（`rq2_023`）、无 1/3（`out/repeats/variance_report.md`）。`rb033` 属**协议固有边界**：协议要求遮蔽定位路径，而该条的业务语义恰好只由被遮蔽的属性承载（旧断言定位 markdown 卡、新断言定位 codeblock 卡），遮蔽后两侧只剩"路径已变更"标记，预标注只能判 `STRUCTURAL_ONLY`；作者逐条复核确认其应为 `EXPECTATION_CHANGE`。表 5-8 保留协议 B 原始输出 40/0/0，不改为 39/1/0；该类基准存在一类无法靠遮蔽后的结构信号判定的断裂，本文已单列披露且不放松通用遮蔽规则。预标注列为 LLM 辅助预标注（附逐条理由），不能表述为独立人类标注。`human vs 预标注` 的一致性已合并（2026-11-21，作者盲评回收、独立第三人先盲后明仲裁完成）：**RQ2 n=30、Po=0.9333、Pe=0.9333、κ=0、AC1=0.929**——人工列 30/30 判 n，常量列使 `Pe` 退化，κ=0 为患病率悖论，AC1=0.929 在偏斜分布下仍有区分度，与 2×2 混淆矩阵（y→n 2 条、n→n 28 条）同报；分歧 `rq2_023`、`rq2_029` 仲裁 `final` 均为 n，仲裁后人工语义有效率 0/30；**RQ3 n=40、Po=1.0、AC1=1.0**——两列均常量 SO，混淆仅 SO/SO=40、逐条分歧为空，按既定口径不报 κ（AC1=1.0 亦因常量列退化而无判别力），不以准确率或 F1 替代。`rb033` 经第三人先盲后明仲裁维持 EXPECTATION_CHANGE，仍单列。§5.2、§5.3、§5.6、表 5-8、表 5-10 与摘要已同步。
-
-### A.4 表图与数据产物映射
-
-**表 A-1　论文表图与数据产物映射**
-
-| 表/图 | 数据产物 |
-|---|---|
-| 表 3-1 | 方法论推导，见 `diffe2e/docs/SAFETY.md` |
-| 图 3-3 / §3.2 三层建图 | `out/figs/fig3_3_mapper.svg`、`pipeline/src/graph/{extract,resolve,semanticResolve,fileRoutes,testEdges,select,attribution}.mjs` |
-| 表 5-1 | `out/rq1_graph.json`（四层归因：Reduction / SafetyEmp / Precision_cov / Precision_emp）、`out/real/<proj>_rq1_graph.jsonl` |
-| §3.4 H2′ 审计 | `out/attribution_audit.md`、`out/attribution_audit_actual_desktop.md`、`out/attribution_audit_mermaid_live.md`、`experiments/audit_attribution_empties.mjs`、`pipeline/test/attribution.test.mjs` |
-| 表 5-1a、图 5-1 | `out/rq1_summary.md`、`out/figs/rq1_methods_scatter.svg` |
-| §5.2 图诊断、§5.3 断点诊断 | `out/rq2_rq3_graph.md` |
-| §5.3 改进试验 | `realproj/results/reprobreak_e2e_v2.md`、`reprobreak_e2e_v2.json` |
-| 图 5-2 | `out/rq1_dataset.jsonl`、`out/real/{tldraw_examples,actual_desktop,mermaid_live}_rq1.jsonl`、`out/figs/rq1_equiv50.svg` |
-| 表 5-2 | `out/rq1_stats.md` |
-| 表 5-3 | `out/sideeffect.json` |
-| 表 5-4、图 5-3 | `out/real/{actual_desktop,mermaid_live}_rq1.json`、`out/real/real_rq1_stats.md`、`out/figs/rq1_real_transitions.svg` |
-| 表 5-5 | `out/rq2_results.md`、`out/rq2_results.json` |
-| 表 5-5b | `out/new5_v2_20261108/rq2_new5_v2_results.json`（独立批次，不并入表 5-5） |
-| 表 5-5c | `out/new10_20261108/rq2_new10_combined.json`（逐缺口与 `by_class`） |
-| 图 5-4 | `out/rq2_results.json`、`out/new5_v2_20261108/rq2_new5_v2_results.json`、`out/new10_20261108/rq2_new10_combined.json`、`out/figs/rq2_three_scopes.svg` |
-| 图 5-5 | `out/new10_20261108/rq2_new10_combined.json`（逐缺口与 `by_class`）、`out/figs/rq2_gap_operator_matrix.svg` |
-| 表 5-6 | `out/rq3_results.md` |
-| §5.3.1 扩展批次（`rbx001`–`rbx040`） | `out/expansion_20261108/`、`out/annotation_arbitration_expansion_return_20261121/`、`out/annotation_expansion_return_20261121_report.md` |
-| 表 5-7 | `realproj/results/reprobreak_e2e.md`、`reprobreak_e2e.json` |
-| 图 5-6 | `realproj/results/reprobreak.json`、`realproj/results/reprobreak_e2e.json`、`out/figs/rq3_evidence_ladder.svg` |
-| 图 5-7 | `realproj/results/reprobreak_e2e.json`（`rows[].repo`）、`out/figs/rq3_per_repo_minority.svg` |
-| 表 5-8、表 5-10 | `out/rq2_real_to_annotate.csv`、`out/rq3_reprobreak_to_annotate.csv`、`out/*_unblind.json`、`out/annotator1_masked.json`（协议 B 正式列 run1）、`out/repeats/masked_run2.json`、`out/repeats/masked_run3.json`（三次多数票）、`out/repeats/variance_report.md`（一致率与不稳定清单）、`out/annotator1_masked_comparison.md`（原列 vs B） |
-| 表 5-9 | `out/real/cand_coverage_rq4.json`、`out/real/actual_desktop_rq4.json`、`out/real/actual_desktop_rq4_batch.json` |
-| §5.4 62 用例 NetSaving | `out/real/actual_desktop_rq4_graph.{md,json}`（成本模型测算值，`basis` 字段注明非重复实测；逐臂实测分布见表 5-9 产物） |
-| 图 5-9 | `out/real/actual_desktop_rq4_batch.json`（`transitions_detail`）、`out/llm_cost.json`（`by_experiment`/`total`）、`out/figs/rq4_net_saving.svg` |
-| 图 5-8 | `out/annotator1_masked.json`、`out/repeats/variance_report.json`、`out/figs/rq3_protocolb_distribution.svg` |
-| §5.6 κ 合并 | `out/kappa_backfill.md`、`out/annotation_arbitration_20261121/`、`out/annotation_arbitration_expansion_return_20261121/` |
-| LLM 成本 | `out/llm_cost.json`、`out/llm_cost.md` |
-| ReproBreak pro n=90 对照 | `realproj/results/reprobreak_e2e_pro90.json`、`realproj/results/llm_usage_pro90.jsonl`、`realproj/results/reprobreak_pro90_compare.{md,json}`、`experiments/real/compare_pro90.mjs` |
-| ReproBreak 离线指标 | `realproj/results/reprobreak.md`、`reprobreak.json` |
 
 ---
 
